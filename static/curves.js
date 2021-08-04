@@ -50,7 +50,7 @@ function LinearCurves(){
     {color: "green"}
   }];
   var layoutOil = {
-    title: "Oil (BOPD) vs Time") 
+    title: "Oil (BOPD) vs Time" 
   };
   Plotly.newPlot("oilDeclineCurve", dataOil, layoutOil, {displayModeBar: true}, {responsive: true});
   
