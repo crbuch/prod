@@ -19,6 +19,10 @@ function createDropdownOptions() {
 createDropdownOptions();
 // LISTENER FOR CHANGE ON DROP DOWN MENU
 d3.select("#siteSelection").on('change', LinearCurves);
+
+
+
+
 //FUNCTION FOR LINEAR SCALE//
 function LinearCurves(){
   dropdownMenu = d3.select("#siteSelection").node();
@@ -32,27 +36,41 @@ function LinearCurves(){
     var site_water = [];
     var site_date = [];
     var comments = [];
+    var movingAverage = [];
 
     data.forEach((site) => {if(site[0] === selectedOption){
       site_oil.push(site[2]);
       site_gas.push(site[3]);
       site_water.push(site[4]);
       site_date.push(site[1]);
-      comments.push(site[7])
+      comments.push(site[7]);
+      movingAverage.push(site[8])
     };
   });
 
-  var dataOil = [{
+
+  var dataOil = {
     x: site_date,
     y: site_oil,
     text: comments,
+    name: "Oil",
     line:
     {color: "green"}
-  }];
+  };
+
+  var dataMoving = {
+    x: site_date,
+    y: movingAverage,
+    type: "line",
+    name: "Average",
+  }; 
+
+  var data = [dataOil, dataMoving];
+
   var layoutOil = {
     title: "Oil (BOPD) vs Time" 
   };
-  Plotly.newPlot("oilDeclineCurve", dataOil, layoutOil, {displayModeBar: true}, {responsive: true});
+  Plotly.newPlot("oilDeclineCurve", data, layoutOil, {displayModeBar: true}, {responsive: true});
   
   var dataGas = [{
     x: site_date,
@@ -97,24 +115,37 @@ function LogCurves(){
     var site_water = [];
     var site_date = [];
     var comments = [];
+    var movingAverage = [];
     
     data.forEach((site) => {if(site[0] === selectedOption){
       site_oil.push(site[2]);
       site_gas.push(site[3]);
       site_water.push(site[4]);
       site_date.push(site[1]);
-      comments.push(site[7])
+      comments.push(site[7]);
+      movingAverage.push(site[8])
     };
   });
+
   
-  var dataOil = [{
+  var dataOil = {
     x: site_date,
     y: site_oil,
     text: comments,
     type: "line",
+    name: "Oil",
     line:
     {color: "green"}
-  }];
+  };
+  
+  var dataMoving = {
+    x: site_date,
+    y: movingAverage,
+    type: "line",
+    name: "Average"
+  }; 
+
+  var data = [dataOil, dataMoving];
   
   var layoutOil = {
     title: "Oil (BOPD) vs Time",
@@ -124,7 +155,7 @@ function LogCurves(){
     }
   };
   
-  Plotly.newPlot("oilDeclineCurve", dataOil, layoutOil, {displayModeBar: true});
+  Plotly.newPlot("oilDeclineCurve", data, layoutOil, {displayModeBar: true});
   
   var dataGas = [{
     x: site_date,
@@ -177,13 +208,15 @@ function CurveLinear30Days(){
     var site_water = [];
     var site_date = [];
     var comments = [];
+    var movingAverage = [];
     
     data.forEach((site) => {if(site[0] === selectedOption){
       site_oil.push(site[2]);
       site_gas.push(site[3]);
       site_water.push(site[4]);
       site_date.push(site[1]);
-      comments.push(site[7])
+      comments.push(site[7]);
+      movingAverage.push(site[8])
     };
   });
 
@@ -193,22 +226,33 @@ function CurveLinear30Days(){
   var gas30 = site_gas.slice(0,31);
   var water30 = site_water.slice(0,31);
   var comments30 = comments.slice(0,31);
-  console.log(days30);
+  var movingAverage30 = movingAverage.slice(0,31);
+  //console.log(days30);
   
-  var dataOil = [{
+  var dataOil = {
     x: days30,
     y: oil30,
     text: comments30,
     type: "line",
+    name: "Oil",
     line:
     {color: "green"}
-  }];
+  };
+
+  var dataMoving = {
+    x: site_date,
+    y: movingAverage30,
+    type: "line",
+    name: "Average",
+  };
+
+  var data = [dataOil, dataMoving];
   
   var layoutOil = {
     title: "Oil (BOPD) vs Time"
   };
   
-  Plotly.newPlot("oilDeclineCurve", dataOil, layoutOil, {displayModeBar: true});
+  Plotly.newPlot("oilDeclineCurve", data, layoutOil, {displayModeBar: true});
   
   var dataGas = [{
     x: days30,
@@ -249,13 +293,15 @@ function CurveLinear180Days(){
     var site_water = [];
     var site_date = [];
     var comments = [];
+    var movingAverage = [];
     
     data.forEach((site) => {if(site[0] === selectedOption){
       site_oil.push(site[2]);
       site_gas.push(site[3]);
       site_water.push(site[4]);
       site_date.push(site[1]);
-      comments.push(site[7])
+      comments.push(site[7]);
+      movingAverage.push(site[8])
     };
   });
 
@@ -265,22 +311,33 @@ function CurveLinear180Days(){
   var gas180 = site_gas.slice(0,181);
   var water180 = site_water.slice(0,181);
   var comments180 = comments.slice(0,181);
-  console.log(days180);
+  var movingAverage180 =movingAverage.slice(0,181);
+  //console.log(days180);
   
-  var dataOil = [{
+  var dataOil = {
     x: days180,
     y: oil180,
     text: comments180,
     type: "line",
+    name: "Oil",
     line:
     {color: "green"}
-  }];
+  };
+
+  var dataMoving = {
+    x: site_date,
+    y: movingAverage180,
+    type: "line",
+    name: "Average",
+  }; 
   
+  var data = [dataOil, dataMoving];
+
   var layoutOil = {
     title: "Oil (BOPD) vs Time"
   };
   
-  Plotly.newPlot("oilDeclineCurve", dataOil, layoutOil, {displayModeBar: true});
+  Plotly.newPlot("oilDeclineCurve", data, layoutOil, {displayModeBar: true});
   
   var dataGas = [{
     x: days180,
@@ -321,13 +378,15 @@ function CurveLinear365Days(){
     var site_water = [];
     var site_date = [];
     var comments = [];
+    var movingAverage = [];
     
     data.forEach((site) => {if(site[0] === selectedOption){
       site_oil.push(site[2]);
       site_gas.push(site[3]);
       site_water.push(site[4]);
       site_date.push(site[1]);
-      comments.push(site[7])
+      comments.push(site[7]);
+      movingAverage.push(site[8])
     };
   });
 
@@ -337,22 +396,34 @@ function CurveLinear365Days(){
   var gas365 = site_gas.slice(0,366);
   var water365 = site_water.slice(0,366);
   var comments365 = comments.slice(0,366);
+  var moving365 = movingAverage.slice(0,366);
   //console.log(days365);
   
-  var dataOil = [{
+  var dataOil = {
     x: days365,
     y: oil365,
     text: comments365,
     type: "line",
+    name: "Oil",
     line:
     {color: "green"}
-  }];
+  };
+
+  var dataMoving = {
+    x: site_date,
+    y: moving365,
+    type: "line",
+    name: "Average",
+  }; 
+
+  var data = [dataOil, dataMoving];
+  
   
   var layoutOil = {
     title: "Oil (BOPD) vs Time"
   };
   
-  Plotly.newPlot("oilDeclineCurve", dataOil, layoutOil, {displayModeBar: true});
+  Plotly.newPlot("oilDeclineCurve", data, layoutOil, {displayModeBar: true});
   
   var dataGas = [{
     x: days365,
@@ -392,13 +463,15 @@ function Log30DayCurves(){
     var site_water = [];
     var site_date = [];
     var comments = [];
+    var movingAverage = [];
     
     data.forEach((site) => {if(site[0] === selectedOption){
       site_oil.push(site[2]);
       site_gas.push(site[3]);
       site_water.push(site[4]);
       site_date.push(site[1]);
-      comments.push(site[7])
+      comments.push(site[7]);
+      movingAverage.push(site[8])
     };
   });
 
@@ -407,15 +480,26 @@ function Log30DayCurves(){
   var gasLog30 = site_gas.slice(0,31);
   var waterLog30 = site_water.slice(0,31);
   var commentsLog30 = comments.slice(0,31);
+  var movingLog30 = movingAverage.slice(0,31);
   
-  var dataOil = [{
+  var dataOil = {
     x: daysLog30,
     y: oilLog30,
     text: commentsLog30,
     type: "line",
+    name: "Oil",
     line:
     {color: "green"}
-  }];
+  };
+
+  var dataMoving = {
+    x: daysLog30,
+    y: movingLog30,
+    type: "line",
+    name: "Average"
+  };
+
+  var data = [dataOil, dataMoving];
   
   var layoutOil = {
     title: "Oil (BOPD) vs Time",
@@ -425,7 +509,7 @@ function Log30DayCurves(){
     }
   };
   
-  Plotly.newPlot("oilDeclineCurve", dataOil, layoutOil, {displayModeBar: true});
+  Plotly.newPlot("oilDeclineCurve", data, layoutOil, {displayModeBar: true});
   
   var dataGas = [{
     x: daysLog30,
@@ -477,13 +561,15 @@ function Log180DayCurves(){
     var site_water = [];
     var site_date = [];
     var comments = [];
+    var movingAverage = [];
     
     data.forEach((site) => {if(site[0] === selectedOption){
       site_oil.push(site[2]);
       site_gas.push(site[3]);
       site_water.push(site[4]);
       site_date.push(site[1]);
-      comments.push(site[7])
+      comments.push(site[7]);
+      movingAverage.push(site[8])
     };
   });
 
@@ -492,15 +578,26 @@ function Log180DayCurves(){
   var gasLog180 = site_gas.slice(0,181);
   var waterLog180 = site_water.slice(0,181);
   var commentsLog180 = comments.slice(0,181);
+  var moving180 = movingAverage.slice(0,181);
   
-  var dataOil = [{
+  var dataOil = {
     x: daysLog180,
     y: oilLog180,
     text: commentsLog180,
     type: "line",
+    name: "Oil",
     line:
     {color: "green"}
-  }];
+  };
+
+  var dataMoving = {
+    x: site_date,
+    y: moving180,
+    type: "line",
+    name: "Average"
+  };
+
+  var data = [dataOil, dataMoving];
   
   var layoutOil = {
     title: "Oil (BOPD) vs Time",
@@ -510,7 +607,7 @@ function Log180DayCurves(){
     }
   };
   
-  Plotly.newPlot("oilDeclineCurve", dataOil, layoutOil, {displayModeBar: true});
+  Plotly.newPlot("oilDeclineCurve", data, layoutOil, {displayModeBar: true});
   
   var dataGas = [{
     x: daysLog180,
@@ -562,13 +659,15 @@ function Log365DayCurves(){
     var site_water = [];
     var site_date = [];
     var comments = [];
+    var movingAverage = [];
     
     data.forEach((site) => {if(site[0] === selectedOption){
       site_oil.push(site[2]);
       site_gas.push(site[3]);
       site_water.push(site[4]);
       site_date.push(site[1]);
-      comments.push(site[7])
+      comments.push(site[7]);
+      movingAverage.push(site[8])
     };
   });
 
@@ -577,15 +676,26 @@ function Log365DayCurves(){
   var gasLog365 = site_gas.slice(0,366);
   var waterLog365 = site_water.slice(0,366);
   var commentsLog365 = comments.slice(0,366);
+  var moving365 = movingAverage.slice(0,366);
   
-  var dataOil = [{
+  var dataOil = {
     x: daysLog365,
     y: oilLog365,
     text: commentsLog365,
     type: "line",
+    name: "Oil",
     line:
     {color: "green"}
-  }];
+  };
+
+  var dataMoving = {
+    x: site_date,
+    y: moving365,
+    type: "line",
+    name: "Average"
+  }; 
+
+  var data = [dataOil, dataMoving];
   
   var layoutOil = {
     title: "Oil (BOPD) vs Time",
@@ -595,7 +705,7 @@ function Log365DayCurves(){
     }
   };
   
-  Plotly.newPlot("oilDeclineCurve", dataOil, layoutOil, {displayModeBar: true});
+  Plotly.newPlot("oilDeclineCurve", data, layoutOil, {displayModeBar: true});
   
   var dataGas = [{
     x: daysLog365,
