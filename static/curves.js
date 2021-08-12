@@ -48,8 +48,8 @@ function LinearCurves(){
     };
   });
 
-  console.log(site_oil);
-  console.log(site_date);
+  //console.log(site_oil);
+  //console.log(site_date);
 
   var dataOil = {
     x: site_date,
