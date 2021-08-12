@@ -62,7 +62,7 @@ function LinearCurves(){
     x: site_date,
     y: movingAverage,
     type: "line",
-    name: "Average",
+    name: "7D MA",
   }; 
 
   var data = [dataOil, dataMoving];
@@ -142,7 +142,7 @@ function LogCurves(){
     x: site_date,
     y: movingAverage,
     type: "line",
-    name: "Average"
+    name: "7D MA"
   }; 
 
   var data = [dataOil, dataMoving];
@@ -243,7 +243,7 @@ function CurveLinear30Days(){
     x: site_date,
     y: movingAverage30,
     type: "line",
-    name: "Average",
+    name: "7D MA",
   };
 
   var data = [dataOil, dataMoving];
@@ -328,7 +328,7 @@ function CurveLinear180Days(){
     x: site_date,
     y: movingAverage180,
     type: "line",
-    name: "Average",
+    name: "7D MA",
   }; 
   
   var data = [dataOil, dataMoving];
@@ -413,7 +413,7 @@ function CurveLinear365Days(){
     x: site_date,
     y: moving365,
     type: "line",
-    name: "Average",
+    name: "7D MA",
   }; 
 
   var data = [dataOil, dataMoving];
@@ -496,7 +496,7 @@ function Log30DayCurves(){
     x: daysLog30,
     y: movingLog30,
     type: "line",
-    name: "Average"
+    name: "7D MA"
   };
 
   var data = [dataOil, dataMoving];
@@ -594,7 +594,7 @@ function Log180DayCurves(){
     x: site_date,
     y: moving180,
     type: "line",
-    name: "Average"
+    name: "7D MA"
   };
 
   var data = [dataOil, dataMoving];
@@ -692,7 +692,7 @@ function Log365DayCurves(){
     x: site_date,
     y: moving365,
     type: "line",
-    name: "Average"
+    name: "7D MA"
   }; 
 
   var data = [dataOil, dataMoving];
