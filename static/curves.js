@@ -48,6 +48,8 @@ function LinearCurves(){
     };
   });
 
+  //console.log(site_oil);
+  //console.log(site_date);
 
   var dataOil = {
     x: site_date,
@@ -63,6 +65,8 @@ function LinearCurves(){
     y: movingAverage,
     type: "line",
     name: "7D MA",
+    line:
+    {dash: "dot"}
   }; 
 
   var data = [dataOil, dataMoving];
@@ -142,7 +146,9 @@ function LogCurves(){
     x: site_date,
     y: movingAverage,
     type: "line",
-    name: "7D MA"
+    name: "7D MA",
+    line:
+    {dash: "dot"}
   }; 
 
   var data = [dataOil, dataMoving];
@@ -244,6 +250,8 @@ function CurveLinear30Days(){
     y: movingAverage30,
     type: "line",
     name: "7D MA",
+    line:
+    {dash: "dot"}
   };
 
   var data = [dataOil, dataMoving];
@@ -312,7 +320,7 @@ function CurveLinear180Days(){
   var water180 = site_water.slice(0,181);
   var comments180 = comments.slice(0,181);
   var movingAverage180 =movingAverage.slice(0,181);
-  //console.log(days180);
+  console.log(days180);
   
   var dataOil = {
     x: days180,
@@ -329,6 +337,8 @@ function CurveLinear180Days(){
     y: movingAverage180,
     type: "line",
     name: "7D MA",
+    line:
+    {dash: "dot"}
   }; 
   
   var data = [dataOil, dataMoving];
@@ -414,6 +424,8 @@ function CurveLinear365Days(){
     y: moving365,
     type: "line",
     name: "7D MA",
+    line:
+    {dash: "dot"}
   }; 
 
   var data = [dataOil, dataMoving];
@@ -496,7 +508,9 @@ function Log30DayCurves(){
     x: daysLog30,
     y: movingLog30,
     type: "line",
-    name: "7D MA"
+    name: "7D MA",
+    line:
+    {dash: "dot"}
   };
 
   var data = [dataOil, dataMoving];
@@ -594,7 +608,9 @@ function Log180DayCurves(){
     x: site_date,
     y: moving180,
     type: "line",
-    name: "7D MA"
+    name: "7D MA",
+    line:
+    {dash: "dot"}
   };
 
   var data = [dataOil, dataMoving];
@@ -692,7 +708,9 @@ function Log365DayCurves(){
     x: site_date,
     y: moving365,
     type: "line",
-    name: "7D MA"
+    name: "7D MA",
+    line:
+    {dash: "dot"}
   }; 
 
   var data = [dataOil, dataMoving];
