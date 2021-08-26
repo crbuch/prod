@@ -29,6 +29,7 @@ function LinearCurves(){
   selectedOption = dropdownMenu.value;
   
   console.log(selectedOption);
+  console.log(this);
   
   d3.json("./static/allProductionData.json").then((data) =>{ 
     var site_oil = [];
@@ -766,6 +767,7 @@ function Log365DayCurves(){
 })};
 //LINEAR LISTENERS//
 d3.select("#linear").on('click', LinearCurves);
+
 d3.select("#Inception").on('click', LinearCurves);
 d3.select("#Days30").on('click', CurveLinear30Days);
 d3.select("#Days180").on('click', CurveLinear180Days);
@@ -777,5 +779,7 @@ d3.select("#InceptionLog").on('click', LogCurves);
 d3.select("#Days30Log").on('click', Log30DayCurves);
 d3.select("#Days180Log").on('click', Log180DayCurves);
 d3.select("#Days365Log").on('click', Log365DayCurves);
+
+
 
 
