@@ -24,11 +24,12 @@ d3.select("#siteSelection").on('change', LinearCurves);
 
 
 //FUNCTION FOR LINEAR SCALE//
-function LinearCurves(x){
+function LinearCurves(){
   dropdownMenu = d3.select("#siteSelection").node();
   selectedOption = dropdownMenu.value;
   
-  //console.log(x);
+  console.log(selectedOption);
+  console.log(this);
   
   d3.json("./static/allProductionData.json").then((data) =>{ 
     var site_oil = [];
@@ -203,7 +204,7 @@ function LogCurves(){
   var logShow = document.getElementById("timeframesLog");
   logShow.style.display = "block";
 })};
-function TimeCurve(x){
+function CurveLinear30Days(){
   var dropdownMenu = d3.selectAll("#siteSelection").node();
   var selectedOption = dropdownMenu.value;
   
@@ -226,13 +227,13 @@ function TimeCurve(x){
     };
   });
 
-  console.log(x);
-  var days30 = site_date.slice(0,x);
-  var oil30 = site_oil.slice(0,x);
-  var gas30 = site_gas.slice(0,x);
-  var water30 = site_water.slice(0,x);
-  var comments30 = comments.slice(0,x);
-  var movingAverage30 = movingAverage.slice(0,x);
+  
+  var days30 = site_date.slice(0,31);
+  var oil30 = site_oil.slice(0,31);
+  var gas30 = site_gas.slice(0,31);
+  var water30 = site_water.slice(0,31);
+  var comments30 = comments.slice(0,31);
+  var movingAverage30 = movingAverage.slice(0,31);
   //console.log(days30);
   
   var dataOil = {
@@ -289,7 +290,281 @@ function TimeCurve(x){
   
   Plotly.newPlot("waterDeclineCurve", dataWater, layoutWater);
 })};
+//FUNCTION FOR LINEAR 180 DAYS CURVE//
+function CurveLinear180Days(){
+  var dropdownMenu = d3.selectAll("#siteSelection").node();
+  var selectedOption = dropdownMenu.value;
+  
+  console.log("hello", selectedOption);
+  d3.json("./static/allProductionData.json").then((data) =>{
+    var site_oil = [];
+    var site_gas = [];
+    var site_water = [];
+    var site_date = [];
+    var comments = [];
+    var movingAverage = [];
+    
+    data.forEach((site) => {if(site[0] === selectedOption){
+      site_oil.push(site[2]);
+      site_gas.push(site[3]);
+      site_water.push(site[4]);
+      site_date.push(site[1]);
+      comments.push(site[7]);
+      movingAverage.push(site[8])
+    };
+  });
 
+  
+  var days180 = site_date.slice(0,181);
+  var oil180 = site_oil.slice(0,181);
+  var gas180 = site_gas.slice(0,181);
+  var water180 = site_water.slice(0,181);
+  var comments180 = comments.slice(0,181);
+  var movingAverage180 =movingAverage.slice(0,181);
+  console.log(days180);
+  
+  var dataOil = {
+    x: days180,
+    y: oil180,
+    text: comments180,
+    type: "line",
+    name: "Oil",
+    line:
+    {color: "green"}
+  };
+
+  var dataMoving = {
+    x: site_date,
+    y: movingAverage180,
+    type: "line",
+    name: "7D MA",
+    line:
+    {dash: "dot"}
+  }; 
+  
+  var data = [dataOil, dataMoving];
+
+  var layoutOil = {
+    title: "Oil (BOPD) vs Time"
+  };
+  
+  Plotly.newPlot("oilDeclineCurve", data, layoutOil, {displayModeBar: true});
+  
+  var dataGas = [{
+    x: days180,
+    y: gas180,
+    text: comments180,
+    type: "line",
+    line:
+    {color: "red"}
+  }];
+  
+  var layoutGas = {
+    title: "Gas (MCFD) vs Time"
+  };
+  
+  Plotly.newPlot("gasDeclineCurve", dataGas, layoutGas);
+  
+  var dataWater = [{
+    x: days180,
+    y: water180,
+    text: comments180,
+    type: "line" }];
+    
+  var layoutWater = {
+    title: "Water (BWPD) vs Time"
+  };
+  
+  Plotly.newPlot("waterDeclineCurve", dataWater, layoutWater);
+})};
+//FUNCTION FOR LINEAR 360 DAYS CURVE//
+function CurveLinear365Days(){
+  var dropdownMenu = d3.selectAll("#siteSelection").node();
+  var selectedOption = dropdownMenu.value;
+  
+  console.log("hello", selectedOption);
+  d3.json("./static/allProductionData.json").then((data) =>{
+    var site_oil = [];
+    var site_gas = [];
+    var site_water = [];
+    var site_date = [];
+    var comments = [];
+    var movingAverage = [];
+    
+    data.forEach((site) => {if(site[0] === selectedOption){
+      site_oil.push(site[2]);
+      site_gas.push(site[3]);
+      site_water.push(site[4]);
+      site_date.push(site[1]);
+      comments.push(site[7]);
+      movingAverage.push(site[8])
+    };
+  });
+
+  
+  var days365 = site_date.slice(0,366);
+  var oil365 = site_oil.slice(0,366);
+  var gas365 = site_gas.slice(0,366);
+  var water365 = site_water.slice(0,366);
+  var comments365 = comments.slice(0,366);
+  var moving365 = movingAverage.slice(0,366);
+  //console.log(days365);
+  
+  var dataOil = {
+    x: days365,
+    y: oil365,
+    text: comments365,
+    type: "line",
+    name: "Oil",
+    line:
+    {color: "green"}
+  };
+
+  var dataMoving = {
+    x: site_date,
+    y: moving365,
+    type: "line",
+    name: "7D MA",
+    line:
+    {dash: "dot"}
+  }; 
+
+  var data = [dataOil, dataMoving];
+  
+  
+  var layoutOil = {
+    title: "Oil (BOPD) vs Time"
+  };
+  
+  Plotly.newPlot("oilDeclineCurve", data, layoutOil, {displayModeBar: true});
+  
+  var dataGas = [{
+    x: days365,
+    y: gas365,
+    text: comments365,
+    type: "line",
+    line:
+    {color: "red"}
+  }];
+  
+  var layoutGas = {
+    title: "Gas (MCFD) vs Time"
+  };
+  
+  Plotly.newPlot("gasDeclineCurve", dataGas, layoutGas);
+  
+  var dataWater = [{
+    x: days365,
+    y: water365,
+    text: comments365,
+    type: "line" }];
+    
+  var layoutWater = {
+    title: "Water (BWPD) vs Time"
+  };
+  
+  Plotly.newPlot("waterDeclineCurve", dataWater, layoutWater);
+})};
+function Log30DayCurves(){
+  var dropdownMenu = d3.selectAll("#siteSelection").node();
+  var selectedOption = dropdownMenu.value;
+  
+  console.log("hello", selectedOption);
+  d3.json("./static/allProductionData.json").then((data) =>{
+    var site_oil = [];
+    var site_gas = [];
+    var site_water = [];
+    var site_date = [];
+    var comments = [];
+    var movingAverage = [];
+    
+    data.forEach((site) => {if(site[0] === selectedOption){
+      site_oil.push(site[2]);
+      site_gas.push(site[3]);
+      site_water.push(site[4]);
+      site_date.push(site[1]);
+      comments.push(site[7]);
+      movingAverage.push(site[8])
+    };
+  });
+
+  var daysLog30 = site_date.slice(0,31);
+  var oilLog30 = site_oil.slice(0,31);
+  var gasLog30 = site_gas.slice(0,31);
+  var waterLog30 = site_water.slice(0,31);
+  var commentsLog30 = comments.slice(0,31);
+  var movingLog30 = movingAverage.slice(0,31);
+  
+  var dataOil = {
+    x: daysLog30,
+    y: oilLog30,
+    text: commentsLog30,
+    type: "line",
+    name: "Oil",
+    line:
+    {color: "green"}
+  };
+
+  var dataMoving = {
+    x: daysLog30,
+    y: movingLog30,
+    type: "line",
+    name: "7D MA",
+    line:
+    {dash: "dot"}
+  };
+
+  var data = [dataOil, dataMoving];
+  
+  var layoutOil = {
+    title: "Oil (BOPD) vs Time",
+    yaxis: {
+      type: 'log',
+      autorange: true
+    }
+  };
+  
+  Plotly.newPlot("oilDeclineCurve", data, layoutOil, {displayModeBar: true});
+  
+  var dataGas = [{
+    x: daysLog30,
+    y: gasLog30,
+    text: commentsLog30,
+    type: "line",
+    line:
+    {color: "red"}
+  }];
+  
+  var layoutGas = {
+    title: "Gas (MCFD) vs Time",
+    yaxis: {
+      type: 'log',
+      autorange: true
+    }
+  };
+  
+  Plotly.newPlot("gasDeclineCurve", dataGas, layoutGas);
+  
+  var dataWater = [{
+    x: daysLog30,
+    y: waterLog30,
+    text: commentsLog30,
+    type: "line" }];
+    
+  var layoutWater = {
+    title: "Water (BWPD) vs Time",
+    yaxis: {
+      type: 'log',
+      autorange: true
+    }
+  };
+  
+  Plotly.newPlot("waterDeclineCurve", dataWater, layoutWater);
+  var hide = document.getElementById("timeframes");
+  hide.style.display = "none";
+  var logShow = document.getElementById("timeframesLog");
+  logShow.style.display = "block";
+})};
 function Log180DayCurves(){
   var dropdownMenu = d3.selectAll("#siteSelection").node();
   var selectedOption = dropdownMenu.value;
@@ -494,9 +769,9 @@ function Log365DayCurves(){
 d3.select("#linear").on('click', LinearCurves);
 
 d3.select("#Inception").on('click', LinearCurves);
-d3.select("#Days30").on('click', TimeCurve(31));
-d3.select("#Days180").on('click', TimeCurve(181));
-d3.select("#Days365").on('click', TimeCurve(366));
+d3.select("#Days30").on('click', CurveLinear30Days);
+d3.select("#Days180").on('click', CurveLinear180Days);
+d3.select("#Days365").on('click', CurveLinear365Days);
 
 //LOG LISTENERS//
 d3.select("#logarithmic").on('click', LogCurves);
