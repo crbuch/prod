@@ -81,6 +81,11 @@ function Curve(d,t){
       type: t,
       rangemode: 'tozero'
       // autorange: true
+    },
+    legend: {
+      x: 1,
+      xanchor: 'right',
+      y: 1
     }
   };
   Plotly.newPlot("oilDeclineCurve", data, layoutOil, {displayModeBar: true}, {responsive: true});
@@ -113,6 +118,13 @@ function Curve(d,t){
       type: t,
       rangemode: 'tozero'
     }
+    //WILL ONLY NEED THIS WHEN ADDING MORE DATA TO CURVE, SUCH AS MA
+    //,
+    // legend: {
+    //   x: 1,
+    //   xanchor: 'right',
+    //   y: 1
+    // }
   };
   Plotly.newPlot("waterDeclineCurve", dataWater, layoutWater);
 
@@ -130,7 +142,7 @@ function Curve(d,t){
   }
 })
 };
-//FUNCTION FOR LOGARITHMIC SCALE//
+
 
 //LINEAR LISTENERS//
 d3.select("#linear").on('click', function() {Curve(d=0,t='linear');});
