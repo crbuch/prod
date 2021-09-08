@@ -17,18 +17,22 @@ function createDropdownOptions() {
 };
 //CALL FUNCTION TO CREATE DROPDOWN MENU VALUES
 createDropdownOptions();
+
 // LISTENER FOR CHANGE ON DROP DOWN MENU
-d3.select("#siteSelection").on('change', function() {Curve(d=0,t='linear');});
+d3.select("#siteSelection").on('change', function() {Curve(d=0,t='linear');}); // this is the listener causing issues somehow
+
 
 
 //FUNCTION FOR LINEAR SCALE//
 function Curve(d,t){
+
   dropdownMenu = d3.select("#siteSelection").node();
   selectedOption = dropdownMenu.value;
   
   console.log(selectedOption);
   
   d3.json("./static/allProductionData.json").then((data) =>{ 
+    
     var site_oil = [];
     var site_gas = [];
     var site_water = [];
@@ -118,35 +122,94 @@ function Curve(d,t){
       type: t,
       rangemode: 'tozero'
     }
-    //WILL ONLY NEED THIS WHEN ADDING MORE DATA TO CURVE, SUCH AS MA
-    //,
-    // legend: {
-    //   x: 1,
-    //   xanchor: 'right',
-    //   y: 1
-    // }
   };
   Plotly.newPlot("waterDeclineCurve", dataWater, layoutWater);
 
   if(d===0 && t==='log'){
-    var hide = document.getElementById("timeframes");
-    hide.style.display = "none";
-    var logShow = document.getElementById("timeframesLog");
-    logShow.style.display = "block";
+
+    var showCurves = document.getElementById("curves"); // CURVES IS INITIALLY DISPLAYED AS LINEAR? 
+    showCurves.style.display = ""
+
+    var hideLinear = document.getElementById("timeframes");
+    hideLinear.style.display = "none";
+
+    var showLog = document.getElementById("timeframesLog");
+    showLog.style.display = "";
+
+    var hidetable = document.getElementById("individualTable");
+    hidetable.style.display = "none"; 
+    
+
+    
+
+
+
+    
+    
+    
+
   }
   else if(d===0 && t==='linear'){
-    var hide = document.getElementById("timeframesLog");
-    hide.style.display = "none";
-    var hide = document.getElementById("timeframes");
-    hide.style.display = "block";
+    var hideLog = document.getElementById("timeframesLog");
+    hideLog.style.display = "none";
+
+    var showLinear = document.getElementById("timeframes");
+    showLinear.style.display = "";
+
+    var showCurves = document.getElementById("curves"); // CURVES IS INITIALLY DISPLAYED AS LINEAR?
+    showCurves.style.display = ""
+
+    var hidetable = document.getElementById("individualTable");
+    hidetable.style.display = "none";
+    
+    
   }
 })
+
+////// TABLE TO LOG OR TABLE TO LINEAR CAUSES ISSUES // 
+
+    
+
+};
+
+function table() {
+ // dropdownMenu = d3.select("#siteSelection").node();
+  selectedOption = dropdownMenu.value;
+
+  d3.json("./static/allProductionData.json").then((data) => {
+    tableData = data;
+    tbody = d3.select("tbody");
+    tbody.html("");
+    tableData.forEach((well) => 
+    {if(well[0] === selectedOption){
+      let row = tbody.append("tr");
+      Object.values(well.splice(1,7)).forEach((val) => {
+        let cell = row.append("td");
+        cell.text(val);
+      })
+    }})
+
+    // //HIDE CURVES & BUTTONS, SHOW TABLE
+
+    var tableShow = document.getElementById("individualTable");
+    tableShow.style.display = "block"
+
+    var hideCurves = document.getElementById("curves");
+    hideCurves.style.display = ""; //THIS WORKS
+    // hideCurves.style.display = "none"; THIS CAUSES PLOT TO DISPLAYSMALLER THAN IT SHOULD
+    
+     var hideLogButtons = document.getElementById("timeframesLog");
+     hideLogButtons.style.display = "none";
+     var hideLinearButtons = document.getElementById("timeframes");
+     hideLinearButtons.style.display = "none";
+
+    
+  })
 };
 
 
 //LINEAR LISTENERS//
 d3.select("#linear").on('click', function() {Curve(d=0,t='linear');});
-
 d3.select("#Inception").on('click', function() {Curve(d=0,t='linear');});
 d3.select("#Days30").on('click', function() {Curve(d=31,t='linear');});
 d3.select("#Days180").on('click', function() {Curve(d=181,t='linear');});
@@ -159,6 +222,6 @@ d3.select("#Days30Log").on('click', function() {Curve(d=31,t='log');});
 d3.select("#Days180Log").on('click',function() {Curve(d=181,t='log');});
 d3.select("#Days365Log").on('click', function() {Curve(d=366,t='log');});
 
-
-
+//TABLE LISTENERS //
+d3.select("#table").on('click', function() {table()});
 
