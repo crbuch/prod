@@ -33,6 +33,8 @@ function Curve(d,t){
   
   d3.json("./static/allProductionData.json").then((data) =>{ 
     
+    console.log(typeof data[0][1]);
+
     var site_oil = [];
     var site_gas = [];
     var site_water = [];
@@ -92,7 +94,10 @@ function Curve(d,t){
       y: 1
     }
   };
-  Plotly.newPlot("oilDeclineCurve", data, layoutOil, {displayModeBar: true}, {responsive: true});
+
+  var config = {responsive: true}
+  //Plotly.newPlot("oilDeclineCurve", data, layoutOil, {displayModeBar: true}, {responsive: true});
+  Plotly.newPlot("oilDeclineCurve", data, layoutOil, config);
   
   var dataGas = [{
     x: site_date,
@@ -108,7 +113,10 @@ function Curve(d,t){
       rangemode: 'tozero'
     }
   };
-  Plotly.newPlot("gasDeclineCurve", dataGas, layoutGas);
+
+  var config = {responsive: true}
+
+  Plotly.newPlot("gasDeclineCurve", dataGas, layoutGas, config);
   
   var dataWater = [{
     x: site_date,
@@ -123,7 +131,10 @@ function Curve(d,t){
       rangemode: 'tozero'
     }
   };
-  Plotly.newPlot("waterDeclineCurve", dataWater, layoutWater);
+
+  var config = {responsive: true} 
+
+  Plotly.newPlot("waterDeclineCurve", dataWater, layoutWater, config);
 
   if(d===0 && t==='log'){
 
@@ -138,14 +149,6 @@ function Curve(d,t){
 
     var hidetable = document.getElementById("individualTable");
     hidetable.style.display = "none"; 
-    
-
-    
-
-
-
-    
-    
     
 
   }
