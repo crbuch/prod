@@ -53,7 +53,7 @@ function Curve(d,t){
       movingAverage.push(site[8])
     };
   });
-
+  console.log(typeof site_date[0]);
   if (d > 0){
     var site_date = site_date.slice(0,d);
     var site_oil = site_oil.slice(0,d);
