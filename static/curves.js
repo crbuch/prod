@@ -34,6 +34,8 @@ function Curve(d,t){
   d3.json("./static/allProductionData.json").then((data) =>{ 
     
     console.log(typeof data[0][1]);
+    console.log(data[0][1]);
+
 
     var site_oil = [];
     var site_gas = [];
