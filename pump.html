@@ -31,15 +31,22 @@
     <div class="row">
         <div class="col-md-2"></div>
         <div class="col-md-6">
-            <h2>Cumulative Production</h2>
+            <h2>Pump Info</h2>
         <table class="table table-sm table-striped table-bordered table-hover">
             <!-- table-dark -->
           <thead class="thead-dark">
           <tr>
             <th>Well Name</th>
-            <th>Oil (MBBLS)</th>
-            <th>Water (MBBLS)</th>
-            <th>Gas (MMCF)</th>
+            <th>C</th>
+            <th>SPM</th>
+            <th>DH SL</th>
+            <th>Ideal bfpd</th>
+            <th>EPT</th>
+            <th>Est bfpd</th>
+            <th>Pump Eff</th>
+            <th>Pump Depth</th>
+            <th>GFLAP</th>
+            <th style="width:17%">Inc</th>
           </tr>
         </thead>
         <tbody></tbody>
@@ -51,7 +58,7 @@
             <h5>Filter Data Here</h5>
             <ul class="list-group">
                 <li class="list-group-item">
-                    <select id='siteFilter'>
+                    <select id='wellFilter'>
                         <option hidden value="default">Select A Well</option> 
                     </select>
                 </li>
@@ -60,6 +67,6 @@
         </form>
     </div> 
 </div>
-<script src="static/table.js"></script>
+<script src="static/pump.js"></script>
 </body>
 </html>
