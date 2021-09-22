@@ -29,14 +29,28 @@ function Curve(d,t){
   dropdownMenu = d3.select("#siteSelection").node();
   selectedOption = dropdownMenu.value;
   
+  document.getElementById("wellName").innerHTML =  selectedOption //DISPLAY WELL'S NAME
+  //HIDE PUMPING INFO  SINCE THEY WILL BE SHOWING FROM PREVIOUS SELECTION
+  var previousPumpInfo = document.getElementById("pumpInfo")
+  previousPumpInfo.style.display = "none"
+
+  var previousNotPumpingInfo = document.getElementById("notPumpingInfo")
+  previousNotPumpingInfo.style.display = "none"
+
+  // "CLEANING" PUMP INFO TEXT FOR NEXT SELECTION
+  document.getElementById("c").innerHTML =  "";
+  document.getElementById("SPM").innerHTML =  "";
+  document.getElementById("DHSL").innerHTML =  "";
+  document.getElementById("ideal").innerHTML =  "";
+  document.getElementById("pumpEff").innerHTML =  "";
+  document.getElementById("pumpDepth").innerHTML =  "";
+  document.getElementById("GFLAP").innerHTML =  "";
+  document.getElementById("Inc").innerHTML =  "";
+  document.getElementById("notPumping").innerHTML =  "";
+
   console.log(selectedOption);
   
   d3.json("./static/allProductionData.json").then((data) =>{ 
-    
-    console.log(typeof data[0][1]);
-    console.log(data[0][1]);
-
-
     var site_oil = [];
     var site_gas = [];
     var site_water = [];
@@ -53,7 +67,7 @@ function Curve(d,t){
       movingAverage.push(site[8])
     };
   });
-  console.log(typeof site_date[0]);
+  
   if (d > 0){
     var site_date = site_date.slice(0,d);
     var site_oil = site_oil.slice(0,d);
@@ -76,7 +90,7 @@ function Curve(d,t){
     x: site_date,
     y: movingAverage,
     type: "line",
-    name: "7D MA",
+    name: "7 Day Moving Average",
     line:
     {dash: "dot"}
   }; 
@@ -171,9 +185,30 @@ function Curve(d,t){
   }
 })
 
-////// TABLE TO LOG OR TABLE TO LINEAR CAUSES ISSUES // 
-
-    
+d3.json("./static/pumpInfo.json").then((pumpData) => {
+  pumpData.every((pumpingWell) => { 
+    if (Object.values(pumpingWell).includes(selectedOption))
+    {
+      var pumpInfoShow = document.getElementById("pumpInfo")
+      pumpInfoShow.style.display = "block"
+      //SHOW HIDDEN BUTTONS
+      document.getElementById("c").innerHTML =  "C: " + pumpingWell["C"]
+      document.getElementById("SPM").innerHTML =  "SPM: " + pumpingWell["SPM"]
+      document.getElementById("DHSL").innerHTML =  "DH SL: "+ pumpingWell["DH SL"]
+      document.getElementById("ideal").innerHTML =  "Ideal bfpd: " + pumpingWell["Ideal bfpd"]
+      document.getElementById("pumpEff").innerHTML =  "Pump Eff: "+pumpingWell["Pump Eff"] //multiply by 100
+      document.getElementById("pumpDepth").innerHTML =  "Pump Depth: " + pumpingWell["Pump Depth"] 
+      document.getElementById("GFLAP").innerHTML =  "GFLAP: " + pumpingWell["GFLAP"]
+      document.getElementById("Inc").innerHTML =  "Inc: "+ pumpingWell["Inc"]
+    }
+    else //THIS COMPILES FOR THE OTHER 92 ROWS THAT THE VALUE DOES NOT MATCH THE SELECTED OPTION
+    {
+      var notPumpingShow = document.getElementById("notPumpingInfo")
+      notPumpingShow.style.display = "block"
+      document.getElementById("notPumping").innerHTML =  "This well is not pumping"
+    };
+  })
+})
 
 };
 
@@ -213,6 +248,11 @@ function table() {
 };
 
 
+
+
+
+
+
 //LINEAR LISTENERS//
 d3.select("#linear").on('click', function() {Curve(d=0,t='linear');});
 d3.select("#Inception").on('click', function() {Curve(d=0,t='linear');});
@@ -229,4 +269,6 @@ d3.select("#Days365Log").on('click', function() {Curve(d=366,t='log');});
 
 //TABLE LISTENERS //
 d3.select("#table").on('click', function() {table()});
+
+
 

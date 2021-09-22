@@ -38,18 +38,20 @@
         <option hidden value="default">Select A Well</option>
       </select>
     </div>
-    <div class="col-md-2">
+    <div class="col-md-10">
       <button id="linear" type="button" class="btn btn-info active" aria-pressed="true">Linear</button>
       <button id="logarithmic" type="button" class="btn btn-outline-info">Logarithmic</button>
       <button id="table" type="button" class="btn btn-danger">Table</button>
     </div>
-    <div class="col-md-4">
-      <div class="col text-center">
-        <div id="timeframes" class="btn-group" role="group" aria-label="Basic mixed styles example">
-          <button id="Inception" type="button" class="btn btn-info active">Inception</button>
-          <button id="Days365" type="button" class="btn btn-info">365 Days</button>
-          <button id="Days180" type="button" class="btn btn-info">180 Days</button>
-          <button id="Days30" type="button" class="btn btn-info">30 Days</button>
+    
+      <div class="col-md-12">
+        <div class="col text-center">
+          <div id="timeframes" class="btn-group" role="group" aria-label="Basic mixed styles example">
+            <button id="Inception" type="button" class="btn btn-info active">Inception</button>
+            <button id="Days365" type="button" class="btn btn-info">365 Days</button>
+            <button id="Days180" type="button" class="btn btn-info">180 Days</button>
+            <button id="Days30" type="button" class="btn btn-info">30 Days</button>
+        
         </div>
       </div>
     </div>
@@ -67,6 +69,27 @@
 </div>
 
 <div class="container-fluid">
+  <div class="row">
+    <div class="col-md-12"><h2 id="wellName"></h2></div>
+    <div class="col-md-12">
+      <div id="pumpInfo" class="col text-center" style="display: none;">
+        <button type="button" id="c" class="btn btn-secondary"></button>
+        <button type="button" id="SPM" class="btn btn-secondary"></button>
+        <button type="button" id="DHSL" class="btn btn-secondary"></button>
+        <button type="button" id="ideal" class="btn btn-secondary"></button>
+        <button type="button" id="pumpEff" class="btn btn-secondary"></button>
+        <button type="button" id="pumpDepth" class="btn btn-dark"></button>
+        <button type="button" id="GFLAP" class="btn btn-dark"></button>
+        <button type="button" id="Inc" class="btn btn-dark"></button>
+      </div>
+    </div>
+    <div class="col-md-12">
+      <div id="notPumpingInfo" class="col text-center" style="display: none;">
+        <button type="button" id="notPumping" class="btn btn-secondary"></button>
+      </div>
+    </div>
+  </div>
+  
   <div class="row">
     <div class="col-md-2"></div>
   <div id="individualTable" class="col-md-7" style="display: none;">
