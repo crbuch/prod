@@ -186,30 +186,31 @@ function Curve(d,t){
 })
 
 d3.json("./static/pumpInfo.json").then((pumpData) => {
-  pumpData.every((pumpingWell) => { 
-    if (Object.values(pumpingWell).includes(selectedOption))
-    {
-      var pumpInfoShow = document.getElementById("pumpInfo")
-      pumpInfoShow.style.display = "block"
-      //SHOW HIDDEN BUTTONS
-      document.getElementById("c").innerHTML =  "C: " + pumpingWell["C"]
-      document.getElementById("SPM").innerHTML =  "SPM: " + pumpingWell["SPM"]
-      document.getElementById("DHSL").innerHTML =  "DH SL: "+ pumpingWell["DH SL"]
-      document.getElementById("ideal").innerHTML =  "Ideal bfpd: " + pumpingWell["Ideal bfpd"]
-      document.getElementById("pumpEff").innerHTML =  "Pump Eff: "+pumpingWell["Pump Eff"] //multiply by 100
-      document.getElementById("pumpDepth").innerHTML =  "Pump Depth: " + pumpingWell["Pump Depth"] 
-      document.getElementById("GFLAP").innerHTML =  "GFLAP: " + pumpingWell["GFLAP"]
-      document.getElementById("Inc").innerHTML =  "Inc: "+ pumpingWell["Inc"]
-    }
-    else //THIS COMPILES FOR THE OTHER 92 ROWS THAT THE VALUE DOES NOT MATCH THE SELECTED OPTION
-    {
-      var notPumpingShow = document.getElementById("notPumpingInfo")
-      notPumpingShow.style.display = "block"
-      document.getElementById("notPumping").innerHTML =  "This well is not pumping"
-    };
+  var pumpingInfoToShow = {"Well Name": "doesn't exist because it is not pumping"};
+  pumpData.forEach((pumpingWell) => {
+if(pumpingWell["Well Name"].includes(selectedOption)){
+  pumpingInfoToShow = pumpingWell;
+}
   })
+  if(pumpingInfoToShow["Well Name"].includes(selectedOption)){
+    var pumpInfoShow = document.getElementById("pumpInfo")
+        pumpInfoShow.style.display = "block"
+        //SHOW HIDDEN BUTTONS
+        document.getElementById("c").innerHTML =  "C: " + pumpingInfoToShow["C"]
+        document.getElementById("SPM").innerHTML =  "SPM: " + pumpingInfoToShow["SPM"]
+        document.getElementById("DHSL").innerHTML =  "DH SL: "+ pumpingInfoToShow["DH SL"]
+        document.getElementById("ideal").innerHTML =  "Ideal bfpd: " + pumpingInfoToShow["Ideal bfpd"]
+        document.getElementById("pumpEff").innerHTML =  "Pump Eff: "+ pumpingInfoToShow["Pump Eff"] //multiply by 100
+        document.getElementById("pumpDepth").innerHTML =  "Pump Depth: " + pumpingInfoToShow["Pump Depth"] 
+        document.getElementById("GFLAP").innerHTML =  "GFLAP: " + pumpingInfoToShow["GFLAP"]
+        document.getElementById("Inc").innerHTML =  "Inc: "+ pumpingInfoToShow["Inc"]
+  }
+  else {
+  var notPumpingShow = document.getElementById("notPumpingInfo")
+        notPumpingShow.style.display = "block"
+        document.getElementById("notPumping").innerHTML =  "This well is not pumping"
+}
 })
-
 };
 
 function table() {
