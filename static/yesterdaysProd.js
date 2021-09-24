@@ -7,8 +7,9 @@ d3.json("./static/allProductionData.json").then((data) => {
    tbody.html(""); //clear table
    var filteredData = tableData.filter(row => row[1] == yesterdaysDate); //FILTER DATA BASED ON MOST RECENT DATE
    var dataForTable = [];
+   console.log(filteredData[0]);
    filteredData.forEach(well => {
-    dataForTable.push(Array(well[0],well[2],well[3],well[4],well[7]))
+    dataForTable.push(Array(well[0],well[2],well[3],well[4],well[5],well[7]))
    });
    dataForTable.forEach((well) => {
      let row = tbody.append("tr");
