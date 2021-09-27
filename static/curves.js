@@ -190,9 +190,11 @@ d3.json("./static/pumpInfo.json").then((pumpData) => {
   pumpData.forEach((pumpingWell) => {
 if(pumpingWell["Well Name"].includes(selectedOption)){
   pumpingInfoToShow = pumpingWell;
+  console.log(pumpingInfoToShow);
+  console.log(typeof pumpingInfoToShow["SPM"]);
 }
-  })
-  if(pumpingInfoToShow["Well Name"].includes(selectedOption)){
+  }) // 
+  if(pumpingInfoToShow["Well Name"].includes(selectedOption) && pumpingInfoToShow["SPM"] !== 0){
     var pumpInfoShow = document.getElementById("pumpInfo")
         pumpInfoShow.style.display = "block"
         //SHOW HIDDEN BUTTONS
