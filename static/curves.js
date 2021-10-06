@@ -153,6 +153,7 @@ function Curve(d,t){
   Plotly.newPlot("waterDeclineCurve", dataWater, layoutWater, config);
 
   if(d===0 && t==='log'){
+    console.log("what is this?")
 
     var showCurves = document.getElementById("curves"); // CURVES IS INITIALLY DISPLAYED AS LINEAR? 
     showCurves.style.display = ""
