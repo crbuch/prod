@@ -60,8 +60,7 @@ function Curve(d,t){
     console.log(data[0]);
 
     data.forEach((site) => {if(site[0] === selectedOption){
-     // site_date.push(site[9]);
-      site_date.push(site[11]);
+     site_date.push(site[9]);
       site_oil.push(site[2]);
       site_gas.push(site[3]);
       site_water.push(site[4]);
