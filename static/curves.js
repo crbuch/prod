@@ -57,9 +57,11 @@ function Curve(d,t){
     var site_date = [];
     var comments = [];
     var movingAverage = [];
+    console.log(data[0]);
 
     data.forEach((site) => {if(site[0] === selectedOption){
-      site_date.push(site[9]);
+     // site_date.push(site[9]);
+      site_date.push(site[11]);
       site_oil.push(site[2]);
       site_gas.push(site[3]);
       site_water.push(site[4]);
@@ -67,7 +69,7 @@ function Curve(d,t){
       movingAverage.push(site[8])
     };
   });
-  
+ // console.log(site_date);
   if (d > 0){
     var site_date = site_date.slice(0,d);
     var site_oil = site_oil.slice(0,d);
