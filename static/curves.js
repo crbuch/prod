@@ -7,10 +7,11 @@ async function getOilPrice() {
   return data;
 }
 
-getOilPrice().then(data=> document.getElementById("WTIOIL").innerHTML = "🛢️ WTI: $" + (1/data.data.rates.WTIOIL).toFixed(2)
+getOilPrice().then(data=> //document.getElementById("WTIOIL").innerHTML = "🛢️ WTI: $" + (1/data.data.rates.WTIOIL).toFixed(2)
   
   
   //console.log(1/data.data.rates.WTIOIL)
+  console.log(data)
 
 );
 
@@ -40,7 +41,7 @@ d3.select("#siteSelection").on('change', function() {Curve(d=0,t='linear');}); /
 
 
 
-//FUNCTION FOR LINEAR SCALE//
+//FUNCTION FOR CURVES//
 function Curve(d,t){
 
   dropdownMenu = d3.select("#siteSelection").node();
@@ -202,6 +203,19 @@ function Curve(d,t){
     
     
   }
+})
+
+d3.json("./static/cumProd.json").then((cumData) => {
+  var selectedWellCum = 0;
+  cumData.forEach(wellCum=> {
+    if(selectedOption ===  wellCum[0]){
+      selectedWellCum = wellCum[1]
+      console.log(selectedWellCum)
+
+    }
+  })
+  document.getElementById("cumCurve").innerHTML = "Cum: "+ selectedWellCum + " MBBLS"
+  console.log(cumData[0])
 })
 
 d3.json("./static/pumpInfo.json").then((pumpData) => {
