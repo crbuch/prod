@@ -1,3 +1,20 @@
+async function getOilPrice() {
+  var token = config.MY_API_TOKEN;
+  
+
+  let response = await fetch('https://commodities-api.com/api/latest?access_key='+token+'&base=USD&symbols=WTIOIL');
+  let data = await response.json()
+  return data;
+}
+
+getOilPrice().then(data=> document.getElementById("WTIOIL").innerHTML = "WTI: $" + (1/data.data.rates.WTIOIL).toFixed(2)
+  
+  
+  //console.log(1/data.data.rates.WTIOIL)
+
+);
+
+
 // FUNCTON TO CREATE WELL OPTIONS DROP DOWN
 function createDropdownOptions() {
   var partnerSelector = d3.select("#siteSelection"); //SELECT <select> WHERE PARTNER NAMES WILL APPEAR
