@@ -7,7 +7,7 @@ async function getOilPrice() {
   return data;
 }
 
-getOilPrice().then(data=> document.getElementById("WTIOIL").innerHTML = "WTI: $" + (1/data.data.rates.WTIOIL).toFixed(2)
+getOilPrice().then(data=> document.getElementById("WTIOIL").innerHTML = "🛢️ WTI: $" + (1/data.data.rates.WTIOIL).toFixed(2)
   
   
   //console.log(1/data.data.rates.WTIOIL)
@@ -74,7 +74,7 @@ function Curve(d,t){
     var site_date = [];
     var comments = [];
     var movingAverage = [];
-    console.log(data[0]);
+    //console.log(data[0]);
 
     data.forEach((site) => {if(site[0] === selectedOption){
      site_date.push(site[9]);
@@ -171,7 +171,7 @@ function Curve(d,t){
   Plotly.newPlot("waterDeclineCurve", dataWater, layoutWater, config);
 
   if(d===0 && t==='log'){
-    console.log("what is this?")
+   // console.log("what is this?")
 
     var showCurves = document.getElementById("curves"); // CURVES IS INITIALLY DISPLAYED AS LINEAR? 
     showCurves.style.display = ""
@@ -209,8 +209,8 @@ d3.json("./static/pumpInfo.json").then((pumpData) => {
   pumpData.forEach((pumpingWell) => {
 if(pumpingWell["Well Name"].includes(selectedOption)){
   pumpingInfoToShow = pumpingWell;
-  console.log(pumpingInfoToShow);
-  console.log(typeof pumpingInfoToShow["SPM"]);
+  //console.log(pumpingInfoToShow);
+  //console.log(typeof pumpingInfoToShow["SPM"]);
 }
   }) // 
   if(pumpingInfoToShow["Well Name"].includes(selectedOption) && pumpingInfoToShow["SPM"] !== 0){
