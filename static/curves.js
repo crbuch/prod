@@ -1,20 +1,38 @@
-async function getOilPrice() {
-  var token = config.MY_API_TOKEN;
+//RAN OUT OF CALLS FOR THIS API//
+// async function getOilPrice() {
+//   var token = config.MY_API_TOKEN;
   
 
-  let response = await fetch('https://commodities-api.com/api/latest?access_key='+token+'&base=USD&symbols=WTIOIL');
-  let data = await response.json()
-  return data;
-}
+//   let response = await fetch('https://commodities-api.com/api/latest?access_key='+token+'&base=USD&symbols=WTIOIL');
+//   let data = await response.json()
+//   return data;
+// }
 
-getOilPrice().then(data=> //document.getElementById("WTIOIL").innerHTML = "🛢️ WTI: $" + (1/data.data.rates.WTIOIL).toFixed(2)
+// getOilPrice().then(data=> //document.getElementById("WTIOIL").innerHTML = "🛢️ WTI: $" + (1/data.data.rates.WTIOIL).toFixed(2)
   
   
-  //console.log(1/data.data.rates.WTIOIL)
-  console.log(data)
+//   //console.log(1/data.data.rates.WTIOIL)
+//   console.log(data)
 
-);
+// );
 
+//END OF RAN OUT OF CALLS FOR THIS API//
+
+
+// var settings = {
+//   async: true,
+//   crossDomain: true,
+//   url: "https://api.commoprices.com/v2/open",
+//   method: "GET",
+//   headers: {
+//     authorization: "bSnsjvxaFzUpAgz5cmPWSgwU0AsFnmBiWITy4VcKof77hYRCmxO16w0EMMsr",
+//     accept: "application/json"
+//   }
+// };
+
+// $.ajax(settings).done(function(response) {
+//   console.log(response);
+// });
 
 // FUNCTON TO CREATE WELL OPTIONS DROP DOWN
 function createDropdownOptions() {
