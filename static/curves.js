@@ -2,7 +2,7 @@
 function createDropdownOptions() {
   var partnerSelector = d3.select("#siteSelection"); //SELECT <select> WHERE PARTNER NAMES WILL APPEAR
   d3.json("./static/allProductionData.json").then((allData) => { //READ IN JSON FILE COINTAING ALL PARTNER'S NAMES
-    console.log(allData[0])
+    //console.log(allData[0])
     repeatedWells = [] //EMPTY ARRAY TO CONTAIN ALL PARTNER'S NAME (REPEATED)
     allData.forEach((row) => { //LOOP THROUGH NET_INTEREST FILE
     repeatedWells.push(row[0]) //PUSH ALL PARTNER'S NAME TO LIST 
@@ -155,6 +155,8 @@ function Curve(d,t){
 
   Plotly.newPlot("waterDeclineCurve", dataWater, layoutWater, config);
 
+  document.getElementById("siteSelection").focus();
+
   if(d===0 && t==='log'){
    // console.log("what is this?")
 
@@ -169,6 +171,8 @@ function Curve(d,t){
 
     var hidetable = document.getElementById("individualTable");
     hidetable.style.display = "none"; 
+
+    
     
 
   }
@@ -184,9 +188,12 @@ function Curve(d,t){
 
     var hidetable = document.getElementById("individualTable");
     hidetable.style.display = "none";
+
+    
     
     
   }
+  
 })
 
 d3.json("./static/cumProd.json").then((cumData) => {
