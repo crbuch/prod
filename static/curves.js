@@ -103,7 +103,8 @@ function Curve(d,t){
     title: "Oil (BOPD) vs Time",
     yaxis: {
       type: t,
-      rangemode: 'tozero'
+      rangemode: 'tozero',
+      
       // autorange: true
     },
     legend: {
