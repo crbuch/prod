@@ -1,43 +1,8 @@
-//RAN OUT OF CALLS FOR THIS API//
-// async function getOilPrice() {
-//   var token = config.MY_API_TOKEN;
-  
-
-//   let response = await fetch('https://commodities-api.com/api/latest?access_key='+token+'&base=USD&symbols=WTIOIL');
-//   let data = await response.json()
-//   return data;
-// }
-
-// getOilPrice().then(data=> //document.getElementById("WTIOIL").innerHTML = "🛢️ WTI: $" + (1/data.data.rates.WTIOIL).toFixed(2)
-  
-  
-//   //console.log(1/data.data.rates.WTIOIL)
-//   console.log(data)
-
-// );
-
-//END OF RAN OUT OF CALLS FOR THIS API//
-
-
-// var settings = {
-//   async: true,
-//   crossDomain: true,
-//   url: "https://api.commoprices.com/v2/open",
-//   method: "GET",
-//   headers: {
-//     authorization: "bSnsjvxaFzUpAgz5cmPWSgwU0AsFnmBiWITy4VcKof77hYRCmxO16w0EMMsr",
-//     accept: "application/json"
-//   }
-// };
-
-// $.ajax(settings).done(function(response) {
-//   console.log(response);
-// });
-
 // FUNCTON TO CREATE WELL OPTIONS DROP DOWN
 function createDropdownOptions() {
   var partnerSelector = d3.select("#siteSelection"); //SELECT <select> WHERE PARTNER NAMES WILL APPEAR
   d3.json("./static/allProductionData.json").then((allData) => { //READ IN JSON FILE COINTAING ALL PARTNER'S NAMES
+    console.log(allData[0])
     repeatedWells = [] //EMPTY ARRAY TO CONTAIN ALL PARTNER'S NAME (REPEATED)
     allData.forEach((row) => { //LOOP THROUGH NET_INTEREST FILE
     repeatedWells.push(row[0]) //PUSH ALL PARTNER'S NAME TO LIST 
@@ -127,7 +92,7 @@ function Curve(d,t){
     x: site_date,
     y: movingAverage,
     type: "line",
-    name: "7 Day Moving Average",
+    name: "7 Day Avg",
     line:
     {dash: "dot"}
   }; 
@@ -144,12 +109,12 @@ function Curve(d,t){
     legend: {
       x: 1,
       xanchor: 'right',
-      y: 1
+      y: 1.2
     }
   };
 
-  var config = {responsive: true}
-  //Plotly.newPlot("oilDeclineCurve", data, layoutOil, {displayModeBar: true}, {responsive: true});
+  var config = { modeBarButtonsToRemove: ['sendDataToCloud', 'autoScale2d', 'hoverClosestCartesian', 'hoverCompareCartesian', 'lasso2d', 'select2d', 'zoom2d', 'zoomIn2d', 'zoomOut2d', 'toggleSpikelines'], displaylogo: false, responsive: true }; 
+
   Plotly.newPlot("oilDeclineCurve", data, layoutOil, config);
   
   var dataGas = [{
@@ -167,7 +132,7 @@ function Curve(d,t){
     }
   };
 
-  var config = {responsive: true}
+  var config = { modeBarButtonsToRemove: ['sendDataToCloud', 'autoScale2d', 'hoverClosestCartesian', 'hoverCompareCartesian', 'lasso2d', 'select2d', 'zoom2d', 'zoomIn2d', 'zoomOut2d', 'toggleSpikelines'], displaylogo: false, responsive: true };
 
   Plotly.newPlot("gasDeclineCurve", dataGas, layoutGas, config);
   
@@ -185,7 +150,7 @@ function Curve(d,t){
     }
   };
 
-  var config = {responsive: true} 
+  var config = { modeBarButtonsToRemove: ['sendDataToCloud', 'autoScale2d', 'hoverClosestCartesian', 'hoverCompareCartesian', 'lasso2d', 'select2d', 'zoom2d', 'zoomIn2d', 'zoomOut2d', 'toggleSpikelines'], displaylogo: false, responsive: true };
 
   Plotly.newPlot("waterDeclineCurve", dataWater, layoutWater, config);
 
