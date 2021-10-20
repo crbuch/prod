@@ -109,7 +109,7 @@ function Curve(d,t){
     legend: {
       x: 1,
       xanchor: 'right',
-      y: 1.05
+      y: 1.1
     }
   };
 
