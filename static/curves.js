@@ -58,7 +58,6 @@ function Curve(d,t){
     var site_date = [];
     var comments = [];
     var movingAverage = [];
-    //console.log(data[0]);
 
     data.forEach((site) => {if(site[0] === selectedOption){
      site_date.push(site[9]);
@@ -69,7 +68,7 @@ function Curve(d,t){
       movingAverage.push(site[8])
     };
   });
- // console.log(site_date);
+  
   if (d > 0){
     var site_date = site_date.slice(0,d);
     var site_oil = site_oil.slice(0,d);
@@ -103,8 +102,7 @@ function Curve(d,t){
     title: "Oil (BOPD) vs Time",
     yaxis: {
       type: t,
-      rangemode: 'tozero',
-      
+      rangemode: 'tozero'
       // autorange: true
     },
     legend: {
@@ -158,7 +156,6 @@ function Curve(d,t){
   document.getElementById("siteSelection").focus();
 
   if(d===0 && t==='log'){
-   // console.log("what is this?")
 
     var showCurves = document.getElementById("curves"); // CURVES IS INITIALLY DISPLAYED AS LINEAR? 
     showCurves.style.display = ""
@@ -171,8 +168,6 @@ function Curve(d,t){
 
     var hidetable = document.getElementById("individualTable");
     hidetable.style.display = "none"; 
-
-    
     
 
   }
@@ -188,10 +183,6 @@ function Curve(d,t){
 
     var hidetable = document.getElementById("individualTable");
     hidetable.style.display = "none";
-
-    
-    
-    
   }
   
 })
