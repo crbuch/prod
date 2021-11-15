@@ -4,7 +4,7 @@ async function getOilPrice() {
   console.log(token);
   let response = await fetch('https://commodities-api.com/api/latest?access_key='+token+'&base=USD&symbols=WTIOIL');
   let data = await response.json()
-  console.log(data);
+ // console.log(data);
   return data;
 }
 console.log(1/data.data.rates.WTIOIL)
