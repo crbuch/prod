@@ -1,5 +1,11 @@
 #individualTable td:nth-child(1) {
         font-weight: 600;
+        
+}
+
+#individualTable  {
+        display: none;
+        
 }
 
 
