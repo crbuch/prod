@@ -20,7 +20,7 @@ d3.json("./static/analyze.json").then((data) => {
   $(document).ready(function() { 
     $("tr td:nth-child(1)").each(function () { //ADD LINK TO THE FIRST CHILD OF EVERY TD, SO THE NAME OF THE WELL
       $(this).html('<a href="https://cmlexploration.github.io/STprod/curves.html">' + $(this).text() + '</a>');
-      
+     // $(this).html('<a href="http://127.0.0.1:5502/curves.html">' + $(this).text() + '</a>');
       $(this).click(function() {
        // localStorage.setItem('siteSelection', $(this).text())
        sessionStorage.setItem('siteSelection', $(this).text())

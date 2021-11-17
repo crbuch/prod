@@ -237,9 +237,6 @@ if(pumpingWell["Well Name"].includes(selectedOption)){
 }
 })
 };
-
-
-//sessionStorage.removeItem("siteSelection");//REMOVE ITEM FROM LOCAL STORAGE SO CURVE DOESNT POPULATE ON ITS OWN
 }
 console.log(sessionStorage.getItem("siteSelection"))
 // LISTENER FOR PAGE TO LOAD TO CREATE CURVE FROM ANALYZE TABLE
@@ -248,27 +245,11 @@ $( window ).on( "load", ClickedFromAnalyze );
 
 //FUNCTION FOR CURVES//
 function Curve(d,t){
-
-  $(document).ready(function() {
-    // $("#siteSelection").change(sessionStorage.removeItem("siteSelection")); //SHOW WELL IS NOT PUMPING BUTTON
-     $("#siteSelection").change(sessionStorage.clear()); //SHOW WELL IS NOT PUMPING BUTTON
-   });
-   //if storage is not null then clickedFromAnalyzed = sessionStorage.getItem("siteSelection")
-
-  dropdownMenu = d3.select("#siteSelection").node();
- //var clickedFromAnalyzed = sessionStorage.getItem("siteSelection") //HERE IS THE ISSUE?
- //console.log(clickedFromAnalyzed, "hello")
- //console.log("TEST", sessionStorage.getItem("siteSelection"))
-
- d3.select("#siteSelection").on('change', sessionStorage.removeItem("siteSelection"));//REMOVE ITEM FROM LOCAL STORAGE SO CURVE DOESNT POPULATE ON ITS OWN)
- var clickedFromAnalyzed = sessionStorage.getItem("siteSelection") //HERE IS THE ISSUE?
-  //only clears after 2nd change
-
- // listener to clear storage if the select is clicked //
-  if(clickedFromAnalyzed == null){
-
+//CLEAR STORED VALUES
+ sessionStorage.removeItem("siteSelection")
     var dropdownMenu = d3.select("#siteSelection").node();
-    selectedOption = dropdownMenu.value;
+    var selectedOption = dropdownMenu.value;
+  
   
     document.getElementById("wellName").innerHTML =  selectedOption //DISPLAY WELL'S NAME
     //HIDE PUMPING INFO  SINCE THEY WILL BE SHOWING FROM PREVIOUS SELECTION
@@ -467,210 +448,210 @@ function Curve(d,t){
   }
   })
 
-  }
-  else{
-    selectedOption = clickedFromAnalyzed;
-  //var dropdownMenu = d3.select("#siteSelection").node(); THIS SHOULD REPLACE  selectedOption = clickedFromAnalyzed; - ROW BEFORE 
-  //selectedOption = dropdownMenu.value;
+  //}
+//   else{
+//     selectedOption = clickedFromAnalyzed;
+//   //var dropdownMenu = d3.select("#siteSelection").node(); THIS SHOULD REPLACE  selectedOption = clickedFromAnalyzed; - ROW BEFORE 
+//   //selectedOption = dropdownMenu.value;
   
-  document.getElementById("wellName").innerHTML =  selectedOption //DISPLAY WELL'S NAME
-  //HIDE PUMPING INFO  SINCE THEY WILL BE SHOWING FROM PREVIOUS SELECTION
-  var previousPumpInfo = document.getElementById("pumpInfo");
+//   document.getElementById("wellName").innerHTML =  selectedOption //DISPLAY WELL'S NAME
+//   //HIDE PUMPING INFO  SINCE THEY WILL BE SHOWING FROM PREVIOUS SELECTION
+//   var previousPumpInfo = document.getElementById("pumpInfo");
 
-  previousPumpInfo.style.display = "none"
+//   previousPumpInfo.style.display = "none"
 
-  var previousNotPumpingInfo = document.getElementById("notPumpingInfo")
-  previousNotPumpingInfo.style.display = "none"
+//   var previousNotPumpingInfo = document.getElementById("notPumpingInfo")
+//   previousNotPumpingInfo.style.display = "none"
 
-  // "CLEANING" PUMP INFO TEXT FOR NEXT SELECTION
-  document.getElementById("c").innerHTML =  "";
-  document.getElementById("SPM").innerHTML =  "";
-  document.getElementById("DHSL").innerHTML =  "";
-  document.getElementById("ideal").innerHTML =  "";
-  document.getElementById("pumpEff").innerHTML =  "";
-  document.getElementById("pumpDepth").innerHTML =  "";
-  document.getElementById("GFLAP").innerHTML =  "";
-  document.getElementById("Inc").innerHTML =  "";
-  document.getElementById("notPumping").innerHTML =  "";
+//   // "CLEANING" PUMP INFO TEXT FOR NEXT SELECTION
+//   document.getElementById("c").innerHTML =  "";
+//   document.getElementById("SPM").innerHTML =  "";
+//   document.getElementById("DHSL").innerHTML =  "";
+//   document.getElementById("ideal").innerHTML =  "";
+//   document.getElementById("pumpEff").innerHTML =  "";
+//   document.getElementById("pumpDepth").innerHTML =  "";
+//   document.getElementById("GFLAP").innerHTML =  "";
+//   document.getElementById("Inc").innerHTML =  "";
+//   document.getElementById("notPumping").innerHTML =  "";
 
-  console.log(selectedOption);
+//   console.log(selectedOption);
   
-  d3.json("./static/allProductionData.json").then((data) =>{ 
-    var site_oil = [];
-    var site_gas = [];
-    var site_water = [];
-    var site_date = [];
-    var comments = [];
-    var movingAverage = [];
+//   d3.json("./static/allProductionData.json").then((data) =>{ 
+//     var site_oil = [];
+//     var site_gas = [];
+//     var site_water = [];
+//     var site_date = [];
+//     var comments = [];
+//     var movingAverage = [];
 
-    data.forEach((site) => {if(site[0] === selectedOption){
-     site_date.push(site[9]);
-      site_oil.push(site[2]);
-      site_gas.push(site[3]);
-      site_water.push(site[4]);
-      comments.push(site[7]);
-      movingAverage.push(site[8])
-    };
-  });
+//     data.forEach((site) => {if(site[0] === selectedOption){
+//      site_date.push(site[9]);
+//       site_oil.push(site[2]);
+//       site_gas.push(site[3]);
+//       site_water.push(site[4]);
+//       comments.push(site[7]);
+//       movingAverage.push(site[8])
+//     };
+//   });
   
-  if (d > 0){
-    var site_date = site_date.slice(0,d);
-    var site_oil = site_oil.slice(0,d);
-    var site_gas = site_gas.slice(0,d);
-    var site_water = site_water.slice(0,d);
-    var comments = comments.slice(0,d);
-    var movingAverage = movingAverage.slice(0,d);
-  }
+//   if (d > 0){
+//     var site_date = site_date.slice(0,d);
+//     var site_oil = site_oil.slice(0,d);
+//     var site_gas = site_gas.slice(0,d);
+//     var site_water = site_water.slice(0,d);
+//     var comments = comments.slice(0,d);
+//     var movingAverage = movingAverage.slice(0,d);
+//   }
 
-  var dataOil = {
-    x: site_date,
-    y: site_oil,
-    text: comments,
-    name: "Oil",
-    line:
-    {color: "green"}
-  };
+//   var dataOil = {
+//     x: site_date,
+//     y: site_oil,
+//     text: comments,
+//     name: "Oil",
+//     line:
+//     {color: "green"}
+//   };
 
-  var dataMoving = {
-    x: site_date,
-    y: movingAverage,
-    type: "line",
-    name: "7 Day Avg",
-    line:
-    {dash: "dot"}
-  }; 
+//   var dataMoving = {
+//     x: site_date,
+//     y: movingAverage,
+//     type: "line",
+//     name: "7 Day Avg",
+//     line:
+//     {dash: "dot"}
+//   }; 
 
-  var data = [dataOil, dataMoving];
+//   var data = [dataOil, dataMoving];
 
-  var layoutOil = {
-    title: "Oil (BOPD) vs Time",
-    yaxis: {
-      type: t,
-      rangemode: 'tozero'
-      // autorange: true
-    },
-    legend: {
-      x: 1,
-      xanchor: 'right',
-      y: 1.2
-    }
-  };
+//   var layoutOil = {
+//     title: "Oil (BOPD) vs Time",
+//     yaxis: {
+//       type: t,
+//       rangemode: 'tozero'
+//       // autorange: true
+//     },
+//     legend: {
+//       x: 1,
+//       xanchor: 'right',
+//       y: 1.2
+//     }
+//   };
 
-  var config = { modeBarButtonsToRemove: ['sendDataToCloud', 'autoScale2d', 'hoverClosestCartesian', 'hoverCompareCartesian', 'lasso2d', 'select2d', 'zoom2d', 'zoomIn2d', 'zoomOut2d', 'toggleSpikelines'], displaylogo: false, responsive: true }; 
+//   var config = { modeBarButtonsToRemove: ['sendDataToCloud', 'autoScale2d', 'hoverClosestCartesian', 'hoverCompareCartesian', 'lasso2d', 'select2d', 'zoom2d', 'zoomIn2d', 'zoomOut2d', 'toggleSpikelines'], displaylogo: false, responsive: true }; 
 
-  Plotly.newPlot("oilDeclineCurve", data, layoutOil, config);
+//   Plotly.newPlot("oilDeclineCurve", data, layoutOil, config);
   
-  var dataGas = [{
-    x: site_date,
-    y: site_gas,
-    text: comments,
-    line:
-    {color: "red"}
-  }];
-  var layoutGas = {
-    title: "Gas (MCFD) vs Time",
-    yaxis: {
-      type: t,
-      rangemode: 'tozero'
-    }
-  };
+//   var dataGas = [{
+//     x: site_date,
+//     y: site_gas,
+//     text: comments,
+//     line:
+//     {color: "red"}
+//   }];
+//   var layoutGas = {
+//     title: "Gas (MCFD) vs Time",
+//     yaxis: {
+//       type: t,
+//       rangemode: 'tozero'
+//     }
+//   };
 
-  var config = { modeBarButtonsToRemove: ['sendDataToCloud', 'autoScale2d', 'hoverClosestCartesian', 'hoverCompareCartesian', 'lasso2d', 'select2d', 'zoom2d', 'zoomIn2d', 'zoomOut2d', 'toggleSpikelines'], displaylogo: false, responsive: true };
+//   var config = { modeBarButtonsToRemove: ['sendDataToCloud', 'autoScale2d', 'hoverClosestCartesian', 'hoverCompareCartesian', 'lasso2d', 'select2d', 'zoom2d', 'zoomIn2d', 'zoomOut2d', 'toggleSpikelines'], displaylogo: false, responsive: true };
 
-  Plotly.newPlot("gasDeclineCurve", dataGas, layoutGas, config);
+//   Plotly.newPlot("gasDeclineCurve", dataGas, layoutGas, config);
   
-  var dataWater = [{
-    x: site_date,
-    y: site_water,
-    text: comments,
-    type: "line"
-  }];
-  var layoutWater = {
-    title: "Water (BWPD) vs Time",
-    yaxis: {
-      type: t,
-      rangemode: 'tozero'
-    }
-  };
+//   var dataWater = [{
+//     x: site_date,
+//     y: site_water,
+//     text: comments,
+//     type: "line"
+//   }];
+//   var layoutWater = {
+//     title: "Water (BWPD) vs Time",
+//     yaxis: {
+//       type: t,
+//       rangemode: 'tozero'
+//     }
+//   };
 
-  var config = { modeBarButtonsToRemove: ['sendDataToCloud', 'autoScale2d', 'hoverClosestCartesian', 'hoverCompareCartesian', 'lasso2d', 'select2d', 'zoom2d', 'zoomIn2d', 'zoomOut2d', 'toggleSpikelines'], displaylogo: false, responsive: true };
+//   var config = { modeBarButtonsToRemove: ['sendDataToCloud', 'autoScale2d', 'hoverClosestCartesian', 'hoverCompareCartesian', 'lasso2d', 'select2d', 'zoom2d', 'zoomIn2d', 'zoomOut2d', 'toggleSpikelines'], displaylogo: false, responsive: true };
 
-  Plotly.newPlot("waterDeclineCurve", dataWater, layoutWater, config);
+//   Plotly.newPlot("waterDeclineCurve", dataWater, layoutWater, config);
 
-  if(d===0 && t==='log'){
+//   if(d===0 && t==='log'){
 
-    var showCurves = document.getElementById("curves"); // CURVES IS INITIALLY DISPLAYED AS LINEAR? 
-    showCurves.style.display = ""
+//     var showCurves = document.getElementById("curves"); // CURVES IS INITIALLY DISPLAYED AS LINEAR? 
+//     showCurves.style.display = ""
 
-    var hideLinear = document.getElementById("timeframes");
-    hideLinear.style.display = "none";
+//     var hideLinear = document.getElementById("timeframes");
+//     hideLinear.style.display = "none";
 
-    var showLog = document.getElementById("timeframesLog");
-    showLog.style.display = "";
+//     var showLog = document.getElementById("timeframesLog");
+//     showLog.style.display = "";
 
-    var hidetable = document.getElementById("individualTable");
-    hidetable.style.display = "none"; 
-  }
-  else if(d===0 && t==='linear'){
-    var hideLog = document.getElementById("timeframesLog");
-    hideLog.style.display = "none";
+//     var hidetable = document.getElementById("individualTable");
+//     hidetable.style.display = "none"; 
+//   }
+//   else if(d===0 && t==='linear'){
+//     var hideLog = document.getElementById("timeframesLog");
+//     hideLog.style.display = "none";
 
-    var showLinear = document.getElementById("timeframes");
-    showLinear.style.display = "";
+//     var showLinear = document.getElementById("timeframes");
+//     showLinear.style.display = "";
 
-    var showCurves = document.getElementById("curves"); // CURVES IS INITIALLY DISPLAYED AS LINEAR?
-    showCurves.style.display = ""
+//     var showCurves = document.getElementById("curves"); // CURVES IS INITIALLY DISPLAYED AS LINEAR?
+//     showCurves.style.display = ""
 
-    var hidetable = document.getElementById("individualTable");
-    hidetable.style.display = "none";
-  }
-})
+//     var hidetable = document.getElementById("individualTable");
+//     hidetable.style.display = "none";
+//   }
+// })
 
-document.getElementById("siteSelection").focus();
+// document.getElementById("siteSelection").focus();
 
-d3.json("./static/cumProd.json").then((cumData) => {
-  var selectedWellCum = 0;
-  var selectedWellGasCum = 0;
-  cumData.forEach(wellCum=> {
-    if(selectedOption ===  wellCum[0]){
-      selectedWellCum = wellCum[1];
-      selectedWellGasCum = wellCum[3]
-    }
-  })
-  document.getElementById("cumCurve").innerHTML = "Cum: "+ selectedWellCum + " MBBLS, " + selectedWellGasCum + " MMCF";
-})
+// d3.json("./static/cumProd.json").then((cumData) => {
+//   var selectedWellCum = 0;
+//   var selectedWellGasCum = 0;
+//   cumData.forEach(wellCum=> {
+//     if(selectedOption ===  wellCum[0]){
+//       selectedWellCum = wellCum[1];
+//       selectedWellGasCum = wellCum[3]
+//     }
+//   })
+//   document.getElementById("cumCurve").innerHTML = "Cum: "+ selectedWellCum + " MBBLS, " + selectedWellGasCum + " MMCF";
+// })
 
-d3.json("./static/pumpInfo.json").then((pumpData) => {
-  var pumpingInfoToShow = {"Well Name": "doesn't exist because it is not pumping"};
-  pumpData.forEach((pumpingWell) => {
-if(pumpingWell["Well Name"].includes(selectedOption)){
-  pumpingInfoToShow = pumpingWell;
-}
-  }) // 
-  if(pumpingInfoToShow["Well Name"].includes(selectedOption) && pumpingInfoToShow["SPM"] !== 0){
- //USED jQuery LIBRARY TO TOGGLE THE DISPLAY OF #pumpInfo
-    $(document).ready(function() {
-      $("#pumpInfo").toggle();
-  });
-        //SHOW HIDDEN BUTTONS
-        document.getElementById("c").innerHTML =  "C: " + pumpingInfoToShow["C"]
-        document.getElementById("SPM").innerHTML =  "SPM: " + pumpingInfoToShow["SPM"]
-        document.getElementById("DHSL").innerHTML =  "DH SL: "+ pumpingInfoToShow["DH SL"]
-        document.getElementById("ideal").innerHTML =  "Ideal bfpd: " + pumpingInfoToShow["Ideal bfpd"]
-        document.getElementById("pumpEff").innerHTML =  "Pump Eff: "+ pumpingInfoToShow["Pump Eff"] //multiply by 100
-        document.getElementById("pumpDepth").innerHTML =  "Pump Depth: " + pumpingInfoToShow["Pump Depth"] 
-        document.getElementById("GFLAP").innerHTML =  "GFLAP: " + pumpingInfoToShow["GFLAP"]
-        document.getElementById("Inc").innerHTML =  "Inc: "+ pumpingInfoToShow["Inc"]
-  }
-  else {
-  $(document).ready(function() {
-    $("#notPumpingInfo").toggle();
-    $("#notPumping").html("This well is not pumping");
-});    
-}
-})
+// d3.json("./static/pumpInfo.json").then((pumpData) => {
+//   var pumpingInfoToShow = {"Well Name": "doesn't exist because it is not pumping"};
+//   pumpData.forEach((pumpingWell) => {
+// if(pumpingWell["Well Name"].includes(selectedOption)){
+//   pumpingInfoToShow = pumpingWell;
+// }
+//   }) // 
+//   if(pumpingInfoToShow["Well Name"].includes(selectedOption) && pumpingInfoToShow["SPM"] !== 0){
+//  //USED jQuery LIBRARY TO TOGGLE THE DISPLAY OF #pumpInfo
+//     $(document).ready(function() {
+//       $("#pumpInfo").toggle();
+//   });
+//         //SHOW HIDDEN BUTTONS
+//         document.getElementById("c").innerHTML =  "C: " + pumpingInfoToShow["C"]
+//         document.getElementById("SPM").innerHTML =  "SPM: " + pumpingInfoToShow["SPM"]
+//         document.getElementById("DHSL").innerHTML =  "DH SL: "+ pumpingInfoToShow["DH SL"]
+//         document.getElementById("ideal").innerHTML =  "Ideal bfpd: " + pumpingInfoToShow["Ideal bfpd"]
+//         document.getElementById("pumpEff").innerHTML =  "Pump Eff: "+ pumpingInfoToShow["Pump Eff"] //multiply by 100
+//         document.getElementById("pumpDepth").innerHTML =  "Pump Depth: " + pumpingInfoToShow["Pump Depth"] 
+//         document.getElementById("GFLAP").innerHTML =  "GFLAP: " + pumpingInfoToShow["GFLAP"]
+//         document.getElementById("Inc").innerHTML =  "Inc: "+ pumpingInfoToShow["Inc"]
+//   }
+//   else {
+//   $(document).ready(function() {
+//     $("#notPumpingInfo").toggle();
+//     $("#notPumping").html("This well is not pumping");
+// });    
+// }
+// })
 
-  }
+//   }
  
 };
 
