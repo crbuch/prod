@@ -37,7 +37,26 @@ d3.select("#siteSelection").on('change', function() {Curve(d=0,t='linear');});
 function ClickedFromAnalyze(d,t)
 {
   var clickedFromAnalyzed = sessionStorage.getItem("siteSelection");
-  console.log(clickedFromAnalyzed);
+  
+  
+  
+  
+
+if(document.activeElement == document.body){
+  selectedOption = clickedFromAnalyzed;
+  console.log("body", selectedOption);
+}
+else{
+  sessionStorage.removeItem("siteSelection")
+  var dropdownMenu = d3.select("#siteSelection").node();
+    //var referrerURL = document.referrer
+
+    
+    selectedOption = dropdownMenu.value;
+    console.log("else", selectedOption);
+}
+
+
   if(clickedFromAnalyzed == null)
 
   {
@@ -45,7 +64,9 @@ function ClickedFromAnalyze(d,t)
   }
   else
   {
-    var selectedOption = clickedFromAnalyzed //EQUAL STORED VALUE TO selectedOption (USED TO CREATE CURVES)
+
+
+    //var selectedOption = clickedFromAnalyzed //EQUAL STORED VALUE TO selectedOption (USED TO CREATE CURVES)
     document.getElementById("wellName").innerHTML =  selectedOption //SHOW WELL NAME
     var previousPumpInfo = document.getElementById("pumpInfo"); //HIDE PUMPING INFO BUTTONS
     previousPumpInfo.style.display = "none"
@@ -248,11 +269,16 @@ $( window ).on( "load", ClickedFromAnalyze );
 
 //FUNCTION FOR CURVES//
 function Curve(d,t){
+
+  //var referrerURL = document.referrer;
+  //console.log(referrerURL);
 //CLEAR STORED VALUES
  sessionStorage.removeItem("siteSelection")
     var dropdownMenu = d3.select("#siteSelection").node();
+    //var referrerURL = document.referrer
+
+    
     var selectedOption = dropdownMenu.value;
-  
     document.getElementById("wellName").innerHTML =  selectedOption //DISPLAY WELL'S NAME
     //HIDE PUMPING INFO  SINCE THEY WILL BE SHOWING FROM PREVIOUS SELECTION
     var previousPumpInfo = document.getElementById("pumpInfo");
@@ -452,7 +478,7 @@ function Curve(d,t){
 
 function table() {
   //SELECT <select> TO LATER "GRAB" THE SELECTION MADE AS TEXTS
-  dropdownMenu = d3.select("#siteSelection").node();
+  var dropdownMenu = d3.select("#siteSelection").node();
   //DECLARE ITEM SAVED IN STORAGE
   var clickedFromAnalyzed = sessionStorage.getItem("siteSelection");
   //DECLARE WHAT WILL BE SAVED AS THE SELECTION
@@ -515,3 +541,5 @@ d3.select("#table").on('click', function() {table()});
 // $(document).ready(function() {
 //   $("#siteSelection").click(sessionStorage.removeItem("siteSelection")); //SHOW WELL IS NOT PUMPING BUTTON
 // });
+
+

@@ -3,16 +3,18 @@
         
 }
 
-#individualTable  {
-        display: none;
-        
+#individualTable th:nth-child(1) {
+        width: 17%;    
 }
 
+#individualTable  {
+        display: none;        
+}
 
+#notPumpingInfo  {
+        display: none;        
+}
 
-
-
-/* th {
-        background-color: rgb(255, 208, 0);
-        color: black;
-    } */
+#analyzeTable th:nth-child(1) {
+        width: 15%;    
+}

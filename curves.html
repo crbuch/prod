@@ -74,7 +74,6 @@
   <div class="row">
     <!-- WELL NAME -->
     <div class="col-md-2"><h2 id="wellName"></h2></div>
-    
     <!-- PRICE OF OIL API -->
     <div class="col-md-9 text-right"><h2 id="WTIOIL"></h2></div>
     
@@ -92,29 +91,25 @@
       </div>
     </div>
     <div class="col-md-12">
-      <div id="notPumpingInfo" class="col text-center" style="display: none;">
+      <div id="notPumpingInfo" class="col text-center">
         <button type="button" id="notPumping" class="btn btn-secondary"></button>
       </div>
     </div>
   </div>
-  
   <div class="row">
     <div class="col-md-2"></div>
   <div id="individualTable" class="col-md-7">
-  <!-- style="display: none;"> -->
     <h2>Production</h2>
     <table class="table table-sm table-striped table-bordered table-hover">
       <thead class="thead-dark">
         <tr>
-          <!-- <th>Well Name</th> -->
-          <th style="width:17%">Date</th>
+          <th>Date</th>
           <th>Oil (BBLS)</th>
           <th>Gas (MMCF)</th>
           <th>Water (BBLS)</th>
           <th>TP</th>
           <th>CP</th>
           <th>Comments</th>
-          <!-- <th>Moving Average</th> -->
         </tr>
       </thead>
       <tbody></tbody>
@@ -130,11 +125,6 @@
     <div id=waterDeclineCurve></div>
   </div>
   </div>
-
-<!-- TABULAR DATA HIDDEN UNTIL "table" BUTTON IS CLICKED  style="display: none;"  -->
-
-
-
 
 </body>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
