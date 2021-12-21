@@ -1,14 +1,14 @@
-async function getOilPrice() {
-  var token = config.MY_API_TOKEN;
-  console.log(token);
-  let response = await fetch('https://commodities-api.com/api/latest?access_key='+token+'&base=USD&symbols=WTIOIL');
-  let data = await response.json()
-  console.log(data);
-  return data;
-}
-getOilPrice().then(data=> document.getElementById("WTIOIL").innerHTML = "WTI: $" + (1/data.data.rates.WTIOIL).toFixed(2)
+// async function getOilPrice() {
+//   var token = config.MY_API_TOKEN;
+//   console.log(token);
+//   let response = await fetch('https://commodities-api.com/api/latest?access_key='+token+'&base=USD&symbols=WTIOIL');
+//   let data = await response.json()
+//   console.log(data);
+//   return data;
+// }
+// getOilPrice().then(data=> document.getElementById("WTIOIL").innerHTML = "WTI: $" + (1/data.data.rates.WTIOIL).toFixed(2)
 
-);
+// );
 
 // FUNCTON TO CREATE WELL OPTIONS DROP DOWN
 function createDropdownOptions() {
@@ -37,10 +37,6 @@ d3.select("#siteSelection").on('change', function() {Curve(d=0,t='linear');});
 function ClickedFromAnalyze(d,t)
 {
   var clickedFromAnalyzed = sessionStorage.getItem("siteSelection");
-  
-  
-  
-  
 
 if(document.activeElement == document.body){
   selectedOption = clickedFromAnalyzed;
@@ -50,8 +46,6 @@ else{
   sessionStorage.removeItem("siteSelection")
   var dropdownMenu = d3.select("#siteSelection").node();
     //var referrerURL = document.referrer
-
-    
     selectedOption = dropdownMenu.value;
     console.log("else", selectedOption);
 }
@@ -220,15 +214,20 @@ document.getElementById("siteSelection").focus();
 
 // DISPLAY CUM DATA UNDER WELL NAME
 d3.json("./static/cumProd.json").then((cumData) => {
+  
   var selectedWellCum = 0;
   var selectedWellGasCum = 0;
+  var selectedWellFormation = "";
   cumData.forEach(wellCum=> {
+    
     if(selectedOption ===  wellCum[0]){
       selectedWellCum = wellCum[1];
       selectedWellGasCum = wellCum[3]
+      selectedWellFormation = wellCum[4]
     }
   })
   document.getElementById("cumCurve").innerHTML = "Cum: "+ selectedWellCum + " MBBLS, " + selectedWellGasCum + " MMCF";
+  document.getElementById("formation").innerHTML = selectedWellFormation;
 })
 //READ PUMPING INFO
 d3.json("./static/pumpInfo.json").then((pumpData) => {
@@ -436,13 +435,17 @@ function Curve(d,t){
   d3.json("./static/cumProd.json").then((cumData) => {
     var selectedWellCum = 0;
     var selectedWellGasCum = 0;
+    var selectedWellFormation = "";
     cumData.forEach(wellCum=> {
       if(selectedOption ===  wellCum[0]){
         selectedWellCum = wellCum[1];
         selectedWellGasCum = wellCum[3]
+        selectedWellFormation = wellCum[4]
       }
     })
     document.getElementById("cumCurve").innerHTML = "Cum: "+ selectedWellCum + " MBBLS, " + selectedWellGasCum + " MMCF";
+    document.getElementById("formation").innerHTML = selectedWellFormation;
+  
   })
   
   d3.json("./static/pumpInfo.json").then((pumpData) => {

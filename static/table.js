@@ -6,7 +6,6 @@ d3.json('./static/cumProd.json').then((data) => {
  //global declaration of tbody, since it will be accessed in and out of functions
  tbody = d3.select("tbody")
  
- 
  // CODE FOR CUMULATIVE PRODUCTION TABLE
  // function to import the data from recent.json, saved in this folder from Jupyter Notebook
  function buildTable(tableData) {
@@ -14,10 +13,11 @@ d3.json('./static/cumProd.json').then((data) => {
    tbody.html("");
      // loop thrugh data
      tableData.forEach((well) => {
+       //console.log(well)
        // for each well add a row to the tbody
        let row = tbody.append("tr");
        // loop through each value to add a cell for each of it
-       Object.values(well).forEach((val) => {
+       Object.values(well.slice(0,4)).forEach((val) => {
          let cell = row.append("td");
          cell.text(val);
        })
