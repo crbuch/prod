@@ -40,26 +40,21 @@ function ClickedFromAnalyze(d,t)
 
 if(document.activeElement == document.body){
   selectedOption = clickedFromAnalyzed;
-  console.log("body", selectedOption);
+  //console.log("body", selectedOption);
 }
 else{
   sessionStorage.removeItem("siteSelection")
   var dropdownMenu = d3.select("#siteSelection").node();
     //var referrerURL = document.referrer
     selectedOption = dropdownMenu.value;
-    console.log("else", selectedOption);
+    //console.log("else", selectedOption);
 }
-
-
   if(clickedFromAnalyzed == null)
-
   {
     //console.log("hello");
   }
   else
   {
-
-
     //var selectedOption = clickedFromAnalyzed //EQUAL STORED VALUE TO selectedOption (USED TO CREATE CURVES)
     document.getElementById("wellName").innerHTML =  selectedOption //SHOW WELL NAME
     var previousPumpInfo = document.getElementById("pumpInfo"); //HIDE PUMPING INFO BUTTONS
@@ -96,6 +91,8 @@ else{
       movingAverage.push(site[8])
     };
   });
+
+  
   
   if (d > 0){
     var site_date = site_date.slice(0,d);
@@ -105,7 +102,7 @@ else{
     var comments = comments.slice(0,d);
     var movingAverage = movingAverage.slice(0,d);
   }
-
+  
   var dataOil = {
     x: site_date,
     y: site_oil,
@@ -207,6 +204,8 @@ else{
     var hidetable = document.getElementById("individualTable");
     hidetable.style.display = "none";
   } 
+
+  console.log(typeof site_date[0])
 })
 
 //MAKE SELECT ACTIVE AFTER A BUTTON IS PRESSED SO IT CAN BE ACCESSED VIA THE KEYBOAR
@@ -231,6 +230,7 @@ d3.json("./static/cumProd.json").then((cumData) => {
 })
 //READ PUMPING INFO
 d3.json("./static/pumpInfo.json").then((pumpData) => {
+ 
   var pumpingInfoToShow = {"Well Name": "doesn't exist because it is not pumping"};
   pumpData.forEach((pumpingWell) => {
 if(pumpingWell["Well Name"].includes(selectedOption)){
@@ -258,12 +258,16 @@ if(pumpingWell["Well Name"].includes(selectedOption)){
 }
 })
 
+
+
 }; //END OF ELSE STATEMENT
 
 }
 console.log(sessionStorage.getItem("siteSelection"))
 // LISTENER FOR PAGE TO LOAD TO CREATE CURVE FROM ANALYZE TABLE
 $( window ).on( "load", ClickedFromAnalyze );
+
+
 
 
 //FUNCTION FOR CURVES//
@@ -278,7 +282,9 @@ function Curve(d,t){
 
     
     var selectedOption = dropdownMenu.value;
-    document.getElementById("wellName").innerHTML =  selectedOption //DISPLAY WELL'S NAME
+    //DO NOT NEED TO SHOW WELL NAME HERE SINCE IT IS IN THE DROPDOWN SELECT, 
+    //BUT NEED TO FIGURE OUT BEST WAY TO DEAL WITH IT
+    //document.getElementById("wellName").innerHTML =  selectedOption //DISPLAY WELL'S NAME
     //HIDE PUMPING INFO  SINCE THEY WILL BE SHOWING FROM PREVIOUS SELECTION
     var previousPumpInfo = document.getElementById("pumpInfo");
     previousPumpInfo.style.display = "none"
@@ -477,6 +483,22 @@ function Curve(d,t){
   });    
   }
   })
+//READ IN ECONOMIS DATA
+  d3.json("./static/economics.json").then((economicsData) => {
+    var wellRMPL = 0
+    var wellYTDPL = 0
+    economicsData.forEach((ecoWell) => {
+      if(ecoWell["Well Name"].includes(selectedOption)){
+        wellRMPL = ecoWell["Recent Month P&L"];
+        wellYTDPL = ecoWell["YTD P&L"];
+        console.log(wellRMPL);
+        console.log(wellYTDPL);
+      }
+        })
+        //DISPLAY ECONOMICS DATA
+    document.getElementById("economics").innerHTML = "P&L: $"+ wellRMPL+ " YTD P&L: $" + wellYTDPL;
+  })
+
 };
 
 function table() {
