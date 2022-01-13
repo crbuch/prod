@@ -261,11 +261,9 @@ if(pumpingWell["Well Name"].includes(selectedOption)){
 }; //END OF ELSE STATEMENT
 
 }
-console.log(sessionStorage.getItem("siteSelection"))
+//console.log(sessionStorage.getItem("siteSelection"))
 // LISTENER FOR PAGE TO LOAD TO CREATE CURVE FROM ANALYZE TABLE
 $( window ).on( "load", ClickedFromAnalyze );
-
-
 
 
 //FUNCTION FOR CURVES//
@@ -489,8 +487,8 @@ function Curve(d,t){
       if(ecoWell["Well Name"].includes(selectedOption)){
         wellRMPL = ecoWell["Recent Month P&L"];
         wellYTDPL = ecoWell["YTD P&L"];
-        console.log(wellRMPL);
-        console.log(wellYTDPL);
+        //console.log(wellRMPL);
+        //console.log(wellYTDPL);
       }
         })
         //DISPLAY ECONOMICS DATA
