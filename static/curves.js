@@ -258,8 +258,6 @@ if(pumpingWell["Well Name"].includes(selectedOption)){
 }
 })
 
-
-
 }; //END OF ELSE STATEMENT
 
 }
@@ -496,7 +494,7 @@ function Curve(d,t){
       }
         })
         //DISPLAY ECONOMICS DATA
-    document.getElementById("economics").innerHTML = "P&L: $"+ wellRMPL+ " YTD P&L: $" + wellYTDPL;
+    document.getElementById("economics").innerHTML = "P&L: $"+ wellRMPL.toLocaleString("en-US")+ ", YTD P&L: $" + wellYTDPL.toLocaleString("en-US");
   })
 
 };
