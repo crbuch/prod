@@ -1,14 +1,14 @@
-// async function getOilPrice() {
-//   var token = config.MY_API_TOKEN;
-//   console.log(token);
-//   let response = await fetch('https://commodities-api.com/api/latest?access_key='+token+'&base=USD&symbols=WTIOIL');
-//   let data = await response.json()
-//   console.log(data);
-//   return data;
-// }
-// getOilPrice().then(data=> document.getElementById("WTIOIL").innerHTML = "WTI: $" + (1/data.data.rates.WTIOIL).toFixed(2)
+async function getOilPrice() {
+  var token = config.MY_API_TOKEN;
+  console.log(token);
+  let response = await fetch('https://commodities-api.com/api/latest?access_key='+token+'&base=USD&symbols=WTIOIL');
+  let data = await response.json()
+  console.log(data);
+  return data;
+}
+getOilPrice().then(data=> document.getElementById("WTIOIL").innerHTML = "WTI: $" + (1/data.data.rates.WTIOIL).toFixed(2)
 
-// );
+);
 
 // FUNCTON TO CREATE WELL OPTIONS DROP DOWN
 function createDropdownOptions() {
@@ -137,7 +137,7 @@ else{
     }
   };
 
-  var config = { modeBarButtonsToRemove: ['sendDataToCloud', 'autoScale2d', 'hoverClosestCartesian', 'hoverCompareCartesian', 'lasso2d', 'zoom2d', 'zoomIn2d', 'zoomOut2d', 'toggleSpikelines'], displaylogo: false, responsive: true }; //'select2d'
+  var config = { modeBarButtonsToRemove: ['sendDataToCloud', 'autoScale2d', 'hoverClosestCartesian', 'hoverCompareCartesian', 'lasso2d', 'zoomIn2d', 'zoomOut2d', 'toggleSpikelines'], displaylogo: false, responsive: true }; //'select2d' , 'zoom2d'
 
   Plotly.newPlot("oilDeclineCurve", data, layoutOil, config);
   
@@ -156,7 +156,7 @@ else{
     }
   };
 
-  var config = { modeBarButtonsToRemove: ['sendDataToCloud', 'autoScale2d', 'hoverClosestCartesian', 'hoverCompareCartesian', 'lasso2d', 'select2d', 'zoom2d', 'zoomIn2d', 'zoomOut2d', 'toggleSpikelines'], displaylogo: false, responsive: true };
+  var config = { modeBarButtonsToRemove: ['sendDataToCloud', 'autoScale2d', 'hoverClosestCartesian', 'hoverCompareCartesian', 'lasso2d', 'zoomIn2d', 'zoomOut2d', 'toggleSpikelines'], displaylogo: false, responsive: true }; //'select2d', 'zoom2d'
 
   Plotly.newPlot("gasDeclineCurve", dataGas, layoutGas, config);
   
@@ -174,7 +174,7 @@ else{
     }
   };
 
-  var config = { modeBarButtonsToRemove: ['sendDataToCloud', 'autoScale2d', 'hoverClosestCartesian', 'hoverCompareCartesian', 'lasso2d', 'select2d', 'zoom2d', 'zoomIn2d', 'zoomOut2d', 'toggleSpikelines'], displaylogo: false, responsive: true };
+  var config = { modeBarButtonsToRemove: ['sendDataToCloud', 'autoScale2d', 'hoverClosestCartesian', 'hoverCompareCartesian', 'lasso2d', 'select2d', 'zoomOut2d', 'toggleSpikelines'], displaylogo: false, responsive: true }; //, 'zoom2d', 'zoomIn2d'
 
   Plotly.newPlot("waterDeclineCurve", dataWater, layoutWater, config);
     
@@ -381,7 +381,7 @@ function Curve(d,t){
       }
     };
   
-    var config = { modeBarButtonsToRemove: ['sendDataToCloud', 'autoScale2d', 'hoverClosestCartesian', 'hoverCompareCartesian', 'lasso2d', 'select2d', 'zoom2d', 'zoomIn2d', 'zoomOut2d', 'toggleSpikelines'], displaylogo: false, responsive: true };
+    var config = { modeBarButtonsToRemove: ['sendDataToCloud', 'autoScale2d', 'hoverClosestCartesian', 'hoverCompareCartesian', 'lasso2d', 'zoomIn2d', 'zoomOut2d', 'toggleSpikelines'], displaylogo: false, responsive: true }; //, 'select2d', 'zoom2d'
   
     Plotly.newPlot("gasDeclineCurve", dataGas, layoutGas, config);
     
@@ -399,7 +399,7 @@ function Curve(d,t){
       }
     };
   
-    var config = { modeBarButtonsToRemove: ['sendDataToCloud', 'autoScale2d', 'hoverClosestCartesian', 'hoverCompareCartesian', 'lasso2d', 'select2d', 'zoom2d', 'zoomIn2d', 'zoomOut2d', 'toggleSpikelines'], displaylogo: false, responsive: true };
+    var config = { modeBarButtonsToRemove: ['sendDataToCloud', 'autoScale2d', 'hoverClosestCartesian', 'hoverCompareCartesian', 'lasso2d', 'zoomIn2d', 'zoomOut2d', 'toggleSpikelines'], displaylogo: false, responsive: true }; //'select2d', 'zoom2d',
   
     Plotly.newPlot("waterDeclineCurve", dataWater, layoutWater, config);
   
