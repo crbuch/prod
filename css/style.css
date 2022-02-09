@@ -18,3 +18,21 @@
 #analyzeTable th:nth-child(1) {
         width: 15%;    
 }
+
+#pumpInfo {
+        padding-top: 15px;  
+}
+
+#monthly, #YTD {
+        padding-right: 99px;
+        text-align: right;         
+}
+
+#pnlTitle {
+        text-align: right;
+}
+
+#profitLoss {
+        padding-right: 47px;
+}
+

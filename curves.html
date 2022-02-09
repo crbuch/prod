@@ -61,27 +61,46 @@
       <button id="Days180" type="button" class="btn btn-info">180 Days</button>
       <button id="Days30" type="button" class="btn btn-info">30 Days</button>
     </div>
-    <div id="timeframesLog" class="col-md-5" style="display: none;">
+    <div id="timeframesLog" class="col-md-4" style="display: none;">
       <button id="InceptionLog" type="button" class="btn btn-outline-info">Inception</button>
       <button id="Days365Log" type="button" class="btn btn-outline-info">365 Days</button>
       <button id="Days180Log" type="button" class="btn btn-outline-info">180 Days</button>
       <button id="Days30Log" type="button" class="btn btn-outline-info">30 Days</button>
     </div>
+     
   </div>
 </div>
 
 <div class="container-fluid">
   <div class="row">
-    <!-- WELL NAME -->
-    <div class="col-md-2"><h2 id="wellName"></h2></div>
-    <!-- PRICE OF OIL API -->
-    <div class="col-md-9 text-right"><h2 id="WTIOIL"></h2></div>
-    <!-- <div class="col-md-9 text-right"><h2>WTI: $60</h2></div> -->
-    
     <div class="col-md-12">
+      <!-- WELL NAME ONLY USED WHEN REDIRECTED FROM ANALYZE TABLE-->
+       <h5 id="wellName"></h5>
+    </div>
+  </div>
+  <div id="detailedData" class="row">
+    <div class="col-md-3" id="formCum">
       <h5 id="formation"></h5>
       <h5 id="cumCurve"></h5>
-      <h5 id="economics"></h5>
+    </div>
+    <div id="pnlTitle" class="col-md-1">
+      <h5 id="pnl"></h5>
+    </div>
+    <div id="profitLoss" class="col-md-2">
+      <h5 id="monthly"></h5>
+      <h5 id="YTD"></h5>
+    </div>
+    <div id="ROIData" class="col-md-3">
+      <!-- <h5 id="ROI$">ROI: $$$</h5>
+      <h5 id="ROI%">%%%</h5> -->
+    </div>
+    <!-- API FOR PRICE OF OIL -->
+    <div id="WTIAPI" class="col-md-3">
+      <h4 id="WTIOIL"></h4>
+      <!-- <h4>WTI: $60</h4> -->
+    </div>
+  </div>
+      <div class="col-md-12">
       <div id="pumpInfo" class="col text-center" style="display: none;">
         <button type="button" id="c" class="btn btn-secondary"></button>
         <button type="button" id="SPM" class="btn btn-secondary"></button>
@@ -93,6 +112,7 @@
         <button type="button" id="Inc" class="btn btn-dark"></button>
       </div>
     </div>
+
     <div class="col-md-12">
       <div id="notPumpingInfo" class="col text-center">
         <button type="button" id="notPumping" class="btn btn-secondary"></button>

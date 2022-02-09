@@ -1,6 +1,6 @@
 async function getOilPrice() {
   var token = config.MY_API_TOKEN;
-  console.log(token);
+  //console.log(token);
   let response = await fetch('https://commodities-api.com/api/latest?access_key='+token+'&base=USD&symbols=WTIOIL');
   let data = await response.json()
   console.log(data);
@@ -481,18 +481,24 @@ function Curve(d,t){
   })
 //READ IN ECONOMIS DATA
   d3.json("./static/economics.json").then((economicsData) => {
-    var wellRMPL = 0
-    var wellYTDPL = 0
+    //console.log(economicsData[0])
+    var wellRMPL = 0;
+    var wellYTDPL = 0;
+    monthPnL = "";
     economicsData.forEach((ecoWell) => {
       if(ecoWell["Well Name"].includes(selectedOption)){
         wellRMPL = ecoWell["Recent Month P&L"];
         wellYTDPL = ecoWell["YTD P&L"];
+        monthPnL= ecoWell["Date"].slice(0,3)
         //console.log(wellRMPL);
         //console.log(wellYTDPL);
+        //console.log(monthPnL);
       }
         })
         //DISPLAY ECONOMICS DATA
-    document.getElementById("economics").innerHTML = "P&L: $"+ wellRMPL.toLocaleString("en-US")+ ", YTD P&L: $" + wellYTDPL.toLocaleString("en-US");
+    document.getElementById("pnl").innerHTML = "P&L: ";
+    document.getElementById("monthly").innerHTML = "$"+ wellRMPL.toLocaleString("en-US")+" "+ monthPnL+".";
+    document.getElementById("YTD").innerHTML = "$" + wellYTDPL.toLocaleString("en-US")+ " YTD";
   })
 
 };
