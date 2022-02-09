@@ -486,14 +486,14 @@ function Curve(d,t){
     var wellYTDPL = 0;
     monthPnL = "";
     economicsData.forEach((ecoWell) => {
-      if(ecoWell["Well Name"].includes(selectedOption)){
+      if(ecoWell["Well Name"].includes(selectedOption)) {
         wellRMPL = ecoWell["Recent Month P&L"];
         wellYTDPL = ecoWell["YTD P&L"];
         monthPnL= ecoWell["Date"].slice(0,3)
         //console.log(wellRMPL);
         //console.log(wellYTDPL);
         //console.log(monthPnL);
-      }
+      } 
         })
         //DISPLAY ECONOMICS DATA
     document.getElementById("pnl").innerHTML = "P&L: ";
