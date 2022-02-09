@@ -489,7 +489,7 @@ function Curve(d,t){
       if(ecoWell["Well Name"].includes(selectedOption)) {
         wellRMPL = ecoWell["Recent Month P&L"];
         wellYTDPL = ecoWell["YTD P&L"];
-        monthPnL= ecoWell["Date"].slice(0,3)
+        monthPnL= ecoWell["Date"].slice(0,3)+"."
         //console.log(wellRMPL);
         //console.log(wellYTDPL);
         //console.log(monthPnL);
@@ -497,7 +497,7 @@ function Curve(d,t){
         })
         //DISPLAY ECONOMICS DATA
     document.getElementById("pnl").innerHTML = "P&L: ";
-    document.getElementById("monthly").innerHTML = "$"+ wellRMPL.toLocaleString("en-US")+" "+ monthPnL+".";
+    document.getElementById("monthly").innerHTML = "$"+ wellRMPL.toLocaleString("en-US")+" "+ monthPnL;
     document.getElementById("YTD").innerHTML = "$" + wellYTDPL.toLocaleString("en-US")+ " YTD";
   })
 

@@ -24,7 +24,7 @@
 }
 
 #monthly, #YTD {
-        padding-right: 99px;
+        padding-right: 50%;
         text-align: right;         
 }
 
@@ -32,7 +32,4 @@
         text-align: right;
 }
 
-#profitLoss {
-        padding-right: 47px;
-}
 
