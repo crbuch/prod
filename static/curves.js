@@ -479,7 +479,7 @@ function Curve(d,t){
   });    
   }
   })
-//READ IN ECONOMIS DATA
+//READ IN ECONOMICS DATA
   d3.json("./static/economics.json").then((economicsData) => {
     //console.log(economicsData[0])
     var wellRMPL = 0;
@@ -499,6 +499,20 @@ function Curve(d,t){
     document.getElementById("pnl").innerHTML = "P&L: ";
     document.getElementById("monthly").innerHTML = "$"+ wellRMPL.toLocaleString("en-US")+" "+ monthPnL;
     document.getElementById("YTD").innerHTML = "$" + wellYTDPL.toLocaleString("en-US")+ " YTD";
+  })
+
+  //READ IN PAYOUT DATA
+  d3.json("./static/payouts.json").then((payoutsData) => {
+    //console.log(economicsData[0])
+    var payout100 = 0;
+    payoutsData.forEach((payoutWell) => {
+      if(payoutWell["Well Name"].includes(selectedOption)) {
+        payout100 = payoutWell["% Payout"] * 100;
+      } 
+        })
+        //DISPLAY ECONOMICS DATA
+    document.getElementById("payout").innerHTML = "Payout: ";
+    document.getElementById("payout100").innerHTML = payout100.toFixed(2).toLocaleString("en-US")+ "%";
   })
 
 };
