@@ -213,6 +213,7 @@ document.getElementById("siteSelection").focus();
 
 // DISPLAY CUM DATA UNDER WELL NAME
 d3.json("./static/cumProd.json").then((cumData) => {
+  //console.log(cumData.getOwnPropertyNames()) // <-- USED TO FIGURE OUT HOW TO READ IN EACH COLUMN
   
   var selectedWellCum = 0;
   var selectedWellGasCum = 0;
