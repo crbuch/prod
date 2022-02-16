@@ -1,3 +1,4 @@
+// Cumulative production
 d3.json('./static/cumProd.json').then((data) => {
     //console.log(data);
 
