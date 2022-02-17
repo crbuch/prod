@@ -514,7 +514,7 @@ function Curve(d,t){
         })
         //DISPLAY ECONOMICS DATA
     document.getElementById("payout").innerHTML = "Payout: ";
-    document.getElementById("payout100").innerHTML = payout100.toFixed(2).toLocaleString("en-US")+ "%";
+    document.getElementById("payout100").innerHTML = payout100.toFixed(0).toLocaleString("en-US")+ "%";
   })
 
 };
