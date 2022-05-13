@@ -505,7 +505,7 @@ function Curve(d,t){
 
   //READ IN PAYOUT DATA
   d3.json("./static/payouts.json").then((payoutsData) => {
-    console.log(economicsData[0])
+    console.log(payoutsData[0])
     var payout100 = 0;
     payoutsData.forEach((payoutWell) => {
       if(payoutWell["Well Name"].includes(selectedOption)) {
