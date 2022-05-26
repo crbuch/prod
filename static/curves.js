@@ -1,4 +1,4 @@
-async function getOilPrice() {
+function getOilPrice() {
   var token = config.MY_API_TOKEN;
   //console.log(token);
   // Add new token
