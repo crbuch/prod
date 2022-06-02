@@ -309,6 +309,7 @@ function Curve(d,t){
       var site_date = [];
       var comments = [];
       var movingAverage = [];
+      let water_cut = [];
   
       data.forEach((site) => {if(site[0] === selectedOption){
        site_date.push(site[9]);
@@ -317,6 +318,7 @@ function Curve(d,t){
         site_water.push(site[4]);
         comments.push(site[7]);
         movingAverage.push(site[8])
+        water_cut.push((site[4]/(site[4]+site[2]))*100)
       };
     });
     
@@ -397,13 +399,33 @@ function Curve(d,t){
       yaxis: {
         type: t,
         rangemode: 'tozero'
-      }
+      },
+      
     };
   
     var config = { modeBarButtonsToRemove: ['sendDataToCloud', 'autoScale2d', 'hoverClosestCartesian', 'hoverCompareCartesian', 'lasso2d', 'zoomIn2d', 'zoomOut2d', 'toggleSpikelines'], displaylogo: false, responsive: true }; //'select2d', 'zoom2d',
   
     Plotly.newPlot("waterDeclineCurve", dataWater, layoutWater, config);
-  
+    
+    let dataCut = [{
+      x: site_date,
+      y: water_cut,
+      type: "line"
+    }];
+    let layoutCut = [{
+      title: {text:"Water Cut Percentage"},
+      yaxis: {
+        type: t,
+        rangemode: 'tozero'
+      }
+    }];
+
+    Plotly.newPlot("waterCutCurve", dataCut, layoutCut, config)
+
+    let totalWater = site_water.reduce((partialSum, a) => partialSum + a, 0);
+    console.log(totalWater)
+    
+
     if(d===0 && t==='log'){
   
       var showCurves = document.getElementById("curves"); // CURVES IS INITIALLY DISPLAYED AS LINEAR? 
