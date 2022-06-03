@@ -53,6 +53,7 @@ async function Plot(){
             mode: 'lines+markers',
             marker: {
                 size: 2,
+                color: '#a8a800'
             },
             type: 'scatter3d',
             color: 'red',
@@ -67,6 +68,7 @@ async function Plot(){
             mode: 'lines+markers',
             marker: {
                 size: 2,
+                color: '#c73333'
             },
             type: 'scatter3d',
             
@@ -79,6 +81,7 @@ async function Plot(){
             mode: 'lines+markers',
             marker: {
                 size: 2,
+                color: '#ffe552'
             },
             type: 'scatter3d',
             
@@ -91,6 +94,7 @@ async function Plot(){
             mode: 'lines+markers',
             marker: {
                 size: 2,
+                color: '#005700'
             },
             type: 'scatter3d',
             
@@ -103,6 +107,7 @@ async function Plot(){
             mode: 'lines+markers',
             marker: {
                 size: 2,
+                color: '#ad00ad'
             },
             type: 'scatter3d',
             
