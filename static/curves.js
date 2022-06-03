@@ -467,7 +467,7 @@ function Curve(d,t){
       }
     })
 
-    document.getElementById("cumCurve").innerHTML = "Cum: "+ selectedWellCum + " MOBLS, " + selectedWellGasCum + " MMCF, " + totalWater + " MWBLS";
+    document.getElementById("cumCurve").innerHTML = "Cum: "+ selectedWellCum + " MBO, " + selectedWellGasCum + " MMCF, " + totalWater + " MBW";
     document.getElementById("formation").innerHTML = selectedWellFormation;
   
   });

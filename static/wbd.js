@@ -121,7 +121,7 @@ async function Plot(){
             t: 60,
             pad: 0
           },
-        title:{text: 'Projected Drilling Plan for '+selectedOption+', Dimmit County, TX'},
+        title:{text: 'Well Bore Diagram for '+selectedOption},
         scene: {
             xaxis: {title: 'Easting'},
             yaxis: {title: 'Northing'},
