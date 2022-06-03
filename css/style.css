@@ -32,4 +32,10 @@
         text-align: right;
 }
 
-
+#waterCutname {
+        margin: auto;
+        width: 10%;
+        font-family: Open Sans, Verdana, arial, sans-serif;
+        font-size: inherit;
+        color: rgb(44, 43, 43);
+}
