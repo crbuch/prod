@@ -261,7 +261,7 @@ if(pumpingWell["Well Name"].includes(selectedOption)){
 
 }; //END OF ELSE STATEMENT
 
-}
+};
 //console.log(sessionStorage.getItem("siteSelection"))
 // LISTENER FOR PAGE TO LOAD TO CREATE CURVE FROM ANALYZE TABLE
 $( window ).on( "load", ClickedFromAnalyze );
@@ -392,7 +392,6 @@ function Curve(d,t){
       x: site_date,
       y: site_water,
       text: comments,
-      type: "line"
     }];
     var layoutWater = {
       title: "Water (BWPD) vs Time",
@@ -410,22 +409,19 @@ function Curve(d,t){
     let dataCut = [{
       x: site_date,
       y: water_cut,
-      type: "line"
+      type: "scatter"
     }];
     let layoutCut = [{
       title: {text:"Water Cut Percentage"},
       yaxis: {
-        type: t,
-        rangemode: 'tozero'
+        type: 'log',
+        autorange: true,
+        tickformat: "f"
       }
     }];
-
-    Plotly.newPlot("waterCutCurve", dataCut, layoutCut, config)
-
-    let totalWater = site_water.reduce((partialSum, a) => partialSum + a, 0);
-    console.log(totalWater)
-    
-
+    document.getElementById("waterCutname").innerHTML = "Water Cut Percentage"
+    Plotly.newPlot("waterCutCurve", dataCut, layoutCut)
+  
     if(d===0 && t==='log'){
   
       var showCurves = document.getElementById("curves"); // CURVES IS INITIALLY DISPLAYED AS LINEAR? 
@@ -453,7 +449,7 @@ function Curve(d,t){
       var hidetable = document.getElementById("individualTable");
       hidetable.style.display = "none";
     }
-  })
+  
   
   document.getElementById("siteSelection").focus();
   
@@ -461,6 +457,8 @@ function Curve(d,t){
     var selectedWellCum = 0;
     var selectedWellGasCum = 0;
     var selectedWellFormation = "";
+    let totalWater = Math.round((site_water.reduce((partialSum, a) => partialSum + a, 0))/1000);
+    
     cumData.forEach(wellCum=> {
       if(selectedOption ===  wellCum[0]){
         selectedWellCum = wellCum[1];
@@ -468,11 +466,12 @@ function Curve(d,t){
         selectedWellFormation = wellCum[4]
       }
     })
-    document.getElementById("cumCurve").innerHTML = "Cum: "+ selectedWellCum + " MBBLS, " + selectedWellGasCum + " MMCF";
+
+    document.getElementById("cumCurve").innerHTML = "Cum: "+ selectedWellCum + " MOBLS, " + selectedWellGasCum + " MMCF, " + totalWater + " MWBLS";
     document.getElementById("formation").innerHTML = selectedWellFormation;
   
-  })
-  
+  });
+  });
   d3.json("./static/pumpInfo.json").then((pumpData) => {
     var pumpingInfoToShow = {"Well Name": "doesn't exist because it is not pumping"};
     pumpData.forEach((pumpingWell) => {
@@ -501,7 +500,7 @@ function Curve(d,t){
       $("#notPumping").html("This well is not pumping");
   });    
   }
-  })
+  });
 //READ IN ECONOMICS DATA
   d3.json("./static/economics.json").then((economicsData) => {
     //console.log(economicsData[0])
@@ -579,6 +578,7 @@ function table() {
     });
     })
 };
+
 
 
 //LINEAR LISTENERS//
