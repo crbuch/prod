@@ -54,7 +54,7 @@ d3.json('./static/cumProd.json').then((data) => {
     let filteredData = tableData;
     if (requestedSiteName) {
       filteredData = filteredData.filter(row => row[0] == requestedSiteName)
-      console.log(filteredData); //check to see what this looks like because i dont understand it
+      console.log(filteredData); 
     };
     //build table using the filteredData variable
     buildTable(filteredData);
