@@ -254,10 +254,7 @@ async function plot(){
 
             }
         ];
-        let bothData = {
-            ...showData,
-            ...alldata
-        };
+      
         allBoreData = [
             {
                 opacity:.8,
