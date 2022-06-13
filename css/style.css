@@ -23,19 +23,20 @@
         padding-top: 15px;  
 }
 
-#monthly, #YTD  {
-        padding-right: 50%;
-        text-align: right;         
-}
+
 
 #pnlTitle {
         text-align: right;
 }
-
-#waterCutname {
-        margin: auto;
-        width: 10%;
-        font-family: Open Sans, Verdana, arial, sans-serif;
-        font-size: inherit;
-        color: rgb(44, 43, 43);
+#waterTotal {
+        text-align: match-parent;
 }
+
+
+.curve{
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-right: -50%;
+        transform: translate(-50%, -50%);
+    }

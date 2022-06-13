@@ -411,16 +411,16 @@ function Curve(d,t){
       y: water_cut,
       type: "scatter"
     }];
-    let layoutCut = [{
+    let layoutCut = {
+      autosize: true,
       title: {text:"Water Cut Percentage"},
       yaxis: {
-        type: 'log',
+        type: 'linear',
         autorange: true,
         tickformat: "f"
       }
-    }];
-    document.getElementById("waterCutname").innerHTML = "Water Cut Percentage"
-    Plotly.newPlot("waterCutCurve", dataCut, layoutCut)
+    };
+    Plotly.newPlot("waterCutCurve", dataCut, layoutCut, config)
   
     if(d===0 && t==='log'){
   
@@ -467,8 +467,9 @@ function Curve(d,t){
       }
     })
 
-    document.getElementById("cumCurve").innerHTML = "Cum: "+ selectedWellCum + " MBO, " + selectedWellGasCum + " MMCF, " + totalWater + " MBW";
     document.getElementById("formation").innerHTML = selectedWellFormation;
+    document.getElementById("cumCurve").innerHTML = "Cumulative: "+ selectedWellCum + " Mobls, " + selectedWellGasCum + " MMcf, " + (totalWater + " Mwbls");
+    
   
   });
   });
@@ -518,8 +519,8 @@ function Curve(d,t){
       } 
         })
         //DISPLAY ECONOMICS DATA
-    document.getElementById("pnl").innerHTML = "P&L: ";
-    document.getElementById("monthly").innerHTML = "$"+ wellRMPL.toLocaleString("en-US")+" "+ monthPnL;
+    document.getElementById("pnl").innerHTML = "P&L : " + "$"+ wellRMPL.toLocaleString("en-US")+" "+ monthPnL;
+    //document.getElementById("monthly").innerHTML = "$"+ wellRMPL.toLocaleString("en-US")+" "+ monthPnL;
     document.getElementById("YTD").innerHTML = "$" + wellYTDPL.toLocaleString("en-US")+ " YTD";
   })
 
@@ -533,8 +534,8 @@ function Curve(d,t){
       } 
         })
         //DISPLAY ECONOMICS DATA
-    document.getElementById("payout").innerHTML = "Payout: ";
-    document.getElementById("payout100").innerHTML = payout100.toFixed(0).toLocaleString("en-US")+ "%";
+    document.getElementById("payout").innerHTML = "Payout : " + payout100.toFixed(0).toLocaleString("en-US")+ "%";
+    //document.getElementById("payout100").innerHTML = payout100.toFixed(0).toLocaleString("en-US")+ "%";
   })
 
 };
