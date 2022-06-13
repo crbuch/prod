@@ -208,6 +208,7 @@ async function plot(){
             z: data5[0],
         }
     ];
+
     console.log(typeof alldata)
     try{
         let showData1 = await getShowData(1);
@@ -218,6 +219,7 @@ async function plot(){
     }catch(err){
         console.log(err)
         graph();
+
     };
     async function graph(){
 
