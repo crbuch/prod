@@ -1,6 +1,8 @@
 d3.json("./static/allProductionData.json").then((data) => {
     tableData = data;
-    var yesterdaysDate = tableData[0][1];
+   
+    const yesterdaysDate = tableData[0][1];
+  
     tbody = d3.select("tbody")
 
  function buildTable(tableData) {
@@ -85,3 +87,42 @@ function createDropdownOptions() {
 
   
   });
+async function sortByRecentProd(){
+  event.preventDefault();
+  console.log("j")
+  let allData = await d3.json('./static/allProductionData.json');
+  
+  const yesterdaysDate = allData[0][1];
+  const filteredData = allData.filter(row => row[1] == yesterdaysDate); 
+
+  filteredData.sort((a,b) => {//sorts data high to low by oil production
+    const aVal = a[2];
+    const bVal = b[2];
+    return bVal - aVal
+  });
+
+  function buildTable(filteredData) {
+    tbody = d3.select("tbody")
+    tbody.html("");
+    
+    var dataForTable = [];
+    console.log(filteredData[0]);
+    filteredData.forEach(well => {
+      dataForTable.push(Array(well[0],well[2],well[3],well[4],well[5],well[7]))
+    });
+    dataForTable.forEach((well) => {
+      let row = tbody.append("tr");
+      
+      Object.values(well).forEach((val) => {
+        let cell = row.append("td");
+        cell.text(val);
+        });
+      });
+      document.getElementById("todaysDate").innerHTML = "Production for " + yesterdaysDate
+    }; 
+  
+  buildTable(filteredData)
+};
+d3.select("#Prodfilter").on("click", function(){sortByRecentProd()})
+
+  

@@ -78,26 +78,25 @@ async function plot(){
     let allDataN = [data1[1],data2[1],data3[1],data4[1],data5[1]]
     let allDataTVD = [data1[0],data2[0],data3[0],data4[0],data5[0]]
     
-    let maxE = d3.max(allDataE, function(d){
+    let maxE = d3.max(allDataE,d => {
         return d3.max(d);
     });
-    let maxN = d3.max(allDataN, function(d){
+    let maxN = d3.max(allDataN,d => {
         return d3.max(d);
     });
-    let minE = d3.min(allDataE, function(d){
+    let minE = d3.min(allDataE,d => {
         return d3.min(d);
     });
-    let minN = d3.min(allDataN, function(d){
+    let minN = d3.min(allDataN,d => {
         return d3.min(d);
     });
-    let maxTVD = d3.max(allDataTVD, function(d){
+    let maxTVD = d3.max(allDataTVD,d => {
         return d3.max(d);
     });
-    let minTVD = d3.min(allDataTVD, function(d){
+    let minTVD = d3.min(allDataTVD,d => {
         return d3.min(d);
     });
-    //console.log(maxN)
-    //console.log(minN)
+   
     const scaleMin = 1000
     const scaleMx = 1000
     let layout = {
@@ -106,7 +105,7 @@ async function plot(){
         width: 1645,
         height: 780,
         
-        title:{text: 'Drilling for'+selectedOption+', Dimmit County, TX'},
+        title:{text: 'Drilling for '+selectedOption+', Dimmit County, TX'},
         scene: {
             aspectmode: 'cube',
         xaxis: {
@@ -208,7 +207,7 @@ async function plot(){
             z: data5[0],
         }
     ];
-    //console.log(typeof alldata)
+   
     try{
         let showData1 = await getShowData(1);
         let showData2 = await getShowData(2);
