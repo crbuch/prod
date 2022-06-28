@@ -23,8 +23,6 @@
         padding-top: 15px;  
 }
 
-
-
 #pnlTitle {
         text-align: right;
 }
@@ -40,67 +38,68 @@
         margin-right: -50%;
         transform: translate(-50%, -50%);
     }
-
-#Curve{
-        background-color: rgb(73, 73, 73);
-        border-color: rgb(73, 73, 73);
+#clear-filter-btn{
+        padding: 5px 8px;
+        border-radius: 6px;
+        background-color: rgb(97, 96, 96);
+        border-color: rgb(97, 96, 96);
+        color: white;
+        transition-duration: 0.4s;
 }
-#Cumulative{
-        background-color: rgb(73, 73, 73);
-        border-color: rgb(73, 73, 73);
+#Prodfilter{
+        margin-top: 5px;
+        margin-bottom: 5px;
+        padding: 5px 8px;
+        border-radius: 6px;
+        background-color: rgb(97, 96, 96);
+        border-color: rgb(97, 96, 96);
+        color: white;
+        transition-duration: 0.4s;
 }
-#Recent{
-        background-color: rgb(73, 73, 73);
-        border-color: rgb(73, 73, 73);
+#Prodfilter:hover{
+        background-color: gray; 
+        color: white;
 }
-#Analyze{
-        background-color: rgb(73, 73, 73);
-}
-#WBD{
-        background-color: rgb(73, 73, 73);
-}
-#linear{
-        background-color: rgb(117, 138, 85);
-        border-color: rgb(117, 138, 85);
-}
-#logarithmic{
-        background-color: rgb(117, 138, 85);
-        border-color: rgb(117, 138, 85);
-}
-#table{
-        background-color: rgb(117, 138, 85);
-        border-color: rgb(117, 138, 85);
+#pages{
+        background-color: rgb(97, 96, 96);
+        border-color: rgb(97, 96, 96);
+        transition-duration: 0.4s;
 }
 
-#Inception{
+#view{
+        background-color: rgb(117, 138, 85);
+        border-color: rgb(117, 138, 85);
+        transition-duration: 0.4s;
+}
+
+
+#time{
         background-color: rgb(111, 155, 212);
         border-color: rgb(111, 155, 212);
+        transition-duration: 0.4s;
 }
-#Days365{
+
+#timeLog{
         background-color: rgb(111, 155, 212);
         border-color: rgb(111, 155, 212);
+        transition-duration: 0.4s;
 }
-#Days180{
-        background-color: rgb(111, 155, 212);
-        border-color: rgb(111, 155, 212);
+
+#pages:hover{
+        background-color: gray; 
+        color: white;
 }
-#Days30{
-        background-color: rgb(111, 155, 212);
-        border-color: rgb(111, 155, 212);
+
+#view:hover{
+        background-color: gray; 
+        color: white;
 }
-#InceptionLog{
-        background-color: rgb(111, 155, 212);
-        border-color: rgb(111, 155, 212);
+
+#time:hover{
+        background-color: gray; 
+        color: white;
 }
-#Days365Log{
-        background-color: rgb(111, 155, 212);
-        border-color: black;
-}
-#Days180Log{
-        background-color: rgb(111, 155, 212);
-        border-color: rgb(111, 155, 212);
-}
-#Days30Log{
-        background-color: rgb(111, 155, 212);
-        border-color: rgb(111, 155, 212);
+#clear-filter-btn:hover{
+        background-color: gray; 
+        color: white;
 }
