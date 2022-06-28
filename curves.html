@@ -31,16 +31,17 @@
 <body>
 <!--NAVIGATION BAR TO TOGGLE BETWEEN TABLE IMPORT AND SITE CURVES/TABLE -->
 <nav class="navbar navbar-expand-lg">
-  <a class="navbar-brand" href="index.html">CML EXPLORATION - SOUTH TEXAS</a>
+  <a id="Name" class="navbar-brand" href="index.html" style="color:black">CML EXPLORATION - SOUTH TEXAS</a>
 </nav>
 <div class="container-fluid pb-3 pl-1">
   <div class="row">
     <div class="col-md-12">
-        <a href="curves.html" class="btn btn-md btn-info active" role="button">Curves</a>
-        <a href="allWellProductionTable.html" class="btn btn-md btn-warning" role="button" aria-pressed="true">Cumulative Production</a>
-        <a href="yesterdaysProd.html" class="btn btn-md btn-dark" role="button" aria-pressed="true">Most Recent Production</a>
-        <a href="analyzeTable.html" class="btn btn-md btn-secondary" role="button" aria-pressed="true">Analyze</a>
-        <a href="wbd.html" class="btn btn-md btn-secondary" role="button" aria-pressed="true">WBD Generator</a>
+        <a id="Curve" href="curves.html" class="btn btn-md btn-info active" role="button">Curves</a>
+        <a id="Cumulative" href="allWellProductionTable.html" class="btn btn-info" role="button" aria-pressed="true">Cumulative Production</a>
+        <a id="Recent" href="yesterdaysProd.html" class="btn btn-info" role="button" aria-pressed="true">Most Recent Production</a>
+        <a id="Analyze" href="analyzeTable.html" class="btn btn-md btn-secondary" role="button" aria-pressed="true">Analyze</a>
+        <a id="WBD" href="wbd.html" class="btn btn-md btn-secondary" role="button" aria-pressed="true">WBD Generator</a>
+       
     </div>
   </div>
 </div>
@@ -53,20 +54,20 @@
     </div>
     <div class="col-md-2">
       <button id="linear" type="button" class="btn btn-info active" aria-pressed="true">Linear</button>
-      <button id="logarithmic" type="button" class="btn btn-outline-info">Logarithmic</button>
-      <button id="table" type="button" class="btn btn-danger">Table</button>
+      <button id="logarithmic" type="button" class="btn btn-info">Logarithmic</button>
+      <button id="table" type="button" class="btn btn-info">Table</button>
     </div>
     <div id="timeframes" class="col-md-5">
-      <button id="Inception" type="button" class="btn btn-info active">Inception</button>
-      <button id="Days365" type="button" class="btn btn-info">365 Days</button>
+      <button id="Inception" type="button" class="btn btn-info active" >Inception</button>
+      <button id="Days365" type="button" class="btn btn-info" >365 Days</button>
       <button id="Days180" type="button" class="btn btn-info">180 Days</button>
       <button id="Days30" type="button" class="btn btn-info">30 Days</button>
     </div>
     <div id="timeframesLog" class="col-md-4" style="display: none;">
-      <button id="InceptionLog" type="button" class="btn btn-outline-info">Inception</button>
-      <button id="Days365Log" type="button" class="btn btn-outline-info">365 Days</button>
-      <button id="Days180Log" type="button" class="btn btn-outline-info">180 Days</button>
-      <button id="Days30Log" type="button" class="btn btn-outline-info">30 Days</button>
+      <button id="InceptionLog" type="button" class="btn btn-info">Inception</button>
+      <button id="Days365Log" type="button" class="btn btn-info">365 Days</button>
+      <button id="Days180Log" type="button" class="btn btn-info">180 Days</button>
+      <button id="Days30Log" type="button" class="btn btn-info">30 Days</button>
     </div>
      
   </div>
@@ -110,9 +111,9 @@
         <button type="button" id="DHSL" class="btn btn-secondary"></button>
         <button type="button" id="ideal" class="btn btn-secondary"></button>
         <button type="button" id="pumpEff" class="btn btn-secondary"></button>
-        <button type="button" id="pumpDepth" class="btn btn-dark"></button>
-        <button type="button" id="GFLAP" class="btn btn-dark"></button>
-        <button type="button" id="Inc" class="btn btn-dark"></button>
+        <button type="button" id="pumpDepth" class="btn btn-secondary"></button>
+        <button type="button" id="GFLAP" class="btn btn-secondary"></button>
+        <button type="button" id="Inc" class="btn btn-secondary"></button>
       </div>
     </div>
 
