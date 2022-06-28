@@ -218,6 +218,7 @@ async function plot(){
     }catch(err){
         console.log(err)
         graph();
+
     };
     async function graph(){
 
