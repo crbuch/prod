@@ -44,7 +44,7 @@ async function plot(){
                 DataN.push(data[i].Northing)
             }
             var max = d3.max(data, function(d){return d.Northing})
-            console.log(max)
+            console.log(DataN)
             changesign(DataTVD)
             return [DataTVD, DataN, DataE]
             
@@ -96,8 +96,8 @@ async function plot(){
     let minTVD = d3.min(allDataTVD, function(d){
         return d3.min(d);
     });
-    console.log(maxN)
-    console.log(minN)
+    //console.log(maxN)
+    //console.log(minN)
     const scaleMin = 1000
     const scaleMx = 1000
     let layout = {
@@ -208,8 +208,7 @@ async function plot(){
             z: data5[0],
         }
     ];
-
-    console.log(typeof alldata)
+    //console.log(typeof alldata)
     try{
         let showData1 = await getShowData(1);
         let showData2 = await getShowData(2);

@@ -40,3 +40,67 @@
         margin-right: -50%;
         transform: translate(-50%, -50%);
     }
+
+#Curve{
+        background-color: rgb(73, 73, 73);
+        border-color: rgb(73, 73, 73);
+}
+#Cumulative{
+        background-color: rgb(73, 73, 73);
+        border-color: rgb(73, 73, 73);
+}
+#Recent{
+        background-color: rgb(73, 73, 73);
+        border-color: rgb(73, 73, 73);
+}
+#Analyze{
+        background-color: rgb(73, 73, 73);
+}
+#WBD{
+        background-color: rgb(73, 73, 73);
+}
+#linear{
+        background-color: rgb(117, 138, 85);
+        border-color: rgb(117, 138, 85);
+}
+#logarithmic{
+        background-color: rgb(117, 138, 85);
+        border-color: rgb(117, 138, 85);
+}
+#table{
+        background-color: rgb(117, 138, 85);
+        border-color: rgb(117, 138, 85);
+}
+
+#Inception{
+        background-color: rgb(111, 155, 212);
+        border-color: rgb(111, 155, 212);
+}
+#Days365{
+        background-color: rgb(111, 155, 212);
+        border-color: rgb(111, 155, 212);
+}
+#Days180{
+        background-color: rgb(111, 155, 212);
+        border-color: rgb(111, 155, 212);
+}
+#Days30{
+        background-color: rgb(111, 155, 212);
+        border-color: rgb(111, 155, 212);
+}
+#InceptionLog{
+        background-color: rgb(111, 155, 212);
+        border-color: rgb(111, 155, 212);
+}
+#Days365Log{
+        background-color: rgb(111, 155, 212);
+        border-color: black;
+}
+#Days180Log{
+        background-color: rgb(111, 155, 212);
+        border-color: rgb(111, 155, 212);
+}
+#Days30Log{
+        background-color: rgb(111, 155, 212);
+        border-color: rgb(111, 155, 212);
+}
