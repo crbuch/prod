@@ -89,7 +89,6 @@ function createDropdownOptions() {
   });
 async function sortByRecentProd(){
   event.preventDefault();
-  console.log("j")
   let allData = await d3.json('./static/allProductionData.json');
   
   const yesterdaysDate = allData[0][1];

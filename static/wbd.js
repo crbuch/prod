@@ -1,4 +1,3 @@
-
 function dropdown(){//dropdown for wells
     var select = d3.select('#wellselect');
     d3.json('./datawbd/wellnames.json').then((alldata) => {
