@@ -409,7 +409,8 @@ function Curve(d,t){
     let dataCut = [{
       x: site_date,
       y: water_cut,
-      type: "scatter"
+      line:
+      {color: "#25C4DC"}
     }];
     let layoutCut = {
       autosize: true,
@@ -468,7 +469,7 @@ function Curve(d,t){
     })
 
     document.getElementById("formation").innerHTML = selectedWellFormation;
-    document.getElementById("cumCurve").innerHTML = "Cumulative: "+ selectedWellCum + " Mobls, " + selectedWellGasCum + " MMcf, " + (totalWater + " Mwbls");
+    document.getElementById("cumCurve").innerHTML = "Cumulative: "+ selectedWellCum + " MBO, " + selectedWellGasCum + " MMCF, " + (totalWater + " MBW");
     
   
   });
