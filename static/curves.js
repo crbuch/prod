@@ -1,13 +1,13 @@
 async function getOilPrice() {
-  //var token = config.MY_API_TOKEN;//sets My api token from config var in config.js = token
-  //console.log(token);
+  var token = config.MY_API_TOKEN;//sets My api token from config var in config.js = token
+  console.log(token);
   // Add new token
-  //let response = await fetch('https://commodities-api.com/api/latest?access_key='+token+'&base=USD&symbols=WTIOIL');//makes promise to get get response
-  //let data = await response.json()//converts json(vaule : pairs) data into js object
+  let response = await fetch('https://commodities-api.com/api/latest?access_key='+token+'&base=USD&symbols=WTIOIL');//makes promise to get get response
+  let data = await response.json()//converts json(vaule : pairs) data into js object
   //console.log(data);
-  //return data;
+  return data;
 }
-//getOilPrice().then(data => document.getElementById("WTIOIL").innerHTML = "WTI: $" + (1/data.data.rates.WTIOIL).toFixed(2));//calls promise w/ .then changes vaule of HTML id='WTIOIL' rate found w/ 2 decimals
+getOilPrice().then(data => document.getElementById("WTIOIL").innerHTML = "WTI: $" + (1/data.data.rates.WTIOIL).toFixed(2));//calls promise w/ .then changes vaule of HTML id='WTIOIL' rate found w/ 2 decimals
 
 // FUNCTON TO CREATE WELL OPTIONS DROP DOWN
 function createDropdownOptions() {
