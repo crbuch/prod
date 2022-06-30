@@ -38,68 +38,39 @@
         margin-right: -50%;
         transform: translate(-50%, -50%);
     }
-#clear-filter-btn{
-        padding: 5px 8px;
-        border-radius: 6px;
-        background-color: rgb(97, 96, 96);
-        border-color: rgb(97, 96, 96);
-        color: white;
-        transition-duration: 0.4s;
-}
 #Prodfilter{
         margin-top: 5px;
         margin-bottom: 5px;
-        padding: 5px 8px;
-        border-radius: 6px;
-        background-color: rgb(97, 96, 96);
-        border-color: rgb(97, 96, 96);
-        color: white;
+        padding: 2.5px 8px;
+        font-size: 15px;
+        background-color: whitesmoke;
+        border-color: black;
+        color: black;
         transition-duration: 0.4s;
 }
-#Prodfilter:hover{
-        background-color: gray; 
-        color: white;
+#clearFilter{
+        margin-bottom: 5px;
+        padding: 2.5px 8px;
+        font-size: 15px;
+        background-color: whitesmoke;
+        border-color: black;
+        color: black;
+        transition-duration: 0.4s;
 }
 #pages{
         background-color: rgb(97, 96, 96);
         border-color: rgb(97, 96, 96);
         transition-duration: 0.4s;
 }
-
-#view{
-        background-color: rgb(117, 138, 85);
-        border-color: rgb(117, 138, 85);
-        transition-duration: 0.4s;
+#Prodfilter:hover{
+        background-color: gray; 
+        color: white;
 }
-
-
-#time{
-        background-color: rgb(111, 155, 212);
-        border-color: rgb(111, 155, 212);
-        transition-duration: 0.4s;
-}
-
-#timeLog{
-        background-color: rgb(111, 155, 212);
-        border-color: rgb(111, 155, 212);
-        transition-duration: 0.4s;
-}
-
 #pages:hover{
         background-color: gray; 
         color: white;
 }
-
-#view:hover{
-        background-color: gray; 
-        color: white;
-}
-
-#time:hover{
-        background-color: gray; 
-        color: white;
-}
-#clear-filter-btn:hover{
+#clearFilter:hover{
         background-color: gray; 
         color: white;
 }
