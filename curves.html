@@ -31,15 +31,17 @@
 <body>
 <!--NAVIGATION BAR TO TOGGLE BETWEEN TABLE IMPORT AND SITE CURVES/TABLE -->
 <nav class="navbar navbar-expand-lg">
-  <a class="navbar-brand" href="index.html">CML EXPLORATION - SOUTH TEXAS</a>
+  <a class="navbar-brand" href="index.html" style="color:black">CML EXPLORATION - SOUTH TEXAS</a>
 </nav>
 <div class="container-fluid pb-3 pl-1">
   <div class="row">
     <div class="col-md-12">
-        <a href="curves.html" class="btn btn-md btn-info active" role="button">Curves</a>
-        <a href="allWellProductionTable.html" class="btn btn-md btn-warning" role="button" aria-pressed="true">Cumulative Production</a>
-        <a href="yesterdaysProd.html" class="btn btn-md btn-dark" role="button" aria-pressed="true">Most Recent Production</a>
-        <a href="analyzeTable.html" class="btn btn-md btn-secondary" role="button" aria-pressed="true">Analyze</a>
+        <a id="pages" href="curves.html" class="btn btn-md btn-info active" role="button">Curves</a>
+        <a id="pages" href="allWellProductionTable.html" class="btn btn-info" role="button" aria-pressed="true">Cumulative Production</a>
+        <a id="pages" href="yesterdaysProd.html" class="btn btn-info" role="button" aria-pressed="true">Most Recent Production</a>
+        <a id="pages" href="analyzeTable.html" class="btn btn-md btn-secondary" role="button" aria-pressed="true">Analyze</a>
+        <a id="pages" href="wbd.html" class="btn btn-md btn-secondary" role="button" aria-pressed="true">WBD Generator</a>
+       
     </div>
   </div>
 </div>
@@ -51,21 +53,21 @@
       </select>
     </div>
     <div class="col-md-2">
-      <button id="linear" type="button" class="btn btn-info active" aria-pressed="true">Linear</button>
-      <button id="logarithmic" type="button" class="btn btn-outline-info">Logarithmic</button>
-      <button id="table" type="button" class="btn btn-danger">Table</button>
+      <button id="view" type="button" class="btn btn-info active" aria-pressed="true">Linear</button>
+      <button id="view" type="button" class="btn btn-info">Logarithmic</button>
+      <button id="view" type="button" class="btn btn-info">Table</button>
     </div>
     <div id="timeframes" class="col-md-5">
-      <button id="Inception" type="button" class="btn btn-info active">Inception</button>
-      <button id="Days365" type="button" class="btn btn-info">365 Days</button>
-      <button id="Days180" type="button" class="btn btn-info">180 Days</button>
-      <button id="Days30" type="button" class="btn btn-info">30 Days</button>
+      <button id="time" type="button" class="btn btn-info active" >Inception</button>
+      <button id="time" type="button" class="btn btn-info" >365 Days</button>
+      <button id="time" type="button" class="btn btn-info">180 Days</button>
+      <button id="time" type="button" class="btn btn-info">30 Days</button>
     </div>
     <div id="timeframesLog" class="col-md-4" style="display: none;">
-      <button id="InceptionLog" type="button" class="btn btn-outline-info">Inception</button>
-      <button id="Days365Log" type="button" class="btn btn-outline-info">365 Days</button>
-      <button id="Days180Log" type="button" class="btn btn-outline-info">180 Days</button>
-      <button id="Days30Log" type="button" class="btn btn-outline-info">30 Days</button>
+      <button id="timeLog" type="button" class="btn btn-info">Inception</button>
+      <button id="timeLog" type="button" class="btn btn-info">365 Days</button>
+      <button id="timeLog" type="button" class="btn btn-info">180 Days</button>
+      <button id="timeLog" type="button" class="btn btn-info">30 Days</button>
     </div>
      
   </div>
@@ -81,26 +83,22 @@
   <div id="detailedData" class="row">
     <div class="col-md-3" id="formCum">
       <h5 id="formation"></h5>
-      <h5 id="cumCurve"></h5>
+      <h5 id="cumCurve">
+        <h5 id="waterTotal"></h5>
+      </h5>
+      
     </div>
-    <div id="pnlTitle" class="col-md-1">
+    <div id="pnlTitle" class="col-md-3">
       <h5 id="pnl"></h5>
+      <h5 id="YTD"></h5> 
     </div>
-    <div id="profitLoss" class="col-md-2">
-      <h5 id="monthly"></h5>
-      <h5 id="YTD"></h5>
-    </div>
+    
     <div id="payoutTitle" class="col-md-1">
       <h5 id="payout"></h5>
     </div>
-    <div id="payoutData" class="col-md-2">
-     <h5 id="payout100"></h5>
-      
-    </div>
-    <!-- API FOR PRICE OF OIL -->
     <div id="WTIAPI" class="col-md-3">
-      <h4 id="WTIOIL"></h4>
-      <!-- <h4>WTI: $60</h4> -->
+      <h5 id="WTIOIL"></h5>
+    </div>
     </div>
   </div>
       <div class="col-md-12">
@@ -110,9 +108,9 @@
         <button type="button" id="DHSL" class="btn btn-secondary"></button>
         <button type="button" id="ideal" class="btn btn-secondary"></button>
         <button type="button" id="pumpEff" class="btn btn-secondary"></button>
-        <button type="button" id="pumpDepth" class="btn btn-dark"></button>
-        <button type="button" id="GFLAP" class="btn btn-dark"></button>
-        <button type="button" id="Inc" class="btn btn-dark"></button>
+        <button type="button" id="pumpDepth" class="btn btn-secondary"></button>
+        <button type="button" id="GFLAP" class="btn btn-secondary"></button>
+        <button type="button" id="Inc" class="btn btn-secondary"></button>
       </div>
     </div>
 
@@ -149,6 +147,7 @@
     <div id=oilDeclineCurve></div>
     <div id=gasDeclineCurve></div>
     <div id=waterDeclineCurve></div>
+    <div id=waterCutCurve></div>
   </div>
   </div>
 

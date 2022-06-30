@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CML South Texas</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <script src="https://requirejs.org/docs/release/2.3.5/minified/require.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
+
+    <link rel="stylesheet" href="./css/style.css">
+
+    <!-- FAVICON CODE -->
+    <link rel="apple-touch-icon" sizes="180x180" href="static/favicon_package/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="static/favicon_package/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="static/favicon_package/favicon-16x16.png">
+    <link rel="manifest" href="static/favicon_package/site.webmanifest">
+    <link rel="mask-icon" href="static/favicon_package/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
+</head>
+<body>
+<!--NAVIGATION BAR TO TOGGLE BETWEEN TABLE IMPORT AND SITE CURVES/TABLE -->
+<nav class="navbar navbar-expand-lg">
+  <a class="navbar-brand" href="index.html" style="color:black">CML EXPLORATION - SOUTH TEXAS</a>
+</nav>
+<div class="container-fluid pb-3 pl-1">
+  <div class="row">
+    <div class="col-md-12">
+      <a id="pages" href="curves.html" class="btn btn-md btn-info active" role="button">Curves</a>
+      <a id="pages" href="allWellProductionTable.html" class="btn btn-info" role="button" aria-pressed="true">Cumulative Production</a>
+      <a id="pages" href="yesterdaysProd.html" class="btn btn-md btn-dark" role="button" aria-pressed="true">Most Recent Production</a>
+      <a id="pages" href="analyzeTable.html" class="btn btn-md btn-secondary" role="button" aria-pressed="true">Analyze</a>
+      <a id="pages" href="wbd.html" class="btn btn-md btn-secondary" role="button" aria-pressed="true">WBD Generator</a>
+    </div>
+  </div>
+</div>
+<div class="col-md-12">
+    <select id="wellselect" >
+    <option hidden value="default">Select A Well</option>
+    </select>
+</div>
+<div class='curve'>
+  <div id='graph'></div>
+</div>
+</body>
+<script type='text/javascript' src='config.js'></script>
+<script src="./static/wbd.js"></script>
+</html>

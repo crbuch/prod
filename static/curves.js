@@ -1,24 +1,23 @@
 async function getOilPrice() {
-  var token = config.MY_API_TOKEN;
-  //console.log(token);
+  var token = config.MY_API_TOKEN;//sets My api token from config var in config.js = token
+  console.log(token);
   // Add new token
-  let response = await fetch('https://commodities-api.com/api/latest?access_key='+token+'&base=USD&symbols=WTIOIL');
-  let data = await response.json()
-  console.log(data);
+  let response = await fetch('https://commodities-api.com/api/latest?access_key='+token+'&base=USD&symbols=WTIOIL');//makes promise to get get response
+  let data = await response.json()//converts json(vaule : pairs) data into js object
+  //console.log(data);
   return data;
 }
-getOilPrice().then(data=> document.getElementById("WTIOIL").innerHTML = "WTI: $" + (1/data.data.rates.WTIOIL).toFixed(2)
-
-);
+getOilPrice().then(data => document.getElementById("WTIOIL").innerHTML = "WTI: $" + (1/data.data.rates.WTIOIL).toFixed(2));//calls promise w/ .then changes vaule of HTML id='WTIOIL' rate found w/ 2 decimals
 
 // FUNCTON TO CREATE WELL OPTIONS DROP DOWN
 function createDropdownOptions() {
-  var partnerSelector = d3.select("#siteSelection"); //SELECT <select> WHERE PARTNER NAMES WILL APPEAR
+  var partnerSelector = d3.select("#siteSelection"); //SELECT <select> WHERE PARTNER NAMES WILL APPEAR, find id:siteselection in curves.html 
   d3.json("./static/allProductionData.json").then((allData) => { //READ IN JSON FILE COINTAING ALL PARTNER'S NAMES
     repeatedWells = [] //EMPTY ARRAY TO CONTAIN ALL PARTNER'S NAME (REPEATED)
-    allData.forEach((row) => { //LOOP THROUGH NET_INTEREST FILE
+    allData.forEach((row) => { //LOOP THROUGH NET_INTEREST FILE, calls method element in array: array.foreach(function)
     repeatedWells.push(row[0]) //PUSH ALL PARTNER'S NAME TO LIST 
   });
+  
   wells = [...new Set(repeatedWells)].sort() //CREATE A UNIQUE LIST OF ALL WELLS AND SORT
   wells.forEach((well) => { //FOR EACH OF THE UNIQUE WELLS, CREATE AN OPTION FOR THE DROP DOWN
     partnerSelector
@@ -37,9 +36,9 @@ d3.select("#siteSelection").on('change', function() {Curve(d=0,t='linear');});
 //FUNCTION TO POPULATE CURVE BASED ON ANALYZE CLICK
 function ClickedFromAnalyze(d,t)
 {
-  var clickedFromAnalyzed = sessionStorage.getItem("siteSelection");
+  var clickedFromAnalyzed = sessionStorage.getItem("siteSelection");//gets name of well clicked on in dropdown
 
-if(document.activeElement == document.body){
+if(document.activeElement == document.body){//element in focuses ==
   selectedOption = clickedFromAnalyzed;
   //console.log("body", selectedOption);
 }
@@ -262,7 +261,7 @@ if(pumpingWell["Well Name"].includes(selectedOption)){
 
 }; //END OF ELSE STATEMENT
 
-}
+};
 //console.log(sessionStorage.getItem("siteSelection"))
 // LISTENER FOR PAGE TO LOAD TO CREATE CURVE FROM ANALYZE TABLE
 $( window ).on( "load", ClickedFromAnalyze );
@@ -310,6 +309,7 @@ function Curve(d,t){
       var site_date = [];
       var comments = [];
       var movingAverage = [];
+      let water_cut = [];
   
       data.forEach((site) => {if(site[0] === selectedOption){
        site_date.push(site[9]);
@@ -318,6 +318,7 @@ function Curve(d,t){
         site_water.push(site[4]);
         comments.push(site[7]);
         movingAverage.push(site[8])
+        water_cut.push((site[4]/(site[4]+site[2]))*100)
       };
     });
     
@@ -391,19 +392,35 @@ function Curve(d,t){
       x: site_date,
       y: site_water,
       text: comments,
-      type: "line"
     }];
     var layoutWater = {
       title: "Water (BWPD) vs Time",
       yaxis: {
         type: t,
         rangemode: 'tozero'
-      }
+      },
+      
     };
   
     var config = { modeBarButtonsToRemove: ['sendDataToCloud', 'autoScale2d', 'hoverClosestCartesian', 'hoverCompareCartesian', 'lasso2d', 'zoomIn2d', 'zoomOut2d', 'toggleSpikelines'], displaylogo: false, responsive: true }; //'select2d', 'zoom2d',
   
     Plotly.newPlot("waterDeclineCurve", dataWater, layoutWater, config);
+    
+    let dataCut = [{
+      x: site_date,
+      y: water_cut,
+      type: "scatter"
+    }];
+    let layoutCut = {
+      autosize: true,
+      title: {text:"Water Cut Percentage"},
+      yaxis: {
+        type: 'linear',
+        autorange: true,
+        tickformat: "f"
+      }
+    };
+    Plotly.newPlot("waterCutCurve", dataCut, layoutCut, config)
   
     if(d===0 && t==='log'){
   
@@ -432,7 +449,7 @@ function Curve(d,t){
       var hidetable = document.getElementById("individualTable");
       hidetable.style.display = "none";
     }
-  })
+  
   
   document.getElementById("siteSelection").focus();
   
@@ -440,6 +457,8 @@ function Curve(d,t){
     var selectedWellCum = 0;
     var selectedWellGasCum = 0;
     var selectedWellFormation = "";
+    let totalWater = Math.round((site_water.reduce((partialSum, a) => partialSum + a, 0))/1000);
+    
     cumData.forEach(wellCum=> {
       if(selectedOption ===  wellCum[0]){
         selectedWellCum = wellCum[1];
@@ -447,11 +466,13 @@ function Curve(d,t){
         selectedWellFormation = wellCum[4]
       }
     })
-    document.getElementById("cumCurve").innerHTML = "Cum: "+ selectedWellCum + " MBBLS, " + selectedWellGasCum + " MMCF";
+
     document.getElementById("formation").innerHTML = selectedWellFormation;
+    document.getElementById("cumCurve").innerHTML = "Cumulative: "+ selectedWellCum + " Mobls, " + selectedWellGasCum + " MMcf, " + (totalWater + " Mwbls");
+    
   
-  })
-  
+  });
+  });
   d3.json("./static/pumpInfo.json").then((pumpData) => {
     var pumpingInfoToShow = {"Well Name": "doesn't exist because it is not pumping"};
     pumpData.forEach((pumpingWell) => {
@@ -480,7 +501,7 @@ function Curve(d,t){
       $("#notPumping").html("This well is not pumping");
   });    
   }
-  })
+  });
 //READ IN ECONOMICS DATA
   d3.json("./static/economics.json").then((economicsData) => {
     //console.log(economicsData[0])
@@ -498,8 +519,8 @@ function Curve(d,t){
       } 
         })
         //DISPLAY ECONOMICS DATA
-    document.getElementById("pnl").innerHTML = "P&L: ";
-    document.getElementById("monthly").innerHTML = "$"+ wellRMPL.toLocaleString("en-US")+" "+ monthPnL;
+    document.getElementById("pnl").innerHTML = "P&L : " + "$"+ wellRMPL.toLocaleString("en-US")+" "+ monthPnL;
+    //document.getElementById("monthly").innerHTML = "$"+ wellRMPL.toLocaleString("en-US")+" "+ monthPnL;
     document.getElementById("YTD").innerHTML = "$" + wellYTDPL.toLocaleString("en-US")+ " YTD";
   })
 
@@ -513,8 +534,8 @@ function Curve(d,t){
       } 
         })
         //DISPLAY ECONOMICS DATA
-    document.getElementById("payout").innerHTML = "Payout: ";
-    document.getElementById("payout100").innerHTML = payout100.toFixed(0).toLocaleString("en-US")+ "%";
+    document.getElementById("payout").innerHTML = "Payout : " + payout100.toFixed(0).toLocaleString("en-US")+ "%";
+    //document.getElementById("payout100").innerHTML = payout100.toFixed(0).toLocaleString("en-US")+ "%";
   })
 
 };
@@ -558,6 +579,7 @@ function table() {
     });
     })
 };
+
 
 
 //LINEAR LISTENERS//
