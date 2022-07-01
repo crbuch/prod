@@ -416,7 +416,6 @@ function Curve(timeFrame, scale) {
     };
 
     if (scale == "log") {
-      Plotly.newPlot("log", dataOil, layoutLog, config);
       Plotly.newPlot("oilDeclineCurve", dataOil, layoutLog, config);
       Plotly.newPlot("gasDeclineCurve", dataGas, layoutLog, config);
       Plotly.newPlot("waterDeclineCurve", dataWater, layoutLog, config);
