@@ -62,6 +62,12 @@
         border-color: rgb(97, 96, 96);
         transition-duration: 0.4s;
 }
+#curvesbutton{
+        margin-left: 12px;
+        background-color: rgb(97, 96, 96);
+        border-color: rgb(97, 96, 96);
+        transition-duration: 0.4s;
+}
 #Prodfilter:hover{
         background-color: gray; 
         color: white;
