@@ -167,9 +167,27 @@ html,body{
 #RecentProd{
         margin-top: 1%;
 }
-@media all and (max-width:800px) 
+@media all and (max-width:767px) 
 {
-    #curveOptions, #siteSelection,#view,#view > a#timeframes > a,#timeframesLog > a
+    #curveOptions, #view
+    {
+        display: block; 
+        float: none; 
+        width: 100%;
+    }
+}
+@media all and (max-width:767px) 
+{
+    #curveOptions, #siteSelection
+    {
+        display: block; 
+        float: none; 
+        width: 100%;
+    }
+}
+@media all and (max-width:767px) 
+{
+    .row, #timeframes
     {
         display: block; 
         float: none; 
