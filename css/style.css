@@ -98,6 +98,7 @@ html,body{
 }
 
 #view > a {
+        display: inline-block;
         margin-top: 4%;
         margin-left: 5%;
         border: none;
@@ -148,6 +149,7 @@ html,body{
 }
 
 #curveOptions{
+        position: relative;
         height: 5.5%;
         background-color: rgb(99, 97, 97);
         border-color: rgb(61, 61, 61);
@@ -164,4 +166,13 @@ html,body{
 
 #RecentProd{
         margin-top: 1%;
+}
+@media all and (max-width:800px) 
+{
+    #curveOptions, #siteSelection,#view,#view > a#timeframes > a,#timeframesLog > a
+    {
+        display: block; 
+        float: none; 
+        width: 100%;
+    }
 }
