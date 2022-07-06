@@ -111,6 +111,7 @@ html,body{
         color: white;
 }
 #view{
+        max-width: 500px;
         margin-left: 11%;
         margin-right: 14%;
 }
@@ -149,11 +150,8 @@ html,body{
 }
 
 #curveOptions{
-        position: relative;
-        height: 5.5%;
         background-color: rgb(99, 97, 97);
-        border-color: rgb(61, 61, 61);
-        
+        border-color: rgb(61, 61, 61); 
 }
 
 #cumlativeProd{
@@ -167,30 +165,8 @@ html,body{
 #RecentProd{
         margin-top: 1%;
 }
-@media all and (max-width:767px) 
-{
-    #curveOptions, #view
-    {
-        display: block; 
-        float: none; 
-        width: 100%;
-    }
-}
-@media all and (max-width:767px) 
-{
-    #curveOptions, #siteSelection
-    {
-        display: block; 
-        float: none; 
-        width: 100%;
-    }
-}
-@media all and (max-width:767px) 
-{
-    .row, #timeframes
-    {
-        display: block; 
-        float: none; 
-        width: 100%;
-    }
+#filler{
+        height: 1%;
+        background-color: rgb(99, 97, 97);
+        border-color: rgb(61, 61, 61); 
 }
