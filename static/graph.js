@@ -30,7 +30,6 @@ function createDropdownOptions() {
 //Creates Graphs//
 function Curve(timeFrame, scale) {
     if (d3.select("#siteSelection").node().value != "default") {//clicked on well in dropdown
-        console.log('drop')
         let dropdownMenu = d3.select("#siteSelection").node();
         selectedOption = dropdownMenu.value;
         sessionStorage.removeItem("siteSelection")
