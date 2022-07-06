@@ -1,17 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cumulative Production Table</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link
-      rel="stylesheet"
-      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-      crossorigin="anonymous"
-    />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
     <script src="https://d3js.org/d3.v5.min.js"></script>
 
     <link rel="stylesheet" href="./css/style.css">
@@ -25,51 +22,57 @@
     <meta name="msapplication-TileColor" content="#da532c">
     <meta name="theme-color" content="#ffffff">
 </head>
+
 <body>
-<!--NAVIGATION BAR -->
-<nav class="navbar navbar-expand-lg">
-    <a class="navbar-brand" href="index.html" style="color:whitesmoke">CML EXPLORATION - SOUTH TEXAS</a>
-    <a id="graphpage" href="curves.html" style="text-decoration:none;color:whitesmoke" >Graph</a>
-    <a id="pages" href="allWellProductionTable.html" style="text-decoration:none;color:whitesmoke">Cumulative Production</a>
-    <a id="pages" href="yesterdaysProd.html" style="text-decoration:none;color:whitesmoke">Most Recent Production</a>
-    <a id="pages" href="analyzeTable.html"  style="text-decoration:none;color:whitesmoke" role="button" >Analyze</a>
-    <a id="pages" href="wbd.html" style="text-decoration:none;color:whitesmoke">WBD Generator</a>
-  </nav>
-<!--CUM TABLE HERE-->
-<div class="container-fluid"> 
-    <div class="row">
-        <div class="col-md-2"></div>
-        <div class="col-md-6">
-            <h2>Cumulative Production</h2>
-        <table class="table table-sm table-striped table-bordered table-hover">
-            <!-- table-dark -->
-            <thead class="thead-dark">
-          <tr>
-            <th>Well Name</th>
-            <th>Oil (MBBLS)</th>
-            <th>Water (MBBLS)</th>
-            <th>Gas (MMCF)</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-    </table>
-</div>
-<div class="col-md-2">
-    <div class="container-fluid" id="filters">
-        <form>
-            <h5>Filter Data Here</h5>
-            <ul class="list-group">
-                <li class="list-group-item">
-                    <select id='siteFilter'>
-                        <option hidden value="default">Select A Well</option> 
-                    </select>
-                </li>
-                <button id="Prodfilter">Sort By Oil Production</button>
-                <button id="clearFilter" onClick="window.location.reload();">Clear Filters</button>
-            </ul>
-        </form>
-    </div> 
-</div>
-<script src="static/table.js"></script>
+    <!--NAVIGATION BAR -->
+    <nav class="navbar navbar-expand-lg">
+        <a class="navbar-brand" href="index.html" style="color:whitesmoke">CML EXPLORATION - SOUTH TEXAS</a>
+        <a id="graphpage" href="curves.html" style="text-decoration:none;color:whitesmoke">Graph</a>
+        <a id="pages" href="allWellProductionTable.html" style="text-decoration:none;color:whitesmoke">Cumulative
+            Production</a>
+        <a id="pages" href="yesterdaysProd.html" style="text-decoration:none;color:whitesmoke">Most Recent
+            Production</a>
+        <a id="pages" href="analyzeTable.html" style="text-decoration:none;color:whitesmoke" role="button">Analyze</a>
+        <a id="pages" href="wbd.html" style="text-decoration:none;color:whitesmoke">WBD Generator</a>
+    </nav>
+    <!--CUM TABLE HERE-->
+    <div id = "cumlativeProd" class="container-fluid">
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-6">
+                <h2>Cumulative Production</h2>
+                <table class="table table-sm table-striped table-bordered table-hover">
+                    <!-- table-dark -->
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Well Name</th>
+                            <th>Oil (MBBLS)</th>
+                            <th>Water (MBBLS)</th>
+                            <th>Gas (MMCF)</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+            <div class="col-md-2">
+                <div class="container-fluid" id="filters">
+                    <form>
+                        <h5>Filter Data Here</h5>
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <select id='siteFilter'>
+                                    <option hidden value="default">Select A Well</option>
+                                </select>
+                            </li>
+                            <button id="Prodfilter">Sort By Oil Production</button>
+                            <button id="clearFilter" onClick="window.location.reload();">Clear Filters</button>
+                        </ul>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+            <script src="static/table.js"></script>
 </body>
+
 </html>
