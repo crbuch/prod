@@ -1,11 +1,12 @@
 function dropdown(){//dropdown for wells
     var select = d3.select('#wellselect');
-    d3.json('./datawbd/wellnames.json').then((alldata) => {
+    d3.json('./datawbd/wellNames.json').then((alldata) => {
         wellname = []
         alldata.forEach((i) => {
             wellname.push(i[0])
         });
         wells = [...new Set(wellname)].sort()
+        console.log(wells)
         wells.forEach((i) => { 
         select
         .append('option')
@@ -25,8 +26,10 @@ let changesign = x => {//switches signs in array
 
 async function plot(){
     const dropdownMenu = d3.select("#wellselect").node();
-    const selectedOption = dropdownMenu.value;//gives wellname chosen
-    console.log(selectedOption);
+    const wellName = dropdownMenu.value;
+    let selectedOption = dropdownMenu.value;//gives wellname chosen
+    selectedOption = selectedOption.replace(" ","");
+    selectedOption = selectedOption.replace("#","");
     async function getData(j){
         let bore = new d3.csv('./datawbd/'+selectedOption+j+'.csv').then((data) =>{//reads csv file
             DataTVD = [];
@@ -41,8 +44,7 @@ async function plot(){
                 DataTVD.push(data[i].TVD)
                 DataE.push(data[i].Easting)
                 DataN.push(data[i].Northing)
-            }
-            var max = d3.max(data, function(d){return d.Northing})
+            };
             console.log(DataN)
             changesign(DataTVD)
             return [DataTVD, DataN, DataE]
@@ -89,22 +91,20 @@ async function plot(){
     let minN = d3.min(allDataN,d => {
         return d3.min(d);
     });
-    let maxTVD = d3.max(allDataTVD,d => {
-        return d3.max(d);
-    });
     let minTVD = d3.min(allDataTVD,d => {
         return d3.min(d);
     });
    
     const scaleMin = 1000
     const scaleMx = 1000
+    
     let layout = {
         showlegend: false,
         autosize: false,
-        width: 1645,
+        width: 1620,
         height: 780,
         
-        title:{text: 'Drilling for '+selectedOption+', Dimmit County, TX'},
+        title:{text: 'Drilling for '+wellName+', Dimmit County, TX'},
         scene: {
             aspectmode: 'cube',
         xaxis: {
@@ -352,7 +352,7 @@ async function plot(){
             }
         ];
         
-        Plotly.newPlot('graph',allBoreData,layout,{displayModeBar: false} )
+        Plotly.newPlot('graph',allBoreData,layout);
     };
     
 };

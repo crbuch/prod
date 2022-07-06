@@ -31,48 +31,40 @@
 <body>
 <!--NAVIGATION BAR TO TOGGLE BETWEEN TABLE IMPORT AND SITE CURVES/TABLE -->
 <nav class="navbar navbar-expand-lg">
-  <a class="navbar-brand" href="index.html" style="color:black">CML EXPLORATION - SOUTH TEXAS</a>
+  <a class="navbar-brand" href="index.html" style="color:whitesmoke">CML EXPLORATION - SOUTH TEXAS</a>
+  <a id="graphpage" href="curves.html" style="text-decoration:none;color:whitesmoke" >Graph</a>
+  <a id="pages" href="allWellProductionTable.html" style="text-decoration:none;color:whitesmoke">Cumulative Production</a>
+  <a id="pages" href="yesterdaysProd.html" style="text-decoration:none;color:whitesmoke">Most Recent Production</a>
+  <a id="pages" href="analyzeTable.html"  style="text-decoration:none;color:whitesmoke" role="button" >Analyze</a>
+  <a id="pages" href="wbd.html" style="text-decoration:none;color:whitesmoke">WBD Generator</a>
 </nav>
-<div class="container-fluid pb-3 pl-1">
-  <div class="row">
-    <div class="col-md-12">
-        <a id="curvesbutton" href="curves.html" class="btn btn-md btn-info active" role="button">Curves</a>
-        <a id="pages" href="allWellProductionTable.html" class="btn btn-info" role="button" aria-pressed="true">Cumulative Production</a>
-        <a id="pages" href="yesterdaysProd.html" class="btn btn-info" role="button" aria-pressed="true">Most Recent Production</a>
-        <a id="pages" href="analyzeTable.html" class="btn btn-md btn-secondary" role="button" aria-pressed="true">Analyze</a>
-        <a id="pages" href="wbd.html" class="btn btn-md btn-secondary" role="button" aria-pressed="true">WBD Generator</a>
-       
-    </div>
-  </div>
-</div>
-<div class="container-fluid pb-3">
+<div id = "curveOptions" >
   <div class="row">
     <div class="col-md-2">
       <select id="siteSelection" >
         <option hidden value="default">Select A Well</option>
       </select>
     </div>
-    <div class="col-md-2">
-      <button id="linear" type="button" class="btn btn-info " aria-pressed="true">Linear</button>
-      <button id="logarithmic" type="button" class="btn btn-info">Logarithmic</button>
-      <button id="table" type="button" class="btn btn-info">Table</button>
+    <div id="view" class="col-md-2">
+      <a id="linear" style="text-decoration:none;color:whitesmoke">Linear</a>
+      <a id="logarithmic" style="text-decoration:none">Logarithmic</a>
+      <a id="table"style="text-decoration:none">Table</a>
     </div>
     <div id="timeframes" class="col-md-5">
-      <button id="Inception" type="button" class="btn btn-info " >Inception</button>
-      <button id="Days365" type="button" class="btn btn-info " >365 Days</button>
-      <button id="Days180" type="button" class="btn btn-info">180 Days</button>
-      <button id="Days30" type="button" class="btn btn-info">30 Days</button>
+      <a id="Days30"style="text-decoration:none">30 Days</a>
+      <a id="Days180"style="text-decoration:none">180 Days</a>
+      <a id="Days365" style="text-decoration:none" >365 Days</a>
+      <a id="Inception"style="text-decoration:none" >Inception</a>
     </div>
     <div id="timeframesLog" class="col-md-4" style="display: none;">
-      <button id="InceptionLog" type="button" class="btn btn-info">Inception</button>
-      <button id="Days365Log" type="button" class="btn btn-info">365 Days</button>
-      <button id="Days180Log" type="button" class="btn btn-info">180 Days</button>
-      <button id="Days30Log" type="button" class="btn btn-info">30 Days</button>
+      <a id="Days30Log" style="text-decoration:none">30 Days</a>
+      <a id="Days180Log" style="text-decoration:none">180 Days</a>
+      <a id="Days365Log" style="text-decoration:none">365 Days</a>
+      <a id="InceptionLog" style="text-decoration:none">Inception</a>
     </div>
-     
   </div>
 </div>
-
+<div id = "line"></div>
 <div class="container-fluid">
   <div class="row">
     <div class="col-md-12">
@@ -144,9 +136,8 @@
 
   <div id="curves" class="container-fluid">
     <div class="col-md-12">
-    <div id=oilDeclineCurve></div>
-    <div id=gasDeclineCurve></div>
-    <div id=waterDeclineCurve></div>
+    <div id="fluidCurve"></div>
+    
     <div id=waterCutCurve></div>
   </div>
   </div>

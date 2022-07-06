@@ -1,0 +1,34 @@
+<div id=oilDeclineCurve></div>
+    <div id=gasDeclineCurve></div>
+    <div id=waterDeclineCurve></div>
+
+//layouts for old curves//
+
+var layoutOil = {
+    title: "Oil (BOPD) vs Time",
+    yaxis: {
+      type: scale,
+      rangemode: 'tozero',
+      autorange: true
+    },
+    legend: {
+      x: 1,
+      xanchor: 'right',
+      y: 1.2
+    }
+  };
+  var layoutGas = {
+    title: "Gas (MCFD) vs Time",
+    yaxis: {
+      type: scale,
+      rangemode: 'tozero'
+    }
+  };
+  var layoutWater = {
+    title: "Water (BWPD) vs Time",
+    yaxis: {
+      type: scale,
+      rangemode: 'tozero'
+    },
+
+  };

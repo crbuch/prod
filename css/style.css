@@ -1,3 +1,6 @@
+html,body{
+        height:100%;
+}
 #individualTable td:nth-child(1) {
         font-weight: 600;
         
@@ -29,54 +32,125 @@
 #waterTotal {
         text-align: match-parent;
 }
-
-
+.navbar-expand-lg{
+        background-color: rgb(61, 61, 61);
+        margin-bottom: 0px;
+}
 .curve{
         position: absolute;
         top: 50%;
         left: 50%;
         margin-right: -50%;
         transform: translate(-50%, -50%);
-    }
+}
+#wellselect{
+        margin-top: 1%;
+        border-radius: 15px;
+}
 #Prodfilter{
-        margin-top: 5px;
-        margin-bottom: 5px;
-        padding: 2.5px 8px;
-        font-size: 15px;
+        margin-top: 1%;
+        margin-bottom: 1%;
+        padding: 1% 3%;
+        font-size: 95%;
         background-color: whitesmoke;
         border-color: black;
         color: black;
         transition-duration: 0.4s;
 }
 #clearFilter{
-        margin-bottom: 5px;
-        padding: 2.5px 8px;
-        font-size: 15px;
+        padding: 1% 3%;
+        font-size: 95%;
         background-color: whitesmoke;
         border-color: black;
         color: black;
         transition-duration: 0.4s;
 }
+
 #pages{
-        background-color: rgb(97, 96, 96);
-        border-color: rgb(97, 96, 96);
-        transition-duration: 0.4s;
+        margin-right: 2%;
+        background-color: rgb(61, 61, 61);
+        border: none;
 }
-#curvesbutton{
-        margin-left: 12px;
-        background-color: rgb(97, 96, 96);
-        border-color: rgb(97, 96, 96);
-        transition-duration: 0.4s;
+
+#pages:hover{
+        color:white;
 }
+
+#graphpage{
+        margin-left: 14.3%;
+        margin-right: 2%;
+        background-color: rgb(61, 61, 61);
+        border: none;
+}
+
+#graphpage:hover{
+        color:white;
+}
+
 #Prodfilter:hover{
         background-color: gray; 
         color: white;
 }
-#pages:hover{
-        background-color: gray; 
-        color: white;
-}
+
 #clearFilter:hover{
         background-color: gray; 
         color: white;
+}
+
+#view > a {
+        display: inline-block;
+        margin-top: 4%;
+        margin-left: 5%;
+        border: none;
+        background-color: rgb(99, 97, 97); 
+        border-color: rgb(99, 97, 97);
+        color: whitesmoke;
+}
+#view > a:hover{
+        cursor: pointer;
+        color: white;
+}
+#view{
+        margin-left: 11%;
+        margin-right: 14%;
+}
+
+#timeframes > a{
+        display: inline-block;
+        margin-top: 1.5%;
+        margin-left:2%;
+        background-color: rgb(99, 97, 97); 
+        color: whitesmoke;
+}
+
+#timeframes > a:hover{
+        cursor: pointer;
+        color: white;
+}
+
+#timeframesLog > a{
+        display: inline-block;
+        margin-top: 2%;
+        margin-left:2.5%;
+        background-color: rgb(99, 97, 97); 
+        color: whitesmoke;
+}
+
+#timeframesLog > a:hover{
+        cursor: pointer;
+        color: white;
+}
+
+#siteSelection{
+        margin-left: 5.5%;
+        margin-top: 4.5%;
+        border-radius: 15px;
+        background-color: whitesmoke;
+}
+
+#curveOptions{
+        height: 5.5%;
+        background-color: rgb(99, 97, 97);
+        border-color: rgb(61, 61, 61);
+        
 }

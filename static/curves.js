@@ -141,7 +141,7 @@ function ClickedFromAnalyze(timeFrame, scale) {
 
 
 
-      Plotly.newPlot("oilDeclineCurve", dataOil, layoutOil, config);
+      Plotly.newPlot("fluidCurve", dataOil, layoutOil, config);
 
 
       var layoutGas = {
@@ -327,13 +327,14 @@ function Curve(timeFrame, scale) {
       var comments = comments.slice(0, timeFrame);
       var movingAverage = movingAverage.slice(0, timeFrame);
     }
+    const config = { modeBarButtonsToRemove: ['sendDataToCloud', 'autoScale2d', 'hoverClosestCartesian', 'hoverCompareCartesian', 'lasso2d', 'zoomIn2d', 'zoomOut2d', 'toggleSpikelines'], displaylogo: false, responsive: true }; //, 'select2d' , 'zoom2d'
 
 
     var dataOilnorm = {
       x: site_date,
       y: site_oil,
       text: comments,
-      name: "Oil",
+      name: "Oil [Mbo]",
       line:
         { color: "green" }
     };
@@ -346,23 +347,23 @@ function Curve(timeFrame, scale) {
       line:
         { dash: "dot" }
     };
-
-    //ploting data
-    const config = { modeBarButtonsToRemove: ['sendDataToCloud', 'autoScale2d', 'hoverClosestCartesian', 'hoverCompareCartesian', 'lasso2d', 'zoomIn2d', 'zoomOut2d', 'toggleSpikelines'], displaylogo: false, responsive: true }; //, 'select2d' , 'zoom2d'
-
-    var dataOil = [dataOilnorm, dataOilmoving];
-    var dataGas = [{
+    
+    var dataGas = {
       x: site_date,
       y: site_gas,
-      text: comments,
+      type: "line",
+      name: "Gas [MMcf]",
       line:
         { color: "red" }
-    }];
-    var dataWater = [{
+    };
+    var dataWater = {
       x: site_date,
       y: site_water,
-      text: comments,
-    }];
+      type: "line",
+      name: "Water [Mbw]",
+      line:
+        { color: "blue" }
+    };
     let dataCut = [{
       x: site_date,
       y: water_cut,
@@ -370,34 +371,7 @@ function Curve(timeFrame, scale) {
         { color: "#25C4DC" }
     }];
 
-    var layoutOil = {
-      title: "Oil (BOPD) vs Time",
-      yaxis: {
-        type: scale,
-        rangemode: 'tozero',
-        autorange: true
-      },
-      legend: {
-        x: 1,
-        xanchor: 'right',
-        y: 1.2
-      }
-    };
-    var layoutGas = {
-      title: "Gas (MCFD) vs Time",
-      yaxis: {
-        type: scale,
-        rangemode: 'tozero'
-      }
-    };
-    var layoutWater = {
-      title: "Water (BWPD) vs Time",
-      yaxis: {
-        type: scale,
-        rangemode: 'tozero'
-      },
-
-    };
+    
     var layoutCut = {
       autosize: true,
       title: { text: "Water Cut Percentage" },
@@ -408,27 +382,46 @@ function Curve(timeFrame, scale) {
       }
     };
     var layoutLog = {
+      title: "Fluids Produced vs Times",
       yaxis: {
         type: "log",
         range: [0, 3],
         tickvals: [1, 2, 5, 10, 20, 50, 100, 200, 500, 1000]
       },
     };
+    var layoutOver = {
+      title: "Total Production vs Time",
+      yaxis: {
+        type: scale,
+        rangemode: 'tozero',
+        autorange: true
+      },
+      legend: {
+        x: 1,
+        xanchor: 'right',
+        y: 1.2
+      }
+    }
+    //Overlay plot//
+    
+    var dataOil = [dataOilnorm, dataOilmoving];
+    var fluidData = [dataOilnorm,dataGas,dataWater]
 
     if (scale == "log") {
-      Plotly.newPlot("oilDeclineCurve", dataOil, layoutLog, config);
-      Plotly.newPlot("gasDeclineCurve", dataGas, layoutLog, config);
-      Plotly.newPlot("waterDeclineCurve", dataWater, layoutLog, config);
-
+      Plotly.newPlot("fluidCurve", fluidData, layoutLog, config);
+      //Plotly.newPlot("oilDeclineCurve", dataOil, layoutLog, config);
+      //Plotly.newPlot("gasDeclineCurve", dataGas, layoutLog, config);
+      //Plotly.newPlot("waterDeclineCurve", dataWater, layoutLog, config);
     } else {
-      Plotly.newPlot("oilDeclineCurve", dataOil, layoutOil, config);
-      Plotly.newPlot("gasDeclineCurve", dataGas, layoutGas, config);
-      Plotly.newPlot("waterDeclineCurve", dataWater, layoutWater, config);
+      Plotly.newPlot("fluidCurve", fluidData, layoutOver, config);
+      //Plotly.newPlot("oilDeclineCurve", dataOil, layoutOil, config);
+      //Plotly.newPlot("gasDeclineCurve", [dataGas], layoutGas, config);
+      //Plotly.newPlot("waterDeclineCurve", dataWater, layoutWater, config);
     };
     Plotly.newPlot("waterCutCurve", dataCut, layoutCut, config)
     if (timeFrame === 0 && scale === 'log') {
 
-      var showCurves = document.getElementById("curves"); // CURVES IS INITIALLY DISPLAYED AS LINEAR? 
+      var showCurves = document.getElementById("curves"); // CURVES IS INITIALLY DISPLAYED AS LINEAR
       showCurves.style.display = ""
 
       var hideLinear = document.getElementById("timeframes");
@@ -608,8 +601,8 @@ d3.select("#Days365Log").on('click', function () { Curve(timeFrame = 366, scale 
 //TABLE LISTENERS //
 d3.select("#table").on('click', function () { table() });
 
+
 // $(document).ready(function() {
 //   $("#siteSelection").click(sessionStorage.removeItem("siteSelection")); //SHOW WELL IS NOT PUMPING BUTTON
 // });
-
 
