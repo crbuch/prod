@@ -1,172 +1,314 @@
-html,body{
-        height:100%;
+html,
+body {
+  height: 100%;
 }
+
 #individualTable td:nth-child(1) {
-        font-weight: 600;
-        
+  font-weight: 600;
 }
 
 #individualTable th:nth-child(1) {
-        width: 17%;    
+  width: 17%;
 }
 
-#individualTable  {
-        display: none;        
+#individualTable {
+  display: none;
 }
 
-#notPumpingInfo  {
-        display: none;        
+#notPumpingInfo {
+  display: none;
 }
 
 #analyzeTable th:nth-child(1) {
-        width: 15%;    
+  width: 15%;
 }
 
 #pumpInfo {
-        padding-top: 15px;  
+  padding-top: 15px;
 }
 
 #pnlTitle {
-        text-align: right;
+  text-align: right;
 }
+
 #waterTotal {
-        text-align: match-parent;
+  text-align: match-parent;
 }
-.navbar-expand-lg{
-        background-color: rgb(61, 61, 61);
-        margin-bottom: 0px;
+#navbar1 {
+  /*background-color: #1c4662;*/
+  background-color: #1c4662;
+
+  margin-bottom: 0px;
 }
-.curve{
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        margin-right: -50%;
-        transform: translate(-50%, -50%);
+.navbar-brand {
+  margin-left: 1%;
 }
-#wellselect{
-        margin-top: 1%;
-        border-radius: 15px;
+.curve {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
 }
-#Prodfilter{
-        margin-top: 1%;
-        margin-bottom: 1%;
-        padding: 1% 3%;
-        font-size: 95%;
-        background-color: whitesmoke;
-        border-color: black;
-        color: black;
-        transition-duration: 0.4s;
+#wellselect {
+  margin-top: 1%;
+  border-radius: 15px;
 }
-#clearFilter{
-        padding: 1% 3%;
-        font-size: 95%;
-        background-color: whitesmoke;
-        border-color: black;
-        color: black;
-        transition-duration: 0.4s;
+#Prodfilter {
+  margin-top: 1%;
+  margin-bottom: 1%;
+  padding: 1% 3%;
+  font-size: 95%;
+  background-color: whitesmoke;
+  border-color: black;
+  color: black;
+  transition-duration: 0.4s;
+}
+#clearFilter {
+  padding: 1% 3%;
+  font-size: 95%;
+  background-color: whitesmoke;
+  border-color: black;
+  color: black;
+  transition-duration: 0.4s;
 }
 
-#pages{
-        margin-right: 2%;
-        background-color: rgb(61, 61, 61);
-        border: none;
+#pages {
+  margin-left: 1%;
+  color: whitesmoke;
+  border: none;
 }
 
-#pages:hover{
-        color:white;
+#pages:hover {
+  color: #e07719;
 }
 
-#graphpage{
-        margin-left: 14.3%;
-        margin-right: 2%;
-        background-color: rgb(61, 61, 61);
-        border: none;
+#graphpage {
+  margin-left: 1%;
+  color: whitesmoke;
+  border: none;
 }
 
-#graphpage:hover{
-        color:white;
+#graphpage:hover {
+  color: #e07719;
 }
 
-#Prodfilter:hover{
-        background-color: gray; 
-        color: white;
+#Prodfilter:hover {
+  background-color: gray;
+  color: white;
 }
 
-#clearFilter:hover{
-        background-color: gray; 
-        color: white;
+#clearFilter:hover {
+  background-color: gray;
+  color: white;
+}
+
+#view {
+  max-width: 500px;
+  margin-left: 13.2%;
+  margin-right: 9%;
 }
 
 #view > a {
-        display: inline-block;
-        margin-top: 4%;
-        margin-left: 5%;
-        border: none;
-        background-color: rgb(99, 97, 97); 
-        border-color: rgb(99, 97, 97);
-        color: whitesmoke;
+  display: inline-block;
+  margin-top: 4%;
+  margin-left: 5%;
+  border: none;
+  color: black;
+  border-bottom: 2px solid whitesmoke;
 }
-#view > a:hover{
-        cursor: pointer;
-        color: white;
-}
-#view{
-        max-width: 500px;
-        margin-left: 11%;
-        margin-right: 14%;
+#view > a.active {
+  display: inline-block;
+  margin-top: 4%;
+  margin-left: 5%;
+  border: none;
+  color: black;
+  border-bottom: 2px solid black;
 }
 
-#timeframes > a{
-        display: inline-block;
-        margin-top: 1.5%;
-        margin-left:2%;
-        background-color: rgb(99, 97, 97); 
-        color: whitesmoke;
+#view > a:hover {
+  cursor: pointer;
+  color: #e07719;
+  border-bottom: 2px solid black;
 }
 
-#timeframes > a:hover{
-        cursor: pointer;
-        color: white;
+#timeframes > a {
+  display: inline-block;
+  margin-top: 4%;
+  margin-right: 2%;
+  color: black;
 }
 
-#timeframesLog > a{
-        display: inline-block;
-        margin-top: 2%;
-        margin-left:2.5%;
-        background-color: rgb(99, 97, 97); 
-        color: whitesmoke;
+#timeframes > a.active {
+  display: inline-block;
+  margin-top: 4%;
+  margin-right: 2%;
+  color: black;
+  border-bottom: 2px solid black;
 }
 
-#timeframesLog > a:hover{
-        cursor: pointer;
-        color: white;
+#timeframes > a:hover {
+  cursor: pointer;
+  color: #e07719;
+  border-bottom: 2px solid black;
 }
 
-#siteSelection{
-        margin-left: 5.5%;
-        margin-top: 4.5%;
-        border-radius: 15px;
-        background-color: whitesmoke;
+#timeframesLog > a {
+  display: inline-block;
+  margin-top: 4%;
+  margin-right: 2.5%;
+  color: black;
 }
 
-#curveOptions{
-        background-color: rgb(99, 97, 97);
-        border-color: rgb(61, 61, 61); 
+#timeframesLog > a.active {
+  display: inline-block;
+  margin-top: 4%;
+  margin-right: 2%;
+  color: black;
+  border-bottom: 2px solid black;
 }
 
-#cumlativeProd{
-        margin-top: 1%;
+#timeframesLog > a:hover {
+  cursor: pointer;
+  color: #e07719;
+  border-bottom: 2px solid black;
 }
 
-#analyzeTableTot{
-        margin-top:1%;
+#siteSelection {
+  margin-left: 5.5%;
+  margin-top: 4.5%;
+  border-radius: 15px;
+  background-color: whitesmoke;
 }
 
-#RecentProd{
-        margin-top: 1%;
+#curveOptions {
+  background-color: whitesmoke;
+  border-color: rgb(61, 61, 61);
 }
-#filler{
-        height: 1%;
-        background-color: rgb(99, 97, 97);
-        border-color: rgb(61, 61, 61); 
+
+#cumlativeProd {
+  margin-top: 1%;
 }
+
+#analyzeTableTot {
+  margin-top: 1%;
+}
+
+#RecentProd {
+  margin-top: 1%;
+}
+#filler {
+  height: 1%;
+  background-color: whitesmoke;
+  border-color: rgb(61, 61, 61);
+}
+select {
+  text-align-last: center;
+}
+
+#view > button {
+  border-color: none;
+  border: none;
+  border-radius: 10px;
+}
+#filler2 {
+  height: 1%;
+  background-color: white;
+}
+li {
+  white-space: nowrap;
+}
+
+@media (min-width: 768px) {
+  .navbar-nav {
+    float: none;
+    vertical-align: top;
+    margin-left: 18%;
+  }
+  .navbar-nav > li {
+    vertical-align: top;
+    margin-left: 2%;
+  }
+
+  .navbar .navbar-collapse {
+    text-align: center;
+  }
+  #filler0,
+  #filler4,
+  #filler5 {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  body {
+    font-size: medium;
+  }
+  #view,
+  #timeframes,
+  #timeframesLog,
+  #siteSelection {
+    display: block;
+    margin: auto;
+    text-align: center;
+  }
+
+  #siteSelection > a {
+    text-align: center;
+  }
+  #filler0 {
+    height: 10px;
+  }
+  .navbar-toggler {
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+  }
+  .navbar-toggler-icon {
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+  }
+  .navbar-toggler-icon:focus {
+    /*https://stackoverflow.com/questions/42586729/how-can-i-change-the-bootstrap-4-navbar-button-icon-color*/
+    visibility: hidden;
+  }
+
+  #pnl,
+  #wellName {
+    position: absolute;
+  }
+  #YTD {
+    position: relative;
+  }
+
+  #formation {
+    position: relative;
+    text-align: right;
+  }
+  #c,
+  #SPM,
+  #ideal,
+  #DHSL,
+  #pumpEff,
+  #pumpDepth,
+  #GFLAP,
+  #Inc {
+    display: none;
+  }
+  #wellselect {
+    position: absolute;
+  }
+
+  #graph {
+    height: 325px;
+  }
+  #filler4 {
+    height: 24px;
+  }
+  #filler5{
+    height:10px;
+  }
+}
+
+
