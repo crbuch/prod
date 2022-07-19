@@ -105,8 +105,8 @@ body {
 
 #view {
   max-width: 500px;
-  margin-left: 13.2%;
-  margin-right: 9%;
+  margin-left: 12.8%;
+  margin-right: 6.2%;
 }
 
 #view > a {
@@ -227,7 +227,7 @@ li {
   }
   .navbar-nav > li {
     vertical-align: top;
-    margin-left: 2%;
+    margin-left: 4%;
   }
 
   .navbar .navbar-collapse {
@@ -305,14 +305,11 @@ li {
   #filler5{
     height:10px;
   }
-  .navbar-brand{
-    font-size: medium;
-    display: inline-block;
-  }
+  
   #navbar1{
     white-space: nowrap;
   }
-  #navbar-toggler-icon,#navbar-toggler{
+  #navbar-toggler-icon,#navbar-toggler,.navbar-brand{
     display: inline-block;
   }
 

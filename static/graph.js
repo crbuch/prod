@@ -61,6 +61,7 @@ function Curve(timeFrame, scale) {
     selectedOption = sessionStorage.getItem("siteSelection");
     console.log(selectedOption);
   }
+  resetActive("linear", "Inception");
 
   document.getElementById("zoomOil").style.visibility = "hidden"; //dont display old zoom data if switching b/t wells/timeframes
 
@@ -528,6 +529,6 @@ d3.select("#table").on("click", () => {
 });
 
 //Redirected from Analyze//
-$(window).on("load", Curve((timeFrame = 0), (scale = "linear")));
+$(window).on("load", Curve((timeFrame = 31), (scale = "linear")),resetActive("linear", "Days30"));
 
 // Get the container element
