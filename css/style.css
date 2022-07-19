@@ -316,7 +316,7 @@ li {
     display: none;
   }
   .navbar-brand::after{
-    content: "CML EXP - SOUTH Texas";
+    content: "CML EXP - SOUTH TEXAS";
   }
 
 }
