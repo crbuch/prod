@@ -270,12 +270,11 @@ li {
     box-shadow: none !important;
   }
   .navbar-toggler-icon:focus {
-    /*https://stackoverflow.com/questions/42586729/how-can-i-change-the-bootstrap-4-navbar-button-icon-color*/
     visibility: hidden;
   }
 
   #pnl,
-  #wellName {
+  #wellName,#wellselect {
     position: absolute;
   }
   #YTD {
@@ -296,9 +295,6 @@ li {
   #Inc {
     display: none;
   }
-  #wellselect {
-    position: absolute;
-  }
 
   #graph {
     height: 325px;
@@ -309,6 +305,17 @@ li {
   #filler5{
     height:10px;
   }
+  .navbar-brand{
+    font-size: medium;
+    display: inline-block;
+  }
+  #navbar1{
+    white-space: nowrap;
+  }
+  #navbar-toggler-icon,#navbar-toggler{
+    display: inline-block;
+  }
+
 }
 
 
