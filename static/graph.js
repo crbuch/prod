@@ -221,8 +221,8 @@ function Curve(timeFrame, scale) {
       Plotly.newPlot("oilDeclineCurve", dataOil, layoutLog, {
         showSendToCloud: true,
       });
-      Plotly.newPlot("gasDeclineCurve", dataGas, layoutLog, config);
-      Plotly.newPlot("waterDeclineCurve", dataWater, layoutLog, config);
+      Plotly.newPlot("gasDeclineCurve", [dataGas], layoutLog, config);
+      Plotly.newPlot("waterDeclineCurve", [dataWater], layoutLog, config);
     } else {
       //Plotly.newPlot("fluidCurve", fluidData, layoutOver, config);
       Plotly.newPlot("oilDeclineCurve", dataOil, layoutOil, config);
