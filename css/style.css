@@ -41,7 +41,7 @@ body {
   margin-bottom: 0px;
 }
 .navbar-brand {
-  margin-left: 1%;
+  margin-left: .5%;
 }
 .curve {
   position: absolute;
@@ -53,6 +53,7 @@ body {
 #wellselect {
   margin-top: 1%;
   border-radius: 15px;
+  margin-left: 1%;
 }
 #Prodfilter {
   margin-top: 1%;
@@ -105,8 +106,8 @@ body {
 
 #view {
   max-width: 500px;
-  margin-left: 16.8%;
-  margin-right: 6%;
+  margin-left: 16.5%;
+  margin-right: 6.1%;
 }
 
 #view > a {
@@ -175,7 +176,7 @@ body {
 }
 
 #siteSelection {
-  margin-left: 5.5%;
+  margin-left: .5%;
   margin-top: 4.5%;
   border-radius: 15px;
   background-color: whitesmoke;
@@ -311,6 +312,9 @@ li {
   }
   #navbar-toggler-icon,#navbar-toggler,.navbar-brand{
     display: inline-block;
+  }
+  .navbar-brand{
+    margin-left: 2%;
   }
   .navbar-brand span{
     display: none;
