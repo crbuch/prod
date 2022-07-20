@@ -1,6 +1,6 @@
 function dropdown(){//dropdown for wells
     var select = d3.select('#wellselect');
-    d3.json('./datawbd/wellNames.json').then((alldata) => {
+    d3.json('./datawbd/wells.json').then((alldata) => {
         wellname = []
         alldata.forEach((i) => {
             wellname.push(i[0])
