@@ -133,7 +133,7 @@ function Curve(timeFrame, scale) {
       x: site_date,
       y: site_oil,
       text: comments,
-      name: "Oil [Mbo]",
+      name: "Oil",
       line: { color: "green" },
     };
 
