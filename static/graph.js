@@ -1,22 +1,20 @@
 //dyn underline active buttons//
-function activeLine(tag, id) {
-  for (let i = 0; i < tag.length; i++) {
-    tag[i].addEventListener("click", function () {
-      var current = document
-        .getElementById(id)
-        .getElementsByClassName("active");
-      current[0].className = current[0].className.replace("active", "");
-      this.className += "active";
-    });
-  }
-}
-
-function resetActive(view, time) {
+function setActive(view, time) {
   var elems = document.querySelectorAll(".active");
   [].forEach.call(elems, (el) => {
     el.classList.remove("active");
   });
   document.getElementById(view).className += "active";
+  document.getElementById(time).className += "active";
+}
+function setActiveTime(time) {
+  var elems = document.querySelectorAll(".active");
+  [].forEach.call(elems, (el) => {
+    //console.log('el.id :>> ', el.id);
+    if (el.id.includes("Days")) {
+      el.classList.remove("active");
+    }
+  });
   document.getElementById(time).className += "active";
 }
 
@@ -50,7 +48,7 @@ function createDropdownOptions() {
 }
 
 //Creates Graphs//
-function Curve(timeFrame, scale) {
+function Curve(timeFrame) {
   if (d3.select("#siteSelection").node().value != "default") {
     //clicked on well in dropdown
     let dropdownMenu = d3.select("#siteSelection").node();
@@ -59,13 +57,26 @@ function Curve(timeFrame, scale) {
   } else if (sessionStorage.getItem("siteSelection") != null) {
     //redirected from anaylze
     selectedOption = sessionStorage.getItem("siteSelection");
-    console.log(selectedOption);
   }
-  resetActive("linear", "Inception");
-
+  let activeEl = document.querySelectorAll(".active");
+  //console.log(activeEl)
+  activeEl.forEach((el) => {
+    //console.log(el.id)
+    if (el.id == "linear") {
+      console.log("in linear");
+      scale = "linear";
+    } else if (el.id == "logarithmic") {
+      console.log("in log");
+      scale = "log";
+    }
+  });
+  console.log(scale);
   document.getElementById("zoomOil").style.visibility = "hidden"; //dont display old zoom data if switching b/t wells/timeframes
 
   document.getElementById("wellName").innerHTML = selectedOption;
+
+  var hidetable = document.getElementById("individualTable");
+    hidetable.style.display = "none";
 
   //HIDE PUMPING INFO  SINCE THEY WILL BE SHOWING FROM PREVIOUS SELECTION
   var previousPumpInfo = document.getElementById("pumpInfo");
@@ -149,7 +160,7 @@ function Curve(timeFrame, scale) {
       x: site_date,
       y: site_gas,
       type: "line",
-      name: "Gas [MMcf]",
+      name: "Gas [Mcf]",
       line: { color: "red" },
     };
     var dataWater = {
@@ -175,6 +186,9 @@ function Curve(timeFrame, scale) {
         autorange: true,
         tickformat: "f",
       },
+      xaxis: {
+        gridcolor: "#dbdbdb",
+      },
     };
     var layoutLog = {
       title: "Fluids Produced vs Times",
@@ -182,6 +196,10 @@ function Curve(timeFrame, scale) {
         type: "log",
         range: [0, 3],
         tickvals: [1, 2, 5, 10, 20, 50, 100, 200, 500, 1000],
+        gridcolor: "#dbdbdb"
+      },
+      xaxis: {
+        gridcolor: "#dbdbdb",
       },
     };
 
@@ -191,6 +209,10 @@ function Curve(timeFrame, scale) {
         type: scale,
         rangemode: "tozero",
         autorange: true,
+        gridcolor: "#dbdbdb"
+      },
+      xaxis: {
+        gridcolor: "#dbdbdb",
       },
       legend: {
         x: 1,
@@ -203,6 +225,10 @@ function Curve(timeFrame, scale) {
       yaxis: {
         type: scale,
         rangemode: "tozero",
+        gridcolor: "#dbdbdb"
+      },
+      xaxis: {
+        gridcolor: "#dbdbdb",
       },
     };
     var layoutWater = {
@@ -210,6 +236,10 @@ function Curve(timeFrame, scale) {
       yaxis: {
         type: scale,
         rangemode: "tozero",
+        gridcolor: "#dbdbdb",
+      },
+      xaxis: {
+        gridcolor: "#dbdbdb",
       },
     };
 
@@ -247,7 +277,7 @@ function Curve(timeFrame, scale) {
           indexStart = site_date.length - 1;
           indexEnd = 0;
         } else if (
-          //zoomed where no data 
+          //zoomed where no data
           site_date.indexOf(eventdata["xaxis.range[0]"].substring(0, 10)) == -1
         ) {
           indexStart = site_date.length - 1;
@@ -285,61 +315,37 @@ function Curve(timeFrame, scale) {
         document.getElementById("zoomOil").style.visibility = "visible";
       });
 
-    if (timeFrame === 0 && scale === "log") {
-      var showCurves = document.getElementById("curves"); // CURVES IS INITIALLY DISPLAYED AS LINEAR
-      showCurves.style.display = "";
-
-      var hideLinear = document.getElementById("timeframes");
-      hideLinear.style.display = "none";
-
-      var showLog = document.getElementById("timeframesLog");
-      showLog.style.display = "";
-
-      var hidetable = document.getElementById("individualTable");
-      hidetable.style.display = "none";
-    } else if (timeFrame === 0 && scale === "linear") {
-      var hideLog = document.getElementById("timeframesLog");
-      hideLog.style.display = "none";
-
-      var showLinear = document.getElementById("timeframes");
-      showLinear.style.display = "";
-
-      var showCurves = document.getElementById("curves"); // CURVES IS INITIALLY DISPLAYED AS LINEAR?
-      showCurves.style.display = "";
-
-      var hidetable = document.getElementById("individualTable");
-      hidetable.style.display = "none";
-    }
-
     document.getElementById("siteSelection").focus();
     document.getElementById("filler4").style.display = "none";
     d3.json("./static/cumProd.json").then((cumData) => {
       let selectedWellCum = 0;
       let selectedWellGasCum = 0;
+      let selectedWellWaterCum;
       let selectedWellFormation = "";
       let totalWater = Math.round(
         site_water.reduce((partialSum, a) => partialSum + a, 0) / 1000
-      );
+      ); //updates when time frame changes
 
       cumData.forEach((wellCum) => {
         if (selectedOption === wellCum[0]) {
           selectedWellCum = wellCum[1];
           selectedWellGasCum = wellCum[3];
+          selectedWellWaterCum = wellCum[2];
           selectedWellFormation = wellCum[4];
         }
       });
-      if (selectedWellFormation == ""){
+      if (selectedWellFormation == "") {
         document.getElementById("filler4").style.display = "";
       }
-      
+
       document.getElementById("formation").innerHTML = selectedWellFormation;
       document.getElementById("cumlativeData").innerHTML =
         "Cumulative: " +
         selectedWellCum +
         " MBO, " +
         selectedWellGasCum +
-        " MMCF, " +
-        (totalWater + " MBW");
+        " MCF, " +
+        (selectedWellWaterCum + " MBW");
     });
   });
   d3.json("./static/pumpInfo.json").then((pumpData) => {
@@ -437,7 +443,7 @@ function table() {
   //DECLARE ITEM SAVED IN STORAGE
   var clickedFromAnalyzed = sessionStorage.getItem("siteSelection");
   //DECLARE WHAT WILL BE SAVED AS THE SELECTION
-  var selectedOption = "";
+  let selectedOption;
   //USE TO DETERMINE SELECTION USED TO CREATE TABLE
   if (clickedFromAnalyzed == null) {
     //IF NOTHING IN STORAGE USE dropdown.value TO CREATE TABLE
@@ -463,9 +469,6 @@ function table() {
     // //HIDE CURVES & BUTTONS, SHOW TABLE
     $(document).ready(function () {
       $("#individualTable").toggle();
-      // $("#curves").toggle();
-      $("#timeframesLog").toggle();
-      $("#timeframes").toggle();
       var hideCurves = document.getElementById("curves");
       hideCurves.style.display = "";
     });
@@ -475,60 +478,47 @@ function table() {
 //Main//
 createDropdownOptions();
 d3.select("#siteSelection").on("change", () => {
-  Curve((timeFrame = 0), (scale = "linear"));
+  setActive("linear","DaysInception")
+  Curve((timeFrame = 0));
 });
-activeLine(document.getElementById("view").getElementsByTagName("a"), "view");
-activeLine(
-  document.getElementById("timeframes").getElementsByTagName("a"),
-  "timeframes"
-);
-activeLine(
-  document.getElementById("timeframesLog").getElementsByTagName("a"),
-  "timeframesLog"
-);
 
 //LINEAR LISTENERS//
 d3.select("#linear").on("click", () => {
-  Curve((timeFrame = 0), (scale = "linear"));
-  resetActive("linear", "Inception");
+  setActive("linear", "DaysInception");
+  Curve((timeFrame = 0));
 });
-d3.select("#Inception").on("click", () => {
-  Curve((timeFrame = 0), (scale = "linear"));
+d3.select("#logarithmic").on("click", () => {
+  setActive("logarithmic", "DaysInception");
+  Curve((timeFrame = 0));
+});
+d3.select("#DaysInception").on("click", () => {
+  setActiveTime("DaysInception");
+  Curve((timeFrame = 0));
 });
 d3.select("#Days30").on("click", () => {
-  Curve((timeFrame = 31), (scale = "linear"));
+  setActiveTime("Days30");
+  Curve((timeFrame = 31));
 });
 d3.select("#Days180").on("click", () => {
-  Curve((timeFrame = 181), (scale = "linear"));
+  setActiveTime("Days180");
+  Curve((timeFrame = 181));
 });
 d3.select("#Days365").on("click", () => {
-  Curve((timeFrame = 366), (scale = "linear"));
-});
-
-//LOG LISTENERS//
-d3.select("#logarithmic").on("click", () => {
-  Curve((timeFrame = 0), (scale = "log"));
-  resetActive("logarithmic", "InceptionLog");
-});
-d3.select("#InceptionLog").on("click", () => {
-  Curve((timeFrame = 0), (scale = "log"));
-});
-d3.select("#Days30Log").on("click", () => {
-  Curve((timeFrame = 31), (scale = "log"));
-});
-d3.select("#Days180Log").on("click", () => {
-  Curve((timeFrame = 181), (scale = "log"));
-});
-d3.select("#Days365Log").on("click", () => {
-  Curve((timeFrame = 366), (scale = "log"));
+  setActiveTime("Days365");
+  Curve((timeFrame = 366));
 });
 
 //TABLE LISTENER//
 d3.select("#table").on("click", () => {
   table();
+  setActive("table", " ");
 });
 
 //Redirected from Analyze//
-$(window).on("load", Curve((timeFrame = 31), (scale = "linear")),resetActive("linear", "Days30"));
+$(window).on(
+  "load",
+  setActive("linear", "Days30"),
+  Curve((timeFrame = 31)),
+  
+);
 
-// Get the container element
