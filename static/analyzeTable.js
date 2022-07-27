@@ -23,7 +23,7 @@ d3.json("./static/analyze.json").then((data) => {
       $(this).html('<a href="http://127.0.0.1:5502/curves.html">' + $(this).text() + '</a>');
       $(this).click(function () {
         sessionStorage.setItem('siteSelection', $(this).text())
-        console.log(sessionStorage.getItem("siteSelection"))
+        
       })
     });
   });
