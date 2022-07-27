@@ -68,11 +68,13 @@ body {
 }
 .curve {
   position: absolute;
-  top: 50%;
+  top: 51%;
   left: 50%;
   margin-right: -50%;
   transform: translate(-50%, -50%);
 }
+
+
 #navbar1 {
   background-color: #1c4662;
   margin-bottom: 0px;
@@ -273,5 +275,16 @@ li {
     border: none !important;
     outline: none !important;
     box-shadow: none !important;
+  }
+}
+@media(max-width:1200px){
+  #graph {
+    
+  }
+}
+@media(max-width:1900px){
+  #graph {
+    height: 700px;
+    width: auto;
   }
 }

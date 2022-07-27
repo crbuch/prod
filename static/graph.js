@@ -18,16 +18,6 @@ function setActiveTime(time) {
   document.getElementById(time).className += "active";
 }
 
-//Gets oil Price//
-async function getOilPrice() {
-  //var token = config.MY_API_TOKEN;//sets My api token from config var in config.js = token
-  //let response = await fetch('https://commodities-api.com/api/latest?access_key=' + token + '&base=USD&symbols=WTIOIL');//makes promise to get get response
-  //let data = await response.json()//converts json(vaule : pairs) data into js object
-  //console.log(data)//request limit may be reached
-  //return data;
-}
-//getOilPrice().then(data => document.getElementById("WTIOIL").innerHTML = "WTI: $" + (1 / data.data.rates.WTIOIL).toFixed(2));
-
 //Creates Dropdown//
 function createDropdownOptions() {
   var partnerSelector = d3.select("#siteSelection"); //SELECT <select> WHERE PARTNER NAMES WILL APPEAR, find id:siteselection in curves.html
@@ -49,6 +39,7 @@ function createDropdownOptions() {
 
 //Creates Graphs//
 function Curve(timeFrame) {
+  
   if (d3.select("#siteSelection").node().value != "default") {
     //clicked on well in dropdown
     let dropdownMenu = d3.select("#siteSelection").node();
@@ -57,20 +48,19 @@ function Curve(timeFrame) {
   } else if (sessionStorage.getItem("siteSelection") != null) {
     //redirected from anaylze
     selectedOption = sessionStorage.getItem("siteSelection");
+  }else if ((sessionStorage.getItem("siteSelection") == null) && (d3.select("#siteSelection").node().value == "default")) {
+    //first time loading page
+    selectedOption = "Aaron #1";
   }
-  let activeEl = document.querySelectorAll(".active");
-  //console.log(activeEl)
-  activeEl.forEach((el) => {
-    //console.log(el.id)
+  
+  document.querySelectorAll(".active").forEach((el) => {
     if (el.id == "linear") {
-      console.log("in linear");
       scale = "linear";
     } else if (el.id == "logarithmic") {
-      console.log("in log");
       scale = "log";
     }
   });
-  console.log(scale);
+  
   document.getElementById("zoomOil").style.visibility = "hidden"; //dont display old zoom data if switching b/t wells/timeframes
 
   document.getElementById("wellName").innerHTML = selectedOption;
@@ -479,33 +469,33 @@ function table() {
 createDropdownOptions();
 d3.select("#siteSelection").on("change", () => {
   setActive("linear","DaysInception")
-  Curve((timeFrame = 0));
+  Curve(0);
 });
 
-//LINEAR LISTENERS//
+//Graph LISTENERS//
 d3.select("#linear").on("click", () => {
   setActive("linear", "DaysInception");
-  Curve((timeFrame = 0));
+  Curve(0);
 });
 d3.select("#logarithmic").on("click", () => {
   setActive("logarithmic", "DaysInception");
-  Curve((timeFrame = 0));
+  Curve(0);
 });
 d3.select("#DaysInception").on("click", () => {
   setActiveTime("DaysInception");
-  Curve((timeFrame = 0));
+  Curve(0);
 });
 d3.select("#Days30").on("click", () => {
   setActiveTime("Days30");
-  Curve((timeFrame = 31));
+  Curve(31);
 });
 d3.select("#Days180").on("click", () => {
   setActiveTime("Days180");
-  Curve((timeFrame = 181));
+  Curve(181);
 });
 d3.select("#Days365").on("click", () => {
   setActiveTime("Days365");
-  Curve((timeFrame = 366));
+  Curve(366);
 });
 
 //TABLE LISTENER//
@@ -517,8 +507,8 @@ d3.select("#table").on("click", () => {
 //Redirected from Analyze//
 $(window).on(
   "load",
-  setActive("linear", "Days30"),
-  Curve((timeFrame = 31)),
+  setActive("linear", "DaysInception"),
+  Curve(0),
   
 );
 
