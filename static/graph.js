@@ -504,7 +504,7 @@ d3.select("#table").on("click", () => {
   setActive("table", " ");
 });
 
-//Redirected from Analyze//
+//init page on load//
 $(window).on(
   "load",
   setActive("linear", "DaysInception"),
