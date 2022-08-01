@@ -272,6 +272,9 @@ li {
   .nav-item{
     padding-left: 5px !important;
   }
+  #cumlativeData,#pnl,#YTD,#payout{
+    font-size: medium;
+  }
 }
 @media (max-width:1200px){
   .navbar-toggler {

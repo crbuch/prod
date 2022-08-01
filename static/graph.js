@@ -61,6 +61,9 @@ function Curve(timeFrame) {
     }
   });
   
+
+
+
   document.getElementById("zoomOil").style.visibility = "hidden"; //dont display old zoom data if switching b/t wells/timeframes
 
   document.getElementById("wellName").innerHTML = selectedOption;
@@ -85,6 +88,93 @@ function Curve(timeFrame) {
   document.getElementById("GFLAP").innerHTML = "";
   document.getElementById("Inc").innerHTML = "";
   document.getElementById("notPumping").innerHTML = "";
+
+  d3.json("./static/pumpInfo.json").then((pumpData) => {
+    var pumpingInfoToShow = {
+      "Well Name": "doesn'scale exist because it is not pumping",
+    };
+    pumpData.forEach((pumpingWell) => {
+      if (pumpingWell["Well Name"].includes(selectedOption)) {
+        pumpingInfoToShow = pumpingWell;
+      }
+    });
+    if (
+      pumpingInfoToShow["Well Name"].includes(selectedOption) &&
+      pumpingInfoToShow["SPM"] !== 0
+    ) {
+      //USED jQuery LIBRARY TO TOGGLE THE DISPLAY OF #pumpInfo
+      $(document).ready(function () {
+        $("#pumpInfo").toggle();
+      });
+      //SHOW HIDDEN BUTTONS
+      document.getElementById("c").innerHTML = "C: " + pumpingInfoToShow["C"];
+      document.getElementById("SPM").innerHTML =
+        "SPM: " + pumpingInfoToShow["SPM"];
+      document.getElementById("DHSL").innerHTML =
+        "DH SL: " + pumpingInfoToShow["DH SL"];
+      document.getElementById("ideal").innerHTML =
+        "Ideal bfpd: " + pumpingInfoToShow["Ideal bfpd"];
+      document.getElementById("pumpEff").innerHTML =
+        "Pump Eff: " + pumpingInfoToShow["Pump Eff"]; //multiply by 100
+      document.getElementById("pumpDepth").innerHTML =
+        "Pump Depth: " + pumpingInfoToShow["Pump Depth"];
+      document.getElementById("GFLAP").innerHTML =
+        "GFLAP: " + pumpingInfoToShow["GFLAP"];
+      document.getElementById("Inc").innerHTML =
+        "Inc: " + pumpingInfoToShow["Inc"];
+    } else {
+      $(document).ready(function () {
+        $("#notPumpingInfo").toggle();
+        $("#notPumping").html("This well is not pumping");
+      });
+    }
+  });
+  //READ IN ECONOMICS DATA
+  d3.json("./static/economics.json").then((economicsData) => {
+    //console.log(economicsData[0])
+    var wellRMPL = 0;
+    var wellYTDPL = 0;
+    monthPnL = "";
+    economicsData.forEach((ecoWell) => {
+      if (ecoWell["Well Name"].includes(selectedOption)) {
+        wellRMPL = ecoWell["Recent Month P&L"];
+        wellYTDPL = ecoWell["YTD P&L"];
+        monthPnL = ecoWell["Date"].slice(0, 3);
+      }
+    });
+    //DISPLAY ECONOMICS DATA
+    document.getElementById("pnl").innerHTML =
+      "P&L : " +
+      "$" +
+      wellRMPL
+        .toFixed(0)
+        .toString()
+        .replace(/\B(?=(\d{3})+(?!\d))/g, ",") +
+      " " +
+      monthPnL;
+    //document.getElementById("monthly").innerHTML = "$"+ wellRMPL.toLocaleString("en-US")+" "+ monthPnL;
+    document.getElementById("YTD").innerHTML =
+      "$" +
+      wellYTDPL
+        .toFixed(0)
+        .toString()
+        .replace(/\B(?=(\d{3})+(?!\d))/g, ",") +
+      " YTD";
+  });
+
+  //READ IN PAYOUT DATA
+  d3.json("./static/payouts.json").then((payoutsData) => {
+    var payout100 = 0;
+    payoutsData.forEach((payoutWell) => {
+      if (payoutWell["Well Name"].includes(selectedOption)) {
+        payout100 = payoutWell["% Payout"] * 100;
+      }
+    });
+    //DISPLAY ECONOMICS DATA
+    document.getElementById("payout").innerHTML =
+      "Payout : " + payout100.toFixed(0).toLocaleString("en-US") + "%";
+    //document.getElementById("payout100").innerHTML = payout100.toFixed(0).toLocaleString("en-US")+ "%";
+  });
 
   d3.json("./static/allProductionData.json").then((data) => {
     var site_oil = [];
@@ -334,97 +424,12 @@ function Curve(timeFrame) {
         selectedWellCum +
         " MBO, " +
         selectedWellGasCum +
-        " MCF, " +
+        " MMCF, " +
         (selectedWellWaterCum + " MBW");
     });
   });
-  d3.json("./static/pumpInfo.json").then((pumpData) => {
-    var pumpingInfoToShow = {
-      "Well Name": "doesn'scale exist because it is not pumping",
-    };
-    pumpData.forEach((pumpingWell) => {
-      if (pumpingWell["Well Name"].includes(selectedOption)) {
-        pumpingInfoToShow = pumpingWell;
-      }
-    });
-    if (
-      pumpingInfoToShow["Well Name"].includes(selectedOption) &&
-      pumpingInfoToShow["SPM"] !== 0
-    ) {
-      //USED jQuery LIBRARY TO TOGGLE THE DISPLAY OF #pumpInfo
-      $(document).ready(function () {
-        $("#pumpInfo").toggle();
-      });
-      //SHOW HIDDEN BUTTONS
-      document.getElementById("c").innerHTML = "C: " + pumpingInfoToShow["C"];
-      document.getElementById("SPM").innerHTML =
-        "SPM: " + pumpingInfoToShow["SPM"];
-      document.getElementById("DHSL").innerHTML =
-        "DH SL: " + pumpingInfoToShow["DH SL"];
-      document.getElementById("ideal").innerHTML =
-        "Ideal bfpd: " + pumpingInfoToShow["Ideal bfpd"];
-      document.getElementById("pumpEff").innerHTML =
-        "Pump Eff: " + pumpingInfoToShow["Pump Eff"]; //multiply by 100
-      document.getElementById("pumpDepth").innerHTML =
-        "Pump Depth: " + pumpingInfoToShow["Pump Depth"];
-      document.getElementById("GFLAP").innerHTML =
-        "GFLAP: " + pumpingInfoToShow["GFLAP"];
-      document.getElementById("Inc").innerHTML =
-        "Inc: " + pumpingInfoToShow["Inc"];
-    } else {
-      $(document).ready(function () {
-        $("#notPumpingInfo").toggle();
-        $("#notPumping").html("This well is not pumping");
-      });
-    }
-  });
-  //READ IN ECONOMICS DATA
-  d3.json("./static/economics.json").then((economicsData) => {
-    //console.log(economicsData[0])
-    var wellRMPL = 0;
-    var wellYTDPL = 0;
-    monthPnL = "";
-    economicsData.forEach((ecoWell) => {
-      if (ecoWell["Well Name"].includes(selectedOption)) {
-        wellRMPL = ecoWell["Recent Month P&L"];
-        wellYTDPL = ecoWell["YTD P&L"];
-        monthPnL = ecoWell["Date"].slice(0, 3);
-      }
-    });
-    //DISPLAY ECONOMICS DATA
-    document.getElementById("pnl").innerHTML =
-      "P&L : " +
-      "$" +
-      wellRMPL
-        .toFixed(0)
-        .toString()
-        .replace(/\B(?=(\d{3})+(?!\d))/g, ",") +
-      " " +
-      monthPnL;
-    //document.getElementById("monthly").innerHTML = "$"+ wellRMPL.toLocaleString("en-US")+" "+ monthPnL;
-    document.getElementById("YTD").innerHTML =
-      "$" +
-      wellYTDPL
-        .toFixed(0)
-        .toString()
-        .replace(/\B(?=(\d{3})+(?!\d))/g, ",") +
-      " YTD";
-  });
-
-  //READ IN PAYOUT DATA
-  d3.json("./static/payouts.json").then((payoutsData) => {
-    var payout100 = 0;
-    payoutsData.forEach((payoutWell) => {
-      if (payoutWell["Well Name"].includes(selectedOption)) {
-        payout100 = payoutWell["% Payout"] * 100;
-      }
-    });
-    //DISPLAY ECONOMICS DATA
-    document.getElementById("payout").innerHTML =
-      "Payout : " + payout100.toFixed(0).toLocaleString("en-US") + "%";
-    //document.getElementById("payout100").innerHTML = payout100.toFixed(0).toLocaleString("en-US")+ "%";
-  });
-}
+  
+};
 
 //Creates Table//
 function table() {
