@@ -1,5 +1,5 @@
 // Cumulative production
-async function tableOnLoad(){
+async function tableOnLoad() {
   let tableData = await d3.json("./static/cumProd.json");
   let payData = await d3.json("./static/payouts.json");
   console.log(tableData);
@@ -17,14 +17,11 @@ async function tableOnLoad(){
     well[5] = temp;
   });
   tableData.forEach((well) => {
-    well[4] = 100*well[4];
-    well[4] = Number(well[4]).toFixed(2)
- });
- 
+    well[4] = 100 * well[4];
+    well[4] = Number(well[4]).toFixed(2);
+  });
+
   console.log(tableData);
-
-
-
 
   //global declaration of tbody, since it will be accessed in and out of functions
   tbody = d3.select("tbody");
@@ -61,15 +58,13 @@ async function tableOnLoad(){
   buildTable(tableData);
   //create listener for when user wants to filter data
   d3.selectAll("#siteFilter").on("change", handleClick);
-
-};
-
+}
 
 async function sortByProd() {
   event.preventDefault();
   let allData = await d3.json("./static/cumProd.json");
   let payData = await d3.json("./static/payouts.json");
-  
+
   payData.forEach((pay) => {
     allData.forEach((well) => {
       if (well[0] == pay["Well Name"]) {
@@ -84,9 +79,9 @@ async function sortByProd() {
     well[5] = temp;
   });
   allData.forEach((well) => {
-    well[4] = 100*well[4];
-    well[4] = Number(well[4]).toFixed(2)
- });
+    well[4] = 100 * well[4];
+    well[4] = Number(well[4]).toFixed(2);
+  });
 
   allData.sort((a, b) => {
     //sorts data high to low by oil production
@@ -122,22 +117,19 @@ async function sortByPay() {
     if (well[4] == null) {
       well[4] = 0;
     }
-  }
-  );
+  });
   prodData.forEach((well) => {
-     well[4] = 100*well[4];
-     well[4] = Number(well[4]).toFixed(2)
+    well[4] = 100 * well[4];
+    well[4] = Number(well[4]).toFixed(2);
   });
 
-
-  
   prodData.sort((a, b) => {
     const aVal = a[4];
     const bVal = b[4];
     return bVal - aVal;
   });
   //prodData.unshift(["Well Name", "Oil (MBO)","Gas (MMCF)","Water (MBW)", "% Payout", "Formation"]);
-  
+
   buildTable(prodData);
 }
 

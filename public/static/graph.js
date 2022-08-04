@@ -39,7 +39,6 @@ function createDropdownOptions() {
 
 //Creates Graphs//
 function Curve(timeFrame) {
-  
   if (d3.select("#siteSelection").node().value != "default") {
     //clicked on well in dropdown
     let dropdownMenu = d3.select("#siteSelection").node();
@@ -48,11 +47,14 @@ function Curve(timeFrame) {
   } else if (sessionStorage.getItem("siteSelection") != null) {
     //redirected from anaylze
     selectedOption = sessionStorage.getItem("siteSelection");
-  }else if ((sessionStorage.getItem("siteSelection") == null) && (d3.select("#siteSelection").node().value == "default")) {
+  } else if (
+    sessionStorage.getItem("siteSelection") == null &&
+    d3.select("#siteSelection").node().value == "default"
+  ) {
     //first time loading page
     selectedOption = "Aaron #1";
   }
-  
+
   document.querySelectorAll(".active").forEach((el) => {
     if (el.id == "linear") {
       scale = "linear";
@@ -60,16 +62,13 @@ function Curve(timeFrame) {
       scale = "log";
     }
   });
-  
-
-
 
   document.getElementById("zoomOil").style.visibility = "hidden"; //dont display old zoom data if switching b/t wells/timeframes
 
   document.getElementById("wellName").innerHTML = selectedOption;
 
   var hidetable = document.getElementById("individualTable");
-    hidetable.style.display = "none";
+  hidetable.style.display = "none";
 
   //HIDE PUMPING INFO  SINCE THEY WILL BE SHOWING FROM PREVIOUS SELECTION
   var previousPumpInfo = document.getElementById("pumpInfo");
@@ -276,7 +275,7 @@ function Curve(timeFrame) {
         type: "log",
         range: [0, 3],
         tickvals: [1, 2, 5, 10, 20, 50, 100, 200, 500, 1000],
-        gridcolor: "#dbdbdb"
+        gridcolor: "#dbdbdb",
       },
       xaxis: {
         gridcolor: "#dbdbdb",
@@ -289,7 +288,7 @@ function Curve(timeFrame) {
         type: scale,
         rangemode: "tozero",
         autorange: true,
-        gridcolor: "#dbdbdb"
+        gridcolor: "#dbdbdb",
       },
       xaxis: {
         gridcolor: "#dbdbdb",
@@ -305,7 +304,7 @@ function Curve(timeFrame) {
       yaxis: {
         type: scale,
         rangemode: "tozero",
-        gridcolor: "#dbdbdb"
+        gridcolor: "#dbdbdb",
       },
       xaxis: {
         gridcolor: "#dbdbdb",
@@ -323,19 +322,19 @@ function Curve(timeFrame) {
       },
     };
 
-    var dataOil = [dataOilnorm, dataOilmoving];
+    //var dataOil = [dataOilnorm, dataOilmoving];
     //var fluidData = [dataOilnorm, dataGas, dataWater]
 
     if (scale == "log") {
       //Plotly.newPlot("fluidCurve", fluidData, layoutLog, config);
-      Plotly.newPlot("oilDeclineCurve", dataOil, layoutLog, {
+      Plotly.newPlot("oilDeclineCurve", [dataOilnorm, dataOilmoving], layoutLog, {
         showSendToCloud: true,
       });
       Plotly.newPlot("gasDeclineCurve", [dataGas], layoutLog, config);
       Plotly.newPlot("waterDeclineCurve", [dataWater], layoutLog, config);
     } else {
       //Plotly.newPlot("fluidCurve", fluidData, layoutOver, config);
-      Plotly.newPlot("oilDeclineCurve", dataOil, layoutOil, config);
+      Plotly.newPlot("oilDeclineCurve", [dataOilnorm, dataOilmoving], layoutOil, config);
       Plotly.newPlot("gasDeclineCurve", [dataGas], layoutGas, config);
       Plotly.newPlot("waterDeclineCurve", [dataWater], layoutWater, config);
     }
@@ -379,7 +378,7 @@ function Curve(timeFrame) {
           array.slice(i1, i2 + 1).forEach((el) => {
             tot += el;
           });
-          console.log("tot :>> ", tot);
+          
           return tot;
         }
 
@@ -428,8 +427,7 @@ function Curve(timeFrame) {
         (selectedWellWaterCum + " MBW");
     });
   });
-  
-};
+}
 
 //Creates Table//
 function table() {
@@ -464,7 +462,7 @@ function table() {
     // //HIDE CURVES & BUTTONS, SHOW TABLE
     $(document).ready(function () {
       $("#individualTable").toggle();
-      var hideCurves = document.getElementById("curves");
+      var hideCurves = document.getElementById("oilDeclineCurve");
       hideCurves.style.display = "";
     });
   });
@@ -473,7 +471,7 @@ function table() {
 //Main//
 createDropdownOptions();
 d3.select("#siteSelection").on("change", () => {
-  setActive("linear","DaysInception")
+  setActive("linear", "DaysInception");
   Curve(0);
 });
 
@@ -506,14 +504,8 @@ d3.select("#Days365").on("click", () => {
 //TABLE LISTENER//
 d3.select("#table").on("click", () => {
   table();
-  setActive("table", " ");
+  setActive("table", "Days365");
 });
 
 //init page on load//
-$(window).on(
-  "load",
-  setActive("linear", "DaysInception"),
-  Curve(0),
-  
-);
-
+$(window).on("load", setActive("linear", "DaysInception"), Curve(0));
