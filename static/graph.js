@@ -478,15 +478,18 @@ async function table() {
   function buildTable(allData) {
     tbody = d3.select("tbody");
     tbody.html("");
-    console.log(allData)
+    if (selectedOption == "default"){
+      selectedOption = "Aaron #1"
+    }
     allData.forEach((well) => {
       if (well[0] == selectedOption){
+        well.shift()
         let row = tbody.append("tr");
-  
-      Object.values(well).forEach((val) => {
+        Object.values(well).forEach((val) => {
         let cell = row.append("td");
         cell.text(val);
       });
+        
       }
       
     });
