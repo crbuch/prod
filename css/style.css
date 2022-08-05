@@ -218,14 +218,16 @@ li {
     outline: none !important;
     box-shadow: none !important;
   }
-  #pnl,
+  
   #wellName,
-  #wellselect {
+  #wellselect{
     position: absolute;
   }
-  #YTD {
-    position: relative;
+
+  #pnlTitle{
+    text-align: left;
   }
+  
 
   #formation {
     position: relative;
@@ -238,7 +240,7 @@ li {
   #pumpEff,
   #pumpDepth,
   #GFLAP,
-  #Inc {
+  #Inc,#zoomOil {
     display: none;
   }
 
