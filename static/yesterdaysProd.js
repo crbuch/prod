@@ -1,4 +1,6 @@
-d3.json("./static/allProductionData.json").then((data) => {
+let region = document.getElementById("region").text;
+
+d3.json("./static/allProductionData"+region+".json").then((data) => {
   tableData = data;
 
   const yesterdaysDate = tableData[0][1];
@@ -28,7 +30,7 @@ d3.json("./static/allProductionData.json").then((data) => {
 
   function createDropdownOptions() {
     var partnerSelector = d3.select("#wellFilter"); //SELECT <select> WHERE PARTNER NAMES WILL APPEAR
-    d3.json("./static/allProductionData.json").then((allData) => { //READ IN JSON FILE COINTAING ALL PARTNER'S NAMES
+    d3.json("./static/allProductionData"+region+".json").then((allData) => { //READ IN JSON FILE COINTAING ALL PARTNER'S NAMES
       allData.forEach((well) => {
         if (well[1] === yesterdaysDate) {
           partnerSelector
@@ -61,7 +63,7 @@ d3.json("./static/allProductionData.json").then((data) => {
 });
 async function sortByRecentProd() {
   event.preventDefault();
-  let allData = await d3.json('./static/allProductionData.json');
+  let allData = await d3.json('./static/allProductionData'+region+'.json');
 
   const yesterdaysDate = allData[0][1];
   const filteredData = allData.filter(row => row[1] == yesterdaysDate);

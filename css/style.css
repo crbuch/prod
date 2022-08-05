@@ -98,7 +98,13 @@ body {
   border: none;
 }
 
-#pages:hover {
+#pagesET{
+  margin-left: 330%;
+  color: whitesmoke;
+  border: none;
+}
+
+#pages:hover,#pagesET:hover {
   color: #e07719;
 }
 #curveOptions {
@@ -261,10 +267,9 @@ li {
   #navbar-toggler,
   .navbar-brand {
     display: inline-block;
-  }
-  .navbar-brand {
     margin-left: 2%;
   }
+  
   .navbar-brand span {
     display: none;
   }
@@ -285,11 +290,7 @@ li {
     box-shadow: none !important;
   }
 }
-@media(max-width:1200px){
-  #graph {
-    
-  }
-}
+
 @media(max-width:1900px){
   #graph {
     height: 700px;

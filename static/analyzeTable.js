@@ -1,4 +1,5 @@
-d3.json("./static/analyze.json").then((data) => {
+let region = document.getElementById("region").text;
+d3.json("./static/analyze"+region+".json").then((data) => {
   console.log(Object.getOwnPropertyNames(data[0]));
   tableData = data;
   tbody = d3.select("tbody")

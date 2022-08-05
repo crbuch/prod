@@ -21,7 +21,8 @@ function setActiveTime(time) {
 //Creates Dropdown//
 function createDropdownOptions() {
   var partnerSelector = d3.select("#siteSelection"); //SELECT <select> WHERE PARTNER NAMES WILL APPEAR, find id:siteselection in curves.html
-  d3.json("./static/allProductionData.json").then((allData) => {
+  let region = document.getElementById("region").text // ET ST(blank)
+  d3.json("./static/allProductionData"+region+".json").then((allData) => {
     //READ IN JSON FILE COINTAING ALL PARTNER'S NAMES
     repeatedWells = []; //EMPTY ARRAY TO CONTAIN ALL PARTNER'S NAME (REPEATED)
     allData.forEach((row) => {
@@ -39,6 +40,8 @@ function createDropdownOptions() {
 
 //Creates Graphs//
 function Curve(timeFrame) {
+  let region = document.getElementById("region").text // ET ST
+  
   if (d3.select("#siteSelection").node().value != "default") {
     //clicked on well in dropdown
     let dropdownMenu = d3.select("#siteSelection").node();
@@ -49,9 +52,16 @@ function Curve(timeFrame) {
     selectedOption = sessionStorage.getItem("siteSelection");
   } else if (
     sessionStorage.getItem("siteSelection") == null &&
-    d3.select("#siteSelection").node().value == "default"
+    d3.select("#siteSelection").node().value == "default" &&
+    region == "ET"
   ) {
-    //first time loading page
+    //first time loading ETpage
+    selectedOption = "Beal #1";
+  } else if (
+    sessionStorage.getItem("siteSelection") == null &&
+    d3.select("#siteSelection").node().value == "default"
+  ){
+    //first time loading STpage
     selectedOption = "Aaron #1";
   }
 
@@ -71,22 +81,27 @@ function Curve(timeFrame) {
   hidetable.style.display = "none";
 
   //HIDE PUMPING INFO  SINCE THEY WILL BE SHOWING FROM PREVIOUS SELECTION
-  var previousPumpInfo = document.getElementById("pumpInfo");
-  previousPumpInfo.style.display = "none";
+  if (region != "ET"){
+    var previousPumpInfo = document.getElementById("pumpInfo");
+    previousPumpInfo.style.display = "none";
 
-  var previousNotPumpingInfo = document.getElementById("notPumpingInfo");
-  previousNotPumpingInfo.style.display = "none";
+    var previousNotPumpingInfo = document.getElementById("notPumpingInfo");
+    previousNotPumpingInfo.style.display = "none";
 
-  // "CLEANING" PUMP INFO TEXT FOR NEXT SELECTION
-  document.getElementById("c").innerHTML = "";
-  document.getElementById("SPM").innerHTML = "";
-  document.getElementById("DHSL").innerHTML = "";
-  document.getElementById("ideal").innerHTML = "";
-  document.getElementById("pumpEff").innerHTML = "";
-  document.getElementById("pumpDepth").innerHTML = "";
-  document.getElementById("GFLAP").innerHTML = "";
-  document.getElementById("Inc").innerHTML = "";
-  document.getElementById("notPumping").innerHTML = "";
+    // "CLEANING" PUMP INFO TEXT FOR NEXT SELECTION
+    document.getElementById("c").innerHTML = "";
+    document.getElementById("SPM").innerHTML = "";
+    document.getElementById("DHSL").innerHTML = "";
+    document.getElementById("ideal").innerHTML = "";
+    document.getElementById("pumpEff").innerHTML = "";
+    document.getElementById("pumpDepth").innerHTML = "";
+    document.getElementById("GFLAP").innerHTML = "";
+    document.getElementById("Inc").innerHTML = "";
+    document.getElementById("notPumping").innerHTML = "";
+
+
+  }
+  
 
   d3.json("./static/pumpInfo.json").then((pumpData) => {
     var pumpingInfoToShow = {
@@ -106,21 +121,25 @@ function Curve(timeFrame) {
         $("#pumpInfo").toggle();
       });
       //SHOW HIDDEN BUTTONS
-      document.getElementById("c").innerHTML = "C: " + pumpingInfoToShow["C"];
-      document.getElementById("SPM").innerHTML =
-        "SPM: " + pumpingInfoToShow["SPM"];
-      document.getElementById("DHSL").innerHTML =
-        "DH SL: " + pumpingInfoToShow["DH SL"];
-      document.getElementById("ideal").innerHTML =
-        "Ideal bfpd: " + pumpingInfoToShow["Ideal bfpd"];
-      document.getElementById("pumpEff").innerHTML =
-        "Pump Eff: " + pumpingInfoToShow["Pump Eff"]; //multiply by 100
-      document.getElementById("pumpDepth").innerHTML =
-        "Pump Depth: " + pumpingInfoToShow["Pump Depth"];
-      document.getElementById("GFLAP").innerHTML =
-        "GFLAP: " + pumpingInfoToShow["GFLAP"];
-      document.getElementById("Inc").innerHTML =
-        "Inc: " + pumpingInfoToShow["Inc"];
+      if (region != "ET"){
+        document.getElementById("c").innerHTML = "C: " + pumpingInfoToShow["C"];
+        document.getElementById("SPM").innerHTML =
+          "SPM: " + pumpingInfoToShow["SPM"];
+        document.getElementById("DHSL").innerHTML =
+          "DH SL: " + pumpingInfoToShow["DH SL"];
+        document.getElementById("ideal").innerHTML =
+          "Ideal bfpd: " + pumpingInfoToShow["Ideal bfpd"];
+        document.getElementById("pumpEff").innerHTML =
+          "Pump Eff: " + pumpingInfoToShow["Pump Eff"]; //multiply by 100
+        document.getElementById("pumpDepth").innerHTML =
+          "Pump Depth: " + pumpingInfoToShow["Pump Depth"];
+        document.getElementById("GFLAP").innerHTML =
+          "GFLAP: " + pumpingInfoToShow["GFLAP"];
+        document.getElementById("Inc").innerHTML =
+          "Inc: " + pumpingInfoToShow["Inc"];
+
+      }
+      
     } else {
       $(document).ready(function () {
         $("#notPumpingInfo").toggle();
@@ -142,7 +161,8 @@ function Curve(timeFrame) {
       }
     });
     //DISPLAY ECONOMICS DATA
-    document.getElementById("pnl").innerHTML =
+    if (region != "ET"){
+      document.getElementById("pnl").innerHTML =
       "P&L : " +
       "$" +
       wellRMPL
@@ -151,14 +171,17 @@ function Curve(timeFrame) {
         .replace(/\B(?=(\d{3})+(?!\d))/g, ",") +
       " " +
       monthPnL;
-    //document.getElementById("monthly").innerHTML = "$"+ wellRMPL.toLocaleString("en-US")+" "+ monthPnL;
-    document.getElementById("YTD").innerHTML =
-      "$" +
-      wellYTDPL
-        .toFixed(0)
-        .toString()
-        .replace(/\B(?=(\d{3})+(?!\d))/g, ",") +
-      " YTD";
+      //document.getElementById("monthly").innerHTML = "$"+ wellRMPL.toLocaleString("en-US")+" "+ monthPnL;
+      document.getElementById("YTD").innerHTML =
+        "$" +
+        wellYTDPL
+          .toFixed(0)
+          .toString()
+          .replace(/\B(?=(\d{3})+(?!\d))/g, ",") +
+        " YTD";
+
+    }
+    
   });
 
   //READ IN PAYOUT DATA
@@ -170,12 +193,16 @@ function Curve(timeFrame) {
       }
     });
     //DISPLAY ECONOMICS DATA
-    document.getElementById("payout").innerHTML =
+    if (region != "ET"){
+      document.getElementById("payout").innerHTML =
       "Payout : " + payout100.toFixed(0).toLocaleString("en-US") + "%";
     //document.getElementById("payout100").innerHTML = payout100.toFixed(0).toLocaleString("en-US")+ "%";
+
+    }
+    
   });
 
-  d3.json("./static/allProductionData.json").then((data) => {
+  d3.json("./static/allProductionData"+region+".json").then((data) => {
     var site_oil = [];
     var site_gas = [];
     var site_water = [];
@@ -430,7 +457,7 @@ function Curve(timeFrame) {
 }
 
 //Creates Table//
-function table() {
+async function table() {
   //SELECT <select> TO LATER "GRAB" THE SELECTION MADE AS TEXTS
   var dropdownMenu = d3.select("#siteSelection").node();
   //DECLARE ITEM SAVED IN STORAGE
@@ -446,26 +473,29 @@ function table() {
     selectedOption = clickedFromAnalyzed;
   }
   //READ IN FILE WITH DATA FOR TABLE
-  d3.json("./static/allProductionData.json").then((data) => {
-    tableData = data;
+  let tableData = await d3.json("./static/allProductionData"+region+".json");
+  buildTable(tableData)
+  function buildTable(allData) {
     tbody = d3.select("tbody");
     tbody.html("");
-    tableData.forEach((well) => {
-      if (well[0] === selectedOption) {
+    console.log(allData)
+    allData.forEach((well) => {
+      if (well[0] == selectedOption){
         let row = tbody.append("tr");
-        Object.values(well.splice(1, 7)).forEach((val) => {
-          let cell = row.append("td");
-          cell.text(val);
-        });
+  
+      Object.values(well).forEach((val) => {
+        let cell = row.append("td");
+        cell.text(val);
+      });
       }
+      
     });
-    // //HIDE CURVES & BUTTONS, SHOW TABLE
-    $(document).ready(function () {
-      $("#individualTable").toggle();
-      var hideCurves = document.getElementById("oilDeclineCurve");
-      hideCurves.style.display = "";
-    });
-  });
+    document.getElementById("individualTable").style.display = "inline-block"
+    document.getElementById("oilDeclineCurve").style.display = "none"
+    document.getElementById("gasDeclineCurve").style.display = "none"
+    document.getElementById("waterDeclineCurve").style.display = "none"
+    document.getElementById("waterCutCurve").style.display = "none"
+  }
 }
 
 //Main//
@@ -503,8 +533,8 @@ d3.select("#Days365").on("click", () => {
 
 //TABLE LISTENER//
 d3.select("#table").on("click", () => {
+  setActive("table", "DaysInception");
   table();
-  setActive("table", "Days365");
 });
 
 //init page on load//
