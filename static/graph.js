@@ -21,7 +21,8 @@ function setActiveTime(time) {
 //Creates Dropdown//
 function createDropdownOptions() {
   var partnerSelector = d3.select("#siteSelection"); //SELECT <select> WHERE PARTNER NAMES WILL APPEAR, find id:siteselection in curves.html
-  d3.json("./static/allProductionData.json").then((allData) => {
+  let region = document.getElementById("region").text // ET ST(blank)
+  d3.json("./static/allProductionData"+region+".json").then((allData) => {
     //READ IN JSON FILE COINTAING ALL PARTNER'S NAMES
     repeatedWells = []; //EMPTY ARRAY TO CONTAIN ALL PARTNER'S NAME (REPEATED)
     allData.forEach((row) => {
@@ -39,6 +40,7 @@ function createDropdownOptions() {
 
 //Creates Graphs//
 function Curve(timeFrame) {
+  let region = document.getElementById("region").text // ET ST
   
   if (d3.select("#siteSelection").node().value != "default") {
     //clicked on well in dropdown
@@ -48,11 +50,21 @@ function Curve(timeFrame) {
   } else if (sessionStorage.getItem("siteSelection") != null) {
     //redirected from anaylze
     selectedOption = sessionStorage.getItem("siteSelection");
-  }else if ((sessionStorage.getItem("siteSelection") == null) && (d3.select("#siteSelection").node().value == "default")) {
-    //first time loading page
+  } else if (
+    sessionStorage.getItem("siteSelection") == null &&
+    d3.select("#siteSelection").node().value == "default" &&
+    region == "ET"
+  ) {
+    //first time loading ETpage
+    selectedOption = "Beal #1";
+  } else if (
+    sessionStorage.getItem("siteSelection") == null &&
+    d3.select("#siteSelection").node().value == "default"
+  ){
+    //first time loading STpage
     selectedOption = "Aaron #1";
   }
-  
+
   document.querySelectorAll(".active").forEach((el) => {
     if (el.id == "linear") {
       scale = "linear";
@@ -60,33 +72,137 @@ function Curve(timeFrame) {
       scale = "log";
     }
   });
-  
+
   document.getElementById("zoomOil").style.visibility = "hidden"; //dont display old zoom data if switching b/t wells/timeframes
 
   document.getElementById("wellName").innerHTML = selectedOption;
 
   var hidetable = document.getElementById("individualTable");
-    hidetable.style.display = "none";
+  hidetable.style.display = "none";
 
   //HIDE PUMPING INFO  SINCE THEY WILL BE SHOWING FROM PREVIOUS SELECTION
-  var previousPumpInfo = document.getElementById("pumpInfo");
-  previousPumpInfo.style.display = "none";
+  if (region != "ET"){
+    var previousPumpInfo = document.getElementById("pumpInfo");
+    previousPumpInfo.style.display = "none";
 
-  var previousNotPumpingInfo = document.getElementById("notPumpingInfo");
-  previousNotPumpingInfo.style.display = "none";
+    var previousNotPumpingInfo = document.getElementById("notPumpingInfo");
+    previousNotPumpingInfo.style.display = "none";
 
-  // "CLEANING" PUMP INFO TEXT FOR NEXT SELECTION
-  document.getElementById("c").innerHTML = "";
-  document.getElementById("SPM").innerHTML = "";
-  document.getElementById("DHSL").innerHTML = "";
-  document.getElementById("ideal").innerHTML = "";
-  document.getElementById("pumpEff").innerHTML = "";
-  document.getElementById("pumpDepth").innerHTML = "";
-  document.getElementById("GFLAP").innerHTML = "";
-  document.getElementById("Inc").innerHTML = "";
-  document.getElementById("notPumping").innerHTML = "";
+    // "CLEANING" PUMP INFO TEXT FOR NEXT SELECTION
+    document.getElementById("c").innerHTML = "";
+    document.getElementById("SPM").innerHTML = "";
+    document.getElementById("DHSL").innerHTML = "";
+    document.getElementById("ideal").innerHTML = "";
+    document.getElementById("pumpEff").innerHTML = "";
+    document.getElementById("pumpDepth").innerHTML = "";
+    document.getElementById("GFLAP").innerHTML = "";
+    document.getElementById("Inc").innerHTML = "";
+    document.getElementById("notPumping").innerHTML = "";
 
-  d3.json("./static/allProductionData.json").then((data) => {
+
+  }
+  
+
+  d3.json("./static/pumpInfo.json").then((pumpData) => {
+    var pumpingInfoToShow = {
+      "Well Name": "doesn'scale exist because it is not pumping",
+    };
+    pumpData.forEach((pumpingWell) => {
+      if (pumpingWell["Well Name"].includes(selectedOption)) {
+        pumpingInfoToShow = pumpingWell;
+      }
+    });
+    if (
+      pumpingInfoToShow["Well Name"].includes(selectedOption) &&
+      pumpingInfoToShow["SPM"] !== 0
+    ) {
+      //USED jQuery LIBRARY TO TOGGLE THE DISPLAY OF #pumpInfo
+      $(document).ready(function () {
+        $("#pumpInfo").toggle();
+      });
+      //SHOW HIDDEN BUTTONS
+      if (region != "ET"){
+        document.getElementById("c").innerHTML = "C: " + pumpingInfoToShow["C"];
+        document.getElementById("SPM").innerHTML =
+          "SPM: " + pumpingInfoToShow["SPM"];
+        document.getElementById("DHSL").innerHTML =
+          "DH SL: " + pumpingInfoToShow["DH SL"];
+        document.getElementById("ideal").innerHTML =
+          "Ideal bfpd: " + pumpingInfoToShow["Ideal bfpd"];
+        document.getElementById("pumpEff").innerHTML =
+          "Pump Eff: " + pumpingInfoToShow["Pump Eff"]; //multiply by 100
+        document.getElementById("pumpDepth").innerHTML =
+          "Pump Depth: " + pumpingInfoToShow["Pump Depth"];
+        document.getElementById("GFLAP").innerHTML =
+          "GFLAP: " + pumpingInfoToShow["GFLAP"];
+        document.getElementById("Inc").innerHTML =
+          "Inc: " + pumpingInfoToShow["Inc"];
+
+      }
+      
+    } else {
+      $(document).ready(function () {
+        $("#notPumpingInfo").toggle();
+        $("#notPumping").html("This well is not pumping");
+      });
+    }
+  });
+  //READ IN ECONOMICS DATA
+  d3.json("./static/economics.json").then((economicsData) => {
+    //console.log(economicsData[0])
+    var wellRMPL = 0;
+    var wellYTDPL = 0;
+    monthPnL = "";
+    economicsData.forEach((ecoWell) => {
+      if (ecoWell["Well Name"].includes(selectedOption)) {
+        wellRMPL = ecoWell["Recent Month P&L"];
+        wellYTDPL = ecoWell["YTD P&L"];
+        monthPnL = ecoWell["Date"].slice(0, 3);
+      }
+    });
+    //DISPLAY ECONOMICS DATA
+    if (region != "ET"){
+      document.getElementById("pnl").innerHTML =
+      "P&L : " +
+      "$" +
+      wellRMPL
+        .toFixed(0)
+        .toString()
+        .replace(/\B(?=(\d{3})+(?!\d))/g, ",") +
+      " " +
+      monthPnL;
+      //document.getElementById("monthly").innerHTML = "$"+ wellRMPL.toLocaleString("en-US")+" "+ monthPnL;
+      document.getElementById("YTD").innerHTML =
+        "$" +
+        wellYTDPL
+          .toFixed(0)
+          .toString()
+          .replace(/\B(?=(\d{3})+(?!\d))/g, ",") +
+        " YTD";
+
+    }
+    
+  });
+
+  //READ IN PAYOUT DATA
+  d3.json("./static/payouts.json").then((payoutsData) => {
+    var payout100 = 0;
+    payoutsData.forEach((payoutWell) => {
+      if (payoutWell["Well Name"].includes(selectedOption)) {
+        payout100 = payoutWell["% Payout"] * 100;
+      }
+    });
+    //DISPLAY ECONOMICS DATA
+    if (region != "ET"){
+      document.getElementById("payout").innerHTML =
+      "Payout : " + payout100.toFixed(0).toLocaleString("en-US") + "%";
+    //document.getElementById("payout100").innerHTML = payout100.toFixed(0).toLocaleString("en-US")+ "%";
+
+    }
+    
+  });
+
+  d3.json("./static/allProductionData"+region+".json").then((data) => {
     var site_oil = [];
     var site_gas = [];
     var site_water = [];
@@ -186,7 +302,7 @@ function Curve(timeFrame) {
         type: "log",
         range: [0, 3],
         tickvals: [1, 2, 5, 10, 20, 50, 100, 200, 500, 1000],
-        gridcolor: "#dbdbdb"
+        gridcolor: "#dbdbdb",
       },
       xaxis: {
         gridcolor: "#dbdbdb",
@@ -199,7 +315,7 @@ function Curve(timeFrame) {
         type: scale,
         rangemode: "tozero",
         autorange: true,
-        gridcolor: "#dbdbdb"
+        gridcolor: "#dbdbdb",
       },
       xaxis: {
         gridcolor: "#dbdbdb",
@@ -215,7 +331,7 @@ function Curve(timeFrame) {
       yaxis: {
         type: scale,
         rangemode: "tozero",
-        gridcolor: "#dbdbdb"
+        gridcolor: "#dbdbdb",
       },
       xaxis: {
         gridcolor: "#dbdbdb",
@@ -233,19 +349,19 @@ function Curve(timeFrame) {
       },
     };
 
-    var dataOil = [dataOilnorm, dataOilmoving];
+    //var dataOil = [dataOilnorm, dataOilmoving];
     //var fluidData = [dataOilnorm, dataGas, dataWater]
 
     if (scale == "log") {
       //Plotly.newPlot("fluidCurve", fluidData, layoutLog, config);
-      Plotly.newPlot("oilDeclineCurve", dataOil, layoutLog, {
+      Plotly.newPlot("oilDeclineCurve", [dataOilnorm, dataOilmoving], layoutLog, {
         showSendToCloud: true,
       });
       Plotly.newPlot("gasDeclineCurve", [dataGas], layoutLog, config);
       Plotly.newPlot("waterDeclineCurve", [dataWater], layoutLog, config);
     } else {
       //Plotly.newPlot("fluidCurve", fluidData, layoutOver, config);
-      Plotly.newPlot("oilDeclineCurve", dataOil, layoutOil, config);
+      Plotly.newPlot("oilDeclineCurve", [dataOilnorm, dataOilmoving], layoutOil, config);
       Plotly.newPlot("gasDeclineCurve", [dataGas], layoutGas, config);
       Plotly.newPlot("waterDeclineCurve", [dataWater], layoutWater, config);
     }
@@ -289,7 +405,7 @@ function Curve(timeFrame) {
           array.slice(i1, i2 + 1).forEach((el) => {
             tot += el;
           });
-          console.log("tot :>> ", tot);
+          
           return tot;
         }
 
@@ -334,100 +450,14 @@ function Curve(timeFrame) {
         selectedWellCum +
         " MBO, " +
         selectedWellGasCum +
-        " MCF, " +
+        " MMCF, " +
         (selectedWellWaterCum + " MBW");
     });
-  });
-  d3.json("./static/pumpInfo.json").then((pumpData) => {
-    var pumpingInfoToShow = {
-      "Well Name": "doesn'scale exist because it is not pumping",
-    };
-    pumpData.forEach((pumpingWell) => {
-      if (pumpingWell["Well Name"].includes(selectedOption)) {
-        pumpingInfoToShow = pumpingWell;
-      }
-    });
-    if (
-      pumpingInfoToShow["Well Name"].includes(selectedOption) &&
-      pumpingInfoToShow["SPM"] !== 0
-    ) {
-      //USED jQuery LIBRARY TO TOGGLE THE DISPLAY OF #pumpInfo
-      $(document).ready(function () {
-        $("#pumpInfo").toggle();
-      });
-      //SHOW HIDDEN BUTTONS
-      document.getElementById("c").innerHTML = "C: " + pumpingInfoToShow["C"];
-      document.getElementById("SPM").innerHTML =
-        "SPM: " + pumpingInfoToShow["SPM"];
-      document.getElementById("DHSL").innerHTML =
-        "DH SL: " + pumpingInfoToShow["DH SL"];
-      document.getElementById("ideal").innerHTML =
-        "Ideal bfpd: " + pumpingInfoToShow["Ideal bfpd"];
-      document.getElementById("pumpEff").innerHTML =
-        "Pump Eff: " + pumpingInfoToShow["Pump Eff"]; //multiply by 100
-      document.getElementById("pumpDepth").innerHTML =
-        "Pump Depth: " + pumpingInfoToShow["Pump Depth"];
-      document.getElementById("GFLAP").innerHTML =
-        "GFLAP: " + pumpingInfoToShow["GFLAP"];
-      document.getElementById("Inc").innerHTML =
-        "Inc: " + pumpingInfoToShow["Inc"];
-    } else {
-      $(document).ready(function () {
-        $("#notPumpingInfo").toggle();
-        $("#notPumping").html("This well is not pumping");
-      });
-    }
-  });
-  //READ IN ECONOMICS DATA
-  d3.json("./static/economics.json").then((economicsData) => {
-    //console.log(economicsData[0])
-    var wellRMPL = 0;
-    var wellYTDPL = 0;
-    monthPnL = "";
-    economicsData.forEach((ecoWell) => {
-      if (ecoWell["Well Name"].includes(selectedOption)) {
-        wellRMPL = ecoWell["Recent Month P&L"];
-        wellYTDPL = ecoWell["YTD P&L"];
-        monthPnL = ecoWell["Date"].slice(0, 3);
-      }
-    });
-    //DISPLAY ECONOMICS DATA
-    document.getElementById("pnl").innerHTML =
-      "P&L : " +
-      "$" +
-      wellRMPL
-        .toFixed(0)
-        .toString()
-        .replace(/\B(?=(\d{3})+(?!\d))/g, ",") +
-      " " +
-      monthPnL;
-    //document.getElementById("monthly").innerHTML = "$"+ wellRMPL.toLocaleString("en-US")+" "+ monthPnL;
-    document.getElementById("YTD").innerHTML =
-      "$" +
-      wellYTDPL
-        .toFixed(0)
-        .toString()
-        .replace(/\B(?=(\d{3})+(?!\d))/g, ",") +
-      " YTD";
-  });
-
-  //READ IN PAYOUT DATA
-  d3.json("./static/payouts.json").then((payoutsData) => {
-    var payout100 = 0;
-    payoutsData.forEach((payoutWell) => {
-      if (payoutWell["Well Name"].includes(selectedOption)) {
-        payout100 = payoutWell["% Payout"] * 100;
-      }
-    });
-    //DISPLAY ECONOMICS DATA
-    document.getElementById("payout").innerHTML =
-      "Payout : " + payout100.toFixed(0).toLocaleString("en-US") + "%";
-    //document.getElementById("payout100").innerHTML = payout100.toFixed(0).toLocaleString("en-US")+ "%";
   });
 }
 
 //Creates Table//
-function table() {
+async function table() {
   //SELECT <select> TO LATER "GRAB" THE SELECTION MADE AS TEXTS
   var dropdownMenu = d3.select("#siteSelection").node();
   //DECLARE ITEM SAVED IN STORAGE
@@ -443,32 +473,38 @@ function table() {
     selectedOption = clickedFromAnalyzed;
   }
   //READ IN FILE WITH DATA FOR TABLE
-  d3.json("./static/allProductionData.json").then((data) => {
-    tableData = data;
+  let tableData = await d3.json("./static/allProductionData"+region+".json");
+  buildTable(tableData)
+  function buildTable(allData) {
     tbody = d3.select("tbody");
     tbody.html("");
-    tableData.forEach((well) => {
-      if (well[0] === selectedOption) {
+    if (selectedOption == "default"){
+      selectedOption = "Aaron #1"
+    }
+    allData.forEach((well) => {
+      if (well[0] == selectedOption){
+        well.shift()
         let row = tbody.append("tr");
-        Object.values(well.splice(1, 7)).forEach((val) => {
-          let cell = row.append("td");
-          cell.text(val);
-        });
+        Object.values(well).forEach((val) => {
+        let cell = row.append("td");
+        cell.text(val);
+      });
+        
       }
+      
     });
-    // //HIDE CURVES & BUTTONS, SHOW TABLE
-    $(document).ready(function () {
-      $("#individualTable").toggle();
-      var hideCurves = document.getElementById("curves");
-      hideCurves.style.display = "";
-    });
-  });
+    document.getElementById("individualTable").style.display = "inline-block"
+    document.getElementById("oilDeclineCurve").style.display = "none"
+    document.getElementById("gasDeclineCurve").style.display = "none"
+    document.getElementById("waterDeclineCurve").style.display = "none"
+    document.getElementById("waterCutCurve").style.display = "none"
+  }
 }
 
 //Main//
 createDropdownOptions();
 d3.select("#siteSelection").on("change", () => {
-  setActive("linear","DaysInception")
+  setActive("linear", "DaysInception");
   Curve(0);
 });
 
@@ -500,15 +536,9 @@ d3.select("#Days365").on("click", () => {
 
 //TABLE LISTENER//
 d3.select("#table").on("click", () => {
+  setActive("table", "DaysInception");
   table();
-  setActive("table", " ");
 });
 
-//Redirected from Analyze//
-$(window).on(
-  "load",
-  setActive("linear", "DaysInception"),
-  Curve(0),
-  
-);
-
+//init page on load//
+$(window).on("load", setActive("linear", "DaysInception"), Curve(0));

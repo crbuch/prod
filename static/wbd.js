@@ -22,9 +22,14 @@ let changesign = (x) => {
 };
 
 async function plot() {
+  
   const dropdownMenu = d3.select("#wellselect").node();
-  const wellName = dropdownMenu.value;
+  let wellName = dropdownMenu.value;//Title of the well
   let selectedOption = dropdownMenu.value; //gives wellname chosen
+  if(selectedOption == "default"){
+    selectedOption = "Aaron #1";
+    wellName = "Aaron #1";
+  };
   selectedOption = selectedOption.replace(" ", "");
   selectedOption = selectedOption.replace("#", "");
   async function getData(j) {
@@ -384,3 +389,6 @@ async function plot() {
 d3.select("#wellselect").on("change", function () {
   plot();
 });
+
+//init page on load//
+$(window).on("load",function () {plot();});
