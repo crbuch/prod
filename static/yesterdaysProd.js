@@ -1,4 +1,4 @@
-let region = document.getElementById("region").text;
+let region = document.getElementById("region").textContent;
 
 d3.json("./static/allProductionData"+region+".json").then((data) => {
   tableData = data;
@@ -11,7 +11,7 @@ d3.json("./static/allProductionData"+region+".json").then((data) => {
     tbody.html(""); //clear table
     var filteredData = tableData.filter(row => row[1] == yesterdaysDate); //FILTER DATA BASED ON MOST RECENT DATE
     var dataForTable = [];
-    console.log(filteredData[0]);
+    
     filteredData.forEach(well => {
       dataForTable.push(Array(well[0], well[2], well[3], well[4], well[5], well[7]))
     });
@@ -83,7 +83,7 @@ function buildTable(data,yesterdaysDate) {
   tbody.html("");
 
   var dataForTable = [];
-  console.log(data[0]);
+  
   data.forEach(well => {
     dataForTable.push(Array(well[0], well[2], well[3], well[4], well[5], well[7]))
   });

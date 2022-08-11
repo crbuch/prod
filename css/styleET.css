@@ -306,6 +306,11 @@ li {
     #zoomOilTitle{
         padding-left: 0px;
     }
+    #pagesST {
+      margin-left: 1%;
+      color: whitesmoke;
+      border: none;
+    }
 }
 
 
