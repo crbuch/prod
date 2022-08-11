@@ -1,10 +1,10 @@
 // Cumulative production
-let region = document.getElementById("region").text;
+let region = document.getElementById("region").textContent;
 async function tableOnLoad() {
   let tableData = await d3.json("./static/cumProd"+region+".json");
   if (region != "ET"){
     let payData = await d3.json("./static/payouts.json");
-    console.log(tableData);
+    
     payData.forEach((pay) => {
       tableData.forEach((well) => {
         if (well[0] == pay["Well Name"]) {
@@ -25,7 +25,7 @@ async function tableOnLoad() {
   }
   
 
-  console.log(tableData);
+  
 
   //global declaration of tbody, since it will be accessed in and out of functions
   tbody = d3.select("tbody");
@@ -100,8 +100,6 @@ async function sortByPay() {
   event.preventDefault();
   let prodData = await d3.json("./static/cumProd"+region+".json");
   let payData = await d3.json("./static/payouts.json");
-  console.log(prodData);
-  console.log(payData);
   //add % payout from payData to prodData
   payData.forEach((pay) => {
     prodData.forEach((well) => {
@@ -110,7 +108,7 @@ async function sortByPay() {
       }
     });
   });
-  console.log(prodData);
+  
   //switch places of prodData[3] and prodData[4]
   prodData.forEach((well) => {
     let temp = well[4];

@@ -296,4 +296,9 @@ li {
     height: 700px;
     width: auto;
   }
+  #pagesET {
+    margin-left: 1%;
+    color: whitesmoke;
+    border: none;
+  }
 }

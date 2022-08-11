@@ -1,6 +1,5 @@
-let region = document.getElementById("region").text;
+let region = document.getElementById("region").textContent;
 d3.json("./static/analyze"+region+".json").then((data) => {
-  console.log(Object.getOwnPropertyNames(data[0]));
   tableData = data;
   tbody = d3.select("tbody")
 
@@ -10,7 +9,7 @@ d3.json("./static/analyze"+region+".json").then((data) => {
       let row = tbody.append("tr");
       // loop through each value to add a cell for each of it
       Object.values(well).forEach((val) => {
-        //console.log(val)
+
         let cell = row.append("td");
         cell.text(val);
       });

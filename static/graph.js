@@ -21,7 +21,7 @@ function setActiveTime(time) {
 //Creates Dropdown//
 function createDropdownOptions() {
   var partnerSelector = d3.select("#siteSelection"); //SELECT <select> WHERE PARTNER NAMES WILL APPEAR, find id:siteselection in curves.html
-  let region = document.getElementById("region").text // ET ST(blank)
+  let region = document.getElementById("region").textContent // ET ST(blank)
   d3.json("./static/allProductionData"+region+".json").then((allData) => {
     //READ IN JSON FILE COINTAING ALL PARTNER'S NAMES
     repeatedWells = []; //EMPTY ARRAY TO CONTAIN ALL PARTNER'S NAME (REPEATED)
@@ -40,7 +40,7 @@ function createDropdownOptions() {
 
 //Creates Graphs//
 function Curve(timeFrame) {
-  let region = document.getElementById("region").text // ET ST
+  let region = document.getElementById("region").textContent // ET ST
   
   if (d3.select("#siteSelection").node().value != "default") {
     //clicked on well in dropdown
@@ -79,6 +79,11 @@ function Curve(timeFrame) {
 
   var hidetable = document.getElementById("individualTable");
   hidetable.style.display = "none";
+  
+  document.getElementById("oilDeclineCurve").style.display = "block"
+  document.getElementById("gasDeclineCurve").style.display = "block"
+  document.getElementById("waterDeclineCurve").style.display = "block"
+  document.getElementById("waterCutCurve").style.display = "block"
 
   //HIDE PUMPING INFO  SINCE THEY WILL BE SHOWING FROM PREVIOUS SELECTION
   if (region != "ET"){
@@ -203,6 +208,7 @@ function Curve(timeFrame) {
   });
 
   d3.json("./static/allProductionData"+region+".json").then((data) => {
+
     var site_oil = [];
     var site_gas = [];
     var site_water = [];
@@ -484,6 +490,8 @@ async function table() {
     allData.forEach((well) => {
       if (well[0] == selectedOption){
         well.shift()
+        well.splice(well.length-2,2)
+  
         let row = tbody.append("tr");
         Object.values(well).forEach((val) => {
         let cell = row.append("td");
