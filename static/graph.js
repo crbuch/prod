@@ -158,6 +158,7 @@ function Curve(timeFrame) {
     var wellRMPL = 0;
     var wellYTDPL = 0;
     monthPnL = "";
+    console.log(economicsData);
     economicsData.forEach((ecoWell) => {
       if (ecoWell["Well Name"].includes(selectedOption)) {
         wellRMPL = ecoWell["Recent Month P&L"];
