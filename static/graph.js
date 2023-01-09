@@ -513,10 +513,9 @@ async function table() {
 //Main//
 createDropdownOptions();
 d3.select("#siteSelection").on("change", () => {
-  setActive("linear", "DaysInception");
-  Curve(0);
+  setActive("linear", "Days30");
+  Curve(31);
 });
-
 //Graph LISTENERS//
 d3.select("#linear").on("click", () => {
   setActive("linear", "DaysInception");
