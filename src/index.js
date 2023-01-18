@@ -1,6 +1,19 @@
 // entry point 
+import { 
+  hideLoginError, 
+  showLoginState, 
+  showLoginForm, 
+  showApp, 
+  showLoginError, 
+  btnLogin,
+  btnSignup,
+  btnLogout,
+  userEmail,
+  userPassword
+} from './ui'
+
 import { initializeApp } from 'firebase/app';
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { getAuth, onAuthStateChanged, signInWithEmailAndPassword } from 'firebase/auth';
 
 const firebaseConfig = {
     apiKey: "AIzaSyC3yOK_QL5QbJaKvjynXXzObl4uKsoJpTU",
@@ -14,14 +27,37 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-function fetchUser() {
-    onAuthStateChanged(auth, user => {
-        if (user != null) {
-            console.log(user)
-        } else {
-            console.log("na")
-        }
+onAuthStateChanged(auth, user => {
+    if (user != null) {
+        console.log(user)
+    } else {
+        console.log("na")
     }
-    );
 }
-fetchUser();
+);
+
+const login = async () => {
+  console.log('login')
+  //const email = "matt@tst.com";
+  //const password = "123456";
+  const email = userEmail.value
+  const password = userPassword.value
+
+  signInWithEmailAndPassword(auth, email, password)
+  .then((userCredential) => {
+    // Signed in 
+    console.log(email)
+    const user = userCredential.user;
+    
+    window.location.replace("http://127.0.0.1:5502/curves.html")
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+  });
+};
+
+btnLogin.addEventListener('click',login)
+
+
+
