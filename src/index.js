@@ -48,7 +48,9 @@ const login = async () => {
     console.log(email)
     const user = userCredential.user;
     
-    window.location.replace("http://127.0.0.1:5503/../dist/curves.html")
+    //window.location.replace("http://127.0.0.1:5503/../dist/curves.html")
+    window.location.replace("https://matthewplaisance.github.io/STprod/dist/curves.html")
+
   })
   .catch((error) => {
     const errorCode = error.code;
