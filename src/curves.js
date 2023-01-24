@@ -1,3 +1,4 @@
+console.log("in curves.js")
 //dyn underline active buttons//
 function setActive(view, time) {
   var elems = document.querySelectorAll(".active");
@@ -21,8 +22,8 @@ function setActiveTime(time) {
 //Creates Dropdown//
 function createDropdownOptions() {
   var partnerSelector = d3.select("#siteSelection"); //SELECT <select> WHERE PARTNER NAMES WILL APPEAR, find id:siteselection in curves.html
-  let region = document.getElementById("region").textContent // ET ST(blank)
-  d3.json("./static/allProductionData"+region+".json").then((allData) => {
+  let region = document.getElementById("region") // ET ST(blank)
+  d3.json("../data/allProductionData"+region+".json").then((allData) => {
     //READ IN JSON FILE COINTAING ALL PARTNER'S NAMES
     repeatedWells = []; //EMPTY ARRAY TO CONTAIN ALL PARTNER'S NAME (REPEATED)
     allData.forEach((row) => {
@@ -42,6 +43,11 @@ function createDropdownOptions() {
 function Curve(timeFrame) {
   let region = document.getElementById("region").textContent // ET ST
   
+  if (region == null) {
+    region = 'ET'
+    console.log("text con",region)
+  }
+
   if (d3.select("#siteSelection").node().value != "default") {
     //clicked on well in dropdown
     let dropdownMenu = d3.select("#siteSelection").node();
@@ -108,7 +114,7 @@ function Curve(timeFrame) {
   }
   
 
-  d3.json("./static/pumpInfo.json").then((pumpData) => {
+  d3.json("../data/pumpInfo.json").then((pumpData) => {
     var pumpingInfoToShow = {
       "Well Name": "doesn'scale exist because it is not pumping",
     };
@@ -153,7 +159,7 @@ function Curve(timeFrame) {
     }
   });
   //READ IN ECONOMICS DATA
-  d3.json("./static/economics.json").then((economicsData) => {
+  d3.json("../data/economics.json").then((economicsData) => {
     //console.log(economicsData[0])
     var wellRMPL = 0;
     var wellYTDPL = 0;
@@ -191,7 +197,7 @@ function Curve(timeFrame) {
   });
 
   //READ IN PAYOUT DATA
-  d3.json("./static/payouts.json").then((payoutsData) => {
+  d3.json("../data/payouts.json").then((payoutsData) => {
     var payout100 = 0;
     payoutsData.forEach((payoutWell) => {
       if (payoutWell["Well Name"].includes(selectedOption)) {
@@ -208,7 +214,7 @@ function Curve(timeFrame) {
     
   });
 
-  d3.json("./static/allProductionData"+region+".json").then((data) => {
+  d3.json("../data/allProductionData"+region+".json").then((data) => {
 
     var site_oil = [];
     var site_gas = [];
@@ -430,7 +436,7 @@ function Curve(timeFrame) {
 
     document.getElementById("siteSelection").focus();
     document.getElementById("filler4").style.display = "none";
-    d3.json("./static/cumProd.json").then((cumData) => {
+    d3.json("../data/cumProd.json").then((cumData) => {
       let selectedWellCum = 0;
       let selectedWellGasCum = 0;
       let selectedWellWaterCum;
@@ -480,7 +486,7 @@ async function table() {
     selectedOption = clickedFromAnalyzed;
   }
   //READ IN FILE WITH DATA FOR TABLE
-  let tableData = await d3.json("./static/allProductionData"+region+".json");
+  let tableData = await d3.json("../data/allProductionData"+region+".json");
   buildTable(tableData)
   function buildTable(allData) {
     tbody = d3.select("tbody");
@@ -549,4 +555,4 @@ d3.select("#table").on("click", () => {
 });
 
 //init page on load//
-$(window).on("load", setActive("linear", "DaysInception"), Curve(0));
+window.on("load", setActive("linear", "DaysInception"), Curve(0));

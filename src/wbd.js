@@ -1,7 +1,7 @@
 function dropdown() {
   //dropdown for wells
   var select = d3.select("#wellselect");
-  d3.json("./datawbd/wells.json").then((alldata) => {
+  d3.json("../data/datawbd/wells.json").then((alldata) => {
     wellname = [];
     alldata.forEach((i) => {
       wellname.push(i[0]);
@@ -33,7 +33,7 @@ async function plot() {
   selectedOption = selectedOption.replace(" ", "");
   selectedOption = selectedOption.replace("#", "");
   async function getData(j) {
-    let bore = new d3.csv("./datawbd/" + selectedOption + j + ".csv").then(
+    let bore = new d3.csv("../data/datawbd/" + selectedOption + j + ".csv").then(
       (data) => {
         //reads csv file
         DataTVD = [];
@@ -60,7 +60,7 @@ async function plot() {
   }
   async function getShowData(j) {
     let show = new d3.csv(
-      "./datawbd/" + selectedOption + "show" + j + ".csv"
+      "../data/datawbd/" + selectedOption + "show" + j + ".csv"
     ).then((showData) => {
       showDataTVD = [];
       showDataN = [];

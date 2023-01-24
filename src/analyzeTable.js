@@ -1,5 +1,5 @@
 let region = document.getElementById("region").textContent;
-d3.json("./static/analyze"+region+".json").then((data) => {
+d3.json("../data/analyze"+region+".json").then((data) => {
   tableData = data;
   tbody = d3.select("tbody")
 

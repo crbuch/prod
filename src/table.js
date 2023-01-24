@@ -1,9 +1,9 @@
 // Cumulative production
 let region = document.getElementById("region").textContent;
 async function tableOnLoad() {
-  let tableData = await d3.json("./static/cumProd"+region+".json");
+  let tableData = await d3.json("../data/cumProd"+region+".json");
   if (region != "ET"){
-    let payData = await d3.json("./static/payouts.json");
+    let payData = await d3.json("../data/payouts.json");
     
     payData.forEach((pay) => {
       tableData.forEach((well) => {
@@ -32,7 +32,7 @@ async function tableOnLoad() {
 
   function createDropdownOptions() {
     var partnerSelector = d3.select("#siteFilter"); //SELECT <select> WHERE PARTNER NAMES WILL APPEAR
-    d3.json("./static/allProductionData"+region+".json").then((allData) => {
+    d3.json("../data/allProductionData"+region+".json").then((allData) => {
       //READ IN JSON FILE COINTAING ALL PARTNER'S NAMES
       repeatedWells = []; //EMPTY ARRAY TO CONTAIN ALL PARTNER'S NAME (REPEATED)
       allData.forEach((row) => {
@@ -66,8 +66,8 @@ async function tableOnLoad() {
 
 async function sortByProd() {
   event.preventDefault();
-  let allData = await d3.json("./static/cumProd"+region+".json");
-  let payData = await d3.json("./static/payouts.json");
+  let allData = await d3.json("../data/cumProd"+region+".json");
+  let payData = await d3.json("../data/payouts.json");
 
   payData.forEach((pay) => {
     allData.forEach((well) => {
@@ -98,8 +98,8 @@ async function sortByProd() {
 }
 async function sortByPay() {
   event.preventDefault();
-  let prodData = await d3.json("./static/cumProd"+region+".json");
-  let payData = await d3.json("./static/payouts.json");
+  let prodData = await d3.json("../data/cumProd"+region+".json");
+  let payData = await d3.json("../data/payouts.json");
   //add % payout from payData to prodData
   payData.forEach((pay) => {
     prodData.forEach((well) => {

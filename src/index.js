@@ -37,11 +37,10 @@ onAuthStateChanged(auth, user => {
 );
 
 const login = async () => {
-  console.log('login')
-  //const email = "matt@tst.com";
-  //const password = "123456";
-  const email = userEmail.value
-  const password = userPassword.value
+  const email = "matt@tst.com";
+  const password = "123456";
+  //const email = userEmail.value
+  //const password = userPassword.value
 
   signInWithEmailAndPassword(auth, email, password)
   .then((userCredential) => {
@@ -49,7 +48,7 @@ const login = async () => {
     console.log(email)
     const user = userCredential.user;
     
-    window.location.replace("http://127.0.0.1:5502/curves.html")
+    window.location.replace("http://127.0.0.1:5503/../dist/curves.html")
   })
   .catch((error) => {
     const errorCode = error.code;

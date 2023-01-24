@@ -1,6 +1,6 @@
 let region = document.getElementById("region").textContent;
 
-d3.json("./static/allProductionData"+region+".json").then((data) => {
+d3.json("../data/allProductionData"+region+".json").then((data) => {
   tableData = data;
 
   const yesterdaysDate = tableData[0][1];
@@ -30,7 +30,7 @@ d3.json("./static/allProductionData"+region+".json").then((data) => {
 
   function createDropdownOptions() {
     var partnerSelector = d3.select("#wellFilter"); //SELECT <select> WHERE PARTNER NAMES WILL APPEAR
-    d3.json("./static/allProductionData"+region+".json").then((allData) => { //READ IN JSON FILE COINTAING ALL PARTNER'S NAMES
+    d3.json("../data/allProductionData"+region+".json").then((allData) => { //READ IN JSON FILE COINTAING ALL PARTNER'S NAMES
       allData.forEach((well) => {
         if (well[1] === yesterdaysDate) {
           partnerSelector
