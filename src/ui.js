@@ -15,13 +15,19 @@ export const divLoginError = document.querySelector('#divLoginError')
 export const lblLoginErrorMessage = document.querySelector('#lblLoginErrorMessage')
 
 export const showLoginForm = () => {
-  login.style.display = 'block'
-  app.style.display = 'none'  
+  const currPage = window.location.pathname.split("/").pop();
+  if (currPage != 'index.html'){
+    //window.location.replace("http://127.0.0.1:5503/../dist/index.html");
+    window.location.replace("https://matthewplaisance.github.io/STprod/dist/index.html");
+  }
 }
 
 export const showApp = () => {
-  login.style.display = 'none'
-  app.style.display = 'block'
+  const currPage = window.location.pathname.split("/").pop();
+  if (currPage == 'index.html'){
+    //window.location.replace("http://127.0.0.1:5503/../dist/curves.html");
+    window.location.replace("https://matthewplaisance.github.io/STprod/dist/curves.html");
+  }
 }
 
 export const hideLoginError = () => {
@@ -43,4 +49,4 @@ export const showLoginState = (user) => {
   lblAuthState.innerHTML = `You're logged in as ${user.displayName} (uid: ${user.uid}, email: ${user.email}) `
 }
 
-hideLoginError()
+//hideLoginError()

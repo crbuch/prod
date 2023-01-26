@@ -6,7 +6,6 @@ let allHtmlPlugs = htmlPageNames.map(page => {
   let chunk = [`${page}`] 
   if (page.slice(-2) == 'ET'){
     chunk = page.substring(0,page.length - 2)
-    console.log("chunk",chunk)
   }
 
   return new HtmlWebpackPlugin({
@@ -15,7 +14,6 @@ let allHtmlPlugs = htmlPageNames.map(page => {
     chunks: [`${chunk}`] 
   })
 });
-console.log(allHtmlPlugs)
 module.exports = {
     mode: 'development',
     devtool: 'eval-source-map',
@@ -26,6 +24,9 @@ module.exports = {
       yesterdaysProd:'./src/yesterdaysProd.js',
       wbd:'./src/wbd.js',
       analyzeTable:'./src/analyzeTable.js'
+    },
+    experiments: {
+      topLevelAwait: true
     },
     plugins: [
         new HtmlWebpackPlugin({

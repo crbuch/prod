@@ -1,5 +1,6 @@
-let region = document.getElementById("region").textContent;
+import {} from './index'
 
+let region = document.getElementById("region").textContent;
 d3.json("../data/allProductionData"+region+".json").then((data) => {
   tableData = data;
 

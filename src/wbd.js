@@ -1,3 +1,5 @@
+import {} from './index'
+
 function dropdown() {
   //dropdown for wells
   var select = d3.select("#wellselect");

@@ -1,3 +1,5 @@
+import {} from './index'
+
 // Cumulative production
 let region = document.getElementById("region").textContent;
 async function tableOnLoad() {

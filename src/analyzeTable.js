@@ -1,3 +1,5 @@
+import {} from './index'
+
 let region = document.getElementById("region").textContent;
 d3.json("../data/analyze"+region+".json").then((data) => {
   tableData = data;

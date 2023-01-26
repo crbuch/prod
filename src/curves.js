@@ -1,4 +1,10 @@
-console.log("in curves.js")
+import {logout} from './index'
+const currUid = sessionStorage.getItem('currUid');
+console.log('currUid :>> ', currUid);
+
+//oout
+document.getElementById("btnLogout").addEventListener('click',logout)
+
 //dyn underline active buttons//
 function setActive(view, time) {
   var elems = document.querySelectorAll(".active");
@@ -7,7 +13,8 @@ function setActive(view, time) {
   });
   document.getElementById(view).className += "active";
   document.getElementById(time).className += "active";
-}
+};
+
 function setActiveTime(time) {
   var elems = document.querySelectorAll(".active");
   [].forEach.call(elems, (el) => {
@@ -25,13 +32,13 @@ function createDropdownOptions() {
   let region = document.getElementById("region") // ET ST(blank)
   d3.json("../data/allProductionData"+region+".json").then((allData) => {
     //READ IN JSON FILE COINTAING ALL PARTNER'S NAMES
-    repeatedWells = []; //EMPTY ARRAY TO CONTAIN ALL PARTNER'S NAME (REPEATED)
+    let repeatedWells = []; //EMPTY ARRAY TO CONTAIN ALL PARTNER'S NAME (REPEATED)
     allData.forEach((row) => {
       //LOOP THROUGH NET_INTEREST FILE, calls method element in array: array.foreach(function)
       repeatedWells.push(row[0]); //PUSH ALL PARTNER'S NAME TO LIST
     });
 
-    wells = [...new Set(repeatedWells)].sort(); //CREATE A UNIQUE LIST OF ALL WELLS AND SORT
+    let wells = [...new Set(repeatedWells)].sort(); //CREATE A UNIQUE LIST OF ALL WELLS AND SORT
     wells.forEach((well) => {
       //FOR EACH OF THE UNIQUE WELLS, CREATE AN OPTION FOR THE DROP DOWN
       partnerSelector.append("option").text(well).property("Value", well);
@@ -42,7 +49,7 @@ function createDropdownOptions() {
 //Creates Graphs//
 function Curve(timeFrame) {
   let region = document.getElementById("region").textContent // ET ST
-  
+  let selectedOption = null;
   if (region == null) {
     region = 'ET'
     console.log("text con",region)
@@ -70,7 +77,8 @@ function Curve(timeFrame) {
     //first time loading STpage
     selectedOption = "Aaron #1";
   }
-
+  //console.log("selected!",selectedOption)
+  let scale = null;
   document.querySelectorAll(".active").forEach((el) => {
     if (el.id == "linear") {
       scale = "linear";
@@ -161,9 +169,9 @@ function Curve(timeFrame) {
   //READ IN ECONOMICS DATA
   d3.json("../data/economics.json").then((economicsData) => {
     //console.log(economicsData[0])
-    var wellRMPL = 0;
-    var wellYTDPL = 0;
-    monthPnL = "";
+    let wellRMPL = 0;
+    let wellYTDPL = 0;
+    let monthPnL = "";
     console.log(economicsData);
     economicsData.forEach((ecoWell) => {
       if (ecoWell["Well Name"].includes(selectedOption)) {
