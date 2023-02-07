@@ -228,6 +228,7 @@ li {
   #wellName,
   #wellselect{
     position: absolute;
+    z-index: 99;
   }
 
   #pnlTitle{

@@ -1,4 +1,6 @@
 import {logout} from './index'
+import {dataST,dropdown} from './data'
+
 const currUid = sessionStorage.getItem('currUid');
 console.log('currUid :>> ', currUid);
 
@@ -18,7 +20,6 @@ function setActive(view, time) {
 function setActiveTime(time) {
   var elems = document.querySelectorAll(".active");
   [].forEach.call(elems, (el) => {
-    //console.log('el.id :>> ', el.id);
     if (el.id.includes("Days")) {
       el.classList.remove("active");
     }
@@ -26,25 +27,7 @@ function setActiveTime(time) {
   document.getElementById(time).className += "active";
 }
 
-//Creates Dropdown//
-function createDropdownOptions() {
-  var partnerSelector = d3.select("#siteSelection"); //SELECT <select> WHERE PARTNER NAMES WILL APPEAR, find id:siteselection in curves.html
-  let region = document.getElementById("region") // ET ST(blank)
-  d3.json("../data/allProductionData"+region+".json").then((allData) => {
-    //READ IN JSON FILE COINTAING ALL PARTNER'S NAMES
-    let repeatedWells = []; //EMPTY ARRAY TO CONTAIN ALL PARTNER'S NAME (REPEATED)
-    allData.forEach((row) => {
-      //LOOP THROUGH NET_INTEREST FILE, calls method element in array: array.foreach(function)
-      repeatedWells.push(row[0]); //PUSH ALL PARTNER'S NAME TO LIST
-    });
 
-    let wells = [...new Set(repeatedWells)].sort(); //CREATE A UNIQUE LIST OF ALL WELLS AND SORT
-    wells.forEach((well) => {
-      //FOR EACH OF THE UNIQUE WELLS, CREATE AN OPTION FOR THE DROP DOWN
-      partnerSelector.append("option").text(well).property("Value", well);
-    });
-  });
-}
 
 //Creates Graphs//
 function Curve(timeFrame) {
@@ -77,7 +60,6 @@ function Curve(timeFrame) {
     //first time loading STpage
     selectedOption = "Aaron #1";
   }
-  //console.log("selected!",selectedOption)
   let scale = null;
   document.querySelectorAll(".active").forEach((el) => {
     if (el.id == "linear") {
@@ -168,11 +150,9 @@ function Curve(timeFrame) {
   });
   //READ IN ECONOMICS DATA
   d3.json("../data/economics.json").then((economicsData) => {
-    //console.log(economicsData[0])
     let wellRMPL = 0;
     let wellYTDPL = 0;
     let monthPnL = "";
-    console.log(economicsData);
     economicsData.forEach((ecoWell) => {
       if (ecoWell["Well Name"].includes(selectedOption)) {
         wellRMPL = ecoWell["Recent Month P&L"];
@@ -431,7 +411,7 @@ function Curve(timeFrame) {
         }
 
         let sum = calc(site_oil, indexEnd, indexStart);
-        xx = "Produced: ";
+        const xx = "Produced: ";
         document.getElementById("zoomOil").innerHTML =
           xx +
           (sum / 1000).toFixed(1) +
@@ -525,8 +505,10 @@ async function table() {
 }
 
 //Main//
-createDropdownOptions();
-d3.select("#siteSelection").on("change", () => {
+const dropdownId = '#siteSelection'
+dropdown(dataST,dropdownId)
+
+d3.select(dropdownId).on("change", () => {
   setActive("linear", "Days30");
   Curve(31);
 });

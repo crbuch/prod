@@ -1,18 +1,17 @@
-import {} from './index'
+import { } from './index'
+import { dropdown, dataST } from './data';
 
 let region = document.getElementById("region").textContent;
-d3.json("../data/allProductionData"+region+".json").then((data) => {
-  tableData = data;
-
+d3.json("../data/allProductionData" + region + ".json").then((data) => {
+  const tableData = data;
   const yesterdaysDate = tableData[0][1];
-
-  tbody = d3.select("tbody")
+  const tbody = d3.select("tbody")
 
   function buildTable(tableData) {
     tbody.html(""); //clear table
     var filteredData = tableData.filter(row => row[1] == yesterdaysDate); //FILTER DATA BASED ON MOST RECENT DATE
     var dataForTable = [];
-    
+
     filteredData.forEach(well => {
       dataForTable.push(Array(well[0], well[2], well[3], well[4], well[5], well[7]))
     });
@@ -26,25 +25,7 @@ d3.json("../data/allProductionData"+region+".json").then((data) => {
     });
     // DYNAMIC HEADING 
     document.getElementById("todaysDate").innerHTML = "Production for " + yesterdaysDate
-  }; 
-
-
-  function createDropdownOptions() {
-    var partnerSelector = d3.select("#wellFilter"); //SELECT <select> WHERE PARTNER NAMES WILL APPEAR
-    d3.json("../data/allProductionData"+region+".json").then((allData) => { //READ IN JSON FILE COINTAING ALL PARTNER'S NAMES
-      allData.forEach((well) => {
-        if (well[1] === yesterdaysDate) {
-          partnerSelector
-            .append('option')
-            .text(well[0])
-            .property('Value', well)
-        }
-      });
-    });
   };
-
-  //CALL FUNCTION TO CREATE DROPDOWN MENU VALUES
-  createDropdownOptions();
 
   function handleClick() {
     // the value entered in the sitename filter becomes the value for the siteName variable
@@ -57,14 +38,13 @@ d3.json("../data/allProductionData"+region+".json").then((data) => {
     buildTable(filteredData);
   };
 
-  createDropdownOptions();
-  buildTable(tableData,yesterdaysDate)
-
+  dropdown(dataST, '#wellFilter');
+  buildTable(tableData, yesterdaysDate);
   d3.selectAll('#wellFilter').on("change", handleClick);
 });
-async function sortByRecentProd() {
+
+async function sortByRecentProd(allData) {
   event.preventDefault();
-  let allData = await d3.json('./static/allProductionData'+region+'.json');
 
   const yesterdaysDate = allData[0][1];
   const filteredData = allData.filter(row => row[1] == yesterdaysDate);
@@ -76,15 +56,15 @@ async function sortByRecentProd() {
   });
 
 
-  buildTable(filteredData,yesterdaysDate)
+  buildTable(filteredData, yesterdaysDate)
 };
 
-function buildTable(data,yesterdaysDate) {
-  tbody = d3.select("tbody")
+function buildTable(data, yesterdaysDate) {
+  const tbody = d3.select("tbody")
   tbody.html("");
 
   var dataForTable = [];
-  
+
   data.forEach(well => {
     dataForTable.push(Array(well[0], well[2], well[3], well[4], well[5], well[7]))
   });
@@ -98,5 +78,5 @@ function buildTable(data,yesterdaysDate) {
   });
   document.getElementById("todaysDate").innerHTML = "Production for " + yesterdaysDate
 };
-d3.select("#Prodfilter").on("click", function () { sortByRecentProd() })
+d3.select("#Prodfilter").on("click", function () { sortByRecentProd(dataST) })
 

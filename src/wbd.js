@@ -1,20 +1,7 @@
 import {} from './index'
+import { dropdown, dataST } from './data';
 
-function dropdown() {
-  //dropdown for wells
-  var select = d3.select("#wellselect");
-  d3.json("../data/datawbd/wells.json").then((alldata) => {
-    wellname = [];
-    alldata.forEach((i) => {
-      wellname.push(i[0]);
-    });
-    wells = [...new Set(wellname)].sort();
-    wells.forEach((i) => {
-      select.append("option").text(i).property("Value", i);
-    });
-  });
-}
-dropdown();
+dropdown(dataST,'#wellselect');
 
 let changesign = (x) => {
   //switches signs in array
@@ -24,7 +11,6 @@ let changesign = (x) => {
 };
 
 async function plot() {
-  
   const dropdownMenu = d3.select("#wellselect").node();
   let wellName = dropdownMenu.value;//Title of the well
   let selectedOption = dropdownMenu.value; //gives wellname chosen
@@ -38,15 +24,15 @@ async function plot() {
     let bore = new d3.csv("../data/datawbd/" + selectedOption + j + ".csv").then(
       (data) => {
         //reads csv file
-        DataTVD = [];
-        DataN = [];
-        DataE = [];
+        let DataTVD = [];
+        let DataN = [];
+        let DataE = [];
         data.forEach(function (d) {
           d.TVD = parseInt(d.TVD);
           d.Easting = parseInt(d.Easting);
           d.Northing = parseInt(d.Northing);
         });
-        for (i in data) {
+        for (let i = 0; i < data.length; i++) {
           //seperate data into arrays
           DataTVD.push(data[i].TVD);
           DataE.push(data[i].Easting);
@@ -64,9 +50,9 @@ async function plot() {
     let show = new d3.csv(
       "../data/datawbd/" + selectedOption + "show" + j + ".csv"
     ).then((showData) => {
-      showDataTVD = [];
-      showDataN = [];
-      showDataE = [];
+      let showDataTVD = [];
+      let showDataN = [];
+      let showDataE = [];
       for (i in showData) {
         //seperate data into arrays
         showDataTVD.push(showData[i].TVD);
@@ -256,7 +242,7 @@ async function plot() {
   }
 
   async function graph() {
-    graphDiv = document.getElementById("graph");
+    let graphDiv = document.getElementById("graph");
     Plotly.newPlot("graph", alldata, layout);
   }
   async function graphShow(allBoreData, allShowData) {

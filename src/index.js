@@ -24,13 +24,11 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-
-
 const monitorAuthState = async () => {
   onAuthStateChanged(auth, user => {
     if (user != null) {
-      console.log("mon user");
-      console.log(user);
+      console.log('useruid index :>> ', user.uid);      
+      sessionStorage.setItem('currUid', user.uid)
       showApp();
     } else {
       showLoginForm();
@@ -48,8 +46,12 @@ const login = async () => {
   const email = userEmail.value
   const password = userPassword.value
 
+  console.log("username",email);
+  console.log("pass",password);
+
   signInWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
+      console.log("LOGGING");
       const uid = userCredential.user.uid;
       console.log('uid :>> ', uid);
       sessionStorage.setItem('currUid', uid)
@@ -57,6 +59,7 @@ const login = async () => {
       
     })
     .catch((error) => {
+      console.log("error")
       const errorCode = error.code;
       const errorMessage = error.message;
       showLoginError(errorMessage)

@@ -1,9 +1,10 @@
 import {} from './index'
+import { analyzeData } from './data';
 
 let region = document.getElementById("region").textContent;
-d3.json("../data/analyze"+region+".json").then((data) => {
-  tableData = data;
-  tbody = d3.select("tbody")
+
+const createAnalysis = (data) => {
+  const tbody = d3.select("tbody")
 
   function buildTable(tableData) {
     tbody.html(""); //clear table
@@ -29,8 +30,6 @@ d3.json("../data/analyze"+region+".json").then((data) => {
       })
     });
   });
-
-
-
-  buildTable(tableData)
-});
+  buildTable(data)
+};
+createAnalysis(analyzeData);

@@ -1,12 +1,13 @@
-import {} from './index'
+import { } from './index'
+import { dropdown, dataST } from './data';
 
 // Cumulative production
 let region = document.getElementById("region").textContent;
 async function tableOnLoad() {
-  let tableData = await d3.json("../data/cumProd"+region+".json");
-  if (region != "ET"){
+  let tableData = await d3.json("../data/cumProd" + region + ".json");
+  if (region != "ET") {
     let payData = await d3.json("../data/payouts.json");
-    
+
     payData.forEach((pay) => {
       tableData.forEach((well) => {
         if (well[0] == pay["Well Name"]) {
@@ -25,28 +26,6 @@ async function tableOnLoad() {
       well[4] = Number(well[4]).toFixed(2);
     });
   }
-  
-
-  
-
-  //global declaration of tbody, since it will be accessed in and out of functions
-  tbody = d3.select("tbody");
-
-  function createDropdownOptions() {
-    var partnerSelector = d3.select("#siteFilter"); //SELECT <select> WHERE PARTNER NAMES WILL APPEAR
-    d3.json("../data/allProductionData"+region+".json").then((allData) => {
-      //READ IN JSON FILE COINTAING ALL PARTNER'S NAMES
-      repeatedWells = []; //EMPTY ARRAY TO CONTAIN ALL PARTNER'S NAME (REPEATED)
-      allData.forEach((row) => {
-        //LOOP THROUGH NET_INTEREST FILE
-        repeatedWells.push(row[0]); //PUSH ALL PARTNER'S NAME TO LIST
-      });
-      wells = [...new Set(repeatedWells)].sort();
-      wells.forEach((well) => {
-        partnerSelector.append("option").text(well).property("Value", well);
-      });
-    });
-  }
 
   function handleClick() {
     // the value entered in the sitename filter becomes the value for the siteName variable
@@ -60,7 +39,7 @@ async function tableOnLoad() {
     //build table using the filteredData variable
     buildTable(filteredData);
   }
-  createDropdownOptions();
+  dropdown(dataST,"#siteFilter");
   buildTable(tableData);
   //create listener for when user wants to filter data
   d3.selectAll("#siteFilter").on("change", handleClick);
@@ -68,7 +47,7 @@ async function tableOnLoad() {
 
 async function sortByProd() {
   event.preventDefault();
-  let allData = await d3.json("../data/cumProd"+region+".json");
+  let allData = await d3.json("../data/cumProd" + region + ".json");
   let payData = await d3.json("../data/payouts.json");
 
   payData.forEach((pay) => {
@@ -100,7 +79,7 @@ async function sortByProd() {
 }
 async function sortByPay() {
   event.preventDefault();
-  let prodData = await d3.json("../data/cumProd"+region+".json");
+  let prodData = await d3.json("../data/cumProd" + region + ".json");
   let payData = await d3.json("../data/payouts.json");
   //add % payout from payData to prodData
   payData.forEach((pay) => {
@@ -110,7 +89,7 @@ async function sortByPay() {
       }
     });
   });
-  
+
   //switch places of prodData[3] and prodData[4]
   prodData.forEach((well) => {
     let temp = well[4];
@@ -138,6 +117,7 @@ async function sortByPay() {
 }
 
 function buildTable(allData) {
+  const tbody = d3.select("tbody");
   tbody.html("");
   allData.forEach((well) => {
     let row = tbody.append("tr");
@@ -149,6 +129,7 @@ function buildTable(allData) {
     });
   });
 }
+
 d3.select("#Prodfilter").on("click", function () {
   sortByProd();
 });

@@ -17,16 +17,16 @@ export const lblLoginErrorMessage = document.querySelector('#lblLoginErrorMessag
 export const showLoginForm = () => {
   const currPage = window.location.pathname.split("/").pop();
   if (currPage != 'index.html'){
-    //window.location.replace("http://127.0.0.1:5503/../dist/index.html");
-    window.location.replace("https://matthewplaisance.github.io/STprod/dist/index.html");
+    window.location.replace("http://127.0.0.1:5503/../dist/index.html");
+    //window.location.replace("https://matthewplaisance.github.io/STprod/dist/index.html");
   }
 }
 
 export const showApp = () => {
   const currPage = window.location.pathname.split("/").pop();
   if (currPage == 'index.html'){
-    //window.location.replace("http://127.0.0.1:5503/../dist/curves.html");
-    window.location.replace("https://matthewplaisance.github.io/STprod/dist/curves.html");
+    window.location.replace("http://127.0.0.1:5503/../dist/curves.html");
+    //window.location.replace("https://matthewplaisance.github.io/STprod/dist/curves.html");
   }
 }
 
