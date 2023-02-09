@@ -7,6 +7,11 @@ const createAnalysis = (data) => {
   const tbody = d3.select("tbody")
 
   function buildTable(tableData) {
+    console.log(tableData);
+    console.log(typeof(tableData));
+    console.log(typeof(tableData[0]));
+    console.log(tableData[0]);
+
     tbody.html(""); //clear table
     tableData.forEach((well) => {
       let row = tbody.append("tr");

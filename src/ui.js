@@ -4,15 +4,11 @@ export const userEmail = document.querySelector('#userEmail')
 export const userPassword = document.querySelector('#userPassword')
 
 export const btnLogin = document.querySelector('#btnLogin')
-export const btnSignup = document.querySelector('#btnSignup')
-
 export const btnLogout = document.querySelector('#btnLogout')
-
-export const divAuthState = document.querySelector('#divAuthState')
-export const lblAuthState = document.querySelector('#lblAuthState')
 
 export const divLoginError = document.querySelector('#divLoginError')
 export const lblLoginErrorMessage = document.querySelector('#lblLoginErrorMessage')
+
 
 export const showLoginForm = () => {
   const currPage = window.location.pathname.split("/").pop();
@@ -38,15 +34,14 @@ export const hideLoginError = () => {
 export const showLoginError = (error) => {
   divLoginError.style.display = 'block'    
   if (error.code == AuthErrorCodes.INVALID_PASSWORD) {
-    lblLoginErrorMessage.innerHTML = `Wrong password. Try again.`
+    lblLoginErrorMessage.innerHTML = `Wrong password`
   }
   else {
     lblLoginErrorMessage.innerHTML = `Error: ${error.message}`      
   }
 }
 
-export const showLoginState = (user) => {
-  lblAuthState.innerHTML = `You're logged in as ${user.displayName} (uid: ${user.uid}, email: ${user.email}) `
+try{
+  hideLoginError();
+} catch {
 }
-
-//hideLoginError()

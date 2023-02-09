@@ -98,13 +98,13 @@ body {
   border: none;
 }
 
-#pagesET{
+#switchRegion{
   margin-left: 330%;
   color: whitesmoke;
   border: none;
 }
 
-#pages:hover,#pagesET:hover {
+#pages:hover,#switchRegion:hover {
   color: #e07719;
 }
 #curveOptions {
@@ -297,7 +297,7 @@ li {
     height: 700px;
     width: auto;
   }
-  #pagesET {
+  #switchRegion {
     margin-left: 1%;
     color: whitesmoke;
     border: none;

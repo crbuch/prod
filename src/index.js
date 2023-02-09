@@ -39,30 +39,20 @@ const monitorAuthState = async () => {
 };
 monitorAuthState();
 
-console.log("current user:", sessionStorage.getItem('currUid'));
 const login = async () => {
-  //const email = "matt@tst.com";
-  //const password = "123456";
-  const email = userEmail.value
-  const password = userPassword.value
-
-  console.log("username",email);
-  console.log("pass",password);
+  const email = "matt@tst.com";
+  const password = "123456";
+  //const email = userEmail.value
+  //const password = userPassword.value
 
   signInWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
-      console.log("LOGGING");
       const uid = userCredential.user.uid;
-      console.log('uid :>> ', uid);
       sessionStorage.setItem('currUid', uid)
-
-      
+      sessionStorage.setItem('region', 'st')
     })
     .catch((error) => {
-      console.log("error")
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      showLoginError(errorMessage)
+      showLoginError(error)
     });
 };
 
@@ -70,7 +60,7 @@ const logout = async () => {
   console.log("in out");
   const auth = getAuth();
   signOut(auth).then(() => {
-    console.log("out");
+    sessionStorage.removeItem('currUid')
   }).catch((error) => {
     console.log('error :>> ', error);
   });
@@ -79,7 +69,6 @@ const logout = async () => {
 try {
   btnLogin.addEventListener('click', login)
 } catch {
-  console.log("wrong html");
 }
 
 export {logout}

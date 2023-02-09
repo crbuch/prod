@@ -1,11 +1,13 @@
 import {logout} from './index'
-import {dataST,dropdown} from './data'
+import * as region from './region'
+import * as dh from './data'
 
 const currUid = sessionStorage.getItem('currUid');
 console.log('currUid :>> ', currUid);
 
 //oout
-document.getElementById("btnLogout").addEventListener('click',logout)
+document.getElementById("btnLogout").addEventListener('click',logout);
+region.regionBtn.addEventListener('click',region.change);
 
 //dyn underline active buttons//
 function setActive(view, time) {
@@ -30,7 +32,7 @@ function setActiveTime(time) {
 
 
 //Creates Graphs//
-function Curve(timeFrame) {
+function Curve(timeFrame,data) {
   let region = document.getElementById("region").textContent // ET ST
   let selectedOption = null;
   if (region == null) {
@@ -148,6 +150,7 @@ function Curve(timeFrame) {
       });
     }
   });
+
   //READ IN ECONOMICS DATA
   d3.json("../data/economics.json").then((economicsData) => {
     let wellRMPL = 0;
@@ -201,9 +204,13 @@ function Curve(timeFrame) {
     }
     
   });
-
+  console.log(typeof(data));
+  console.log(data);
   d3.json("../data/allProductionData"+region+".json").then((data) => {
 
+    console.log(typeof(data));
+    console.log(data);
+  
     var site_oil = [];
     var site_gas = [];
     var site_water = [];
@@ -505,37 +512,43 @@ async function table() {
 }
 
 //Main//
+let prodData = dh.dataST
+
+if (sessionStorage.getItem("region") == "et"){
+  prodData = dh.dataET
+} 
+
 const dropdownId = '#siteSelection'
-dropdown(dataST,dropdownId)
+dh.dropdown(prodData,dropdownId)
 
 d3.select(dropdownId).on("change", () => {
   setActive("linear", "Days30");
-  Curve(31);
+  Curve(31,prodData);
 });
 //Graph LISTENERS//
 d3.select("#linear").on("click", () => {
   setActive("linear", "DaysInception");
-  Curve(0);
+  Curve(0,prodData);
 });
 d3.select("#logarithmic").on("click", () => {
   setActive("logarithmic", "DaysInception");
-  Curve(0);
+  Curve(0,prodData);
 });
 d3.select("#DaysInception").on("click", () => {
   setActiveTime("DaysInception");
-  Curve(0);
+  Curve(0,prodData);
 });
 d3.select("#Days30").on("click", () => {
   setActiveTime("Days30");
-  Curve(31);
+  Curve(31,prodData);
 });
 d3.select("#Days180").on("click", () => {
   setActiveTime("Days180");
-  Curve(181);
+  Curve(181,prodData);
 });
 d3.select("#Days365").on("click", () => {
   setActiveTime("Days365");
-  Curve(366);
+  Curve(366,prodData);
 });
 
 //TABLE LISTENER//
@@ -545,4 +558,4 @@ d3.select("#table").on("click", () => {
 });
 
 //init page on load//
-window.on("load", setActive("linear", "DaysInception"), Curve(0));
+window.on("load", setActive("linear", "DaysInception"), Curve(0,prodData));
