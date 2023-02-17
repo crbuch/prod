@@ -5,7 +5,7 @@ import * as dh from './data'
 const currUid = sessionStorage.getItem('currUid');
 let region = sessionStorage.getItem('region');
 //oout
-//document.getElementById("btnLogout").addEventListener('click', logout);
+document.getElementById("btnLogout").addEventListener('click', logout);
 //regionjs.regionBtn.addEventListener('click', regionjs.change);
 console.log("region",region);
 //dyn underline active buttons//

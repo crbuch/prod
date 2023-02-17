@@ -1,5 +1,4 @@
 const regionBtn = document.querySelector("#switchRegion");
-
 const fieldTitle = document.querySelector('#fieldTitle');
 
 const change = () => {
@@ -7,7 +6,7 @@ const change = () => {
     if (currRegion == "st" || currRegion == null) {
         console.log("switching to east");
         sessionStorage.setItem("region", "et");
-        
+
     } else {
         sessionStorage.setItem("region", "st");
     }
@@ -26,5 +25,6 @@ const monitorRegion = () => {
 
 monitorRegion();
 regionBtn.addEventListener('click', change);
+
 
 
