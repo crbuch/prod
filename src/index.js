@@ -27,12 +27,11 @@ const auth = getAuth(app);
 const monitorAuthState = async () => {
   onAuthStateChanged(auth, user => {
     if (user != null) {
-      console.log('useruid index :>> ', user.uid);      
       sessionStorage.setItem('currUid', user.uid)
       showApp();
     } else {
       showLoginForm();
-      console.log("mon none")
+      console.log("monitor none")
     }
   }
   );

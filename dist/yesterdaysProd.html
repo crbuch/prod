@@ -20,7 +20,7 @@
     <a id = "region" hidden></a>
     <!--NAVIGATION BAR -->
     <nav id="navbar1" class="navbar navbar-expand-md navbar-dark">
-        <a class="navbar-brand" href="#"><span>South Texas Field</span></a>
+        <a id='fieldTitle' class="navbar-brand" href="#"><span>South Texas Field</span></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -43,7 +43,7 @@
                     <a id="pages" class="nav-link" href="wbd.html">WBD Generator</a>
                 </li>
                 <li class="nav-item">
-                    <a id="pagesET" class="nav-link" href="curvesET.html">East Texas</a>
+                    <a id="switchRegion" class="nav-link" href="">East Texas</a>
                   </li>
             </ul>
         </div>
@@ -62,8 +62,8 @@
                                     <option hidden value="default">Select A Well</option>
                                 </select>
                             </li>
-                            <button id="Prodfilter">Sort By Oil Production</button>
-                            <button id="clearFilter" onClick="window.location.reload();">Clear Filters</button>
+                            <button id="Prodfilter" type="button">Sort By Oil Production</button>
+                            <button id="clearFilter" type="button">Clear Filters</button>
                         </ul>
                     </form>
                 </div>

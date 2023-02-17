@@ -1,82 +1,41 @@
-import { } from './index'
-import { dropdown, dataST } from './data';
+import * as dh from './data'
+import { } from './region'
 
-let region = document.getElementById("region").textContent;
-d3.json("../data/allProductionData" + region + ".json").then((data) => {
-  const tableData = data;
-  const yesterdaysDate = tableData[0][1];
-  const tbody = d3.select("tbody")
-
-  function buildTable(tableData) {
-    tbody.html(""); //clear table
-    var filteredData = tableData.filter(row => row[1] == yesterdaysDate); //FILTER DATA BASED ON MOST RECENT DATE
-    var dataForTable = [];
+const formatData = (data) => {
+    const yesterdayDate = data[0][1];
+    let filteredData = data.filter(row => row[1] == yesterdayDate);
+    let tableData = [];
 
     filteredData.forEach(well => {
-      dataForTable.push(Array(well[0], well[2], well[3], well[4], well[5], well[7]))
+        tableData.push(Array(well[0], well[2], well[3], well[4], well[5], well[7]))
     });
-    dataForTable.forEach((well) => {
-      let row = tbody.append("tr");
-      // loop through each value to add a cell for each of it
-      Object.values(well).forEach((val) => {
-        let cell = row.append("td");
-        cell.text(val);
-      });
-    });
-    // DYNAMIC HEADING 
-    document.getElementById("todaysDate").innerHTML = "Production for " + yesterdaysDate
-  };
 
-  function handleClick() {
-    // the value entered in the sitename filter becomes the value for the siteName variable
-    let requestedSiteName = d3.select("#wellFilter").property("value");
-    console.log(requestedSiteName);
-    // set data be filtered to imported data (the data ready to be filtered)
-    let filteredData = tableData;
-    filteredData = filteredData.filter(row => row[0] == requestedSiteName)
-    //build table using the filteredData variable
-    buildTable(filteredData);
-  };
+    return tableData
+};
 
-  dropdown(dataST, '#wellFilter');
-  buildTable(tableData, yesterdaysDate);
-  d3.selectAll('#wellFilter').on("change", handleClick);
+//main
+const dropdownId = '#wellFilter'
+let region = sessionStorage.getItem('region');
+let data = dh.dataET;
+if (region != 'et') data = dh.dataST;
+
+const tableData = formatData(data);
+
+
+document.getElementById('Prodfilter').onclick = function () {
+    dh.sortData(tableData, 1);
+};
+
+document.getElementById('clearFilter').onclick = function () {
+    dh.buildTable(tableData);
+};
+
+d3.select(dropdownId).on("change", () => {
+    dh.buildTable(dh.filterData(tableData, dropdownId));
 });
 
-async function sortByRecentProd(allData) {
-  event.preventDefault();
-
-  const yesterdaysDate = allData[0][1];
-  const filteredData = allData.filter(row => row[1] == yesterdaysDate);
-
-  filteredData.sort((a, b) => {//sorts data high to low by oil production
-    const aVal = a[2];
-    const bVal = b[2];
-    return bVal - aVal
-  });
-
-
-  buildTable(filteredData, yesterdaysDate)
-};
-
-function buildTable(data, yesterdaysDate) {
-  const tbody = d3.select("tbody")
-  tbody.html("");
-
-  var dataForTable = [];
-
-  data.forEach(well => {
-    dataForTable.push(Array(well[0], well[2], well[3], well[4], well[5], well[7]))
-  });
-  dataForTable.forEach((well) => {
-    let row = tbody.append("tr");
-
-    Object.values(well).forEach((val) => {
-      let cell = row.append("td");
-      cell.text(val);
-    });
-  });
-  document.getElementById("todaysDate").innerHTML = "Production for " + yesterdaysDate
-};
-d3.select("#Prodfilter").on("click", function () { sortByRecentProd(dataST) })
+window.onload = function () {
+    dh.buildTable(tableData);
+    dh.dropdown(data, dropdownId);  
+}();
 

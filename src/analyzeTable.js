@@ -1,23 +1,20 @@
 import {} from './index'
-import { analyzeData } from './data';
+import {} from './region'
+import { analyzeData,analyzeDataET } from './data';
 
-let region = document.getElementById("region").textContent;
+let data = analyzeData;
+let region = sessionStorage.getItem("region");
+if (region == "et") data = analyzeDataET;
 
 const createAnalysis = (data) => {
   const tbody = d3.select("tbody")
 
   function buildTable(tableData) {
-    console.log(tableData);
-    console.log(typeof(tableData));
-    console.log(typeof(tableData[0]));
-    console.log(tableData[0]);
-
     tbody.html(""); //clear table
     tableData.forEach((well) => {
       let row = tbody.append("tr");
       // loop through each value to add a cell for each of it
       Object.values(well).forEach((val) => {
-
         let cell = row.append("td");
         cell.text(val);
       });
@@ -27,14 +24,14 @@ const createAnalysis = (data) => {
   //JQUERY TO ADD LINKS 
   $(document).ready(function () {
     $("tr td:nth-child(1)").each(function () { //ADD LINK TO THE FIRST CHILD OF EVERY TD, SO THE NAME OF THE WELL
-      $(this).html('<a href="https://cmlexploration.github.io/STprod/curves.html">' + $(this).text() + '</a>');
-      //$(this).html('<a href="http://127.0.0.1:5502/curves.html">' + $(this).text() + '</a>');
+      //$(this).html('<a href="https://cmlexploration.github.io/STprod/curves.html">' + $(this).text() + '</a>');
+      $(this).html('<a href="http://127.0.0.1:5503/dist/curves.html">' + $(this).text() + '</a>');
       $(this).click(function () {
         sessionStorage.setItem('siteSelection', $(this).text())
-        
       })
     });
   });
   buildTable(data)
 };
-createAnalysis(analyzeData);
+
+createAnalysis(data);

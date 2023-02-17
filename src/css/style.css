@@ -177,6 +177,9 @@ select {
 li {
   white-space: nowrap;
 }
+#switchRegion {
+  background-color: #1c4662;
+}
 
 @media (min-width: 768px) {
   .navbar-nav {
