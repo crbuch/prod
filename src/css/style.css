@@ -1,7 +1,11 @@
 html,
 body {
+  --color-primary: #1c4662;
+  --color-secondary: #e07719;
+  --color-error: #cc3333;
   height: 100%;
 }
+
 
 #individualTable td:nth-child(1) {
   font-weight: 600;
@@ -89,7 +93,7 @@ body {
 }
 
 #graphpage:hover {
-  color: #e07719;
+  color: var(--color-secondary);
 }
 
 #pages {
@@ -105,7 +109,7 @@ body {
 }
 
 #pages:hover,#switchRegion:hover {
-  color: #e07719;
+  color: var(--color-secondary);
 }
 #curveOptions {
   background-color: whitesmoke;
@@ -122,7 +126,7 @@ body {
   margin-top: 10px;
 }
 #view{
-  padding-left: 17.38%;
+  padding-left: 10%;
 }
 #timeframes{
   padding-left: 5.5%;
@@ -141,7 +145,7 @@ body {
 
 #view > a:hover,#timeframes > a:hover {
   cursor: pointer;
-  color: #e07719;
+  color: var(--color-secondary);
   border-bottom: 2px solid black;
 }
 
@@ -178,8 +182,31 @@ li {
   white-space: nowrap;
 }
 #switchRegion {
-  background-color: #1c4662;
+  background-color: var(--color-primary);
 }
+
+.form_button {
+  margin-left: 40%;
+  margin-right: 40%;
+  margin-bottom: 1%;
+  width: 20%;
+  padding: 1rem 2rem;
+  font-weight: bold;
+  font-size: 1.1rem;
+  color: #ffffff;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  background: var(--color-primary);
+}
+
+.form_button:hover {
+  color: var(--color-secondary);
+}
+
+.form_button:active {
+  transform: scale(0.98);
+}
+
 
 @media (min-width: 768px) {
   .navbar-nav {
@@ -277,9 +304,7 @@ li {
   .navbar-brand span {
     display: none;
   }
-  .navbar-brand::after {
-    content: "CML EXP - SOUTH TEXAS";
-  }
+  
   .nav-item{
     padding-left: 5px !important;
   }

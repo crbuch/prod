@@ -13,16 +13,16 @@ export const lblLoginErrorMessage = document.querySelector('#lblLoginErrorMessag
 export const showLoginForm = () => {
   const currPage = window.location.pathname.split("/").pop();
   if (currPage != 'index.html'){
-    //window.location.replace("http://127.0.0.1:5503/../dist/index.html");
-    window.location.replace("https://matthewplaisance.github.io/STprod/dist/index.html");
+    window.location.replace("http://127.0.0.1:5503/../dist/index.html");
+    //window.location.replace("https://matthewplaisance.github.io/STprod/dist/index.html");
   }
 }
 
 export const showApp = () => {
   const currPage = window.location.pathname.split("/").pop();
   if (currPage == 'index.html'){
-    //window.location.replace("http://127.0.0.1:5503/../dist/curves.html");
-    window.location.replace("https://matthewplaisance.github.io/STprod/dist/curves.html");
+    window.location.replace("http://127.0.0.1:5503/../dist/curves.html");
+    //window.location.replace("https://matthewplaisance.github.io/STprod/dist/curves.html");
   }
 }
 
@@ -40,6 +40,41 @@ export const showLoginError = (error) => {
     lblLoginErrorMessage.innerHTML = `Error: ${error.message}`      
   }
 }
+
+export const setActive = (view, time) => {
+  console.log('view :>> ', view);
+  console.log('timeview :>> ', time);
+  let elems = document.querySelectorAll(".active");
+  [].forEach.call(elems, (el) => {
+    el.classList.remove("active");
+  });
+  document.getElementById(view).className += "active";
+  document.getElementById(time).className += "active";
+};
+
+export const setActiveTime = (time) => {
+  console.log('time :>> ', time);
+  let elems = document.querySelectorAll(".active");
+  [].forEach.call(elems, (el) => {
+    if (el.id.includes("Days")) {
+      el.classList.remove("active");
+    }
+  });
+  document.getElementById(time).className += "active";
+};
+
+export const changeInitTime = () => {
+  const currInit = localStorage.getItem('initTime');
+  console.log('currInit :>> ', currInit);
+  if (currInit == 0) {
+    console.log("was incept");
+    $('#initTime').text('Init: 30 Days')
+    localStorage.setItem('initTime',31)
+  }else {
+    $('#initTime').text('Init: Inception')
+    localStorage.setItem('initTime',0)
+  };
+};
 
 try{
   hideLoginError();

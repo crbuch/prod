@@ -9,7 +9,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
     <script src="https://d3js.org/d3.v5.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="icon" type="image/x-icon" href="../favicon_package/favicon-32x32.png">
@@ -17,37 +17,8 @@
 <script defer src="yesterdaysProd.js"></script></head>
 
 <body>
-    <a id = "region" hidden></a>
     <!--NAVIGATION BAR -->
-    <nav id="navbar1" class="navbar navbar-expand-md navbar-dark">
-        <a id='fieldTitle' class="navbar-brand" href="#"><span>South Texas Field</span></a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                    <a id="graphpage" class="nav-link" href="curves.html">Graph</a>
-                </li>
-                <li class="nav-item">
-                    <a id="pages" class="nav-link" href="table.html">Cumulative Production</a>
-                </li>
-                <li class="nav-item">
-                    <a id="pages" class="nav-link" href="yesterdaysProd.html">Most Recent Production</a>
-                </li>
-                <li class="nav-item">
-                    <a id="pages" class="nav-link" href="analyzeTable.html">Analyze</a>
-                </li>
-                <li class="nav-item">
-                    <a id="pages" class="nav-link" href="wbd.html">WBD Generator</a>
-                </li>
-                <li class="nav-item">
-                    <a id="switchRegion" class="nav-link" href="">East Texas</a>
-                  </li>
-            </ul>
-        </div>
-    </nav>
+   <div id="header"></div>
     <!--CUM TABLE HERE-->
     <div id="RecentProd" class="container-fluid">
         <div class="row">
@@ -70,7 +41,7 @@
             </div>
             <div id="filler5">
                 <a hidden></a>
-              </div>
+            </div>
             <div class="col-md-6">
                 <h2 id="todaysDate"></h2>
                 <table class="table table-sm table-striped table-bordered table-hover">
@@ -87,7 +58,7 @@
                     <tbody></tbody>
                 </table>
             </div>
-            
+
         </div>
     </div>
 </body>

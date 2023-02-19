@@ -3,7 +3,7 @@ import { dropdown, dataST } from './data';
 
 dropdown(dataST,'#wellselect');
 
-let changesign = (x) => {
+const changesign = (x) => {
   //switches signs in array
   x.forEach((el, i) => {
     x[i] *= -1;

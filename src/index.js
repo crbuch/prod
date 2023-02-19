@@ -47,8 +47,7 @@ const login = async () => {
   signInWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
       const uid = userCredential.user.uid;
-      sessionStorage.setItem('currUid', uid)
-      sessionStorage.setItem('region', 'st')
+      initStorage();
     })
     .catch((error) => {
       showLoginError(error)
@@ -56,14 +55,22 @@ const login = async () => {
 };
 
 const logout = async () => {
-  console.log("in out");
   const auth = getAuth();
   signOut(auth).then(() => {
     sessionStorage.removeItem('currUid')
   }).catch((error) => {
     console.log('error :>> ', error);
   });
-}
+};
+
+const initStorage = () => {
+  const initTime = localStorage.getItem('initTime');
+  if (initTime == null){
+    localStorage.setItem('initTime',0)
+  }
+  sessionStorage.setItem('currUid', uid)
+  sessionStorage.setItem('region', 'st')
+};
 
 try {
   btnLogin.addEventListener('click', login)
