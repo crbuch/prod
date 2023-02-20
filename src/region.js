@@ -1,11 +1,10 @@
 $(document).ready(function () {
-    console.log("loading header");
     $("#header").load("../src/pages/header.html", function () {
         monitorRegion();
     });
 });
 
-const change = () => {
+const toggleRegion = () => {
     let currRegion = sessionStorage.getItem("region");
     if (currRegion == "st" || currRegion == null) {
         console.log("switching to east");
@@ -16,11 +15,11 @@ const change = () => {
 };
 
 const monitorRegion = () => {
-    const regionBtn = document.querySelector("#switchRegion");
-    const fieldTitle = document.querySelector('#fieldTitle');   
-    const width = $(window).width();
     let currRegion = sessionStorage.getItem("region");
-    regionBtn.addEventListener('click', change);
+    const fieldTitle = document.querySelector('#fieldTitle');   
+    const regionBtn = document.querySelector("#switchRegion");
+    regionBtn.addEventListener('click', toggleRegion);
+    const width = $(window).width();
 
     if (currRegion == "st" || currRegion == null) {
         regionBtn.innerHTML = "East Texas";

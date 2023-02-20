@@ -2,7 +2,7 @@ import { logout } from './index'
 import { } from './region'
 import * as dh from './data'
 import { makeData, makeLayout, config } from './layout';
-import { setActive, setActiveTime, toggleInitTime, checkActive } from './ui';
+import { setActive, setActiveTime, toggleInitTime, checkActive, activeFromStorage } from './ui';
 
 const displayEconomics = (data, selectedOption) => {
   let wellRMPL = 0;
@@ -108,45 +108,18 @@ const getSelectedOption = (data) => {
   return selectedOption.join('');
 };
 
-//Creates Graphs//
-const curve = (timeFrame, data, dataCuml, economicsData, payoutData, pumpData) => {
-  const selectedOption = getSelectedOption(data);
+const curve = (timeFrame, data) => {
+  const selectedOption = getSelectedOption(data.prodData);
   let region = sessionStorage.getItem("region");
   if (region == null) {
     sessionStorage.setItem('region', 'st')
     region = 'st'
   };
-
   if (region != "et") {
-    displayEconomics(economicsData, selectedOption);
-    displayPayout(payoutData, selectedOption);
-    displayPumpInfo(pumpData, selectedOption);
-  };
-  displayCumlData(dataCuml, selectedOption);
+    displayEconomics(data.economicsData, selectedOption);
+    displayPayout(data.payoutData, selectedOption);
+    displayPumpInfo(data.pumpData, selectedOption);
 
-  let scale = null;
-  document.querySelectorAll(".active").forEach((el) => {
-    if (el.id == "linear") {
-      scale = "linear";
-    } else if (el.id == "logarithmic") {
-      scale = "log";
-    }
-  });
-
-  document.getElementById("zoomOil").style.visibility = "hidden"; //dont display old zoom data if switching b/t wells/timeframes
-
-  document.getElementById("wellName").innerHTML = selectedOption;
-
-  var hidetable = document.getElementById("individualTable");
-  hidetable.style.display = "none";
-
-  document.getElementById("oilDeclineCurve").style.display = "block"
-  document.getElementById("gasDeclineCurve").style.display = "block"
-  document.getElementById("waterDeclineCurve").style.display = "block"
-  document.getElementById("waterCutCurve").style.display = "block"
-
-  //HIDE PUMPING INFO  SINCE THEY WILL BE SHOWING FROM PREVIOUS SELECTION
-  if (region !== "et") {
     // Hide previous pumping info
     document.getElementById("pumpInfo").style.display = "none";
     document.getElementById("notPumpingInfo").style.display = "none";
@@ -156,16 +129,30 @@ const curve = (timeFrame, data, dataCuml, economicsData, payoutData, pumpData) =
       document.getElementById(id).innerHTML = "";
     });
   };
+  displayCumlData(data.dataCuml, selectedOption);
 
-  var site_oil = [];
-  var site_gas = [];
-  var site_water = [];
-  var site_date = [];
-  var comments = [];
-  var movingAverage = [];
+  let scale = "linear";
+  document.querySelectorAll(".active").forEach((el) => {
+    if (el.id == "logarithmic") scale = "log";;
+  });
+
+  document.getElementById("zoomOil").style.visibility = "hidden"; //dont display old zoom data if switching b/t wells/timeframes
+  document.getElementById("wellName").innerHTML = selectedOption;
+  document.getElementById("individualTable").style.display = "none";
+
+  ['oilDeclineCurve','gasDeclineCurve','waterDeclineCurve','waterCutCurve'].forEach(id => {
+    document.getElementById(id).style.display = 'block';
+  });
+
+  let site_oil = [];
+  let site_gas = [];
+  let site_water = [];
+  let site_date = [];
+  let comments = [];
+  let movingAverage = [];
   let water_cut = [];
 
-  data.forEach((site) => {
+  data.prodData.forEach((site) => {
     if (site[0] === selectedOption) {
       site_date.push(site[9]);
       site_oil.push(site[2]);
@@ -178,13 +165,13 @@ const curve = (timeFrame, data, dataCuml, economicsData, payoutData, pumpData) =
   });
 
   if (timeFrame > 0) {
-    var site_date = site_date.slice(0, timeFrame);
-    var site_oil = site_oil.slice(0, timeFrame);
-    var site_gas = site_gas.slice(0, timeFrame);
-    var site_water = site_water.slice(0, timeFrame);
-    var comments = comments.slice(0, timeFrame);
-    var movingAverage = movingAverage.slice(0, timeFrame);
-  }
+    site_date = site_date.slice(0, timeFrame);
+    site_oil = site_oil.slice(0, timeFrame);
+    site_gas = site_gas.slice(0, timeFrame);
+    site_water = site_water.slice(0, timeFrame);
+    comments = comments.slice(0, timeFrame);
+    movingAverage = movingAverage.slice(0, timeFrame);
+  };
 
   const dataOilnorm = makeData(
     site_date,
@@ -234,14 +221,12 @@ const curve = (timeFrame, data, dataCuml, economicsData, payoutData, pumpData) =
   const layoutWater = makeLayout("Water (BWPD) vs Time", scale, null);
 
   if (scale == "log") {
-    //Plotly.newPlot("fluidCurve", fluidData, layoutLog, config);
     Plotly.newPlot("oilDeclineCurve", [dataOilnorm, dataOilmoving], layoutLog, {
       showSendToCloud: true,
     });
     Plotly.newPlot("gasDeclineCurve", [dataGas], layoutLog, config);
     Plotly.newPlot("waterDeclineCurve", [dataWater], layoutLog, config);
   } else {
-    //Plotly.newPlot("fluidCurve", fluidData, layoutOver, config);
     Plotly.newPlot("oilDeclineCurve", [dataOilnorm, dataOilmoving], layoutOil, config);
     Plotly.newPlot("gasDeclineCurve", [dataGas], layoutGas, config);
     Plotly.newPlot("waterDeclineCurve", [dataWater], layoutWater, config);
@@ -297,64 +282,9 @@ const table = (coreData) => {
   
 };
 
-//Creates Table//
-async function table1() {
-  //SELECT <select> TO LATER "GRAB" THE SELECTION MADE AS TEXTS
-  var dropdownMenu = d3.select("#siteSelection").node();
-  //DECLARE ITEM SAVED IN STORAGE
-  var clickedFromAnalyzed = sessionStorage.getItem("siteSelection");
-  //DECLARE WHAT WILL BE SAVED AS THE SELECTION
-  let selectedOption;
-  //USE TO DETERMINE SELECTION USED TO CREATE TABLE
-  if (clickedFromAnalyzed == null) {
-    //IF NOTHING IN STORAGE USE dropdown.value TO CREATE TABLE
-    selectedOption = dropdownMenu.value;
-  } else {
-    //IF STORAGE IS NOT NULL, TEXT IN STORAGE IS USED TO CREATE TABLE
-    selectedOption = clickedFromAnalyzed;
-  }
-  //READ IN FILE WITH DATA FOR TABLE
-  let tableData = await d3.json("../data/allProductionData" + region + ".json");
-  buildTable(tableData)
-  function buildTable(allData) {
-    tbody = d3.select("tbody");
-    tbody.html("");
-    if (selectedOption == "default") {
-      selectedOption = "Aaron #1"
-    }
-    allData.forEach((well) => {
-      if (well[0] == selectedOption) {
-        well.shift()
-        well.splice(well.length - 2, 2)
-
-        let row = tbody.append("tr");
-        Object.values(well).forEach((val) => {
-          let cell = row.append("td");
-          cell.text(val);
-        });
-
-      }
-
-    });
-    document.getElementById("individualTable").style.display = "inline-block"
-    document.getElementById("oilDeclineCurve").style.display = "none"
-    document.getElementById("gasDeclineCurve").style.display = "none"
-    document.getElementById("waterDeclineCurve").style.display = "none"
-    document.getElementById("waterCutCurve").style.display = "none"
-  }
-};
-
-const activeFromStorage = () => {
-  const initTime = localStorage.getItem('initTime');
-  let activeTime = 'DaysInception';
-  if (initTime == 31) activeTime = 'Days30';
-  setActiveTime(activeTime);
-  return activeTime
-};
-
 const init = () => {
   activeFromStorage();
-  curve(localStorage.getItem('initTime'), prodData, cumlData, dh.econ, dh.payout, dh.pump);
+  curve(localStorage.getItem('initTime'), curveInfo);
 };
 
 
@@ -371,6 +301,14 @@ if (region == "et") {
   cumlData = dh.dataCumlET
 };
 
+const curveInfo = {
+  prodData: prodData, 
+  dataCuml: cumlData, 
+  economicsData: dh.econ, 
+  payoutData: dh.payout, 
+  pumpData: dh.pump
+};
+
 const dropdownId = '#siteSelection';
 const linearTag = 'linear';
 const logTag = 'logarithmic';
@@ -378,6 +316,7 @@ const inceptionTag = 'DaysInception';
 const thirtyTag = 'Days30';
 const yearTag = 'Days365';
 const halfYearTag = 'Days180';
+
 let initTime = localStorage.getItem('initTime');
 if (initTime == 31) $('#initTime').text('Init: 30 Days');
 
@@ -385,11 +324,11 @@ dh.dropdown(prodData, dropdownId);
 
 d3.select(dropdownId).on("change", () => {
   setActive(linearTag, activeFromStorage());
-  curve(localStorage.getItem('initTime'), prodData, cumlData, dh.econ, dh.payout, dh.pump);
+  curve(localStorage.getItem('initTime'), curveInfo);
 });
 
 d3.select('#initTime').on('change', () => {
-  curve(initTime, prodData, cumlData, dh.econ, dh.payout, dh.pump);
+  curve(initTime, curveInfo);
   activeFromStorage();
 });
 
@@ -397,35 +336,34 @@ d3.selectAll(`#${linearTag}, #${logTag}, #${inceptionTag}, #${thirtyTag}, #${hal
   .on("click", function () {
     if (this.id === linearTag || this.id === logTag) {
       setActive(this.id, activeFromStorage());
-      curve(localStorage.getItem('initTime'), prodData, cumlData, dh.econ, dh.payout, dh.pump);
+      curve(localStorage.getItem('initTime'), curveInfo);
     } else {
       setActiveTime(this.id);
       if (this.id === thirtyTag) {
-        curve(31, prodData, cumlData, dh.econ, dh.payout, dh.pump);
+        curve(31, curveInfo);
       } else if (this.id === halfYearTag) {
-        curve(181, prodData, cumlData, dh.econ, dh.payout, dh.pump);
+        curve(181, curveInfo);
       } else if (this.id === yearTag) {
-        curve(366, prodData, cumlData, dh.econ, dh.payout, dh.pump);
+        curve(366, curveInfo);
       } else if (this.id === inceptionTag) {
-        curve(0, prodData, cumlData, dh.econ, dh.payout, dh.pump);
+        curve(0, curveInfo);
       }
     }
-  }
-  );
+});
 
-//TABLE LISTENER//
 document.getElementById("table").addEventListener('click', () => {
     if (checkActive('table') === true) return;
     setActive("table", inceptionTag);
     table(prodData);
 });
 
-//init page on load//
-$(window).on("load", init());
-
-document.getElementById("btnLogout").addEventListener('click', logout);
 document.getElementById("initTime").addEventListener('click', () => {
   toggleInitTime();
-  curve(localStorage.getItem('initTime'), prodData, cumlData, dh.econ, dh.payout, dh.pump);
+  curve(localStorage.getItem('initTime'), curveInfo);
   activeFromStorage();
 });
+
+document.getElementById("btnLogout").addEventListener('click', logout);
+
+//init page on load//
+$(window).on("load", init());
