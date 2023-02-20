@@ -12,19 +12,31 @@ export const lblLoginErrorMessage = document.querySelector('#lblLoginErrorMessag
 
 export const showLoginForm = () => {
   const currPage = window.location.pathname.split("/").pop();
+  let dev;
+  if (location.hostname === "localhost" || location.hostname === "127.0.0.1") dev = true;
+    
   if (currPage != 'index.html'){
-    //window.location.replace("http://127.0.0.1:5503/../dist/index.html");
+    if (dev === true){
+      window.location.replace("http://127.0.0.1:5503/../dist/index.html");
+      return
+    }
     window.location.replace("https://matthewplaisance.github.io/STprod/dist/index.html");
   }
 }
 
 export const showApp = () => {
   const currPage = window.location.pathname.split("/").pop();
+  let dev;
+  if (location.hostname === "localhost" || location.hostname === "127.0.0.1") dev = true;
+
   if (currPage == 'index.html'){
-    //window.location.replace("http://127.0.0.1:5503/../dist/curves.html");
+    if (dev === true){
+      window.location.replace("http://127.0.0.1:5503/../dist/curves.html");
+      return
+    }
     window.location.replace("https://matthewplaisance.github.io/STprod/dist/curves.html");
   }
-}
+  }
 
 export const hideLoginError = () => {
   divLoginError.style.display = 'none'
@@ -69,6 +81,15 @@ export const toggleInitTime = () => {
     $('#initTime').text('Init: Inception')
     localStorage.setItem('initTime',0)
   };
+};
+
+export const checkActive = (element) => {
+  let flag = false;
+  let elems = document.querySelectorAll(".active");
+  [].forEach.call(elems, (el) => {
+    if (el.id == element) flag = true;
+  });
+  return flag;
 };
 
 try{

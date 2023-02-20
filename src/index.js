@@ -27,6 +27,7 @@ const monitorAuthState = async () => {
   onAuthStateChanged(auth, user => {
     if (user != null) {
       sessionStorage.setItem('currUid', user.uid)
+      
       showApp();
     } else {
       showLoginForm();

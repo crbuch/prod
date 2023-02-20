@@ -2,7 +2,7 @@ import { logout } from './index'
 import { } from './region'
 import * as dh from './data'
 import { makeData, makeLayout, config } from './layout';
-import { setActive, setActiveTime, toggleInitTime } from './ui';
+import { setActive, setActiveTime, toggleInitTime, checkActive } from './ui';
 
 const displayEconomics = (data, selectedOption) => {
   let wellRMPL = 0;
@@ -34,8 +34,7 @@ const displayPayout = (data, selectedOption) => {
 };
 
 const displayPumpInfo = (data, selectedOption) => {
-  let wellInfo = data.find(o => o["Well Name"] === selectedOption);
-
+  let wellInfo = data.find(i => i["Well Name"] === selectedOption);
   if (wellInfo !== undefined) {
     if (
       wellInfo["SPM"] !== 0
@@ -95,26 +94,28 @@ const displayCumlData = (data, selectedOption) => {
 
 };
 
+const getSelectedOption = (data) => {
+  let selectedOption = null;
+  let menuNode = d3.select("#siteSelection").node().value;
+
+  if (menuNode != "default") {
+    selectedOption = [menuNode];
+  } else if (sessionStorage.getItem("siteSelection") != null) {
+    selectedOption = [sessionStorage.getItem("siteSelection")];
+    sessionStorage.removeItem("siteSelection");
+  } else selectedOption = [...data[0][0]];
+
+  return selectedOption.join('');
+};
+
 //Creates Graphs//
 const curve = (timeFrame, data, dataCuml, economicsData, payoutData, pumpData) => {
-  let selectedOption = null;
+  const selectedOption = getSelectedOption(data);
   let region = sessionStorage.getItem("region");
   if (region == null) {
     sessionStorage.setItem('region', 'st')
     region = 'st'
   };
-
-  let menuNode = d3.select("#siteSelection").node().value;
-
-  if (menuNode != "default") {
-    selectedOption = menuNode;
-  } else if (sessionStorage.getItem("siteSelection") != null) {
-    selectedOption = sessionStorage.getItem("siteSelection");
-    sessionStorage.removeItem("siteSelection");
-  }
-  if (selectedOption == null) {
-    selectedOption = data[0][0];
-  }
 
   if (region != "et") {
     displayEconomics(economicsData, selectedOption);
@@ -277,8 +278,27 @@ const curve = (timeFrame, data, dataCuml, economicsData, payoutData, pumpData) =
   document.getElementById("filler4").style.display = "none";
 };
 
+const table = (coreData) => {
+  const data = coreData.map(el => ([...el ]))
+  const selectedOption = getSelectedOption(data);
+  const well = data.filter(i => i[0] == selectedOption);
+
+  well.forEach(w => {
+    w.shift();
+    for (let i = 0; i < 2; i++) w.pop();
+  });
+  dh.buildTable(well);
+
+  document.getElementById('individualTable').style.display = 'inline-block';
+  ['oilDeclineCurve','gasDeclineCurve','waterDeclineCurve','waterCutCurve'].forEach(tag => {
+    document.getElementById(tag).style.display = 'none'
+  });
+
+  
+};
+
 //Creates Table//
-async function table() {
+async function table1() {
   //SELECT <select> TO LATER "GRAB" THE SELECTION MADE AS TEXTS
   var dropdownMenu = d3.select("#siteSelection").node();
   //DECLARE ITEM SAVED IN STORAGE
@@ -394,9 +414,10 @@ d3.selectAll(`#${linearTag}, #${logTag}, #${inceptionTag}, #${thirtyTag}, #${hal
   );
 
 //TABLE LISTENER//
-d3.select("#table").on("click", () => {
-  setActive("table", inceptionTag);
-  table();
+document.getElementById("table").addEventListener('click', () => {
+    if (checkActive('table') === true) return;
+    setActive("table", inceptionTag);
+    table(prodData);
 });
 
 //init page on load//
