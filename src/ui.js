@@ -60,7 +60,7 @@ export const setActiveTime = (time) => {
   document.getElementById(time).className += "active";
 };
 
-export const changeInitTime = () => {
+export const toggleInitTime = () => {
   const currInit = localStorage.getItem('initTime');
   if (currInit == 0) {
     $('#initTime').text('Init: 30 Days')

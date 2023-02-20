@@ -2,7 +2,7 @@ import { logout } from './index'
 import { } from './region'
 import * as dh from './data'
 import { makeData, makeLayout, config } from './layout';
-import { setActive, setActiveTime, changeInitTime } from './ui';
+import { setActive, setActiveTime, toggleInitTime } from './ui';
 
 const displayEconomics = (data, selectedOption) => {
   let wellRMPL = 0;
@@ -404,7 +404,7 @@ $(window).on("load", init());
 
 document.getElementById("btnLogout").addEventListener('click', logout);
 document.getElementById("initTime").addEventListener('click', () => {
-  changeInitTime();
+  toggleInitTime();
   curve(localStorage.getItem('initTime'), prodData, cumlData, dh.econ, dh.payout, dh.pump);
   activeFromStorage();
 });
