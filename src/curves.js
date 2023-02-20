@@ -341,7 +341,6 @@ const init = () => {
 //Main//
 const currUid = sessionStorage.getItem('currUid');
 let region = sessionStorage.getItem('region');
-console.log('region :>> ', region);
 console.log('currUid :>> ', currUid);
 
 let prodData = dh.dataST;
@@ -361,7 +360,7 @@ const yearTag = 'Days365';
 const halfYearTag = 'Days180';
 let initTime = localStorage.getItem('initTime');
 if (initTime == 31) $('#initTime').text('Init: 30 Days');
-console.log('initTime :>> ', initTime);
+
 dh.dropdown(prodData, dropdownId);
 
 d3.select(dropdownId).on("change", () => {

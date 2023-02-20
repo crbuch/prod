@@ -42,8 +42,6 @@ export const showLoginError = (error) => {
 }
 
 export const setActive = (view, time) => {
-  console.log('view :>> ', view);
-  console.log('timeview :>> ', time);
   let elems = document.querySelectorAll(".active");
   [].forEach.call(elems, (el) => {
     el.classList.remove("active");
@@ -53,7 +51,6 @@ export const setActive = (view, time) => {
 };
 
 export const setActiveTime = (time) => {
-  console.log('time :>> ', time);
   let elems = document.querySelectorAll(".active");
   [].forEach.call(elems, (el) => {
     if (el.id.includes("Days")) {
@@ -65,9 +62,7 @@ export const setActiveTime = (time) => {
 
 export const changeInitTime = () => {
   const currInit = localStorage.getItem('initTime');
-  console.log('currInit :>> ', currInit);
   if (currInit == 0) {
-    console.log("was incept");
     $('#initTime').text('Init: 30 Days')
     localStorage.setItem('initTime',31)
   }else {

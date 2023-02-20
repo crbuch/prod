@@ -1,7 +1,6 @@
 // entry point 
 import {
   btnLogin,
-  btnLogout,
   userEmail,
   userPassword,
   showLoginError,
@@ -39,23 +38,30 @@ const monitorAuthState = async () => {
 monitorAuthState();
 
 const login = async () => {
-  const email = "matt@tst.com";
-  const password = "123456";
-  //const email = userEmail.value
-  //const password = userPassword.value
-
+  const email = "cml@cml.com";
+  const password = "cmlprod";
+  //const username = userEmail.value;
+  //const password = userPassword.value;
+  //const email = `${username}@cml.com`;
+  
   signInWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
-      const uid = userCredential.user.uid;
-      initStorage();
+      initStorage(userCredential.user.uid);
     })
     .catch((error) => {
       showLoginError(error)
     });
 };
 
-const logout = async () => {
+const initStorage = (uid) => {
+  if (localStorage.getItem('initTime') == null) localStorage.setItem('initTime',0);
+  sessionStorage.setItem('currUid', uid)
+  sessionStorage.setItem('region', 'st')
+};
+
+export const logout = async () => {
   const auth = getAuth();
+
   signOut(auth).then(() => {
     sessionStorage.removeItem('currUid')
   }).catch((error) => {
@@ -63,19 +69,10 @@ const logout = async () => {
   });
 };
 
-const initStorage = () => {
-  const initTime = localStorage.getItem('initTime');
-  if (initTime == null){
-    localStorage.setItem('initTime',0)
-  }
-  sessionStorage.setItem('currUid', uid)
-  sessionStorage.setItem('region', 'st')
-};
-
 try {
   btnLogin.addEventListener('click', login)
 } catch {
 }
 
-export {logout}
+
 
