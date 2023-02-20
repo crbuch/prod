@@ -282,12 +282,6 @@ const table = (coreData) => {
   
 };
 
-const init = () => {
-  activeFromStorage();
-  curve(localStorage.getItem('initTime'), curveInfo);
-};
-
-
 //Main//
 const currUid = sessionStorage.getItem('currUid');
 let region = sessionStorage.getItem('region');
@@ -366,4 +360,7 @@ document.getElementById("initTime").addEventListener('click', () => {
 document.getElementById("btnLogout").addEventListener('click', logout);
 
 //init page on load//
-$(window).on("load", init());
+window.onload = function () {
+  activeFromStorage();
+  curve(localStorage.getItem('initTime'), curveInfo);
+}();

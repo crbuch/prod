@@ -18,7 +18,7 @@ export const showLoginForm = () => {
   if (currPage != 'index.html'){
     if (dev === true){
       window.location.replace("http://127.0.0.1:5503/../dist/index.html");
-      return
+      return;
     }
     window.location.replace("https://matthewplaisance.github.io/STprod/dist/index.html");
   }
@@ -32,7 +32,7 @@ export const showApp = () => {
   if (currPage == 'index.html'){
     if (dev === true){
       window.location.replace("http://127.0.0.1:5503/../dist/curves.html");
-      return
+      return;
     }
     window.location.replace("https://matthewplaisance.github.io/STprod/dist/curves.html");
   }

@@ -1,5 +1,6 @@
 import * as dh from './data'
-import { } from './region'
+import {} from './index'
+import {} from './region'
 
 const formatData = (data) => {
     const yesterdayDate = data[0][1];
