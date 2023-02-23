@@ -1,7 +1,9 @@
-import {} from './index'
-import { dropdown, dataST } from './data';
+import {} from "./index";
+import {} from "./region";
+import { dropdown, dataST } from "./data";
+import {createFaultLayout} from './layout';
 
-dropdown(dataST,'#wellselect');
+dropdown(dataST, "#wellselect");
 
 const changesign = (x) => {
   //switches signs in array
@@ -12,37 +14,39 @@ const changesign = (x) => {
 
 async function plot() {
   const dropdownMenu = d3.select("#wellselect").node();
-  let wellName = dropdownMenu.value;//Title of the well
+  let wellName = dropdownMenu.value; //Title of the well
   let selectedOption = dropdownMenu.value; //gives wellname chosen
-  if(selectedOption == "default"){
+  if (selectedOption == "default") {
     selectedOption = "Aaron #1";
     wellName = "Aaron #1";
-  };
+  }
   selectedOption = selectedOption.replace(" ", "");
   selectedOption = selectedOption.replace("#", "");
+  selectedOption = selectedOption.replace(" ", "");
+  console.log("selectedOption :>> ", selectedOption);
   async function getData(j) {
-    let bore = new d3.csv("../data/datawbd/" + selectedOption + j + ".csv").then(
-      (data) => {
-        //reads csv file
-        let DataTVD = [];
-        let DataN = [];
-        let DataE = [];
-        data.forEach(function (d) {
-          d.TVD = parseInt(d.TVD);
-          d.Easting = parseInt(d.Easting);
-          d.Northing = parseInt(d.Northing);
-        });
-        for (let i = 0; i < data.length; i++) {
-          //seperate data into arrays
-          DataTVD.push(data[i].TVD);
-          DataE.push(data[i].Easting);
-          DataN.push(data[i].Northing);
-        }
-
-        changesign(DataTVD);
-        return [DataTVD, DataN, DataE];
+    let bore = new d3.csv(
+      "../data/datawbd/" + selectedOption + j + ".csv"
+    ).then((data) => {
+      //reads csv file
+      let DataTVD = [];
+      let DataN = [];
+      let DataE = [];
+      data.forEach(function (d) {
+        d.TVD = parseInt(d.TVD);
+        d.Easting = parseInt(d.Easting);
+        d.Northing = parseInt(d.Northing);
+      });
+      for (let i = 0; i < data.length; i++) {
+        //seperate data into arrays
+        DataTVD.push(data[i].TVD);
+        DataE.push(data[i].Easting);
+        DataN.push(data[i].Northing);
       }
-    );
+
+      changesign(DataTVD);
+      return [DataTVD, DataN, DataE];
+    });
     let promise = await bore;
     return promise;
   }
@@ -53,7 +57,7 @@ async function plot() {
       let showDataTVD = [];
       let showDataN = [];
       let showDataE = [];
-      for (i in showData) {
+      for (let i = 0; i < showData.length; i++) {
         //seperate data into arrays
         showDataTVD.push(showData[i].TVD);
         showDataE.push(showData[i].Easting);
@@ -232,9 +236,10 @@ async function plot() {
 
   try {
     let showData1 = await getShowData(1);
-    let showData2 = await getShowData(2);
+    console.log("showData1 :>> ", showData1);
+    //let showData2 = await getShowData(2);
     let allBoreData = [data1, data2, data3, data4, data5];
-    let allShowData = [showData1, showData2];
+    let allShowData = [showData1];
     graphShow(allBoreData, allShowData, layout);
   } catch (err) {
     console.log(err);
@@ -246,34 +251,11 @@ async function plot() {
     Plotly.newPlot("graph", alldata, layout);
   }
   async function graphShow(allBoreData, allShowData) {
-    showData = [
-      {
-        opacity: 0.8,
-        mode: "markers",
-        marker: {
-          size: 4,
-          color: "#008000",
-        },
-        type: "scatter3d",
-
-        x: allShowData[0][2],
-        y: allShowData[0][1],
-        z: allShowData[0][0],
-      },
-      {
-        opacity: 0.8,
-        mode: "markers",
-        marker: {
-          size: 4,
-          color: "#008000",
-        },
-        type: "scatter3d",
-
-        x: allShowData[1][2],
-        y: allShowData[1][1],
-        z: allShowData[1][0],
-      },
-    ];
+    let faultLine1 = drawPlane([-6022, -821, 1361]);
+    let faultLine2 = drawPlane([-6045, 707, 41]);
+    let faultLine3 = drawPlane([-6514, -1032, 1096]);
+    let faultLine4 = drawPlane([-6446, 108, -153]);
+    let faults = [faultLine1,faultLine2,faultLine3,faultLine4];
 
     allBoreData = [
       {
@@ -354,24 +336,50 @@ async function plot() {
         y: allShowData[0][1],
         z: allShowData[0][0],
       },
-      {
-        opacity: 0.8,
-        mode: "markers",
-        marker: {
-          size: 4,
-          color: "#008000",
-        },
-        type: "scatter3d",
-
-        x: allShowData[1][2],
-        y: allShowData[1][1],
-        z: allShowData[1][0],
-      },
     ];
+    let showData = {
+      opacity: 0.8,
+      mode: "markers",
+      marker: {
+        size: 4,
+        color: "#008000",
+      },
+      type: "scatter3d",
 
+      x: allShowData[0][2],
+      y: allShowData[0][1],
+      z: allShowData[0][0],
+    };
+    faults.forEach(fault => {
+      let layout = createFaultLayout(fault[2],fault[1],fault[0]);
+      allBoreData.push(layout);
+    })
+    console.log('allBoreData :>> ', allBoreData);
     Plotly.newPlot("graph", allBoreData, layout);
   }
 }
+
+const drawPlane = (showPoint) => {
+  //tvd , y, x
+  const tvdDist = 50;
+  let xdist = 500;
+  const anglexy = 30;
+  let ydist = xdist / Math.tan((anglexy * Math.PI) / 180);
+
+  if (showPoint[1] < 0) ydist *= -1;
+  if (showPoint[1] < 0) xdist *= -1;
+  const xpoint1 = showPoint[2] + xdist;
+  const ypoint1 = showPoint[1] + ydist;
+
+  const xpoint2 = showPoint[2] - xdist;
+  const ypoint2 = showPoint[1] - ydist;
+  //const tvdpoint = showPoint[0] + tvdDist
+  return [
+    [showPoint[0], showPoint[0]],
+    [ypoint1, ypoint2],
+    [xpoint1,xpoint2]
+  ];
+};
 
 //d3.select("#wellselect").on('change', function() {files()});
 d3.select("#wellselect").on("change", function () {
@@ -379,4 +387,6 @@ d3.select("#wellselect").on("change", function () {
 });
 
 //init page on load//
-$(window).on("load",function () {plot();});
+$(window).on("load", function () {
+  plot();
+});

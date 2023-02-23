@@ -39,3 +39,17 @@ export const config = {
     displaylogo: false,
     responsive: true,
 }; 
+
+export const createFaultLayout = (x, y, z) => ({
+    opacity: 0.8,
+    mode: "lines",
+    line: {
+      width: 6,
+      color: "#39e75f",
+    },
+    type: "scatter3d",
+  
+    x: x,
+    y: y,
+    z: z,
+  });
