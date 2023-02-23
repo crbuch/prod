@@ -1,9 +1,7 @@
-import {} from "./index";
-import {} from "./region";
+import { } from "./index";
+import { } from "./region";
 import { dropdown, dataST } from "./data";
-import {createFaultLayout} from './layout';
-
-dropdown(dataST, "#wellselect");
+import { createFaultLayout, layoutWbd } from './layout';
 
 const changesign = (x) => {
   //switches signs in array
@@ -49,7 +47,7 @@ async function plot() {
     });
     let promise = await bore;
     return promise;
-  }
+  };
   async function getShowData(j) {
     let show = new d3.csv(
       "../data/datawbd/" + selectedOption + "show" + j + ".csv"
@@ -107,59 +105,15 @@ async function plot() {
     return d3.min(d);
   });
 
+  let min = minE;
+  let max = maxE;
+  if (minN < minE) min = minN;
+  if (maxN > maxE) max = maxN;
+
   const scale = 1000;
 
-  let layout = {
-    width: 1620,
-    height: 780,
+  const layout = layoutWbd(scale,max,min,minTVD,wellName);
 
-    margin: {
-      l: 0,
-      r: 0,
-      b: 0,
-      t: 0,
-    },
-
-    title: {
-      text: "Drilling for " + wellName + ", Dimmit County, TX",
-      y: 0.98,
-    },
-
-    legend: {
-      x: 0.8,
-      y: 0.8,
-    },
-    scene: {
-      aspectmode: "cube",
-      xaxis: {
-        title: "Easting",
-        nticks: 8,
-        range: [minE - scale, maxE + scale],
-        gridcolor: "#8a8a8a",
-        tickcolor: "#050505",
-        backgroundcolor: "#ededed",
-        showbackground: true,
-      },
-      yaxis: {
-        title: "Northing",
-        nticks: 8,
-        range: [minN - scale, maxN + scale],
-        gridcolor: "#8a8a8a",
-        tickcolor: "#050505",
-        backgroundcolor: "#f0f1f2",
-        showbackground: true,
-      },
-      zaxis: {
-        title: "TVD",
-        nticks: 5,
-        range: [minTVD - scale * 0.5, -3000],
-        gridcolor: "#8a8a8a",
-        tickcolor: "#050505",
-        backgroundcolor: "#ededed",
-        showbackground: true,
-      },
-    },
-  };
   let alldata = [
     {
       opacity: 0.8,
@@ -250,13 +204,13 @@ async function plot() {
   async function graph() {
     let graphDiv = document.getElementById("graph");
     Plotly.newPlot("graph", alldata, layout);
-  }
+  };
   async function graphShow(allBoreData, allShowData) {
     let faultLine1 = drawPlane([-6022, -821, 1361]);
     let faultLine2 = drawPlane([-6045, 707, 41]);
     let faultLine3 = drawPlane([-6514, -1032, 1096]);
     let faultLine4 = drawPlane([-6446, 108, -153]);
-    let faults = [faultLine1,faultLine2,faultLine3,faultLine4];
+    let faults = [faultLine1, faultLine2, faultLine3, faultLine4];
 
     allBoreData = [
       {
@@ -352,24 +306,25 @@ async function plot() {
       z: allShowData[0][0],
     };
     faults.forEach(fault => {
-      let layout = createFaultLayout(fault[2],fault[1],fault[0]);
+      let layout = createFaultLayout(fault[2], fault[1], fault[0]);
       allBoreData.push(layout);
     })
     console.log('allBoreData :>> ', allBoreData);
     Plotly.newPlot("graph", allBoreData, layout);
-  }
-}
+  };
+};
 
 const drawPlane = (showPoint) => {
   //tvd , y, x
   const tvdDist = 50;
   let xdist = 500;
   const anglexy = 30;
+  const angleyz = 45;
   let ydist = xdist / Math.tan((anglexy * Math.PI) / 180);
 
   if (showPoint[1] < 0) ydist *= -1;
   if (showPoint[1] < 0) xdist *= -1;
- 
+
   const xpoint1 = showPoint[2] + xdist;
   const ypoint1 = showPoint[1] + ydist;
 
@@ -379,11 +334,13 @@ const drawPlane = (showPoint) => {
   return [
     [showPoint[0], showPoint[0]],
     [ypoint1, ypoint2],
-    [xpoint1,xpoint2]
+    [xpoint1, xpoint2]
   ];
 };
 
-//d3.select("#wellselect").on('change', function() {files()});
+
+dropdown(dataST, "#wellselect");
+
 d3.select("#wellselect").on("change", function () {
   plot();
 });
