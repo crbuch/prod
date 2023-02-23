@@ -235,11 +235,11 @@ async function plot() {
   ];
 
   try {
-    //let showData1 = await getShowData(1);
+    let showData1 = await getShowData(1);
     //console.log("showData1 :>> ", showData1);
     //let showData2 = await getShowData(2);
     let allBoreData = [data1, data2, data3, data4, data5];
-    let showData1 = [[-6045, -6022, -6514, -6446],['707', '-821', '-1032', '108'],['41', '1361', '1096', '-153']]
+    //let showData1 = [[-6045, -6022, -6514, -6446],['707', '-821', '-1032', '108'],['41', '1361', '1096', '-153']]
     let allShowData = [showData1];
     graphShow(allBoreData, allShowData, layout);
   } catch (err) {
