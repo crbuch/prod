@@ -56,7 +56,7 @@ export const createFaultLayout = (x, y, z) => ({
 
 export const layoutWbd = (scale,max,min,minTVD,wellName) => ({
     width: 1620,
-    height: 780,
+    height: 700,
 
     margin: {
         l: 0,

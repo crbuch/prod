@@ -1,7 +1,8 @@
 import { } from "./index";
 import { } from "./region";
-import { dropdown, dataST } from "./data";
 import { createFaultLayout, layoutWbd } from './layout';
+import { async } from "@firebase/util";
+import { reauthenticateWithPhoneNumber } from "firebase/auth";
 
 const changesign = (x) => {
   //switches signs in array
@@ -14,307 +15,102 @@ async function plot() {
   const dropdownMenu = d3.select("#wellselect").node();
   let wellName = dropdownMenu.value; //Title of the well
   let selectedOption = dropdownMenu.value; //gives wellname chosen
-  if (selectedOption == "default") {
-    selectedOption = "Aaron #1";
-    wellName = "Aaron #1";
-  }
+
   selectedOption = selectedOption.replace(" ", "");
   selectedOption = selectedOption.replace("#", "");
   selectedOption = selectedOption.replace(" ", "");
   console.log("selectedOption :>> ", selectedOption);
-  async function getData(j) {
-    let bore = new d3.csv(
-      "../data/datawbd/" + selectedOption + j + ".csv"
-    ).then((data) => {
-      //reads csv file
-      let DataTVD = [];
-      let DataN = [];
-      let DataE = [];
-      data.forEach(function (d) {
-        d.TVD = parseInt(d.TVD);
-        d.Easting = parseInt(d.Easting);
-        d.Northing = parseInt(d.Northing);
-      });
-      for (let i = 0; i < data.length; i++) {
-        //seperate data into arrays
-        DataTVD.push(data[i].TVD);
-        DataE.push(data[i].Easting);
-        DataN.push(data[i].Northing);
-      }
 
-      changesign(DataTVD);
-      return [DataTVD, DataN, DataE];
-    });
-    let promise = await bore;
-    return promise;
+  const files = await getFiles(wellName)
+
+  async function getData(file) {
+    const data = await d3.csv(`../data/datawbd/${file}`);
+    const [DataTVD, DataN, DataE] = data.reduce(([TVD, N, E], { TVD: tvd, Easting, Northing }) =>
+      [[...TVD, parseInt(tvd)],
+      [...N, parseInt(Northing)],
+      [...E, parseInt(Easting)]
+      ], [[], [], []]);
+
+    changesign(DataTVD);
+    return [DataTVD, DataN, DataE];
   };
-  async function getShowData(j) {
-    let show = new d3.csv(
-      "../data/datawbd/" + selectedOption + "show" + j + ".csv"
-    ).then((showData) => {
-      let showDataTVD = [];
-      let showDataN = [];
-      let showDataE = [];
-      for (let i = 0; i < showData.length; i++) {
-        //seperate data into arrays
-        showDataTVD.push(showData[i].TVD);
-        showDataE.push(showData[i].Easting);
-        showDataN.push(showData[i].Northing);
-      }
-      changesign(showDataTVD);
-      return [showDataTVD, showDataN, showDataE];
-    });
-    let prom = await show;
-    return prom;
-  }
-  let data1 = await getData(1); //waits for data from each wellbore(diff csv files)
-  let data2 = await getData(2);
-  let data3 = await getData(3);
-  let data4 = await getData(4);
-  let data5 = await getData(5);
+  console.log('files :>> ', files);
+  const dataPromises = files.map(file => getData(file));
+  const data = await Promise.all(dataPromises);
+  console.log('data :>> ', data);//variable length 2d array , inside array[0] = tvd  [1] = Northing [2] = easting
 
-  let allDataE = [data1[2], data2[2], data3[2], data4[2], data5[2]];
-  let allDataN = [data1[1], data2[1], data3[1], data4[1], data5[1]];
-  let allDataTVD = [data1[0], data2[0], data3[0], data4[0], data5[0]];
+  let dataTvd = [];
+  let dataNorthing = [];
+  let dataEasting = [];
+  let shows = [];
 
-  let visibility3,
-    visibility4,
-    visibility5 = true;
-  if (data3[1][0] == null) {
-    visibility3 = false;
-  }
-  if (data4[1][0] == null) {
-    visibility4 = false;
-  }
-  if (data5[1][0] == null) {
-    visibility5 = false;
-  }
-  let maxE = d3.max(allDataE, (d) => {
-    return d3.max(d);
-  });
-  let maxN = d3.max(allDataN, (d) => {
-    return d3.max(d);
-  });
-  let minE = d3.min(allDataE, (d) => {
-    return d3.min(d);
-  });
-  let minN = d3.min(allDataN, (d) => {
-    return d3.min(d);
-  });
-  let minTVD = d3.min(allDataTVD, (d) => {
-    return d3.min(d);
+  data.forEach(bore => {
+    dataTvd.push(bore[0])
+    dataNorthing.push(bore[1])
+    dataEasting.push(bore[2])
   });
 
-  let min = minE;
-  let max = maxE;
-  if (minN < minE) min = minN;
-  if (maxN > maxE) max = maxN;
+  for (let i = 0; i < files.length; i++) {
+    if (files[i].toLowerCase().includes('show') === true) {
+      shows.push(data[i])
+      data.splice(i, 1)
+    }
+  };
+  shows = shows[0]
+
+  const [minE, maxE] = d3.extent(dataEasting.flat());
+  const [minN, maxN] = d3.extent(dataNorthing.flat());
+  const minTVD = d3.min(dataTvd.flat());
+
+  const min = Math.min(minE, minN);
+  const max = Math.max(maxE, maxN);
 
   const scale = 1000;
+  const layout = layoutWbd(scale, max, min, minTVD, wellName);
+  const colors = ['#1d6acf', '#eb7a10', '#d61515', 'red', '#345223'];
 
-  const layout = layoutWbd(scale,max,min,minTVD,wellName);
+  const plotData = [];
 
-  let alldata = [
-    {
+  for (let i = 0; i < data.length; i++) {
+    plotData.push({
       opacity: 0.8,
       mode: "lines",
-      name: "Orginal Hole",
+      name: i === 0 ? "Orginal Hole" : `Side Track ${i}`,
       line: {
         width: 6,
-        color: "#1d6acf",
+        color: colors[i],
       },
       type: "scatter3d",
-
-      x: data1[2],
-      y: data1[1],
-      z: data1[0],
-    },
-    {
-      opacity: 0.8,
-      mode: "lines",
-      name: "Side Track 1",
-      line: {
-        width: 6,
-        color: "#eb7a10",
-      },
-      type: "scatter3d",
-
-      x: data2[2],
-      y: data2[1],
-      z: data2[0],
-    },
-    {
-      opacity: 0.8,
-      mode: "lines",
-      name: "Side Track 2",
-      line: {
-        width: 6,
-        color: "#d61515",
-      },
-      type: "scatter3d",
-      visible: visibility3,
-      x: data3[2],
-      y: data3[1],
-      z: data3[0],
-    },
-    {
-      opacity: 0.8,
-      mode: "lines",
-      name: "Side Track 3",
-      line: {
-        width: 6,
-        color: "#000000",
-      },
-      type: "scatter3d",
-      color: "red",
-      visible: visibility4,
-      x: data4[2],
-      y: data4[1],
-      z: data4[0],
-    },
-    {
-      opacity: 0.8,
-      mode: "lines",
-      name: "Side Track 4",
-      line: {
-        width: 6,
-        color: "#345223",
-      },
-      type: "scatter3d",
-      visible: visibility5,
-      x: data5[2],
-      y: data5[1],
-      z: data5[0],
-    },
-  ];
-
-  try {
-    let showData1 = await getShowData(1);
-    //console.log("showData1 :>> ", showData1);
-    //let showData2 = await getShowData(2);
-    let allBoreData = [data1, data2, data3, data4, data5];
-    //let showData1 = [[-6045, -6022, -6514, -6446],['707', '-821', '-1032', '108'],['41', '1361', '1096', '-153']]
-    let allShowData = [showData1];
-    graphShow(allBoreData, allShowData, layout);
-  } catch (err) {
-    console.log(err);
-    graph();
-  }
-
-  async function graph() {
-    let graphDiv = document.getElementById("graph");
-    Plotly.newPlot("graph", alldata, layout);
+      x: data[i][2],
+      y: data[i][1],
+      z: data[i][0],
+    });
   };
-  async function graphShow(allBoreData, allShowData) {
-    let faultLine1 = drawPlane([-6022, -821, 1361]);
-    let faultLine2 = drawPlane([-6045, 707, 41]);
-    let faultLine3 = drawPlane([-6514, -1032, 1096]);
-    let faultLine4 = drawPlane([-6446, 108, -153]);
-    let faults = [faultLine1, faultLine2, faultLine3, faultLine4];
 
-    allBoreData = [
-      {
-        opacity: 0.8,
-        mode: "lines",
-        line: {
-          width: 6,
-          color: "#A52A2A",
-        },
-        type: "scatter3d",
+  if (shows != undefined) {
+    const faults = [];
 
-        x: allBoreData[0][2],
-        y: allBoreData[0][1],
-        z: allBoreData[0][0],
-      },
-      {
-        opacity: 0.8,
-        mode: "lines",
-        line: {
-          width: 6,
-          color: "#DC143C",
-        },
-        type: "scatter3d",
+    for (let i = 0; i < shows[0].length; i++) {
+      const point = [];
 
-        x: allBoreData[1][2],
-        y: allBoreData[1][1],
-        z: allBoreData[1][0],
-      },
-      {
-        opacity: 0.8,
-        mode: "lines",
-        line: {
-          size: 2,
-          color: "#D2691E",
-        },
-        type: "scatter3d",
-
-        x: allBoreData[2][2],
-        y: allBoreData[2][1],
-        z: allBoreData[2][0],
-      },
-      {
-        opacity: 0.8,
-        mode: "lines+markers",
-        marker: {
-          size: 2,
-          color: "#FF7F50",
-        },
-        type: "scatter3d",
-
-        x: allBoreData[3][2],
-        y: allBoreData[3][1],
-        z: allBoreData[3][0],
-      },
-      {
-        opacity: 0.8,
-        mode: "lines",
-        marker: {
-          size: 2,
-          color: "#E9967A",
-        },
-        type: "scatter3d",
-
-        x: allBoreData[4][2],
-        y: allBoreData[4][1],
-        z: allBoreData[4][0],
-      },
-      {
-        opacity: 0.8,
-        mode: "markers",
-        marker: {
-          size: 4,
-          color: "#008000",
-        },
-        type: "scatter3d",
-
-        x: allShowData[0][2],
-        y: allShowData[0][1],
-        z: allShowData[0][0],
-      },
-    ];
-    let showData = {
-      opacity: 0.8,
-      mode: "markers",
-      marker: {
-        size: 4,
-        color: "#008000",
-      },
-      type: "scatter3d",
-
-      x: allShowData[0][2],
-      y: allShowData[0][1],
-      z: allShowData[0][0],
+      for (let j = 0; j < shows.length; j++) {
+        point.push(shows[j][i]);
+      }
+      const fault = drawFault(point)
+      faults.push(fault)
     };
+
     faults.forEach(fault => {
+      console.log('fault :>> ', fault);
       let layout = createFaultLayout(fault[2], fault[1], fault[0]);
-      allBoreData.push(layout);
-    })
-    console.log('allBoreData :>> ', allBoreData);
-    Plotly.newPlot("graph", allBoreData, layout);
+      plotData.push(layout);
+    });
   };
+
+  Plotly.newPlot("graph", plotData, layout, { responsive: true });
 };
 
-const drawPlane = (showPoint) => {
+const drawFault = (showPoint) => {
   //tvd , y, x
   const tvdDist = 50;
   let xdist = 500;
@@ -338,8 +134,34 @@ const drawPlane = (showPoint) => {
   ];
 };
 
+const drawPlane = (fault) => {
+  
+};
 
-dropdown(dataST, "#wellselect");
+async function getFiles(well) {
+  console.log('well :>> ', well);
+  const wells = await d3.json("../data/datawbd/wells.json").then((data) => {
+    return data
+  });
+  return wells[well]
+};
+
+async function dropdown() {
+  const wellsdict = await d3.json("../data/datawbd/wells.json").then((data) => {
+    return data
+  });
+  let menu = d3.select("#wellselect");
+  let wells = Object.keys(wellsdict)
+
+  wells.forEach(well => {
+    menu.append("option")
+      .text(well)
+      .property("Value", well);
+  });
+};
+
+
+dropdown();
 
 d3.select("#wellselect").on("change", function () {
   plot();
