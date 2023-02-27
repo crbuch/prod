@@ -40,21 +40,7 @@ export const config = {
     responsive: true,
 };
 
-export const createFaultLayout = (x, y, z) => ({
-    opacity: 0.8,
-    mode: "lines",
-    line: {
-        width: 6,
-        color: "#39e75f",
-    },
-    type: "scatter3d",
-
-    x: x,
-    y: y,
-    z: z,
-});
-
-export const layoutWbd = (scale,max,min,minTVD,wellName) => ({
+export const layoutWbd = (max,min,minTVD,wellName) => ({
     width: 1620,
     height: 700,
 
@@ -79,7 +65,7 @@ export const layoutWbd = (scale,max,min,minTVD,wellName) => ({
         xaxis: {
             title: "Easting",
             nticks: 8,
-            range: [min - scale, max + scale],
+            range: [max, min],
             gridcolor: "#8a8a8a",
             tickcolor: "#050505",
             backgroundcolor: "#ededed",
@@ -88,20 +74,22 @@ export const layoutWbd = (scale,max,min,minTVD,wellName) => ({
         yaxis: {
             title: "Northing",
             nticks: 8,
-            range: [min - scale, max + scale],
+            range: [max, min],
             gridcolor: "#8a8a8a",
             tickcolor: "#050505",
             backgroundcolor: "#f0f1f2",
             showbackground: true,
+
         },
         zaxis: {
             title: "TVD",
             nticks: 5,
-            range: [minTVD - scale * 0.5, -3000],
+            range: [minTVD, -3000],
             gridcolor: "#8a8a8a",
             tickcolor: "#050505",
             backgroundcolor: "#ededed",
             showbackground: true,
         },
     },
+    
 });
