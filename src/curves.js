@@ -140,7 +140,7 @@ const curve = (timeFrame, data) => {
   document.getElementById("wellName").innerHTML = selectedOption;
   document.getElementById("individualTable").style.display = "none";
 
-  ['oilDeclineCurve','gasDeclineCurve','waterDeclineCurve','waterCutCurve'].forEach(id => {
+  ['oilDeclineCurve', 'gasDeclineCurve', 'waterDeclineCurve', 'waterCutCurve'].forEach(id => {
     document.getElementById(id).style.display = 'block';
   });
 
@@ -264,7 +264,7 @@ const curve = (timeFrame, data) => {
 };
 
 const table = (coreData) => {
-  const data = coreData.map(el => ([...el ]))
+  const data = coreData.map(el => ([...el]))
   const selectedOption = getSelectedOption(data);
   const well = data.filter(i => i[0] == selectedOption);
 
@@ -275,12 +275,27 @@ const table = (coreData) => {
   dh.buildTable(well);
 
   document.getElementById('individualTable').style.display = 'inline-block';
-  ['oilDeclineCurve','gasDeclineCurve','waterDeclineCurve','waterCutCurve'].forEach(tag => {
+  ['oilDeclineCurve', 'gasDeclineCurve', 'waterDeclineCurve', 'waterCutCurve'].forEach(tag => {
     document.getElementById(tag).style.display = 'none'
   });
 
+
+};
+
+const getArhciveWells = (data, info) => {
+  let wells = [...new Set(data.map(row => row[0]))].sort();
+  const d = info.pumpData
+  let archive = ['Russel #1'];
+  wells.forEach(well => {
+    let wellInfo = d.find(i => i["Well Name"] === well);
+    if (wellInfo === undefined) {
+      archive.push(well)
+    }
+  })
   
 };
+
+
 
 //Main//
 const currUid = sessionStorage.getItem('currUid');
@@ -296,10 +311,10 @@ if (region == "et") {
 };
 
 const curveInfo = {
-  prodData: prodData, 
-  dataCuml: cumlData, 
-  economicsData: dh.econ, 
-  payoutData: dh.payout, 
+  prodData: prodData,
+  dataCuml: cumlData,
+  economicsData: dh.econ,
+  payoutData: dh.payout,
   pumpData: dh.pump
 };
 
@@ -343,12 +358,12 @@ d3.selectAll(`#${linearTag}, #${logTag}, #${inceptionTag}, #${thirtyTag}, #${hal
         curve(0, curveInfo);
       }
     }
-});
+  });
 
 document.getElementById("table").addEventListener('click', () => {
-    if (checkActive('table') === true) return;
-    setActive("table", inceptionTag);
-    table(prodData);
+  if (checkActive('table') === true) return;
+  setActive("table", inceptionTag);
+  table(prodData);
 });
 
 document.getElementById("initTime").addEventListener('click', () => {
@@ -364,3 +379,12 @@ window.onload = function () {
   activeFromStorage();
   curve(localStorage.getItem('initTime'), curveInfo);
 }();
+
+getArhciveWells(prodData, curveInfo);
+//burns 1 & 2
+//dial non ST
+//dillard
+//drinkard
+//fatherly jic marrs la rosita
+
+//plus russell rhodes

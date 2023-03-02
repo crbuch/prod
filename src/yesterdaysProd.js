@@ -1,17 +1,15 @@
 import * as dh from './data'
-import {} from './index'
-import {} from './region'
+import { } from './index'
+import { } from './region'
 
 const formatData = (data) => {
     const yesterdayDate = data[0][1];
-    let filteredData = data.filter(row => row[1] == yesterdayDate);
-    let tableData = [];
+    const filteredData = data.filter(row => row[1] === yesterdayDate);
+    const tableData = filteredData.map(([well, , oil, gas, water, tp, , comms]) =>
+        [well, oil, gas, water, tp, comms]
+    );
 
-    filteredData.forEach(well => {
-        tableData.push(Array(well[0], well[2], well[3], well[4], well[5], well[7]))
-    });
-
-    return tableData
+    return tableData;
 };
 
 //main
@@ -37,6 +35,6 @@ d3.select(dropdownId).on("change", () => {
 
 window.onload = function () {
     dh.buildTable(tableData);
-    dh.dropdown(data, dropdownId);  
+    dh.dropdown(data, dropdownId);
 }();
 

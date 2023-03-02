@@ -23,6 +23,7 @@ const formatData = () => {
       });
     });
   };
+  
   //switch places of prodData[3] and prodData[4]
   tableData.forEach((well) => {
     let temp = well[4];
@@ -34,7 +35,8 @@ const formatData = () => {
     well[4] = Number(well[4]).toFixed(2);
   });
 
-  return tableData;
+  //remove archived wells
+  return tableData.filter(val => dh.blackList().has(val[0]));
 };
 
 
