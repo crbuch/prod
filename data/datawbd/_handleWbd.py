@@ -3,7 +3,6 @@ import json
 import csv
 import re
 import math
-import numpy as np
 from math import radians
 
 def parseShowName(well):

@@ -282,19 +282,6 @@ const table = (coreData) => {
 
 };
 
-const getArhciveWells = (data, info) => {
-  let wells = [...new Set(data.map(row => row[0]))].sort();
-  const d = info.pumpData
-  let archive = ['Russel #1'];
-  wells.forEach(well => {
-    let wellInfo = d.find(i => i["Well Name"] === well);
-    if (wellInfo === undefined) {
-      archive.push(well)
-    }
-  })
-  
-};
-
 
 
 //Main//
@@ -329,7 +316,7 @@ const halfYearTag = 'Days180';
 let initTime = localStorage.getItem('initTime');
 if (initTime == 31) $('#initTime').text('Init: 30 Days');
 
-dh.dropdown(prodData, dropdownId);
+dh.dropdown(dropdownId);
 
 d3.select(dropdownId).on("change", () => {
   setActive(linearTag, activeFromStorage());
@@ -379,12 +366,3 @@ window.onload = function () {
   activeFromStorage();
   curve(localStorage.getItem('initTime'), curveInfo);
 }();
-
-getArhciveWells(prodData, curveInfo);
-//burns 1 & 2
-//dial non ST
-//dillard
-//drinkard
-//fatherly jic marrs la rosita
-
-//plus russell rhodes

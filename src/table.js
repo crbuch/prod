@@ -36,14 +36,12 @@ const formatData = () => {
   });
 
   //remove archived wells
-  return tableData.filter(val => dh.blackList().has(val[0]));
+  return tableData.filter(val => dh.activeWells().has(val[0]));
 };
 
 
 //main
 const tableData = formatData();
-let dropdownData = dh.dataST
-if (region == 'et') dropdownData = dh.dataET;
 
 //sort by pay: pos=4 by prod: pos=1
 document.getElementById('Payfilter').onclick = function(){
@@ -64,5 +62,5 @@ document.getElementById('clearFilter').onclick = function () {
 
 window.onload = function () {
   dh.buildTable(tableData);
-  dh.dropdown(dropdownData, dropdownId);  
+  dh.dropdown(dropdownId);  
 }();

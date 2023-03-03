@@ -16,7 +16,7 @@ const formatData = (data) => {
 const dropdownId = '#wellFilter'
 let region = sessionStorage.getItem('region');
 let data = dh.dataET;
-if (region != 'et') data = dh.dataST;
+if (region !== 'et') data = dh.dataST;
 
 const tableData = formatData(data);
 
@@ -35,6 +35,6 @@ d3.select(dropdownId).on("change", () => {
 
 window.onload = function () {
     dh.buildTable(tableData);
-    dh.dropdown(data, dropdownId);
+    dh.dropdown(dropdownId);
 }();
 

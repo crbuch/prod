@@ -41,9 +41,8 @@ monitorAuthState();
 const login = async () => {
   const email = "cml@cml.com";
   const password = "cmlprod";
-  //const username = userEmail.value;
+  //const email = `${userEmail.value}@cml.com`;
   //const password = userPassword.value;
-  //const email = `${username}@cml.com`;
   
   signInWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
@@ -62,7 +61,6 @@ const initStorage = (uid) => {
 
 export const logout = async () => {
   const auth = getAuth();
-
   signOut(auth).then(() => {
     sessionStorage.removeItem('currUid')
   }).catch((error) => {

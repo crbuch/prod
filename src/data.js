@@ -41,28 +41,26 @@ export const pump = await d3.json("../data/pumpInfo.json").then((data) => {
     return data
 });
 
-export const blackList = () => {
-    const data = dataST;
-    const bl = new Set();
-    const weekago = Date.now()/1000 - 604800;
-
+export const activeWells = () => {
+    let data = dataET;
+    if (sessionStorage.getItem('region') !== 'et') data = dataST;
+    const exitWell = data[0][0]
+    const wells = new Set();
+    
     for (let i = 0; i < data.length; i++) {
         const well = data[i][0];
-        if (Date.parse(data[i][9])/1000 > weekago & !bl.has(well)) bl.add(well);
-        if (well === 'Aaron #1' & i !== 0) break;
+        wells.add(well);
+        if (well === exitWell & i !== 0) break;
     };
 
-    return bl;
+    return wells;
 };
 
 //Creates Dropdown//
-export const dropdown = (data, id) => {
+export const dropdown = (id) => {
     let menu = d3.select(id);
-    let w = [...new Set(data.map(row => row[0]))].sort();
-
-    let wells = w.filter(val => blackList().has(val));
-
-    wells.forEach(well => {
+    
+    activeWells().forEach(well => {
         menu.append("option")
             .text(well)
             .property("Value", well);
@@ -74,8 +72,6 @@ export const buildTable = (allData) => {
     tbody.html("");
     allData.forEach((well) => {
         let row = tbody.append("tr");
-        //console.log(well)
-
         Object.values(well).forEach((val) => {
             let cell = row.append("td");
             cell.text(val);
