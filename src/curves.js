@@ -1,7 +1,7 @@
 import { logout } from './index'
 import { } from './region'
 import * as dh from './data'
-import { makeData, makeLayout, config } from './layout';
+import { makeTrace, makeLayout, config } from './layout';
 import { setActive, setActiveTime, toggleInitTime, checkActive, activeFromStorage } from './ui';
 
 const displayEconomics = (data, selectedOption) => {
@@ -131,11 +131,6 @@ const curve = (timeFrame, data) => {
   };
   displayCumlData(data.dataCuml, selectedOption);
 
-  let scale = "linear";
-  document.querySelectorAll(".active").forEach((el) => {
-    if (el.id == "logarithmic") scale = "log";;
-  });
-
   document.getElementById("zoomOil").style.visibility = "hidden"; //dont display old zoom data if switching b/t wells/timeframes
   document.getElementById("wellName").innerHTML = selectedOption;
   document.getElementById("individualTable").style.display = "none";
@@ -144,36 +139,20 @@ const curve = (timeFrame, data) => {
     document.getElementById(id).style.display = 'block';
   });
 
-  let site_oil = [];
-  let site_gas = [];
-  let site_water = [];
-  let site_date = [];
-  let comments = [];
-  let movingAverage = [];
-  let water_cut = [];
+  const site_data = data.prodData.filter(site => site[0] === selectedOption);
 
-  data.prodData.forEach((site) => {
-    if (site[0] === selectedOption) {
-      site_date.push(site[9]);
-      site_oil.push(site[2]);
-      site_gas.push(site[3]);
-      site_water.push(site[4]);
-      comments.push(site[7]);
-      movingAverage.push(site[8]);
-      water_cut.push((site[4] / (site[4] + site[2])) * 100);
-    }
-  });
+  let site_date = site_data.map(site => site[9]);
+  let site_oil = site_data.map(site => site[2]);
+  let site_gas = site_data.map(site => site[3]);
+  let site_water = site_data.map(site => site[4]);
+  let comments = site_data.map(site => site[7]);
+  let movingAverage = site_data.map(site => site[8]);
+  let water_cut = site_water.map((water, i) => (water / (water + site_oil[i])) * 100);
 
-  if (timeFrame > 0) {
-    site_date = site_date.slice(0, timeFrame);
-    site_oil = site_oil.slice(0, timeFrame);
-    site_gas = site_gas.slice(0, timeFrame);
-    site_water = site_water.slice(0, timeFrame);
-    comments = comments.slice(0, timeFrame);
-    movingAverage = movingAverage.slice(0, timeFrame);
-  };
+  if (timeFrame > 0) [site_date, site_oil, site_gas, site_water, comments, movingAverage] =
+    [site_date, site_oil, site_gas, site_water, comments, movingAverage].map(arr => arr.slice(0, timeFrame));
 
-  const dataOilnorm = makeData(
+  const traceOil = makeTrace(
     site_date,
     site_oil,
     "Oil",
@@ -183,7 +162,7 @@ const curve = (timeFrame, data) => {
     comments
   );
 
-  const dataOilmoving = makeData(
+  const traceOilAvg = makeTrace(
     site_date,
     movingAverage,
     "7 Day Avg",
@@ -192,9 +171,9 @@ const curve = (timeFrame, data) => {
     "dot"
   );
 
-  const dataGas = makeData(site_date, site_gas, "Gas [Mcf]", "line", "red");
+  const traceGas = makeTrace(site_date, site_gas, "Gas [Mcf]", "line", "red");
 
-  const dataWater = makeData(
+  const traceWater = makeTrace(
     site_date,
     site_water,
     "Water [Mbw]",
@@ -202,7 +181,7 @@ const curve = (timeFrame, data) => {
     "blue"
   );
 
-  const dataCut = [
+  const traceCut = [
     {
       x: site_date,
       y: water_cut,
@@ -210,28 +189,26 @@ const curve = (timeFrame, data) => {
     },
   ];
 
+  const scale = (document.getElementById("logarithmic").classList.contains("active")) ? 'log' : 'linear';
+
   const layoutCut = makeLayout("Water Cut Percentage");
 
-  const layoutLog = makeLayout("Fluids Produced vs Times", "log", [1, 2, 5, 10, 20, 50, 100, 200, 500, 1000]);
+  const plotContainers = ["oilDeclineCurve", "gasDeclineCurve", "waterDeclineCurve"];
 
-  const layoutOil = makeLayout("Oil (BOPD) vs Time", scale, null);
+  const traceArrays = [
+    [traceOil, traceOilAvg],
+    [traceGas],
+    [traceWater],
+  ];
 
-  const layoutGas = makeLayout("Gas (MCFD) vs Time", scale, null);
+  plotContainers.forEach((container, i) => {
+    const layout = makeLayout(['Oil (BOPD) vs Time', 'Gas (MCFD) vs Time', 'Water (BWPD) vs Time'][i], scale, 
+    (scale === 'log') ? [1, 2, 5, 10, 20, 50, 100, 200, 500, 1000] : null);
+    Plotly.newPlot(container, traceArrays[i], layout, config);
+  });
 
-  const layoutWater = makeLayout("Water (BWPD) vs Time", scale, null);
+  Plotly.newPlot("waterCutCurve", traceCut, layoutCut, config);
 
-  if (scale == "log") {
-    Plotly.newPlot("oilDeclineCurve", [dataOilnorm, dataOilmoving], layoutLog, {
-      showSendToCloud: true,
-    });
-    Plotly.newPlot("gasDeclineCurve", [dataGas], layoutLog, config);
-    Plotly.newPlot("waterDeclineCurve", [dataWater], layoutLog, config);
-  } else {
-    Plotly.newPlot("oilDeclineCurve", [dataOilnorm, dataOilmoving], layoutOil, config);
-    Plotly.newPlot("gasDeclineCurve", [dataGas], layoutGas, config);
-    Plotly.newPlot("waterDeclineCurve", [dataWater], layoutWater, config);
-  }
-  Plotly.newPlot("waterCutCurve", dataCut, layoutCut, config);
 
   //Display oil production based on zoom
   const oilDeclineCurve = document.getElementById("oilDeclineCurve");
@@ -278,8 +255,6 @@ const table = (coreData) => {
   ['oilDeclineCurve', 'gasDeclineCurve', 'waterDeclineCurve', 'waterCutCurve'].forEach(tag => {
     document.getElementById(tag).style.display = 'none'
   });
-
-
 };
 
 

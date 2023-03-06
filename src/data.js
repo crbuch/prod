@@ -1,5 +1,4 @@
 import * as d3 from 'd3'
-import { filter } from 'd3';
 
 export const dataST = await d3.json("../data/allProductionData.json").then((data) => {
     return data
