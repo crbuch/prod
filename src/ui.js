@@ -1,4 +1,5 @@
 import { AuthErrorCodes } from 'firebase/auth';
+import {updateCurve, curveInfoUI} from './curves.js';
 
 export const userEmail = document.querySelector('#userEmail')
 export const userPassword = document.querySelector('#userPassword')
@@ -88,7 +89,7 @@ export const activeFromStorage = () => {
   let activeTime = 'DaysInception';
   if (initTime == 31) activeTime = 'Days30';
   setActiveTime(activeTime);
-  return activeTime
+  return activeTime;
 };
 
 export const checkActive = (element) => {
@@ -99,6 +100,22 @@ export const checkActive = (element) => {
   });
   return flag;
 };
+
+export const switchActives = (event) => {
+  event.preventDefault();
+
+  const target = event.target;
+  const parent = document.getElementById(target.id).parentNode;
+  const children = parent.querySelectorAll("*");
+  
+  children.forEach(child => {
+    child.classList.remove("active");
+  });
+  target.className += "active";
+  const activeView = document.getElementById("timeframes").querySelectorAll(".active")[0].id.substring(4);//gives the number from the active view id
+
+  updateCurve(Number(activeView) + 1, curveInfoUI);
+}
 
 try{
   hideLoginError();

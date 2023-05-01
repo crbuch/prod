@@ -2,7 +2,7 @@ import { logout } from './index'
 import { } from './region'
 import * as dh from './data'
 import { makeTrace, makeLayout, config } from './layout';
-import { setActive, setActiveTime, toggleInitTime, checkActive, activeFromStorage } from './ui';
+import { setActive, setActiveTime, toggleInitTime, checkActive, activeFromStorage, switchActives } from './ui';
 
 const displayEconomics = (data, selectedOption) => {
   let wellRMPL = 0;
@@ -288,39 +288,44 @@ const thirtyTag = 'Days30';
 const yearTag = 'Days365';
 const halfYearTag = 'Days180';
 
+[linearTag,logTag,inceptionTag,inceptionTag,thirtyTag,yearTag,halfYearTag].forEach(el => {
+  document.getElementById(el).addEventListener('click',switchActives);
+});
+export const updateCurve = curve;
+export const curveInfoUI = curveInfo;
 let initTime = localStorage.getItem('initTime');
 if (initTime == 31) $('#initTime').text('Init: 30 Days');
 
 dh.dropdown(dropdownId);
 
-d3.select(dropdownId).on("change", () => {
-  setActive(linearTag, activeFromStorage());
-  curve(localStorage.getItem('initTime'), curveInfo);
-});
-
-d3.select('#initTime').on('change', () => {
-  curve(initTime, curveInfo);
-  activeFromStorage();
-});
-
-d3.selectAll(`#${linearTag}, #${logTag}, #${inceptionTag}, #${thirtyTag}, #${halfYearTag}, #${yearTag}`)
-  .on("click", function () {
-    if (this.id === linearTag || this.id === logTag) {
-      setActive(this.id, activeFromStorage());
-      curve(localStorage.getItem('initTime'), curveInfo);
-    } else {
-      setActiveTime(this.id);
-      if (this.id === thirtyTag) {
-        curve(31, curveInfo);
-      } else if (this.id === halfYearTag) {
-        curve(181, curveInfo);
-      } else if (this.id === yearTag) {
-        curve(366, curveInfo);
-      } else if (this.id === inceptionTag) {
-        curve(0, curveInfo);
-      }
-    }
-  });
+//d3.select(dropdownId).on("change", () => {
+//  setActive(linearTag, activeFromStorage());
+//  curve(localStorage.getItem('initTime'), curveInfo);
+//});
+//
+//d3.select('#initTime').on('change', () => {
+//  curve(initTime, curveInfo);
+//  activeFromStorage();
+//});
+//
+//d3.selectAll(`#${linearTag}, #${logTag}, #${inceptionTag}, #${thirtyTag}, #${halfYearTag}, #${yearTag}`)
+//  .on("click", function () {
+//    if (this.id === linearTag || this.id === logTag) {
+//      setActive(this.id, activeFromStorage());
+//      curve(localStorage.getItem('initTime'), curveInfo);
+//    } else {
+//      setActiveTime(this.id);
+//      if (this.id === thirtyTag) {
+//        curve(31, curveInfo);
+//      } else if (this.id === halfYearTag) {
+//        curve(181, curveInfo);
+//      } else if (this.id === yearTag) {
+//        curve(366, curveInfo);
+//      } else if (this.id === inceptionTag) {
+//        curve(0, curveInfo);
+//      }
+//    }
+//  });
 
 document.getElementById("table").addEventListener('click', () => {
   if (checkActive('table') === true) return;
