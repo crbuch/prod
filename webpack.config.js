@@ -14,12 +14,12 @@ module.exports = {
   mode: 'development',
   devtool: 'eval-source-map',
   entry: {
-    main:'./src/index.js',
-    curves:'./src/curves.js',
-    table:'./src/table.js',
-    yesterdaysProd:'./src/yesterdaysProd.js',
-    wbd:'./src/wbd.js',
-    analyzeTable:'./src/analyzeTable.js'
+    main:'./src/js/index.js',
+    curves:'./src/js/curves.js',
+    table:'./src/js/table.js',
+    yesterdaysProd:'./src/js/yesterdaysProd.js',
+    wbd:'./src/js/wbd.js',
+    analyzeTable:'./src/js/analyzeTable.js'
   },
   experiments: {
     topLevelAwait: true
