@@ -26,8 +26,7 @@ const auth = getAuth(app);
 const monitorAuthState = async () => {
   onAuthStateChanged(auth, user => {
     if (user != null) {
-      //sessionStorage.setItem('currUid', user.uid)
-      sessionStorage.setItem('currUid', "hi")
+      sessionStorage.setItem('currUid', user.uid)
       
       showApp();
     } else {

@@ -308,9 +308,9 @@ const dropdownId = '#siteSelection';
 
 dh.dropdown(dropdownId);
 
-document.getElementById(dropdownId).addEventListener('change', function() {
-  curve(31,prodData)
-})
+d3.select(dropdownId).on("change", () => {
+  curve(localStorage.getItem('initTime'), curveInfo);
+});
 
 document.getElementById("table").addEventListener('click', () => {
   if (checkActive('table') === true) return;
