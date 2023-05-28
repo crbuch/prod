@@ -22,11 +22,12 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-
+console.log("index??");
 const monitorAuthState = async () => {
   onAuthStateChanged(auth, user => {
     if (user != null) {
-      sessionStorage.setItem('currUid', user.uid)
+      //sessionStorage.setItem('currUid', user.uid)
+      sessionStorage.setItem('currUid', "hi")
       
       showApp();
     } else {
@@ -43,6 +44,8 @@ const login = async () => {
   const password = "cmlprod";
   //const email = `${userEmail.value}@cml.com`;
   //const password = userPassword.value;
+  console.log('email :>> ', email);
+  console.log('password :>> ', password);
   
   signInWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {

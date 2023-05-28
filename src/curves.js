@@ -262,7 +262,7 @@ const table = (coreData) => {
 //Main//
 const currUid = sessionStorage.getItem('currUid');
 let region = sessionStorage.getItem('region');
-console.log('currUid :>> ', currUid);
+console.log('currUid12 :>> ', currUid);
 
 let prodData = dh.dataST;
 let cumlData = dh.dataCuml;
@@ -291,8 +291,11 @@ const halfYearTag = 'Days180';
 [linearTag,logTag,inceptionTag,inceptionTag,thirtyTag,yearTag,halfYearTag].forEach(el => {
   document.getElementById(el).addEventListener('click',switchActives);
 });
-export const updateCurve = curve;
-export const curveInfoUI = curveInfo;
+
+//export const updateCurve = curve;
+//export const curveInfoUI = curveInfo;
+
+
 let initTime = localStorage.getItem('initTime');
 if (initTime == 31) $('#initTime').text('Init: 30 Days');
 

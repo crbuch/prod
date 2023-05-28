@@ -111,10 +111,11 @@ export const switchActives = (event) => {
   children.forEach(child => {
     child.classList.remove("active");
   });
+  
   target.className += "active";
   const activeView = document.getElementById("timeframes").querySelectorAll(".active")[0].id.substring(4);//gives the number from the active view id
 
-  updateCurve(Number(activeView) + 1, curveInfoUI);
+  //updateCurve(Number(activeView) + 1, curveInfoUI);
 }
 
 try{
