@@ -10,7 +10,7 @@ import {
 
 import { initializeApp } from 'firebase/app';
 import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from 'firebase/auth';
-import {getDatabase, ref, set} from 'firebase/database'
+import {getDatabase, ref, set} from 'firebase/database';
 
 const firebaseConfig = {
   apiKey: "AIzaSyC3yOK_QL5QbJaKvjynXXzObl4uKsoJpTU",
@@ -39,7 +39,6 @@ export const monitorAuthState = async () => {
   onAuthStateChanged(auth, user => {
     if (user != null) {
       sessionStorage.setItem('currUid', user.uid)
-      writedb("Mr.Buck","deck_buck",user.uid)
       
       showApp();
     } else {
