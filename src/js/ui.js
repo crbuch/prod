@@ -1,5 +1,8 @@
 import { AuthErrorCodes } from 'firebase/auth';
 
+export const userName = document.querySelector('#userEmail')
+export const userPassword = document.querySelector('#userPassword')
+
 export const btnLogin = document.querySelector('#btnLogin')
 export const btnLogout = document.querySelector('#btnLogout')
 

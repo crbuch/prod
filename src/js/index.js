@@ -1,5 +1,7 @@
 // entry point 
 import {
+  userName,
+  userPassword,
   btnLogin,
   showLoginError,
   showApp,
@@ -50,10 +52,10 @@ export const monitorAuthState = async () => {
 monitorAuthState();
 
 const login = async () => {
-  const email = "matt@cml.com";
-  const password = "qazxsw";
-  //const email = `${userEmail.value}@cml.com`;
-  //const password = userPassword.value;
+  //const email = "matt@cml.com";
+  //const password = "qazxsw";
+  const email = `${userName.value}@cml.com`;
+  const password = userPassword.value;
   
   signInWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
