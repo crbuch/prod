@@ -1,8 +1,6 @@
 // entry point 
 import {
   btnLogin,
-  userEmail,
-  userPassword,
   showLoginError,
   showApp,
   showLoginForm
@@ -10,6 +8,7 @@ import {
 
 import { initializeApp } from 'firebase/app';
 import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from 'firebase/auth';
+import {getDatabase, ref, set} from 'firebase/database'
 
 const firebaseConfig = {
   apiKey: "AIzaSyC3yOK_QL5QbJaKvjynXXzObl4uKsoJpTU",
@@ -22,11 +21,23 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+const db = getDatabase();
 
-const monitorAuthState = async () => {
+function writedb(name,data,uid){
+  const reference = ref(db,'users/' + uid);
+
+  set(reference, {
+    user: name,
+    deck: data,
+  })
+}
+
+
+export const monitorAuthState = async () => {
   onAuthStateChanged(auth, user => {
     if (user != null) {
       sessionStorage.setItem('currUid', user.uid)
+      writedb("Mr.Buck","deck_buck",user.uid)
       
       showApp();
     } else {
@@ -55,6 +66,7 @@ const login = async () => {
 
 const initStorage = (uid) => {
   if (localStorage.getItem('initTime') == null) localStorage.setItem('initTime',0);
+  if (localStorage.getItem('initScale') == null) localStorage.setItem('initScale','linear');
   sessionStorage.setItem('currUid', uid)
   sessionStorage.setItem('region', 'st')
 };

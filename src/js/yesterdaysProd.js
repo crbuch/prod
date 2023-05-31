@@ -1,6 +1,8 @@
 import * as dh from './data'
-import { } from './index'
+import { monitorAuthState } from './index'
 import { } from './region'
+
+monitorAuthState()
 
 const formatData = (data) => {
     const yesterdayDate = data[0][1];

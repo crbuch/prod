@@ -1,6 +1,8 @@
-import { } from "./index";
+import { monitorAuthState } from './index'
 import { } from "./region";
 import { layoutWbd } from './layout';
+
+monitorAuthState()
 
 const wbdData = await d3.json("../data/datawbd/wells.json").then((data) => {
   return data

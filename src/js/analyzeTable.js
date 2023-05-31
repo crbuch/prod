@@ -1,6 +1,8 @@
-import {} from './index'
+import { monitorAuthState } from './index'
 import {} from './region'
 import { analyzeData,analyzeDataET } from './data';
+
+monitorAuthState()
 
 let data = analyzeData;
 let region = sessionStorage.getItem("region");

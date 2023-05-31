@@ -1,8 +1,10 @@
-import { logout } from './index'
-import { } from './region'
+import { logout, monitorAuthState } from './index'
 import * as dh from './data'
+import { } from './region'
 import { makeTrace, makeLayout, config } from './layout';
-import { setActive, toggleInitTime, checkActive, activeFromStorage } from './ui';
+import { setActive, setActiveView, toggleInitTime, toggleInitScale, checkActive, activeFromStorage } from './ui';
+
+monitorAuthState()
 
 const displayEconomics = (data, selectedOption) => {
   let wellRMPL = 0;
@@ -203,7 +205,7 @@ const curve = (timeFrame, data) => {
 
   plotContainers.forEach((container, i) => {
     const layout = makeLayout(['Oil (BOPD) vs Time', 'Gas (MCFD) vs Time', 'Water (BWPD) vs Time'][i], scale, 
-    (scale === 'log') ? [1, 2, 5, 10, 20, 50, 100, 200, 500, 1000] : null);
+    (scale === 'log') ? [1, 2, 5, 10, 20, 50, 100, 200, 500, 1000, 2000, 3000] : null);
     Plotly.newPlot(container, traceArrays[i], layout, config);
   });
 
@@ -270,9 +272,9 @@ const switchActives = (event) => {
   });
   
   target.className += "active";
-  const activeView = document.getElementById("timeframes").querySelectorAll(".active")[0].id.substring(4);//gives the number from the active view id
-
-  curve(Number(activeView) + 1, curveInfo);
+  const activeTime = document.getElementById("timeframes").querySelectorAll(".active")[0].id.substring(4);//gives the number from the active view id
+  console.log('activeTime :>> ', activeTime);
+  curve(Number(activeTime) + 1, curveInfo);
 }
 
 
@@ -304,8 +306,11 @@ const curveInfo = {
 let initTime = localStorage.getItem('initTime');
 if (initTime == 31) $('#initTime').text('Init: 30 Days');
 
-const dropdownId = '#siteSelection';
+let initScale = localStorage.getItem('initScale');
+if (initScale == 'logarithmic') $('#initScale').text('Init: logarithmic');
+console.log(initScale)
 
+const dropdownId = '#siteSelection';
 dh.dropdown(dropdownId);
 
 d3.select(dropdownId).on("change", () => {
@@ -324,6 +329,13 @@ document.getElementById("initTime").addEventListener('click', () => {
   activeFromStorage();
 });
 
+document.getElementById("initScale").addEventListener('click', () => {
+  toggleInitScale();
+  setActiveView(localStorage.getItem('initScale'))
+  const activeTime = document.getElementById('timeframes').querySelector('.active').id.substring(4)
+  curve(Number(activeTime) + 1, curveInfo);
+});
+
 document.getElementById("btnLogout").addEventListener('click', logout);
 
 //init page on load//
@@ -331,3 +343,5 @@ window.onload = function () {
   activeFromStorage();
   curve(localStorage.getItem('initTime'), curveInfo);
 }();
+
+

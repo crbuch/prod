@@ -1,7 +1,8 @@
-import { } from './index'
+import { monitorAuthState } from './index'
 import { } from './region'
-
 import * as dh from './data'
+
+monitorAuthState()
 
 let region = sessionStorage.getItem('region');
 const dropdownId = '#siteFilter';
