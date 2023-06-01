@@ -135,12 +135,12 @@ const curve = (timeFrame, data) => {
   document.getElementById("wellName").innerHTML = selectedOption;
   document.getElementById("individualTable").style.display = "none";
 
-  ['oilDeclineCurve', 'gasDeclineCurve', 'waterDeclineCurve', 'waterCutCurve'].forEach(id => {
+  ['oilDeclineCurve', 'gasDeclineCurve', 'waterDeclineCurve', 'waterCutCurve', 'totalFluidCurve', 'combinationCurves'].forEach(id => {
     document.getElementById(id).style.display = 'block';
   });
-
+  // console.log(data.prodData)
   const site_data = data.prodData.filter(site => site[0] === selectedOption);
-
+  // console.log(site_data)
   let site_date = site_data.map(site => site[9]);
   let site_oil = site_data.map(site => site[2]);
   let site_gas = site_data.map(site => site[3]);
@@ -148,6 +148,7 @@ const curve = (timeFrame, data) => {
   let comments = site_data.map(site => site[7]);
   let movingAverage = site_data.map(site => site[8]);
   let water_cut = site_water.map((water, i) => (water / (water + site_oil[i])) * 100);
+  let total_fluid = site_oil.map((oil, index) => oil + site_water[index]);
 
   if (timeFrame > 0) [site_date, site_oil, site_gas, site_water, comments, movingAverage] =
     [site_date, site_oil, site_gas, site_water, comments, movingAverage].map(arr => arr.slice(0, timeFrame));
@@ -181,34 +182,50 @@ const curve = (timeFrame, data) => {
     "blue"
   );
 
-  const traceCut = [
-    {
-      x: site_date,
-      y: water_cut,
-      line: { color: "#25C4DC" },
-    },
-  ];
+  const traceCut = makeTrace(
+    site_date,
+    water_cut,
+    // "Water [Mbw]",
+    "line",
+    "#25C4DC"
+  );
+  
+  const traceFluid = makeTrace(
+    site_date,
+    total_fluid,
+    "Total Fluid [Mb]",
+    "line",
+    "black"
+  );
 
   const scale = (document.getElementById("logarithmic").classList.contains("active")) ? 'log' : 'linear';
 
   const layoutCut = makeLayout("Water Cut Percentage");
 
-  const plotContainers = ["oilDeclineCurve", "gasDeclineCurve", "waterDeclineCurve"];
+  const layoutFluid = makeLayout("Total Fluid vs Time");
+
+  const layoutCombo = makeLayout("Combined Production")
+
+  const plotContainers = ["oilDeclineCurve", "gasDeclineCurve", "waterDeclineCurve", 'totalFluidCurve', 'waterCutCurve'];
 
   const traceArrays = [
     [traceOil, traceOilAvg],
     [traceGas],
     [traceWater],
+    [traceFluid],
+    [traceCut]
   ];
 
   plotContainers.forEach((container, i) => {
-    const layout = makeLayout(['Oil (BOPD) vs Time', 'Gas (MCFD) vs Time', 'Water (BWPD) vs Time'][i], scale, 
+    const layout = makeLayout(['Oil (BOPD) vs Time', 'Gas (MCFD) vs Time', 'Water (BWPD) vs Time', 'Total Fluid vs Time', 'Water Cut Percentage'][i], scale, 
     (scale === 'log') ? [1, 2, 5, 10, 20, 50, 100, 200, 500, 1000] : null);
     Plotly.newPlot(container, traceArrays[i], layout, config);
   });
 
-  Plotly.newPlot("waterCutCurve", traceCut, layoutCut, config);
+  // Plotly.newPlot("waterCutCurve", traceCut, layoutCut, config);
 
+  const combination = [traceGas, traceOil, traceWater, traceFluid];
+  Plotly.newPlot("combinationCurves", combination, layoutCombo, config);
 
   //Display oil production based on zoom
   const oilDeclineCurve = document.getElementById("oilDeclineCurve");
@@ -252,7 +269,7 @@ const table = (coreData) => {
   dh.buildTable(well);
 
   document.getElementById('individualTable').style.display = 'inline-block';
-  ['oilDeclineCurve', 'gasDeclineCurve', 'waterDeclineCurve', 'waterCutCurve'].forEach(tag => {
+  ['oilDeclineCurve', 'gasDeclineCurve', 'waterDeclineCurve', 'waterCutCurve', 'totalFluidCurve', 'combinationCurves'].forEach(tag => {
     document.getElementById(tag).style.display = 'none'
   });
 };

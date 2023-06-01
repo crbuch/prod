@@ -39,8 +39,8 @@ const monitorAuthState = async () => {
 monitorAuthState();
 
 const login = async () => {
-  const email = "cml@prod.com";
-  const password = "cmlprod";
+  const email = "daniel@cml.com";
+  const password = "daniel";
   //const email = `${userEmail.value}@cml.com`;
   //const password = userPassword.value;
   
