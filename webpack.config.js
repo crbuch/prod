@@ -1,7 +1,7 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-let htmlPageNames = ['curves','table','yesterdaysProd','wbd','analyzeTable'];
+let htmlPageNames = ['curves','table','yesterdaysProd','wbd','analyzeTable','profile'];
 let allHtmlPlugs = htmlPageNames.map(page => {
   return new HtmlWebpackPlugin({
     template: `./src/pages/${page}.html`, 
@@ -19,7 +19,8 @@ module.exports = {
     table:'./src/js/table.js',
     yesterdaysProd:'./src/js/yesterdaysProd.js',
     wbd:'./src/js/wbd.js',
-    analyzeTable:'./src/js/analyzeTable.js'
+    analyzeTable:'./src/js/analyzeTable.js',
+    profile: './src/js/profile.js'
   },
   experiments: {
     topLevelAwait: true
