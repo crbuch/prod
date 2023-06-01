@@ -172,14 +172,19 @@ const curve = (timeFrame, data) => {
     "dot"
   );
 
-  const traceGas = makeTrace(site_date, site_gas, "Gas [Mcf]", "line", "red");
+  const traceGas = makeTrace(
+    site_date,
+    site_gas,
+    "Gas [Mcf]",
+    "line",
+    "red");
 
   const traceWater = makeTrace(
     site_date,
     site_water,
     "Water [Mbw]",
     "line",
-    "blue"
+    "blue",
   );
 
   const traceCut = makeTrace(
@@ -198,14 +203,20 @@ const curve = (timeFrame, data) => {
     "black"
   );
 
+  // Copied traces with 8th paramater, [visibility = true/'legendonly'], for combined production line graph
+  const traceOil2 = makeTrace(site_date, site_oil, "Oil", null, "green", null, comments, true);
+  const traceWater2 = makeTrace(site_date, site_water, "Water [Mbw]", "line", "blue", null, null, 'legendonly');
+  const traceGas2 = makeTrace(site_date, site_gas, "Gas [Mcf]", "line", "red", null, null, 'legendonly');
+  const traceFluid2 = makeTrace(site_date, total_fluid, "Total Fluid [Mb]", "line", "black", null, null, 'legendonly');
+
   const scale = (document.getElementById("logarithmic").classList.contains("active")) ? 'log' : 'linear';
 
   // const layoutCut = makeLayout("Water Cut Percentage");
 
   const plotContainers = ["oilDeclineCurve", "gasDeclineCurve", "waterDeclineCurve", 'totalFluidCurve', 'waterCutCurve', 'combinationCurves'];
   
-  const combination = [traceGas, traceOil, traceWater, traceFluid];
-  
+  const combination = [traceGas2, traceOil2, traceWater2, traceFluid2];
+
   const traceArrays = [
     [traceOil, traceOilAvg],
     [traceGas],
