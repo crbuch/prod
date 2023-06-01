@@ -189,7 +189,7 @@ const curve = (timeFrame, data) => {
     "line",
     "#25C4DC"
   );
-  
+
   const traceFluid = makeTrace(
     site_date,
     total_fluid,
@@ -200,32 +200,28 @@ const curve = (timeFrame, data) => {
 
   const scale = (document.getElementById("logarithmic").classList.contains("active")) ? 'log' : 'linear';
 
-  const layoutCut = makeLayout("Water Cut Percentage");
+  // const layoutCut = makeLayout("Water Cut Percentage");
 
-  const layoutFluid = makeLayout("Total Fluid vs Time");
-
-  const layoutCombo = makeLayout("Combined Production")
-
-  const plotContainers = ["oilDeclineCurve", "gasDeclineCurve", "waterDeclineCurve", 'totalFluidCurve', 'waterCutCurve'];
-
+  const plotContainers = ["oilDeclineCurve", "gasDeclineCurve", "waterDeclineCurve", 'totalFluidCurve', 'waterCutCurve', 'combinationCurves'];
+  
+  const combination = [traceGas, traceOil, traceWater, traceFluid];
+  
   const traceArrays = [
     [traceOil, traceOilAvg],
     [traceGas],
     [traceWater],
     [traceFluid],
-    [traceCut]
+    [traceCut],
+    combination
   ];
 
   plotContainers.forEach((container, i) => {
-    const layout = makeLayout(['Oil (BOPD) vs Time', 'Gas (MCFD) vs Time', 'Water (BWPD) vs Time', 'Total Fluid vs Time', 'Water Cut Percentage'][i], scale, 
+    const layout = makeLayout(['Oil (BOPD) vs Time', 'Gas (MCFD) vs Time', 'Water (BWPD) vs Time', 'Total Fluid vs Time', 'Water Cut Percentage', 'Combined Production'][i], scale, 
     (scale === 'log') ? [1, 2, 5, 10, 20, 50, 100, 200, 500, 1000] : null);
     Plotly.newPlot(container, traceArrays[i], layout, config);
   });
 
   // Plotly.newPlot("waterCutCurve", traceCut, layoutCut, config);
-
-  const combination = [traceGas, traceOil, traceWater, traceFluid];
-  Plotly.newPlot("combinationCurves", combination, layoutCombo, config);
 
   //Display oil production based on zoom
   const oilDeclineCurve = document.getElementById("oilDeclineCurve");
