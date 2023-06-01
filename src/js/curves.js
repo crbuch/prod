@@ -1,10 +1,12 @@
 import { logout, monitorAuthState } from './index'
 import * as dh from './data'
-import { } from './region'
+import { select } from 'd3';
+import { monitorRegion } from './region'
 import { makeTrace, makeLayout, config } from './layout';
 import { setActive, setActiveView, toggleInitTime, toggleInitScale, checkActive, activeFromStorage } from './ui';
 
-monitorAuthState()
+monitorAuthState();
+monitorRegion();
 
 const displayEconomics = (data, selectedOption) => {
   let wellRMPL = 0;
@@ -98,7 +100,7 @@ const displayCumlData = (data, selectedOption) => {
 
 const getSelectedOption = (data) => {
   let selectedOption = null;
-  let menuNode = d3.select("#siteSelection").node().value;
+  let menuNode = select("#siteSelection").node().value;
 
   if (menuNode != "default") {
     selectedOption = [menuNode];
@@ -313,7 +315,7 @@ console.log(initScale)
 const dropdownId = '#siteSelection';
 dh.dropdown(dropdownId);
 
-d3.select(dropdownId).on("change", () => {
+select(dropdownId).on("change", () => {
   curve(localStorage.getItem('initTime'), curveInfo);
 });
 

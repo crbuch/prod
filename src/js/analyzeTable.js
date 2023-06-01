@@ -1,16 +1,18 @@
 import { monitorAuthState } from './index'
-import {} from './region'
+import { monitorRegion } from './region'
 import { analyzeData,analyzeDataET } from './data';
+import { select } from 'd3';
 
-monitorAuthState()
+monitorAuthState();
+monitorRegion();
 
 let data = analyzeData;
 let region = sessionStorage.getItem("region");
 if (region == "et") data = analyzeDataET;
 
 const createAnalysis = (data) => {
-  const tbody = d3.select("tbody")
-
+  const tbody = select("tbody")
+  
   function buildTable(tableData) {
     tbody.html(""); //clear table
     tableData.forEach((well) => {

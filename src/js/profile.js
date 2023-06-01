@@ -1,9 +1,9 @@
-import {} from './region'
+import { monitorRegion } from './region'
 import { logout, monitorAuthState } from './index'
 import { ref,getDatabase,onValue } from 'firebase/database';
-import { json } from 'd3';
 
 monitorAuthState();
+monitorRegion();
 
 const fetchData = () => {
     let data = localStorage.getItem(uid);//cache

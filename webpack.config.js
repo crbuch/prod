@@ -11,19 +11,25 @@ let allHtmlPlugs = htmlPageNames.map(page => {
 });
 
 module.exports = {
-  mode: 'development',
-  devtool: 'eval-source-map',
+  mode: 'production',
   entry: {
     main:'./src/js/index.js',
-    curves:'./src/js/curves.js',
+    curves: './src/js/curves.js',
     table:'./src/js/table.js',
     yesterdaysProd:'./src/js/yesterdaysProd.js',
     wbd:'./src/js/wbd.js',
     analyzeTable:'./src/js/analyzeTable.js',
     profile: './src/js/profile.js'
   },
-  experiments: {
-    topLevelAwait: true
+  output: {
+    filename: '[name].bundle.js',
+    path: path.resolve(__dirname, 'dist'),
+    clean: true,
+  },
+  optimization: {
+    splitChunks: {
+      chunks: 'all',
+    },
   },
   plugins: [
     new HtmlWebpackPlugin({

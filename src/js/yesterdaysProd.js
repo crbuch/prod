@@ -1,8 +1,10 @@
 import * as dh from './data'
 import { monitorAuthState } from './index'
-import { } from './region'
+import { monitorRegion } from './region'
+import { select } from 'd3';
 
-monitorAuthState()
+monitorAuthState();
+monitorRegion();
 
 const formatData = (data) => {
     const yesterdayDate = data[0][1];
@@ -31,7 +33,7 @@ document.getElementById('clearFilter').onclick = function () {
     dh.buildTable(tableData);
 };
 
-d3.select(dropdownId).on("change", () => {
+select(dropdownId).on("change", () => {
     dh.buildTable(dh.filterData(tableData, dropdownId));
 });
 

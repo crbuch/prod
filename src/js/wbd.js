@@ -1,19 +1,21 @@
 import { monitorAuthState } from './index'
-import { } from "./region";
+import { monitorRegion } from './region'
 import { layoutWbd } from './layout';
+import { json, select, csv, extent } from 'd3';
 
-monitorAuthState()
+monitorAuthState();
+monitorRegion();
 
-const wbdData = await d3.json("../data/datawbd/wells.json").then((data) => {
+const wbdData = await json("../data/datawbd/wells.json").then((data) => {
   return data
 });
 
-const faultData = await d3.json("../data/datawbd/shows.json").then((data) => {
+const faultData = await json("../data/datawbd/shows.json").then((data) => {
   return data
 });
 
 async function plot() {
-  const dropdownMenu = d3.select("#wellselect").node();
+  const dropdownMenu = select("#wellselect").node();
   let wellName = dropdownMenu.value; 
   if (wellName == 'default') wellName = 'Aaron #1';
 
@@ -21,7 +23,7 @@ async function plot() {
   console.log('selectedOption :>> ', selectedOption);
 
   async function getData(file) {
-    const data = await d3.csv(`../data/datawbd/${file}`);
+    const data = await csv(`../data/datawbd/${file}`);
     const [DataTVD, DataN, DataE] = data.reduce(([TVD, N, E], { TVD: tvd, Easting, Northing }) =>
       [[...TVD, parseInt(tvd)],
       [...N, parseInt(Northing)],
@@ -46,9 +48,9 @@ async function plot() {
     dataEasting.push(bore[2])
   });
 
-  const [minE, maxE] = d3.extent(dataEasting.flat());
-  const [minN, maxN] = d3.extent(dataNorthing.flat());
-  const minTVD = d3.min(dataTvd.flat());
+  const [minE, maxE] = extent(dataEasting.flat());
+  const [minN, maxN] = extent(dataNorthing.flat());
+  const minTVD = Math.min(...dataTvd)
 
   const min = Math.min(minE, minN);
   const max = Math.max(maxE, maxN);
@@ -100,10 +102,10 @@ async function plot() {
 };
 
 async function dropdown() {
-  const wellsdict = await d3.json("../data/datawbd/wells.json").then((data) => {
+  const wellsdict = await json("../data/datawbd/wells.json").then((data) => {
     return data
   });
-  let menu = d3.select("#wellselect");
+  let menu = select("#wellselect");
   let wells = Object.keys(wellsdict)
 
   wells.forEach(well => {
@@ -121,7 +123,7 @@ const changesign = (x) => {
 
 dropdown();
 
-d3.select("#wellselect").on("change", function () {
+select("#wellselect").on("change", function () {
   plot();
 });
 
