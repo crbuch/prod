@@ -1,7 +1,6 @@
 import { AuthErrorCodes } from 'firebase/auth';
-//import {updateCurve, curveInfoUI} from './curves.js';
 
-export const userEmail = document.querySelector('#userEmail')
+export const userName = document.querySelector('#userEmail')
 export const userPassword = document.querySelector('#userPassword')
 
 export const btnLogin = document.querySelector('#btnLogin')
@@ -73,6 +72,16 @@ export const setActiveTime = (time) => {
   document.getElementById(time).className += "active";
 };
 
+export const setActiveView = (view) => {
+  let elems = document.querySelectorAll(".active");
+  [].forEach.call(elems, (el) => {
+    if (!el.id.includes("Days")) {
+      el.classList.remove("active");
+    }
+  });
+  document.getElementById(view).className += "active";
+};
+
 export const toggleInitTime = () => {
   const currInit = localStorage.getItem('initTime');
   if (currInit == 0) {
@@ -81,6 +90,17 @@ export const toggleInitTime = () => {
   }else {
     $('#initTime').text('Init: Inception')
     localStorage.setItem('initTime',0)
+  };
+};
+
+export const toggleInitScale = () => {
+  const currScale = localStorage.getItem('initScale');
+  if (currScale == 'linear') {
+    $('#initScale').text('Init: Logarithmic')
+    localStorage.setItem('initScale','logarithmic')
+  }else {
+    $('#initScale').text('Init: Linear')
+    localStorage.setItem('initScale','linear')
   };
 };
 

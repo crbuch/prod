@@ -1,42 +1,42 @@
-import * as d3 from 'd3'
+import { json, select } from 'd3';
 
-export const dataST = await d3.json("../data/allProductionData.json").then((data) => {
+export const dataST = await json("../data/allProductionData.json").then((data) => {
     return data
 });
 
-export const dataET = await d3.json("../data/allProductionDataET.json").then((data) => {
+export const dataET = await json("../data/allProductionDataET.json").then((data) => {
     return data;
 });
 
-export const dataCuml = await d3.json("../data/cumProd.json").then((data) => {
+export const dataCuml = await json("../data/cumProd.json").then((data) => {
     return data
 });
 
-export const dataCumlET = await d3.json("../data/cumProdET.json").then((data) => {
+export const dataCumlET = await json("../data/cumProdET.json").then((data) => {
     return data
 });
 
-export const analyzeData = await d3.json("../data/analyze.json").then((data) => {
+export const analyzeData = await json("../data/analyze.json").then((data) => {
     return data
 });
 
-export const analyzeDataET = await d3.json("../data/analyzeET.json").then((data) => {
+export const analyzeDataET = await json("../data/analyzeET.json").then((data) => {
     return data
 });
 
-export const formations = await d3.json("../data/formations.json").then((data) => {
+export const formations = await json("../data/formations.json").then((data) => {
     return data
 });
 
-export const econ = await d3.json("../data/economics.json").then((data) => {
+export const econ = await json("../data/economics.json").then((data) => {
     return data
 });
 
-export const payout = await d3.json("../data/payouts.json").then((data) => {
+export const payout = await json("../data/payouts.json").then((data) => {
     return data
 });
 
-export const pump = await d3.json("../data/pumpInfo.json").then((data) => {
+export const pump = await json("../data/pumpInfo.json").then((data) => {
     return data
 });
 
@@ -57,7 +57,7 @@ export const activeWells = () => {
 
 //Creates Dropdown//
 export const dropdown = (id) => {
-    let menu = d3.select(id);
+    let menu = select(id);
     
     activeWells().forEach(well => {
         menu.append("option")
@@ -67,7 +67,7 @@ export const dropdown = (id) => {
 };
 
 export const buildTable = (allData) => {
-    const tbody = d3.select("tbody");
+    const tbody = select("tbody");
     tbody.html("");
     allData.forEach((well) => {
         let row = tbody.append("tr");
@@ -79,7 +79,7 @@ export const buildTable = (allData) => {
 };
 
 export const filterData = (data, dropdownId) => {
-    let reqWell = d3.select(dropdownId).property("value");
+    let reqWell = select(dropdownId).property("value");
 
     if (reqWell) {
         return data.filter((row) => row[0] == reqWell);

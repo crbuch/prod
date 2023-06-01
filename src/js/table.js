@@ -1,19 +1,22 @@
-import { } from './index'
-import { } from './region'
+import { monitorAuthState } from './index'
+import { monitorRegion } from './region'
+import { dataCuml,dataCumlET,payout,activeWells,sortData,buildTable,dropdown,filterData } from './data';
+import { select } from 'd3';
 
-import * as dh from './data'
+monitorAuthState();
+monitorRegion();
 
 let region = sessionStorage.getItem('region');
 const dropdownId = '#siteFilter';
 
 
 const formatData = () => {
-  let tableData = dh.dataCumlET;
+  let tableData = dataCumlET;
   let payData;
 
   if (region != "et") {
-    tableData = dh.dataCuml
-    payData = dh.payout
+    tableData = dataCuml
+    payData = payout
 
     payData.forEach((pay) => {
       tableData.forEach((well) => {
@@ -36,7 +39,7 @@ const formatData = () => {
   });
 
   //remove archived wells
-  return tableData.filter(val => dh.activeWells().has(val[0]));
+  return tableData.filter(val => activeWells().has(val[0]));
 };
 
 
@@ -45,22 +48,23 @@ const tableData = formatData();
 
 //sort by pay: pos=4 by prod: pos=1
 document.getElementById('Payfilter').onclick = function(){
-  dh.sortData(tableData,4)
+  sortData(tableData,4)
 };
 
 document.getElementById('Prodfilter').onclick = function(){
-  dh.sortData(tableData,1)
+  sortData(tableData,1)
 };
 
-d3.select(dropdownId).on("change", () => {
-  dh.buildTable(dh.filterData(tableData,dropdownId));
+select(dropdownId).on("change", () => {
+  buildTable(filterData(tableData,dropdownId));
 });
 
+
 document.getElementById('clearFilter').onclick = function () {
-  dh.buildTable(tableData);
+  buildTable(tableData);
 };
 
 window.onload = function () {
-  dh.buildTable(tableData);
-  dh.dropdown(dropdownId);  
+  buildTable(tableData);
+  dropdown(dropdownId);  
 }();
