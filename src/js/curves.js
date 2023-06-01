@@ -227,7 +227,7 @@ const curve = (timeFrame, data) => {
   ];
 
   plotContainers.forEach((container, i) => {
-    const layout = makeLayout(['Oil (BOPD) vs Time', 'Gas (MCFD) vs Time', 'Water (BWPD) vs Time', 'Total Fluid vs Time', 'Water Cut Percentage', 'Combined Production'][i], scale, 
+    const layout = makeLayout(['Oil vs Time (BOPD)', 'Gas vs Time (MCFD)', 'Water vs Time (BWPD)', 'Total Fluid vs Time (BFPD)', 'Water Cut Percentage', 'Combined Production'][i], scale, 
     (scale === 'log') ? [1, 2, 5, 10, 20, 50, 100, 200, 500, 1000] : null);
     Plotly.newPlot(container, traceArrays[i], layout, config);
   });
