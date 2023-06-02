@@ -51,10 +51,8 @@ export const monitorAuthState = async () => {
 monitorAuthState();
 
 const login = async () => {
-  const email = "daniel@cml.com";
-  const password = "daniel";
-  //const email = `${userEmail.value}@cml.com`;
-  //const password = userPassword.value;
+  const email = `${userEmail.value}@cml.com`;
+  const password = userPassword.value;
   
   signInWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
