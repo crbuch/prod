@@ -124,13 +124,13 @@ body {
 }
 
 #siteSelection,#view > a,#timeframes > a{
-  margin-top: 10px;
+  margin-top: 6px;
 }
 #view{
   padding-left: 10%;
 }
 #timeframes{
-  padding-left: 5.5%;
+  padding-left: 7.5%;
 }
 
 #view > a,#timeframes > a {
