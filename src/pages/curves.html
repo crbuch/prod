@@ -59,7 +59,7 @@
           <option hidden value="default">Select A Well</option>
         </select>
       </div>
-      <div id="view" class="col-md-3">
+      <div id="view" class="col-md-4">
         <a id="linear" class="active" style="text-decoration:none">Linear</a>
         <a id="logarithmic" style="text-decoration:none">Logarithmic</a>
         <a id="table" style="text-decoration:none">Table</a>
@@ -70,18 +70,13 @@
         <a id="Days180" style="text-decoration:none">180 Days</a>
         <a id="Days30" style="text-decoration:none">30 Days</a>
       </div>
-      <p class = col-md-2>Init:</p>
-      <div id='view' class="col-md-1">
-        <a id="initScale">Linear</a>
-      </div>
       <div id='timeframes' class="col-md-1">
-        <a id="initTime">Inception</a>
+        <a id="initTime">Init: Inception</a>
+      </div>
+      <div id='view' class="col-md-1">
+        <a id="initScale">Init: Linear</a>
       </div>
     </div>
-
-
-
-
   </div>
   <div id="filler">
     <a hidden></a>
@@ -160,11 +155,9 @@
   </div>
   <div id="curves" class="container-fluid">
     <div class="col-md-12">
-      <div id=combinationCurves></div>
       <div id=oilDeclineCurve></div>
       <div id=gasDeclineCurve></div>
       <div id=waterDeclineCurve></div>
-      <div id=totalFluidCurve></div>
       <div id=waterCutCurve></div>
     </div>
   </div>
