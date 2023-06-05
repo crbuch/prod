@@ -138,16 +138,23 @@ def main():
 
     file_dict,shows = createDict(files)
 
-    folder_path = '/Users/matt/Documents/cml/stprod-1/STprod/data/datawbd/'
-    faults_dict = genShowPlanes(shows,folder_path)
+    current_directory = os.getcwd()
+
+    # List all files in the current directory
+    files = os.listdir(current_directory)
+
+    # Print each file name
+    for file in files:
+        print(file)
+    faults_dict = genShowPlanes(shows,path)
     faults_dict = removeCamelCase(faults_dict)
     print(faults_dict)
 
     file_dict = removeCamelCase(file_dict)
     print(file_dict)
 
-    file = '/Users/matt/Documents/cml/stprod-1/STprod/data/datawbd/wells.json'
-    showFile = '/Users/matt/Documents/cml/stprod-1/STprod/data/datawbd/shows.json'
+    file = './data/datawbd/wells.json'
+    showFile = './data/datawbd/shows.json'
 
     with open(file, "w") as f:
         json.dump(file_dict, f)

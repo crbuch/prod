@@ -1,0 +1,109 @@
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    font-size: 1rem;
+    font-weight: normal;
+    line-height: 1.5;
+    color: #212529;
+    text-align: left;
+    background-color: #fff; 
+}
+.card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border: 1px solid rgba(0, 0, 0, 0.125);
+    border-radius: 0.25rem; }
+
+.card-body {
+    flex: 1 1 auto;
+    padding: 1.25rem; 
+}
+.card-body {
+    padding: 1.9rem 1.5rem; 
+}
+.card > .list-group:first-child .list-group-item:first-child {
+    border-top-left-radius: 0.25rem;
+    border-top-right-radius: 0.25rem; }
+  
+  .card > .list-group:last-child .list-group-item:last-child {
+    border-bottom-right-radius: 0.25rem;
+    border-bottom-left-radius: 0.25rem; 
+}
+
+.float-left {
+    float: left !important; 
+}
+  
+  .float-right {
+    float: right !important; 
+}
+  
+  .float-none {
+    float: none !important; 
+}
+
+.clearfix::after {
+    display: block;
+    clear: both;
+    content: ""; 
+}
+
+.text-muted {
+    color: #868e96 !important; 
+}
+
+.text-success {
+    color: #58d8a3 !important; 
+}
+  
+a.text-success:focus, a.text-success:hover {
+    color: #30cd8c !important;
+}
+.row, form.forms-sample {
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: -15px;
+    margin-left: -15px;
+}
+.bg-white {
+    background-color: #ffffff !important;
+}
+@media screen and (max-width: 991px) {
+    .row-offcanvas {
+      position: relative;
+      -webkit-transition: all 0.25s ease-out;
+      -o-transition: all 0.25s ease-out;
+      transition: all 0.25s ease-out; }
+      .row-offcanvas.row-offcanvas-right {
+        right: 0; }
+        .row-offcanvas.row-offcanvas-right .sidebar-offcanvas {
+          right: -100%; }
+        .row-offcanvas.row-offcanvas-right.active {
+          right: 50%; }
+          .row-offcanvas.row-offcanvas-right.active .sidebar-offcanvas {
+            right: -50%; }
+      .row-offcanvas.row-offcanvas-left {
+        left: 0; }
+        .row-offcanvas.row-offcanvas-left .sidebar-offcanvas {
+          left: -100%; }
+        .row-offcanvas.row-offcanvas-left.active {
+          left: 50%; }
+          .row-offcanvas.row-offcanvas-left.active .sidebar-offcanvas {
+            left: -50%; }
+      .row-offcanvas .sidebar-offcanvas {
+        position: absolute;
+        top: 0;
+        width: 50%; } }
+  
+  @media screen and (max-width: 350px) {
+    .row-offcanvas.row-offcanvas-right.active {
+      right: 100%; }
+      .row-offcanvas.row-offcanvas-right.active .sidebar-offcanvas {
+        right: -100%; }
+    .row-offcanvas .sidebar-offcanvas {
+      width: 100%; } }

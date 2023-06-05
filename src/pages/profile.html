@@ -11,6 +11,7 @@
     integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
     <link rel="icon" type="image/x-icon" href="../favicon_package/favicon-32x32.png">
     <link rel="stylesheet" href="../src/css/style.css">
+    <link rel="stylesheet" href="../src/css/profile.css" />
 </head>
 <body>
     <!--NAVIGATION BAR -->
@@ -47,8 +48,75 @@
       </div>
     </nav>
   <!-- -->
-  <div id="returnsCurve"></div>
-  <button id="btnLogout" type="button" class="form_button" style="display: none;">Log out</button>
+  <div class="container-fluid">
+    <div class="row row-offcanvas row-offcanvas-right">
+      <!-- sidebar-->
+      <nav class="bg-white sidebar sidebar-offcanvas" id="sidebar">
+        <ul class="nav" id="well-list">
+        </ul>
+      </nav>
+      <!-- -->
+      <div class="content-wrapper">
+        <h3 class="page-heading mb-4">All Wells</h3>
+        <div class="row mb-4">
+          <div id="returnsCurve"></div>
+        </div>
+        <div class="row mb-4">
+          <div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 mb-4">
+            <div class="card card-statistics">
+              <div class="card-body">
+                <div class="clearfix">
+                  <div class="float-left">
+                    <h4 class="text-success">
+                      <i class="fa fa-dollar highlight-icon" aria-hidden="true"></i>
+                    </h4>
+                  </div>
+                  <div class="float-right">
+                    <h4 class="bold-text">$1</h4>
+                  </div>
+                </div>
+                <p class="text-muted">
+                  <i class="fa fa-calendar mr-1" aria-hidden="true"></i> Monthly P&L
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 mb-4">
+            <div class="card card-statistics">
+              <div class="card-body">
+                <div class="clearfix">
+                  <div class="float-left">
+                    <p class="card-text text-dark">init log</p>
+                  </div>
+                  <div class="float-right">
+                    <p class="card-text text-dark">init time</p>
+                  </div>
+                </div>
+            </div>
+          </div>
+          </div>
+          <div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 mb-4">
+            <div class="card card-statistics">
+              <div class="card-body">
+                <div class="clearfix">
+                  <div class="float-left">
+                    <h4 class="text-danger">
+                      <i class="fa fa-bar-chart-o highlight-icon" aria-hidden="true"></i>
+                    </h4>
+                  </div>
+                  <div class="float-right">
+                    <h4 class="bold-text">Log out</h4>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <button id="btnLogout" type="button" class="form_button" style="display: none;">Log out</button>
+        </div>
+    </div>
+  </div>
 </body>
 <script>
   const userName = localStorage.getItem('email').split('@').shift();
