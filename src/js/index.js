@@ -39,7 +39,6 @@ function writedb(name,data,uid){
 export const monitorAuthState = async () => {
   onAuthStateChanged(auth, user => {
     if (user != null) {
-      console.log('user :>> ', user);
       localStorage.setItem('uid', user.uid);
       localStorage.setItem('email', user.email);
       showApp();

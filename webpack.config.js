@@ -1,5 +1,6 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 let htmlPageNames = ['curves','table','yesterdaysProd','wbd','analyzeTable','profile'];
 let allHtmlPlugs = htmlPageNames.map(page => {
@@ -30,9 +31,20 @@ module.exports = {
   optimization: {
     splitChunks: {
       chunks: 'all',
-    },
+      cacheGroups: {
+        styles: {
+          name: "styles",
+          test: /\.css$/,
+          chunks: "all",
+          enforce: true,
+        },
+      },
+    }
   },
   plugins: [
+    new MiniCssExtractPlugin({
+      filename: "[name].css",
+    }),
     new HtmlWebpackPlugin({
       filename: 'index.html',
       template: './src/pages/index.html',
@@ -42,8 +54,8 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.csv$/,
-        use: ['csv-loader'],
+        test: /\.css$/,
+        use: [MiniCssExtractPlugin.loader, "css-loader"],
       },
     ],
   },
