@@ -1,13 +1,14 @@
 import { AuthErrorCodes } from 'firebase/auth';
 
-export const userName = document.querySelector('#userEmail')
-export const userPassword = document.querySelector('#userPassword')
+export const userName = document.querySelector('#userEmail');
+export const userPassword = document.querySelector('#userPassword');
 
-export const btnLogin = document.querySelector('#btnLogin')
-export const btnLogout = document.querySelector('#btnLogout')
+export const btnLogin = document.querySelector('#btnLogin');
+export const btnLogout = document.querySelector('#btnLogout');
+export const form = document.getElementById('login');
 
-export const divLoginError = document.querySelector('#divLoginError')
-export const lblLoginErrorMessage = document.querySelector('#lblLoginErrorMessage')
+export const divLoginError = document.querySelector('#divLoginError');
+export const lblLoginErrorMessage = document.querySelector('#lblLoginErrorMessage');
 
 
 export const showLoginForm = () => {

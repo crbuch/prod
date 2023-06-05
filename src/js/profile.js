@@ -59,7 +59,8 @@ const revenueCurve = (data) => {
     console.log('res :>> ', res);
     //graph
     console.log('returns :>> ', returns);
-
+    localStorage.setItem(uid, JSON.stringify(data))
+    
     const sortedArray = Object.entries(returns).sort((a, b) => {
         const dateA = new Date(a[0]);
         const dateB = new Date(b[0]);
@@ -76,7 +77,7 @@ const revenueCurve = (data) => {
     const layout = makeLayout("P&L")
     Plotly.newPlot("returnsCurve", [trace], layout, config).then(() => {
         document.getElementById("btnLogout").style.display = "block";
-    })
+    });
     
 
 };

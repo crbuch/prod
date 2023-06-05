@@ -3,6 +3,7 @@ import {
   userName,
   userPassword,
   btnLogin,
+  form,
   showLoginError,
   showApp,
   showLoginForm
@@ -37,29 +38,36 @@ function writedb(name,data,uid){
 
 export const monitorAuthState = async () => {
   onAuthStateChanged(auth, user => {
+    console.log('user monitor :>> ', user);
     if (user != null) {
-      sessionStorage.setItem('currUid', user.uid)
-      
+      sessionStorage.setItem('currUid', user.uid);
       showApp();
     } else {
       showLoginForm();
-      console.log("monitor none")
     }
   }
   );
 };
-monitorAuthState();
+
 
 const login = async () => {
-  const email = `${userEmail.value}@cml.com`;
+  let cleanUid = userName.value.replace(/\s/g,"");
   const password = userPassword.value;
+
+  if (cleanUid.substring(cleanUid.length - 8) != '@cml.com'){
+    cleanUid = `${cleanUid}@cml.com`;
+  }
+
   
-  signInWithEmailAndPassword(auth, email, password)
+  signInWithEmailAndPassword(auth, cleanUid, password)
     .then((userCredential) => {
+      console.log('userCredential :>> ', userCredential);
       initStorage(userCredential.user.uid);
+      showApp();
     })
     .catch((error) => {
-      showLoginError(error)
+      console.log('error :>> ', error);
+      showLoginError(error);
     });
 };
 
@@ -79,10 +87,18 @@ export const logout = async () => {
   });
 };
 
-try {
-  btnLogin.addEventListener('click', login)
-} catch {
+
+const currPage = window.location.pathname.split("/").pop();
+
+if (currPage == 'index.html' || currPage == 'index.html?'){
+  btnLogin.addEventListener('click', login);
+  
+  form.addEventListener("keydown", function(event) {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      btnLogin.click();
+    }
+  });
+
+  monitorAuthState();
 }
-
-
-

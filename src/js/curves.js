@@ -283,7 +283,6 @@ const table = (coreData) => {
   });
 };
 
-//ui 
 const switchActives = (event) => {
   event.preventDefault();
 
@@ -299,7 +298,7 @@ const switchActives = (event) => {
   const activeTime = document.getElementById("timeframes").querySelectorAll(".active")[0].id.substring(4);//gives the number from the active view id
   console.log('activeTime :>> ', activeTime);
   curve(Number(activeTime) + 1, curveInfo);
-}
+};
 
 
 //Main//
