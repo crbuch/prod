@@ -6,8 +6,26 @@
   "devDependencies": {
     "csv-loader": "^3.0.5",
     "html-webpack-plugin": "^5.5.0",
-    "webpack": "^5.84.1",
+    "webpack": "^5.85.1",
     "webpack-cli": "^5.1.1"
   },
-  "sideEffects" : false
+  "sideEffects": false,
+  "name": "prod-1",
+  "description": "",
+  "version": "1.0.0",
+  "main": "webpack.config.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dailyprod/prod.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dailyprod/prod/issues"
+  },
+  "homepage": "https://github.com/dailyprod/prod#readme"
 }
