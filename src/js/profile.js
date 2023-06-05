@@ -85,16 +85,19 @@ console.log('uid :>> ', uid);
 
 document.getElementById("btnLogout").addEventListener('click', logout);
 
-let pl = JSON.parse(localStorage.getItem('pl'));
-let dates = JSON.parse(localStorage.getItem('dates'));
+let pl_str = localStorage.getItem('pl');
+let dates_str = localStorage.getItem('dates');
+
+console.log('pl_str :>> ', pl_str);
+console.log('dates_str :>> ', dates_str);
 
 
-console.log('pl :>> ', pl);
-console.log('dates :>> ', dates);
 
-
-if (pl & dates){
-    plotRev(pl,dates);
+if (pl_str & dates_str){
+    dates_str = dates_str.split(',');
+    pl_str = pl_str.split(',');
+    pl_str = pl_str.map(el => parseFloat(el));
+    plotRev(pl_str,dates_str);
 } else {
     fetchData();
 }
