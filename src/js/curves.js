@@ -1,4 +1,4 @@
-import { logout, monitorAuthState } from './index'
+import { monitorAuthState } from './index'
 import * as dh from './data'
 import { select } from 'd3';
 import { monitorRegion } from './region'
@@ -144,7 +144,6 @@ const curve = (timeFrame, data) => {
   });
   // console.log(data.prodData)
   const site_data = data.prodData.filter(site => site[0] === selectedOption);
-  // console.log(site_data)
   let site_date = site_data.map(site => site[9]);
   let site_oil = site_data.map(site => site[2]);
   let site_gas = site_data.map(site => site[3]);
@@ -153,7 +152,6 @@ const curve = (timeFrame, data) => {
   let movingAverage = site_data.map(site => site[8]);
   let water_cut = site_water.map((water, i) => (water / (water + site_oil[i])) * 100);
   let total_fluid = site_oil.map((oil, index) => oil + site_water[index]);
-
   if (timeFrame > 0) [site_date, site_oil, site_gas, site_water, comments, movingAverage] =
     [site_date, site_oil, site_gas, site_water, comments, movingAverage].map(arr => arr.slice(0, timeFrame));
 
@@ -362,7 +360,6 @@ document.getElementById("initScale").addEventListener('click', () => {
   curve(Number(activeTime) + 1, curveInfo);
 });
 
-document.getElementById("btnLogout").addEventListener('click', logout);
 
 //init page on load//
 window.onload = function () {

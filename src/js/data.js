@@ -40,6 +40,10 @@ export const pump = await json("../data/pumpInfo.json").then((data) => {
     return data
 });
 
+export const legacyEcon = await json("../data/legacyEcon.json").then((data) => {
+    return data
+});
+
 export const activeWells = () => {
     let data = dataET;
     if (sessionStorage.getItem('region') !== 'et') data = dataST;
