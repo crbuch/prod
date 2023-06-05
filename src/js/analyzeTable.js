@@ -12,7 +12,7 @@ if (region == "et") data = analyzeDataET;
 
 const createAnalysis = (data) => {
   const tbody = select("tbody")
-  
+  //hi
   function buildTable(tableData) {
     tbody.html(""); //clear table
     tableData.forEach((well) => {
