@@ -40,7 +40,7 @@ export const monitorAuthState = async () => {
   onAuthStateChanged(auth, user => {
     console.log('user monitor :>> ', user);
     if (user != null) {
-      sessionStorage.setItem('currUid', user.uid);
+      sessionStorage.setItem('userCreds', user.uid);
       showApp();
     } else {
       showLoginForm();
@@ -57,12 +57,11 @@ const login = async () => {
   if (cleanUid.substring(cleanUid.length - 8) != '@cml.com'){
     cleanUid = `${cleanUid}@cml.com`;
   }
-
   
   signInWithEmailAndPassword(auth, cleanUid, password)
     .then((userCredential) => {
-      console.log('userCredential :>> ', userCredential);
-      initStorage(userCredential.user.uid);
+      console.log('userCredential :>> ', userCredential.user);
+      initStorage(userCredential);
       showApp();
     })
     .catch((error) => {
@@ -71,10 +70,10 @@ const login = async () => {
     });
 };
 
-const initStorage = (uid) => {
+const initStorage = (userCreds) => {
   if (localStorage.getItem('initTime') == null) localStorage.setItem('initTime',0);
   if (localStorage.getItem('initScale') == null) localStorage.setItem('initScale','linear');
-  sessionStorage.setItem('currUid', uid)
+  sessionStorage.setItem('userCreds', userCreds)
   sessionStorage.setItem('region', 'st')
 };
 

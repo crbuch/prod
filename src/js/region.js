@@ -1,3 +1,9 @@
+$(document).ready(function () {
+    $("#header").load("../src/pages/header.html", function () {
+        monitorRegion();
+    });
+});
+
 const toggleRegion = () => {
     let currRegion = sessionStorage.getItem("region");
     if (currRegion == "st" || currRegion == null) {

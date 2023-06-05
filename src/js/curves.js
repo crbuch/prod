@@ -1,12 +1,11 @@
-import { monitorAuthState } from './index'
 import * as dh from './data'
+import { } from './region'
+import { monitorAuthState } from './index'
 import { select } from 'd3';
-import { monitorRegion } from './region'
 import { makeTrace, makeLayout, config } from './layout';
 import { setActive, setActiveView, toggleInitTime, toggleInitScale, checkActive, activeFromStorage } from './ui';
 
 monitorAuthState();
-monitorRegion();
 
 const displayEconomics = (data, selectedOption) => {
   let wellRMPL = 0;
@@ -302,9 +301,10 @@ const switchActives = (event) => {
 
 
 //Main//
-const currUid = sessionStorage.getItem('currUid');
+const currUid = sessionStorage.getItem('userCreds');
 let region = sessionStorage.getItem('region');
 console.log('currUid :>> ', currUid);
+
 
 let prodData = dh.dataST;
 let cumlData = dh.dataCuml;
@@ -331,7 +331,6 @@ if (initTime == 31) $('#initTime').text('Init: 30 Days');
 
 let initScale = localStorage.getItem('initScale');
 if (initScale == 'logarithmic') $('#initScale').text('Init: logarithmic');
-console.log(initScale)
 
 const dropdownId = '#siteSelection';
 dh.dropdown(dropdownId);
