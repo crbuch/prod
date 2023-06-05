@@ -98,19 +98,21 @@ body {
   color: var(--color-secondary);
 }
 
-#pages {
+#pages{
   margin-left: 1%;
   color: whitesmoke;
   border: none;
 }
 
-#switchRegion{
+#switchRegion,#user_profile{
   margin-left: 330%;
   color: whitesmoke;
   border: none;
 }
 
-#pages:hover,#switchRegion:hover {
+
+
+#pages:hover,#switchRegion:hover,#user_profile:hover {
   color: var(--color-secondary);
 }
 #curveOptions {

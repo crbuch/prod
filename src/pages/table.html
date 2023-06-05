@@ -94,6 +94,10 @@
 
     </div>
   </div>
+  <script>
+    const userName = localStorage.getItem('email').split('@').shift();
+    document.getElementById('user_profile').textContent = userName;
+  </script>
 </body>
 
 </html>

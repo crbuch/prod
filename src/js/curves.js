@@ -1,11 +1,12 @@
 import * as dh from './data'
-import { } from './region'
+import { monitorRegion } from './region'
 import { monitorAuthState } from './index'
 import { select } from 'd3';
 import { makeTrace, makeLayout, config } from './layout';
-import { setActive, setActiveView, toggleInitTime, toggleInitScale, checkActive, activeFromStorage } from './ui';
+import { setActive, setActiveView, toggleInitTime, toggleInitScale, checkActive, setActiveTime } from './ui';
 
 monitorAuthState();
+monitorRegion();
 
 const displayEconomics = (data, selectedOption) => {
   let wellRMPL = 0;
@@ -301,10 +302,9 @@ const switchActives = (event) => {
 
 
 //Main//
-const currUid = sessionStorage.getItem('userCreds');
-let region = sessionStorage.getItem('region');
+const currUid = localStorage.getItem('uid');
+let region = localStorage.getItem('region');
 console.log('currUid :>> ', currUid);
-
 
 let prodData = dh.dataST;
 let cumlData = dh.dataCuml;
@@ -347,8 +347,11 @@ document.getElementById("table").addEventListener('click', () => {
 
 document.getElementById("initTime").addEventListener('click', () => {
   toggleInitTime();
-  curve(localStorage.getItem('initTime'), curveInfo);
-  activeFromStorage();
+  let time = localStorage.getItem('initTime');  
+  curve(time, curveInfo);
+  let activeTime = 'DaysInception';
+  if (time == 31) activeTime = 'Days30';
+  setActiveTime(activeTime)
 });
 
 document.getElementById("initScale").addEventListener('click', () => {
@@ -361,7 +364,10 @@ document.getElementById("initScale").addEventListener('click', () => {
 
 //init page on load//
 window.onload = function () {
-  activeFromStorage();
+  let activeTime = 'DaysInception';
+  if (localStorage.getItem('initTime') == 31) activeTime = 'Days30';
+  setActiveTime(activeTime);
+  setActiveView(localStorage.getItem('initScale'));
   curve(localStorage.getItem('initTime'), curveInfo);
 }();
 

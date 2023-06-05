@@ -105,14 +105,6 @@ export const toggleInitScale = () => {
   };
 };
 
-export const activeFromStorage = () => {
-  const initTime = localStorage.getItem('initTime');
-  let activeTime = 'DaysInception';
-  if (initTime == 31) activeTime = 'Days30';
-  setActiveTime(activeTime);
-  return activeTime;
-};
-
 export const checkActive = (element) => {
   let flag = false;
   let elems = document.querySelectorAll(".active");

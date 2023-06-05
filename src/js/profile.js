@@ -8,27 +8,19 @@ monitorAuthState();
 monitorRegion();
 
 const fetchData = () => {
-    let data = localStorage.getItem(uid);//cache
+    const deckRef = ref(db, 'users/' + uid + '/deck');
 
-    if (data){
-        data = JSON.parse(data)
-        revenueCurve(data)
+    onValue(deckRef, (snapshot) => {
+        const data = snapshot.val();
 
-    }else {//get from fb
-        const deckRef = ref(db, 'users/' + uid + '/deck');
-
-        onValue(deckRef, (snapshot) => {
-            const data = snapshot.val();
-
-            localStorage.setItem(uid, JSON.stringify(data))
-            revenueCurve(data);
-        })
-    }
+        localStorage.setItem(uid, JSON.stringify(data))
+        parseData(data);
+    })
 };
 
 
 
-const revenueCurve = (data) => {
+const parseData = (data) => {
     console.log('data :>> ', data);
     console.log('legacyEcon :>> ', legacyEcon);
     const wells = [];
@@ -59,7 +51,6 @@ const revenueCurve = (data) => {
     console.log('res :>> ', res);
     //graph
     console.log('returns :>> ', returns);
-    localStorage.setItem(uid, JSON.stringify(data))
     
     const sortedArray = Object.entries(returns).sort((a, b) => {
         const dateA = new Date(a[0]);
@@ -73,21 +64,43 @@ const revenueCurve = (data) => {
     console.log('dates :>> ', dates);
     console.log('pl :>> ', pl);
 
-    const trace = makeTrace(dates,pl,'P&L',null,'black',null);
+    plotRev(dates,pl);
+    localStorage.setItem('dates',dates);
+    localStorage.setItem('pl',pl);
+
+};
+
+const plotRev = (x,y) => {
+    const trace = makeTrace(x,y,'P&L',null,'black',null);
     const layout = makeLayout("P&L")
     Plotly.newPlot("returnsCurve", [trace], layout, config).then(() => {
         document.getElementById("btnLogout").style.display = "block";
     });
-    
+}
 
-};
-
-
+//\\
 const db = getDatabase()
-const uid = sessionStorage.getItem('currUid');
+const uid = localStorage.getItem('uid');
 console.log('uid :>> ', uid);
 
 document.getElementById("btnLogout").addEventListener('click', logout);
 
+let pl = JSON.parse(localStorage.getItem('pl'));
+let dates = JSON.parse(localStorage.getItem('dates'));
 
-fetchData();
+
+console.log('pl :>> ', pl);
+console.log('dates :>> ', dates);
+
+
+if (pl & dates){
+    plotRev(pl,dates);
+} else {
+    fetchData();
+}
+
+for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i);
+    const value = localStorage.getItem(key);
+    console.log(key + ": " + value);
+  }

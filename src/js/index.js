@@ -38,9 +38,10 @@ function writedb(name,data,uid){
 
 export const monitorAuthState = async () => {
   onAuthStateChanged(auth, user => {
-    console.log('user monitor :>> ', user);
     if (user != null) {
-      sessionStorage.setItem('userCreds', user.uid);
+      console.log('user :>> ', user);
+      localStorage.setItem('uid', user.uid);
+      localStorage.setItem('email', user.email);
       showApp();
     } else {
       showLoginForm();
@@ -60,8 +61,7 @@ const login = async () => {
   
   signInWithEmailAndPassword(auth, cleanUid, password)
     .then((userCredential) => {
-      console.log('userCredential :>> ', userCredential.user);
-      initStorage(userCredential);
+      initStorage(userCredential.user);
       showApp();
     })
     .catch((error) => {
@@ -73,14 +73,15 @@ const login = async () => {
 const initStorage = (userCreds) => {
   if (localStorage.getItem('initTime') == null) localStorage.setItem('initTime',0);
   if (localStorage.getItem('initScale') == null) localStorage.setItem('initScale','linear');
-  sessionStorage.setItem('userCreds', userCreds)
-  sessionStorage.setItem('region', 'st')
+  localStorage.setItem('uid', userCreds.uid);
+  localStorage.setItem('email', userCreds.email);
+  sessionStorage.setItem('region', 'st');
 };
 
 export const logout = async () => {
   const auth = getAuth();
   signOut(auth).then(() => {
-    sessionStorage.removeItem('currUid')
+    localStorage.removeItem('currUid')
   }).catch((error) => {
     console.log('error :>> ', error);
   });
