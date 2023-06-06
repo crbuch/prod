@@ -135,7 +135,7 @@ const curve = (timeFrame, data) => {
   };
   displayCumlData(data.dataCuml, selectedOption);
 
-  document.getElementById("zoomOil").style.visibility = "hidden"; //dont display old zoom data if switching b/t wells/timeframes
+  document.getElementById("zoomEl").style.visibility = "hidden"; //dont display old zoom data if switching b/t wells/timeframes
   document.getElementById("wellName").innerHTML = selectedOption;
   document.getElementById("individualTable").style.display = "none";
 
@@ -206,10 +206,10 @@ const curve = (timeFrame, data) => {
   );
 
   // Copied traces with 8th paramater, [visibility = true/'legendonly'], for combined production line graph
-  const traceOil2 = makeTrace(site_date, site_oil, "Oil", null, "green", null, comments, true);
-  const traceWater2 = makeTrace(site_date, site_water, "Water [Mbw]", "line", "blue", null, null, 'legendonly');
-  const traceGas2 = makeTrace(site_date, site_gas, "Gas [Mcf]", "line", "red", null, null, 'legendonly');
-  const traceFluid2 = makeTrace(site_date, total_fluid, "Total Fluid [Mb]", "line", "black", null, null, 'legendonly');
+  const traceOil2 = makeTrace(site_date, site_oil, "Oil [MBO]", null, "green", null, comments, true);
+  const traceWater2 = makeTrace(site_date, site_water, "Water [MBW]", "line", "blue", null, null, 'legendonly');
+  const traceGas2 = makeTrace(site_date, site_gas, "Gas [MCF]", "line", "red", null, null, 'legendonly');
+  const traceFluid2 = makeTrace(site_date, total_fluid, "Total Fluid [MB]", "line", "black", null, null, 'legendonly');
 
   const scale = (document.getElementById("logarithmic").classList.contains("active")) ? 'log' : 'linear';
 
@@ -234,12 +234,15 @@ const curve = (timeFrame, data) => {
     Plotly.newPlot(container, traceArrays[i], layout, config);
   });
 
-  // Plotly.newPlot("waterCutCurve", traceCut, layoutCut, config);
-
-  //Display oil production based on zoom
-  const oilDeclineCurve = document.getElementById("oilDeclineCurve");
-  oilDeclineCurve.on("plotly_relayout", function (eventData) {
+  const combo = document.getElementById('combinationCurves');
+  combo.on("plotly_relayout", function (eventData) {
     JSON.stringify(eventData);
+    const zoomEL = document.getElementById("zoomEl");
+    zoomEL.innerHTML = '';
+    const p = document.createElement('p');
+    p.textContent = `Produced:`;
+    zoomEL.appendChild(p);
+
     let { "xaxis.range[0]": xRangeStart, "xaxis.range[1]": xRangeEnd } = eventData;
     if (!xRangeStart) { // if double-clicked
       xRangeStart = site_date[site_date.length - 1];
@@ -254,13 +257,42 @@ const curve = (timeFrame, data) => {
     if (startIdx === -1) { // zoomed where no data
       return;
     }
-    const sum = site_oil.slice(endIdx, startIdx + 1).reduce((acc, cur) => acc + cur, 0);
-    const produced = (sum / 1000).toFixed(1);
+    const visible_traces = JSON.parse(sessionStorage.getItem('visible_traces'));
+    const map = {'Gas [MCF]': site_gas, 'Oil [MBO]': site_oil, 'Water [MBW]': site_water, 'Total Fluid [MB]': total_fluid };
 
-    const zoomOilElement = document.getElementById("zoomOil");
-    zoomOilElement.innerHTML = `Produced: ${produced} MBO, from ${xStart} to ${xEnd}`;
-    zoomOilElement.style.visibility = "visible";
+    for (const[key,vals] of Object.entries(visible_traces)){
+      for (let val of vals){
+        const data = map[val];
+        const sum = (data.slice(endIdx, startIdx + 1).reduce((acc, cur) => acc + cur, 0)/1000).toFixed(1);
+
+        let chop = -5;
+        if (val == 'Total Fluid [Mb]') chop = -4; 
+        const unit = val.slice(chop);
+        let name = val.slice(0, chop);
+        if (val == 'Total Fluid [Mb]') name = `${name} `; 
+
+        const p = document.createElement('p');
+        p.textContent = `${name}: ${sum} ${unit}`;
+        p.style.fontSize = '15px';
+        zoomEL.appendChild(p);
+      }
+    }
+    zoomEL.style.visibility = "visible";
   });
+
+  combo.on('plotly_legendclick', function(data) {
+    const traceIdx = data.curveNumber;
+    const name = combination[traceIdx].name;
+    let currVisible = JSON.parse(sessionStorage.visible_traces) || {"visible_traces": []};
+
+    if (currVisible.visible.includes(name)){
+      currVisible.visible = currVisible.visible.filter(el => el !== name)
+    }else{
+      currVisible.visible.push(name);
+    }
+
+    sessionStorage.setItem('visible_traces', JSON.stringify(currVisible));
+  })
 
   document.getElementById("siteSelection").focus();
   document.getElementById("filler4").style.display = "none";
@@ -361,7 +393,9 @@ document.getElementById("initScale").addEventListener('click', () => {
   curve(Number(activeTime) + 1, curveInfo);
 });
 
-
+//store currently visible plots in sessionstorage to access in relayout event; init to only oil(page load)
+let currVisible = {"visible":["Oil [MBO]"]};
+sessionStorage.setItem("visible_traces",JSON.stringify(currVisible));
 //init page on load//
 window.onload = function () {
   let activeTime = 'DaysInception';
