@@ -63,5 +63,8 @@
   </div>
   <div id='graph'></div>
 </body>
-<script src="../js/wbd.js"></script>
+<script>
+  const userName = localStorage.getItem('email').split('@').shift();
+  document.getElementById('user_profile').textContent = userName;
+</script>
 </html>

@@ -1,9 +1,9 @@
-import { logout, monitorAuthState } from './index'
 import * as dh from './data'
-import { select } from 'd3';
 import { monitorRegion } from './region'
+import { monitorAuthState } from './index'
+import { select } from 'd3';
 import { makeTrace, makeLayout, config } from './layout';
-import { setActive, setActiveView, toggleInitTime, toggleInitScale, checkActive, activeFromStorage } from './ui';
+import { setActive, setActiveView, toggleInitTime, toggleInitScale, checkActive, setActiveTime } from './ui';
 
 monitorAuthState();
 monitorRegion();
@@ -144,7 +144,6 @@ const curve = (timeFrame, data) => {
   });
   // console.log(data.prodData)
   const site_data = data.prodData.filter(site => site[0] === selectedOption);
-  // console.log(site_data)
   let site_date = site_data.map(site => site[9]);
   let site_oil = site_data.map(site => site[2]);
   let site_gas = site_data.map(site => site[3]);
@@ -153,7 +152,6 @@ const curve = (timeFrame, data) => {
   let movingAverage = site_data.map(site => site[8]);
   let water_cut = site_water.map((water, i) => (water / (water + site_oil[i])) * 100);
   let total_fluid = site_oil.map((oil, index) => oil + site_water[index]);
-
   if (timeFrame > 0) [site_date, site_oil, site_gas, site_water, comments, movingAverage] =
     [site_date, site_oil, site_gas, site_water, comments, movingAverage].map(arr => arr.slice(0, timeFrame));
 
@@ -285,7 +283,6 @@ const table = (coreData) => {
   });
 };
 
-//ui 
 const switchActives = (event) => {
   event.preventDefault();
 
@@ -301,12 +298,12 @@ const switchActives = (event) => {
   const activeTime = document.getElementById("timeframes").querySelectorAll(".active")[0].id.substring(4);//gives the number from the active view id
   console.log('activeTime :>> ', activeTime);
   curve(Number(activeTime) + 1, curveInfo);
-}
+};
 
 
 //Main//
-const currUid = sessionStorage.getItem('currUid');
-let region = sessionStorage.getItem('region');
+const currUid = localStorage.getItem('uid');
+let region = localStorage.getItem('region');
 console.log('currUid :>> ', currUid);
 
 let prodData = dh.dataST;
@@ -334,7 +331,6 @@ if (initTime == 31) $('#initTime').text('Init: 30 Days');
 
 let initScale = localStorage.getItem('initScale');
 if (initScale == 'logarithmic') $('#initScale').text('Init: logarithmic');
-console.log(initScale)
 
 const dropdownId = '#siteSelection';
 dh.dropdown(dropdownId);
@@ -351,8 +347,11 @@ document.getElementById("table").addEventListener('click', () => {
 
 document.getElementById("initTime").addEventListener('click', () => {
   toggleInitTime();
-  curve(localStorage.getItem('initTime'), curveInfo);
-  activeFromStorage();
+  let time = localStorage.getItem('initTime');  
+  curve(time, curveInfo);
+  let activeTime = 'DaysInception';
+  if (time == 31) activeTime = 'Days30';
+  setActiveTime(activeTime)
 });
 
 document.getElementById("initScale").addEventListener('click', () => {
@@ -362,11 +361,13 @@ document.getElementById("initScale").addEventListener('click', () => {
   curve(Number(activeTime) + 1, curveInfo);
 });
 
-document.getElementById("btnLogout").addEventListener('click', logout);
 
 //init page on load//
 window.onload = function () {
-  activeFromStorage();
+  let activeTime = 'DaysInception';
+  if (localStorage.getItem('initTime') == 31) activeTime = 'Days30';
+  setActiveTime(activeTime);
+  setActiveView(localStorage.getItem('initScale'));
   curve(localStorage.getItem('initTime'), curveInfo);
 }();
 

@@ -4,11 +4,11 @@
         "Aaron12.csv",
         "Aaron13.csv"
     ],
-    "Annpick #1": [
-        "Annpick11.csv",
-        "Annpick12.csv",
-        "Annpick13.csv",
-        "Annpick14.csv"
+    "Ann Pick #1": [
+        "AnnPick11.csv",
+        "AnnPick12.csv",
+        "AnnPick13.csv",
+        "AnnPick14.csv"
     ],
     "BMMP #1": [
         "BMMP11.csv",
@@ -16,6 +16,10 @@
         "BMMP13.csv",
         "BMMP14.csv",
         "BMMP15.csv"
+    ],
+    "Balfour #1": [
+        "Balfour11.csv",
+        "Balfour12.csv"
     ],
     "Barrier #1": [
         "Barrier11.csv",
@@ -40,10 +44,24 @@
     ],
     "Big Sonny #1": [
         "BigSonny11.csv",
-        "Betty12.csv",
-        "Betty13.csv",
-        "Betty14.csv",
-        "Betty15.csv"
+        "BigSonny12.csv",
+        "BigSonny13.csv",
+        "BigSonny14.csv",
+        "BigSonny15.csv"
+    ],
+    "Blackmon #1": [
+        "Blackmon11.csv",
+        "Blackmon12.csv"
+    ],
+    "Blas Reyes #1": [
+        "BlasReyes11.csv",
+        "BlasReyes12.csv",
+        "BlasReyes13.csv"
+    ],
+    "Branton #1": [
+        "Branton11.csv",
+        "Branton12.csv",
+        "Branton13.csv"
     ],
     "Bruce Weaver #2": [
         "BruceWeaver21.csv",
@@ -62,6 +80,14 @@
         "CR1011.csv",
         "CR1012.csv",
         "CR1013.csv"
+    ],
+    "CR201": [
+        "CR2011.csv",
+        "CR2012.csv"
+    ],
+    "CR301": [
+        "CR3011.csv",
+        "CR3012.csv"
     ],
     "CR302": [
         "CR3021.csv",
@@ -94,9 +120,20 @@
     "Cannan #1": [
         "Cannan11.csv"
     ],
-    "Carolpick #1": [
-        "Carolpick11.csv",
-        "Carolpick12.csv"
+    "Carol Pick #1": [
+        "CarolPick11.csv",
+        "CarolPick12.csv"
+    ],
+    "Carolyn #1": [
+        "Carolyn11.csv",
+        "Carolyn12.csv"
+    ],
+    "Cenizo #1": [
+        "Cenizo11.csv",
+        "Cenizo12.csv"
+    ],
+    "Chad #1": [
+        "Chad11.csv"
     ],
     "Charles B #1": [
         "CharlesB11.csv",
@@ -107,6 +144,12 @@
     "Circle T #1": [
         "CircleT11.csv",
         "CircleT12.csv"
+    ],
+    "Cross S #1": [
+        "CrossS11.csv",
+        "CrossS12.csv",
+        "CrossS13.csv",
+        "CrossS14.csv"
     ],
     "Drinkard #1": [
         "Drinkard11.csv",

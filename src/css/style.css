@@ -3,6 +3,7 @@ body {
   --color-primary: #1c4662;
   --color-secondary: #e07719;
   --color-error: #cc3333;
+  --border-radius: 10px;
   height: 100%;
 }
 
@@ -97,19 +98,21 @@ body {
   color: var(--color-secondary);
 }
 
-#pages {
+#pages{
   margin-left: 1%;
   color: whitesmoke;
   border: none;
 }
 
-#switchRegion{
+#switchRegion,#user_profile{
   margin-left: 330%;
   color: whitesmoke;
   border: none;
 }
 
-#pages:hover,#switchRegion:hover {
+
+
+#pages:hover,#switchRegion:hover,#user_profile:hover {
   color: var(--color-secondary);
 }
 #curveOptions {
@@ -189,8 +192,9 @@ li {
 .form_button {
   margin-left: 40%;
   margin-right: 40%;
-  margin-bottom: 1%;
   width: 20%;
+  height: 50px;
+  width: 500px;
   padding: 1rem 2rem;
   font-weight: bold;
   font-size: 1.1rem;
@@ -198,6 +202,8 @@ li {
   border-radius: var(--border-radius);
   cursor: pointer;
   background: var(--color-primary);
+  text-align: center;
+  line-height: 18px;
 }
 
 .form_button:hover {

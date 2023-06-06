@@ -1,1 +1,256 @@
-(()=>{"use strict";var t,e,o,n,a,r={826:(t,e,o)=>{o.a(t,(async(t,e)=>{try{var n=o(971),a=o(448),r=o(199),i=o(302),s=t([r]);r=(s.then?(await s)():s)[0],(0,n.z)(),(0,a.n)();let c=r.DS;"et"==sessionStorage.getItem("region")&&(c=r.bS);const l=t=>{const e=(0,i.Ys)("tbody");var o;$(document).ready((function(){$("tr td:nth-child(1)").each((function(){$(this).html('<a href="http://127.0.0.1:5503/dist/curves.html">'+$(this).text()+"</a>"),$(this).click((function(){sessionStorage.setItem("siteSelection",$(this).text())}))}))})),o=t,e.html(""),o.forEach((t=>{let o=e.append("tr");Object.values(t).forEach((t=>{o.append("td").text(t)}))}))};l(c),e()}catch(t){e(t)}}))},199:(t,e,o)=>{o.a(t,(async(t,n)=>{try{o.d(e,{DS:()=>t,bS:()=>r});var a=o(302);await(0,a.AVB)("../data/allProductionData.json").then((t=>t)),await(0,a.AVB)("../data/allProductionDataET.json").then((t=>t)),await(0,a.AVB)("../data/cumProd.json").then((t=>t)),await(0,a.AVB)("../data/cumProdET.json").then((t=>t));const t=await(0,a.AVB)("../data/analyze.json").then((t=>t)),r=await(0,a.AVB)("../data/analyzeET.json").then((t=>t));await(0,a.AVB)("../data/formations.json").then((t=>t)),await(0,a.AVB)("../data/economics.json").then((t=>t)),await(0,a.AVB)("../data/payouts.json").then((t=>t)),await(0,a.AVB)("../data/pumpInfo.json").then((t=>t)),n()}catch(t){n(t)}}),1)},971:(t,e,o)=>{o.d(e,{z:()=>l});var n=o(914),a=o(977),r=o(864),i=o(679);const s=(0,a.ZF)({apiKey:"AIzaSyC3yOK_QL5QbJaKvjynXXzObl4uKsoJpTU",authDomain:"cmlproduction-1e86a.firebaseapp.com",projectId:"cmlproduction-1e86a",storageBucket:"cmlproduction-1e86a.appspot.com",messagingSenderId:"924402330611",appId:"1:924402330611:web:55155c0a5c5c6a7d4b8086"}),c=(0,r.v0)(s);(0,i.N8)();const l=async()=>{(0,r.Aj)(c,(t=>{null!=t?(sessionStorage.setItem("currUid",t.uid),(0,n.i1)()):((0,n.L8)(),console.log("monitor none"))}))};l();const d=async()=>{(0,r.e5)(c,"daniel@cml.com","daniel").then((t=>{u(t.user.uid)})).catch((t=>{(0,n.r7)(t)}))},u=t=>{null==localStorage.getItem("initTime")&&localStorage.setItem("initTime",0),null==localStorage.getItem("initScale")&&localStorage.setItem("initScale","linear"),sessionStorage.setItem("currUid",t),sessionStorage.setItem("region","st")};try{n.Df.addEventListener("click",d)}catch{}},448:(t,e,o)=>{o.d(e,{n:()=>a});const n=()=>{let t=sessionStorage.getItem("region");"st"==t||null==t?(console.log("switching to east"),sessionStorage.setItem("region","et")):sessionStorage.setItem("region","st")},a=()=>{let t=sessionStorage.getItem("region");const e=document.querySelector("#fieldTitle"),o=document.querySelector("#switchRegion");o.addEventListener("click",n);const a=$(window).width();console.log("currRegion :>> ",t),"st"==t||null==t?(o.innerHTML="East Texas",e.textContent="South Texas Field",a<768&&(e.textContent="CML EXP - South Texas")):(o.innerHTML="South Texas",e.textContent="East Texas Field",a<768&&(e.textContent="CML EXP - East Texas"))}},914:(t,e,o)=>{o.d(e,{Df:()=>a,L8:()=>s,i1:()=>c,r7:()=>l});var n=o(864);document.querySelector("#userEmail"),document.querySelector("#userPassword");const a=document.querySelector("#btnLogin"),r=(document.querySelector("#btnLogout"),document.querySelector("#divLoginError")),i=document.querySelector("#lblLoginErrorMessage"),s=()=>{const t=window.location.pathname.split("/").pop();let e;if("localhost"!==location.hostname&&"127.0.0.1"!==location.hostname||(e=!0),"index.html"!=t){if(!0===e)return void window.location.replace("http://127.0.0.1:5503/../dist/index.html");window.location.replace("https://matthewplaisance.github.io/STprod/dist/index.html")}},c=()=>{const t=window.location.pathname.split("/").pop();let e;if("localhost"!==location.hostname&&"127.0.0.1"!==location.hostname||(e=!0),"index.html"==t){if(!0===e)return void window.location.replace("http://127.0.0.1:5503/../dist/curves.html");window.location.replace("https://matthewplaisance.github.io/STprod/dist/curves.html")}},l=t=>{r.style.display="block",t.code==n.kq.INVALID_PASSWORD?i.innerHTML="Wrong password":i.innerHTML=`Error: ${t.message}`};try{r.style.display="none",i.innerHTML=""}catch{}},302:(t,e,o)=>{o.d(e,{AVB:()=>n.Z,Ys:()=>a.Ys}),o(684);var n=o(950),a=o(997);o(286),o(964)}},i={};function s(t){var e=i[t];if(void 0!==e)return e.exports;var o=i[t]={exports:{}};return r[t](o,o.exports,s),o.exports}s.m=r,t="function"==typeof Symbol?Symbol("webpack queues"):"__webpack_queues__",e="function"==typeof Symbol?Symbol("webpack exports"):"__webpack_exports__",o="function"==typeof Symbol?Symbol("webpack error"):"__webpack_error__",n=t=>{t&&!t.d&&(t.d=1,t.forEach((t=>t.r--)),t.forEach((t=>t.r--?t.r++:t())))},s.a=(a,r,i)=>{var s;i&&((s=[]).d=1);var c,l,d,u=new Set,h=a.exports,p=new Promise(((t,e)=>{d=e,l=t}));p[e]=h,p[t]=t=>(s&&t(s),u.forEach(t),p.catch((t=>{}))),a.exports=p,r((a=>{var r;c=(a=>a.map((a=>{if(null!==a&&"object"==typeof a){if(a[t])return a;if(a.then){var r=[];r.d=0,a.then((t=>{i[e]=t,n(r)}),(t=>{i[o]=t,n(r)}));var i={};return i[t]=t=>t(r),i}}var s={};return s[t]=t=>{},s[e]=a,s})))(a);var i=()=>c.map((t=>{if(t[o])throw t[o];return t[e]})),l=new Promise((e=>{(r=()=>e(i)).r=0;var o=t=>t!==s&&!u.has(t)&&(u.add(t),t&&!t.d&&(r.r++,t.push(r)));c.map((e=>e[t](o)))}));return r.r?l:i()}),(t=>(t?d(p[o]=t):l(h),n(s)))),s&&(s.d=0)},a=[],s.O=(t,e,o,n)=>{if(!e){var r=1/0;for(d=0;d<a.length;d++){for(var[e,o,n]=a[d],i=!0,c=0;c<e.length;c++)(!1&n||r>=n)&&Object.keys(s.O).every((t=>s.O[t](e[c])))?e.splice(c--,1):(i=!1,n<r&&(r=n));if(i){a.splice(d--,1);var l=o();void 0!==l&&(t=l)}}return t}n=n||0;for(var d=a.length;d>0&&a[d-1][2]>n;d--)a[d]=a[d-1];a[d]=[e,o,n]},s.d=(t,e)=>{for(var o in e)s.o(e,o)&&!s.o(t,o)&&Object.defineProperty(t,o,{enumerable:!0,get:e[o]})},s.g=function(){if("object"==typeof globalThis)return globalThis;try{return this||new Function("return this")()}catch(t){if("object"==typeof window)return window}}(),s.o=(t,e)=>Object.prototype.hasOwnProperty.call(t,e),(()=>{var t={730:0,179:0};s.O.j=e=>0===t[e];var e=(e,o)=>{var n,a,[r,i,c]=o,l=0;if(r.some((e=>0!==t[e]))){for(n in i)s.o(i,n)&&(s.m[n]=i[n]);if(c)var d=c(s)}for(e&&e(o);l<r.length;l++)a=r[l],s.o(t,a)&&t[a]&&t[a][0](),t[a]=0;return s.O(d)},o=self.webpackChunkprod_1=self.webpackChunkprod_1||[];o.forEach(e.bind(null,0)),o.push=e.bind(null,o.push.bind(o))})();var c=s.O(void 0,[529,679,864,883],(()=>s(826)));c=s.O(c)})();
+/*
+ * ATTENTION: An "eval-source-map" devtool has been used.
+ * This devtool is neither made for production nor for readable output files.
+ * It uses "eval()" calls to create a separate source file with attached SourceMaps in the browser devtools.
+ * If you are trying to read the output file, select a different devtool (https://webpack.js.org/configuration/devtool/)
+ * or disable the default devtool with "devtool: false".
+ * If you are looking for production-ready output files, see mode: "production" (https://webpack.js.org/configuration/mode/).
+ */
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+/******/ 	var __webpack_modules__ = ({
+
+/***/ "./src/js/analyzeTable.js":
+/*!********************************!*\
+  !*** ./src/js/analyzeTable.js ***!
+  \********************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+eval("__webpack_require__.a(module, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {\n__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _index__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./index */ \"./src/js/index.js\");\n/* harmony import */ var _region__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./region */ \"./src/js/region.js\");\n/* harmony import */ var _data__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./data */ \"./src/js/data.js\");\n/* harmony import */ var d3__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! d3 */ \"./node_modules/d3/src/index.js\");\nvar __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([_data__WEBPACK_IMPORTED_MODULE_3__]);\n_data__WEBPACK_IMPORTED_MODULE_3__ = (__webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__)[0];\n\r\n\r\n\r\n\r\n\r\n(0,_index__WEBPACK_IMPORTED_MODULE_1__.monitorAuthState)();\r\n(0,_region__WEBPACK_IMPORTED_MODULE_2__.monitorRegion)();\r\n\r\nlet data = _data__WEBPACK_IMPORTED_MODULE_3__.analyzeData;\r\nlet region = sessionStorage.getItem(\"region\");\r\nif (region == \"et\") data = _data__WEBPACK_IMPORTED_MODULE_3__.analyzeDataET;\r\n\r\nconst createAnalysis = (data) => {\r\n  const tbody = (0,d3__WEBPACK_IMPORTED_MODULE_0__.select)(\"tbody\")\r\n\r\n  function buildTable(tableData) {\r\n    tbody.html(\"\"); //clear table\r\n    tableData.forEach((well) => {\r\n      let row = tbody.append(\"tr\");\r\n      // loop through each value to add a cell for each of it\r\n      Object.values(well).forEach((val) => {\r\n        let cell = row.append(\"td\");\r\n        cell.text(val);\r\n      });\r\n    });\r\n  }; // closing forEach\r\n\r\n  //JQUERY TO ADD LINKS \r\n  $(document).ready(function () {\r\n    $(\"tr td:nth-child(1)\").each(function () { //ADD LINK TO THE FIRST CHILD OF EVERY TD, SO THE NAME OF THE WELL\r\n      //$(this).html('<a href=\"https://cmlexploration.github.io/STprod/curves.html\">' + $(this).text() + '</a>');\r\n      $(this).html('<a href=\"http://127.0.0.1:5503/dist/curves.html\">' + $(this).text() + '</a>');\r\n      $(this).click(function () {\r\n        sessionStorage.setItem('siteSelection', $(this).text())\r\n      })\r\n    });\r\n  });\r\n  buildTable(data)\r\n};\r\n\r\ncreateAnalysis(data);\n__webpack_async_result__();\n} catch(e) { __webpack_async_result__(e); } });//# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiLi9zcmMvanMvYW5hbHl6ZVRhYmxlLmpzLmpzIiwibWFwcGluZ3MiOiI7Ozs7Ozs7O0FBQTBDO0FBQ0Y7QUFDVztBQUN2QjtBQUM1QjtBQUNBLHdEQUFnQjtBQUNoQixzREFBYTtBQUNiO0FBQ0EsV0FBVyw4Q0FBVztBQUN0QjtBQUNBLDJCQUEyQixnREFBYTtBQUN4QztBQUNBO0FBQ0EsZ0JBQWdCLDBDQUFNO0FBQ3RCO0FBQ0E7QUFDQSxvQkFBb0I7QUFDcEI7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0EsT0FBTztBQUNQLEtBQUs7QUFDTCxLQUFLO0FBQ0w7QUFDQTtBQUNBO0FBQ0EsK0NBQStDO0FBQy9DO0FBQ0E7QUFDQTtBQUNBO0FBQ0EsT0FBTztBQUNQLEtBQUs7QUFDTCxHQUFHO0FBQ0g7QUFDQTtBQUNBO0FBQ0EscUIiLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly9wcm9kLTEvLi9zcmMvanMvYW5hbHl6ZVRhYmxlLmpzPzEwNGQiXSwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHsgbW9uaXRvckF1dGhTdGF0ZSB9IGZyb20gJy4vaW5kZXgnXHJcbmltcG9ydCB7IG1vbml0b3JSZWdpb24gfSBmcm9tICcuL3JlZ2lvbidcclxuaW1wb3J0IHsgYW5hbHl6ZURhdGEsYW5hbHl6ZURhdGFFVCB9IGZyb20gJy4vZGF0YSc7XHJcbmltcG9ydCB7IHNlbGVjdCB9IGZyb20gJ2QzJztcclxuXHJcbm1vbml0b3JBdXRoU3RhdGUoKTtcclxubW9uaXRvclJlZ2lvbigpO1xyXG5cclxubGV0IGRhdGEgPSBhbmFseXplRGF0YTtcclxubGV0IHJlZ2lvbiA9IHNlc3Npb25TdG9yYWdlLmdldEl0ZW0oXCJyZWdpb25cIik7XHJcbmlmIChyZWdpb24gPT0gXCJldFwiKSBkYXRhID0gYW5hbHl6ZURhdGFFVDtcclxuXHJcbmNvbnN0IGNyZWF0ZUFuYWx5c2lzID0gKGRhdGEpID0+IHtcclxuICBjb25zdCB0Ym9keSA9IHNlbGVjdChcInRib2R5XCIpXHJcblxyXG4gIGZ1bmN0aW9uIGJ1aWxkVGFibGUodGFibGVEYXRhKSB7XHJcbiAgICB0Ym9keS5odG1sKFwiXCIpOyAvL2NsZWFyIHRhYmxlXHJcbiAgICB0YWJsZURhdGEuZm9yRWFjaCgod2VsbCkgPT4ge1xyXG4gICAgICBsZXQgcm93ID0gdGJvZHkuYXBwZW5kKFwidHJcIik7XHJcbiAgICAgIC8vIGxvb3AgdGhyb3VnaCBlYWNoIHZhbHVlIHRvIGFkZCBhIGNlbGwgZm9yIGVhY2ggb2YgaXRcclxuICAgICAgT2JqZWN0LnZhbHVlcyh3ZWxsKS5mb3JFYWNoKCh2YWwpID0+IHtcclxuICAgICAgICBsZXQgY2VsbCA9IHJvdy5hcHBlbmQoXCJ0ZFwiKTtcclxuICAgICAgICBjZWxsLnRleHQodmFsKTtcclxuICAgICAgfSk7XHJcbiAgICB9KTtcclxuICB9OyAvLyBjbG9zaW5nIGZvckVhY2hcclxuXHJcbiAgLy9KUVVFUlkgVE8gQUREIExJTktTIFxyXG4gICQoZG9jdW1lbnQpLnJlYWR5KGZ1bmN0aW9uICgpIHtcclxuICAgICQoXCJ0ciB0ZDpudGgtY2hpbGQoMSlcIikuZWFjaChmdW5jdGlvbiAoKSB7IC8vQUREIExJTksgVE8gVEhFIEZJUlNUIENISUxEIE9GIEVWRVJZIFRELCBTTyBUSEUgTkFNRSBPRiBUSEUgV0VMTFxyXG4gICAgICAvLyQodGhpcykuaHRtbCgnPGEgaHJlZj1cImh0dHBzOi8vY21sZXhwbG9yYXRpb24uZ2l0aHViLmlvL1NUcHJvZC9jdXJ2ZXMuaHRtbFwiPicgKyAkKHRoaXMpLnRleHQoKSArICc8L2E+Jyk7XHJcbiAgICAgICQodGhpcykuaHRtbCgnPGEgaHJlZj1cImh0dHA6Ly8xMjcuMC4wLjE6NTUwMy9kaXN0L2N1cnZlcy5odG1sXCI+JyArICQodGhpcykudGV4dCgpICsgJzwvYT4nKTtcclxuICAgICAgJCh0aGlzKS5jbGljayhmdW5jdGlvbiAoKSB7XHJcbiAgICAgICAgc2Vzc2lvblN0b3JhZ2Uuc2V0SXRlbSgnc2l0ZVNlbGVjdGlvbicsICQodGhpcykudGV4dCgpKVxyXG4gICAgICB9KVxyXG4gICAgfSk7XHJcbiAgfSk7XHJcbiAgYnVpbGRUYWJsZShkYXRhKVxyXG59O1xyXG5cclxuY3JlYXRlQW5hbHlzaXMoZGF0YSk7Il0sIm5hbWVzIjpbXSwic291cmNlUm9vdCI6IiJ9\n//# sourceURL=webpack-internal:///./src/js/analyzeTable.js\n");
+
+/***/ })
+
+/******/ 	});
+/************************************************************************/
+/******/ 	// The module cache
+/******/ 	var __webpack_module_cache__ = {};
+/******/ 	
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/ 		// Check if module is in cache
+/******/ 		var cachedModule = __webpack_module_cache__[moduleId];
+/******/ 		if (cachedModule !== undefined) {
+/******/ 			return cachedModule.exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = __webpack_module_cache__[moduleId] = {
+/******/ 			// no module.id needed
+/******/ 			// no module.loaded needed
+/******/ 			exports: {}
+/******/ 		};
+/******/ 	
+/******/ 		// Execute the module function
+/******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
+/******/ 	
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/ 	
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = __webpack_modules__;
+/******/ 	
+/************************************************************************/
+/******/ 	/* webpack/runtime/async module */
+/******/ 	(() => {
+/******/ 		var webpackQueues = typeof Symbol === "function" ? Symbol("webpack queues") : "__webpack_queues__";
+/******/ 		var webpackExports = typeof Symbol === "function" ? Symbol("webpack exports") : "__webpack_exports__";
+/******/ 		var webpackError = typeof Symbol === "function" ? Symbol("webpack error") : "__webpack_error__";
+/******/ 		var resolveQueue = (queue) => {
+/******/ 			if(queue && !queue.d) {
+/******/ 				queue.d = 1;
+/******/ 				queue.forEach((fn) => (fn.r--));
+/******/ 				queue.forEach((fn) => (fn.r-- ? fn.r++ : fn()));
+/******/ 			}
+/******/ 		}
+/******/ 		var wrapDeps = (deps) => (deps.map((dep) => {
+/******/ 			if(dep !== null && typeof dep === "object") {
+/******/ 				if(dep[webpackQueues]) return dep;
+/******/ 				if(dep.then) {
+/******/ 					var queue = [];
+/******/ 					queue.d = 0;
+/******/ 					dep.then((r) => {
+/******/ 						obj[webpackExports] = r;
+/******/ 						resolveQueue(queue);
+/******/ 					}, (e) => {
+/******/ 						obj[webpackError] = e;
+/******/ 						resolveQueue(queue);
+/******/ 					});
+/******/ 					var obj = {};
+/******/ 					obj[webpackQueues] = (fn) => (fn(queue));
+/******/ 					return obj;
+/******/ 				}
+/******/ 			}
+/******/ 			var ret = {};
+/******/ 			ret[webpackQueues] = x => {};
+/******/ 			ret[webpackExports] = dep;
+/******/ 			return ret;
+/******/ 		}));
+/******/ 		__webpack_require__.a = (module, body, hasAwait) => {
+/******/ 			var queue;
+/******/ 			hasAwait && ((queue = []).d = 1);
+/******/ 			var depQueues = new Set();
+/******/ 			var exports = module.exports;
+/******/ 			var currentDeps;
+/******/ 			var outerResolve;
+/******/ 			var reject;
+/******/ 			var promise = new Promise((resolve, rej) => {
+/******/ 				reject = rej;
+/******/ 				outerResolve = resolve;
+/******/ 			});
+/******/ 			promise[webpackExports] = exports;
+/******/ 			promise[webpackQueues] = (fn) => (queue && fn(queue), depQueues.forEach(fn), promise["catch"](x => {}));
+/******/ 			module.exports = promise;
+/******/ 			body((deps) => {
+/******/ 				currentDeps = wrapDeps(deps);
+/******/ 				var fn;
+/******/ 				var getResult = () => (currentDeps.map((d) => {
+/******/ 					if(d[webpackError]) throw d[webpackError];
+/******/ 					return d[webpackExports];
+/******/ 				}))
+/******/ 				var promise = new Promise((resolve) => {
+/******/ 					fn = () => (resolve(getResult));
+/******/ 					fn.r = 0;
+/******/ 					var fnQueue = (q) => (q !== queue && !depQueues.has(q) && (depQueues.add(q), q && !q.d && (fn.r++, q.push(fn))));
+/******/ 					currentDeps.map((dep) => (dep[webpackQueues](fnQueue)));
+/******/ 				});
+/******/ 				return fn.r ? promise : getResult();
+/******/ 			}, (err) => ((err ? reject(promise[webpackError] = err) : outerResolve(exports)), resolveQueue(queue)));
+/******/ 			queue && (queue.d = 0);
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/chunk loaded */
+/******/ 	(() => {
+/******/ 		var deferred = [];
+/******/ 		__webpack_require__.O = (result, chunkIds, fn, priority) => {
+/******/ 			if(chunkIds) {
+/******/ 				priority = priority || 0;
+/******/ 				for(var i = deferred.length; i > 0 && deferred[i - 1][2] > priority; i--) deferred[i] = deferred[i - 1];
+/******/ 				deferred[i] = [chunkIds, fn, priority];
+/******/ 				return;
+/******/ 			}
+/******/ 			var notFulfilled = Infinity;
+/******/ 			for (var i = 0; i < deferred.length; i++) {
+/******/ 				var [chunkIds, fn, priority] = deferred[i];
+/******/ 				var fulfilled = true;
+/******/ 				for (var j = 0; j < chunkIds.length; j++) {
+/******/ 					if ((priority & 1 === 0 || notFulfilled >= priority) && Object.keys(__webpack_require__.O).every((key) => (__webpack_require__.O[key](chunkIds[j])))) {
+/******/ 						chunkIds.splice(j--, 1);
+/******/ 					} else {
+/******/ 						fulfilled = false;
+/******/ 						if(priority < notFulfilled) notFulfilled = priority;
+/******/ 					}
+/******/ 				}
+/******/ 				if(fulfilled) {
+/******/ 					deferred.splice(i--, 1)
+/******/ 					var r = fn();
+/******/ 					if (r !== undefined) result = r;
+/******/ 				}
+/******/ 			}
+/******/ 			return result;
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/define property getters */
+/******/ 	(() => {
+/******/ 		// define getter functions for harmony exports
+/******/ 		__webpack_require__.d = (exports, definition) => {
+/******/ 			for(var key in definition) {
+/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 				}
+/******/ 			}
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/global */
+/******/ 	(() => {
+/******/ 		__webpack_require__.g = (function() {
+/******/ 			if (typeof globalThis === 'object') return globalThis;
+/******/ 			try {
+/******/ 				return this || new Function('return this')();
+/******/ 			} catch (e) {
+/******/ 				if (typeof window === 'object') return window;
+/******/ 			}
+/******/ 		})();
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
+/******/ 	(() => {
+/******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/make namespace object */
+/******/ 	(() => {
+/******/ 		// define __esModule on exports
+/******/ 		__webpack_require__.r = (exports) => {
+/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 			}
+/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/jsonp chunk loading */
+/******/ 	(() => {
+/******/ 		// no baseURI
+/******/ 		
+/******/ 		// object to store loaded and loading chunks
+/******/ 		// undefined = chunk not loaded, null = chunk preloaded/prefetched
+/******/ 		// [resolve, reject, Promise] = chunk loading, 0 = chunk loaded
+/******/ 		var installedChunks = {
+/******/ 			"analyzeTable": 0
+/******/ 		};
+/******/ 		
+/******/ 		// no chunk on demand loading
+/******/ 		
+/******/ 		// no prefetching
+/******/ 		
+/******/ 		// no preloaded
+/******/ 		
+/******/ 		// no HMR
+/******/ 		
+/******/ 		// no HMR manifest
+/******/ 		
+/******/ 		__webpack_require__.O.j = (chunkId) => (installedChunks[chunkId] === 0);
+/******/ 		
+/******/ 		// install a JSONP callback for chunk loading
+/******/ 		var webpackJsonpCallback = (parentChunkLoadingFunction, data) => {
+/******/ 			var [chunkIds, moreModules, runtime] = data;
+/******/ 			// add "moreModules" to the modules object,
+/******/ 			// then flag all "chunkIds" as loaded and fire callback
+/******/ 			var moduleId, chunkId, i = 0;
+/******/ 			if(chunkIds.some((id) => (installedChunks[id] !== 0))) {
+/******/ 				for(moduleId in moreModules) {
+/******/ 					if(__webpack_require__.o(moreModules, moduleId)) {
+/******/ 						__webpack_require__.m[moduleId] = moreModules[moduleId];
+/******/ 					}
+/******/ 				}
+/******/ 				if(runtime) var result = runtime(__webpack_require__);
+/******/ 			}
+/******/ 			if(parentChunkLoadingFunction) parentChunkLoadingFunction(data);
+/******/ 			for(;i < chunkIds.length; i++) {
+/******/ 				chunkId = chunkIds[i];
+/******/ 				if(__webpack_require__.o(installedChunks, chunkId) && installedChunks[chunkId]) {
+/******/ 					installedChunks[chunkId][0]();
+/******/ 				}
+/******/ 				installedChunks[chunkId] = 0;
+/******/ 			}
+/******/ 			return __webpack_require__.O(result);
+/******/ 		}
+/******/ 		
+/******/ 		var chunkLoadingGlobal = self["webpackChunkprod_1"] = self["webpackChunkprod_1"] || [];
+/******/ 		chunkLoadingGlobal.forEach(webpackJsonpCallback.bind(null, 0));
+/******/ 		chunkLoadingGlobal.push = webpackJsonpCallback.bind(null, chunkLoadingGlobal.push.bind(chunkLoadingGlobal));
+/******/ 	})();
+/******/ 	
+/************************************************************************/
+/******/ 	
+/******/ 	// startup
+/******/ 	// Load entry module and return exports
+/******/ 	// This entry module depends on other loaded chunks and execution need to be delayed
+/******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, ["vendors-node_modules_firebase_app_dist_esm_index_esm_js-node_modules_firebase_auth_dist_esm_i-d0574a","vendors-node_modules_d3_src_index_js","src_js_data_js-src_js_index_js-src_js_region_js"], () => (__webpack_require__("./src/js/analyzeTable.js")))
+/******/ 	__webpack_exports__ = __webpack_require__.O(__webpack_exports__);
+/******/ 	
+/******/ })()
+;

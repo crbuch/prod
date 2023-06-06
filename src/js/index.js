@@ -3,6 +3,7 @@ import {
   userName,
   userPassword,
   btnLogin,
+  form,
   showLoginError,
   showApp,
   showLoginForm
@@ -38,53 +39,65 @@ function writedb(name,data,uid){
 export const monitorAuthState = async () => {
   onAuthStateChanged(auth, user => {
     if (user != null) {
-      sessionStorage.setItem('currUid', user.uid)
-      
+      localStorage.setItem('uid', user.uid);
+      localStorage.setItem('email', user.email);
       showApp();
     } else {
       showLoginForm();
-      console.log("monitor none")
     }
   }
   );
 };
-monitorAuthState();
+
 
 const login = async () => {
-  const email = "daniel@cml.com";
-  const password = "daniel";
-  //const email = `${userEmail.value}@cml.com`;
-  //const password = userPassword.value;
+  let cleanUid = userName.value.replace(/\s/g,"");
+  const password = userPassword.value;
+
+  if (cleanUid.substring(cleanUid.length - 8) != '@cml.com'){
+    cleanUid = `${cleanUid}@cml.com`;
+  }
   
-  signInWithEmailAndPassword(auth, email, password)
+  signInWithEmailAndPassword(auth, cleanUid, password)
     .then((userCredential) => {
-      initStorage(userCredential.user.uid);
+      initStorage(userCredential.user);
+      showApp();
     })
     .catch((error) => {
-      showLoginError(error)
+      console.log('error :>> ', error);
+      showLoginError(error);
     });
 };
 
-const initStorage = (uid) => {
+const initStorage = (userCreds) => {
   if (localStorage.getItem('initTime') == null) localStorage.setItem('initTime',0);
   if (localStorage.getItem('initScale') == null) localStorage.setItem('initScale','linear');
-  sessionStorage.setItem('currUid', uid)
-  sessionStorage.setItem('region', 'st')
+  localStorage.setItem('uid', userCreds.uid);
+  localStorage.setItem('email', userCreds.email);
+  sessionStorage.setItem('region', 'st');
 };
 
 export const logout = async () => {
   const auth = getAuth();
   signOut(auth).then(() => {
-    sessionStorage.removeItem('currUid')
+    localStorage.removeItem('currUid')
   }).catch((error) => {
     console.log('error :>> ', error);
   });
 };
 
-try {
-  btnLogin.addEventListener('click', login)
-} catch {
+
+const currPage = window.location.pathname.split("/").pop();
+
+if (currPage == 'index.html' || currPage == 'index.html?'){
+  btnLogin.addEventListener('click', login);
+  
+  form.addEventListener("keydown", function(event) {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      btnLogin.click();
+    }
+  });
+
+  monitorAuthState();
 }
-
-
-
