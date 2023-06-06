@@ -1,7 +1,7 @@
 import { monitorRegion } from './region'
 import { logout, monitorAuthState } from './index'
 import { ref,getDatabase,onValue } from 'firebase/database';
-import { legacyEcon } from './data';
+import { legacyEcon, payout } from './data';
 import { makeTrace, makeLayout, config } from './layout';
 
 monitorAuthState();
@@ -40,10 +40,9 @@ const parseData = (data) => {
         console.log('obj :>> ', obj);
         for (let idx in obj){
             let well = legacyEcon[obj][idx]['Well Name'];
-            
-            console.log('legacyEcon[obj][idx] :>> ', legacyEcon[obj][idx]);
             date = legacyEcon[obj][idx]['Date'];
             well = well.replace('#','');
+
             if (wells.includes(well)){
                 let fin = legacyEcon[obj][idx];
                 fin.share = data[well]["ORRI"] + data[well]["WINRI"];
@@ -72,8 +71,23 @@ const parseData = (data) => {
     const dates_pl = format(returns);
     plotRev(dates_pl[0],dates_pl[1]);
 
+    //mean payout
+    let payouts = {};
+    for (let idx in payout) {
+        const well = payout[idx]["Well Name"].replace('#',"");
+        if (well_list.includes(well)) {
+            payouts[well] = payout[idx]["% Payout"];
+        }
+    }
+    console.log('payouts :>> ', payouts);
+    const payouts_num = Object.entries(payouts).map(([_, value]) => value);
+
     document.getElementById('selected-well').textContent = "All Wells";
-    document.getElementById('sum-pl').textContent = `$${dates_pl[1].reduce((runnin,curr) => runnin + curr).toFixed(2)}`
+    document.getElementById('sum-pl').textContent = `$${dates_pl[1].reduce((runnin,curr) => runnin + curr).toFixed(2)}`;
+    document.getElementById('payout-title').textContent = "% Mean Payout";
+    document.getElementById('payout').textContent = `${(payouts_num.reduce((runnin,curr) => runnin + curr)*100/payouts_num.length).toFixed(0)}%`;
+
+    localStorage.setItem('payouts',JSON.stringify(payouts));
     //localStorage.setItem('dates',dates);
     //localStorage.setItem('pl',pl);
     return res;
@@ -129,6 +143,12 @@ const initWellList = (wells) => {
 
 const displayWell = (selected) => {
     let data = localStorage.getItem('pl_data_wells');
+    let payouts = localStorage.getItem('payouts');
+    let well_payout = 0;
+    if (payouts){
+        payouts = JSON.parse(payouts);
+        well_payout = payouts[selected]; 
+    }
     //if (!data) data = fetchData();//check
     data = JSON.parse(data);
     if (selected == "All Wells") {
@@ -148,6 +168,10 @@ const displayWell = (selected) => {
 
     document.getElementById('selected-well').textContent = selected;
     document.getElementById('sum-pl').textContent = `$${dates_pl[1].reduce((runnin,curr) => runnin + curr).toFixed(2)}`
+
+
+    document.getElementById('payout-title').textContent = "% Payout";
+    document.getElementById('payout').textContent = `${(well_payout*100).toFixed(0)}%`;
 }
 
 //\\
