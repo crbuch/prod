@@ -23,6 +23,7 @@ async function plot() {
   console.log('selectedOption :>> ', selectedOption);
 
   async function getData(file) {
+    console.log('file :>> ', file);
     const data = await csv(`../data/datawbd/${file}`);
     const [DataTVD, DataN, DataE] = data.reduce(([TVD, N, E], { TVD: tvd, Easting, Northing }) =>
       [[...TVD, parseInt(tvd)],
@@ -37,11 +38,11 @@ async function plot() {
   const files = wbdData[wellName]
   const dataPromises = files.map(file => getData(file));
   const data = await Promise.all(dataPromises);
-
+  console.log('files :>> ', files);
   let dataTvd = [];
   let dataNorthing = [];
   let dataEasting = [];
-
+  console.log('data :>> ', data);
   data.forEach(bore => {
     dataTvd.push(bore[0])
     dataNorthing.push(bore[1])

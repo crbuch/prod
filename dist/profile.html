@@ -52,12 +52,14 @@
     <div class="row row-offcanvas row-offcanvas-right">
       <!-- sidebar-->
       <nav class="bg-white sidebar sidebar-offcanvas" id="sidebar">
+        <input class="mt-1 ml-1 mb-1 mr-1" type="text" id="searchInput" placeholder="Search">
         <ul class="nav" id="well-list">
+    
         </ul>
       </nav>
       <!-- -->
       <div class="content-wrapper">
-        <h3 class="page-heading mb-4">All Wells</h3>
+        <h3 id="selected-well" class="page-heading mb-4">All Wells</h3>
         <div class="row mb-4">
           <div id="returnsCurve"></div>
         </div>
@@ -72,11 +74,11 @@
                     </h4>
                   </div>
                   <div class="float-right">
-                    <h4 class="bold-text">$1</h4>
+                    <h4 id='sum-pl' class="bold-text">$0</h4>
                   </div>
                 </div>
                 <p class="text-muted">
-                  <i class="fa fa-calendar mr-1" aria-hidden="true"></i> Monthly P&L
+                  <i class="fa fa-calendar mr-1" aria-hidden="true"></i> Total P&L
                 </p>
               </div>
             </div>
