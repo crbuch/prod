@@ -27,23 +27,21 @@ const fetchData = () => {
 };
 
 
-
 const parseData = (data) => {
-    console.log('data :>> ', data);
-    console.log('legacyEcon :>> ', legacyEcon);
-    const wells = [];
-    let returns = {};
-    for (let key in data){
-        wells.push(key);
-    }
-    initWellList(wells);
     let res = {};
+    let res_wells = {};
+    const wells = Object.keys(data);
+    let returns = {};
+
     for (let obj in legacyEcon) {
         let temp = {};
         let recMoReturn = 0;
         let date;
+        console.log('obj :>> ', obj);
         for (let idx in obj){
             let well = legacyEcon[obj][idx]['Well Name'];
+            
+            console.log('legacyEcon[obj][idx] :>> ', legacyEcon[obj][idx]);
             date = legacyEcon[obj][idx]['Date'];
             well = well.replace('#','');
             if (wells.includes(well)){
@@ -51,30 +49,34 @@ const parseData = (data) => {
                 fin.share = data[well]["ORRI"] + data[well]["WINRI"];
                 recMoReturn += fin["Recent Month P&L"]*fin.share;
                 temp[well] = fin;
+
+                if (!(well in res_wells)) res_wells[well] = [];
+                fin.recMoReturn = fin["Recent Month P&L"]*fin.share;
+                res_wells[well].push(fin)
+
+                //dict by well
+                //res_wells[well] = temp;
             }
         }
         temp.recMoReturn = recMoReturn;
         returns[date] = recMoReturn;
         res[date] = temp;
     }
-    console.log('res :>> ', res);
-    //graph
-    console.log('returns :>> ', returns);
+    let well_list = Object.keys(res_wells);
+    well_list.sort((a, b) => a.localeCompare(b, undefined, { sensitivity: 'base' }));
+    well_list.unshift("All Wells")
+    initWellList(well_list);
+    localStorage.setItem('pl_data_wells',JSON.stringify(res_wells));
     
-    const sortedArray = Object.entries(returns).sort((a, b) => {
-        const dateA = new Date(a[0]);
-        const dateB = new Date(b[0]);
-        return dateA - dateB;
-    });
-      
-    const sortedObj = Object.fromEntries(sortedArray);
-    const dates = Object.entries(sortedObj).map(([key, _]) => key);
-    const pl = Object.entries(sortedObj).map(([_, value]) => value);
+    
+    const dates_pl = format(returns);
+    plotRev(dates_pl[0],dates_pl[1]);
 
-    plotRev(dates,pl);
+    document.getElementById('selected-well').textContent = "All Wells";
+    document.getElementById('sum-pl').textContent = `$${dates_pl[1].reduce((runnin,curr) => runnin + curr).toFixed(2)}`
     //localStorage.setItem('dates',dates);
     //localStorage.setItem('pl',pl);
-
+    return res;
 };
 
 const plotRev = (x,y) => {
@@ -85,36 +87,67 @@ const plotRev = (x,y) => {
     });
 }
 
+
+const format = (obj) => {
+    const sortedArray = Object.entries(obj).sort((a, b) => {
+        const dateA = new Date(a[0]);
+        const dateB = new Date(b[0]);
+        return dateA - dateB;
+    });
+
+    const sortedObj = Object.fromEntries(sortedArray);
+    const dates = Object.entries(sortedObj).map(([key, _]) => key);
+    const pl = Object.entries(sortedObj).map(([_, value]) => value);
+
+    return [dates, pl]
+}
+
 const initWellList = (wells) => {
     let ulWellList = document.getElementById("well-list");
     for (let i = 0; i < wells.length; i++) {
-        // Create <li> element
-        var li = document.createElement("li");
+        let li = document.createElement("li");
         li.classList.add("nav-item", "active");
   
-        // Create <a> element
-        var a = document.createElement("a");
+        let a = document.createElement("a");
         a.classList.add("nav-link");
   
-        // Create <span> element
-        var span = document.createElement("span");
+        let span = document.createElement("span");
         span.classList.add("menu-title");
         span.textContent = wells[i];
   
-        // Append <span> to <a>
         a.appendChild(span);
-  
-        // Append <a> to <li>
         li.appendChild(a);
 
         li.onclick = function() {
-            // Handle click event here
-            console.log("Clicked on " + this.textContent);
+            console.log("Clicked: " + this.textContent);
+            displayWell(this.textContent);
           };
 
-        // Append <li> to <ul>
         ulWellList.appendChild(li);
-      }
+    }
+}
+
+const displayWell = (selected) => {
+    let data = localStorage.getItem('pl_data_wells');
+    //if (!data) data = fetchData();//check
+    data = JSON.parse(data);
+    if (selected == "All Wells") {
+        data = localStorage.getItem(uid)
+        parseData(JSON.parse(data));
+        return;
+    }
+    data = data[selected];
+    let returns = {};
+
+    for (let idx in data) {
+        const mo = data[idx]["Date"];
+        returns[mo] = data[idx]["recMoReturn"];
+    }
+    const dates_pl = format(returns);
+    plotRev(dates_pl[0],dates_pl[1]);
+
+    document.getElementById('selected-well').textContent = selected;
+    document.getElementById('sum-pl').textContent = `$${dates_pl[1].reduce((runnin,curr) => runnin + curr).toFixed(2)}`
 }
 
 //\\
@@ -125,6 +158,24 @@ console.log('uid :>> ', uid);
 document.getElementById("btnLogout").addEventListener('click', logout);
 
 fetchData();
+//search
+const searchInput = document.getElementById('searchInput');
+const wellList = document.getElementById('well-list').getElementsByTagName('li');
+
+searchInput.addEventListener('input', function() {
+  const searchTerm = searchInput.value.toLowerCase();
+
+  for (let i = 0; i < wellList.length; i++) {
+    const wellName = wellList[i].getElementsByTagName('span')[0].textContent.toLowerCase();
+
+    if (wellName.includes(searchTerm)) {
+      wellList[i].style.display = 'block';
+    } else {
+      wellList[i].style.display = 'none';
+    }
+  }
+});
+
 
 //let pl_str = localStorage.getItem('pl');
 //let dates_str = localStorage.getItem('dates');
