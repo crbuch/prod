@@ -14,6 +14,30 @@
     <link rel="stylesheet" href="../src/css/style.css">
     <link rel="stylesheet" href="../src/css/profile.css" />
 </head>
+<style>
+  #change_pwd_form {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 9999;
+  display: none;
+}
+
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  border: none;
+  background-color: transparent;
+  font-size: 20px;
+  color: #000;
+  cursor: pointer;
+}
+
+</style>
 <body>
     <!--NAVIGATION BAR -->
     <nav id="navbar1" class="navbar navbar-expand-xl navbar-dark">
@@ -105,10 +129,10 @@
                     </h4>
                   </div>
                   <div class="float-left">
-                    <h4 id="init_scale"class="bold-text">Linear</h4>
+                    <h4 id="init_scale"class="bold-text" style="cursor: pointer;">Linear</h4>
                   </div>
                   <div class="float-right">
-                    <h4 id="init_time" class="bold-text">Inception</h4>
+                    <h4 id="init_time" class="bold-text" style="cursor: pointer;">Inception</h4>
                   </div>
                 </div>
                 <p class="text-muted">
@@ -127,10 +151,10 @@
                     </h4>
                   </div>
                   <div class="float-right">
-                    <h4 id="btnLogout"class="bold-text">Log out</h4>
+                    <h4 id="btnLogout"class="bold-text" style="cursor: pointer;">Log out</h4>
                   </div>
                 </div>
-                <p class="text-muted">
+                <p class="text-muted" id="show_pwd_form_btn" style="cursor: pointer;">
                   <i class="fa fa-repeat mr-1" aria-hidden="true"></i> Change Password
                 </p>
               </div>
@@ -139,6 +163,34 @@
         </div>
       </div>
         
+    </div>
+  </div>
+  <div id="change_pwd_form">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="content-wrapper full-page-wrapper d-flex align-items-center auth-pages">
+          <div class="card col-lg-4 mx-auto">
+            <div class="card-body px-5 py-5">
+              <div class="float-right">
+                <h4 id="close_pwd_form"class="bold-text" style="cursor: pointer;">X</h4>
+              </div>
+              <h3 class="card-title text-left mb-3">Change Password</h3>
+              <form>
+                <div class="form-group">
+                  <input id="new_pwd" type="password" class="form-control p_input" placeholder="New Password">
+                </div>
+                <div class="form-group">
+                  <input id="new_pwd_rpt" type="password" class="form-control p_input" placeholder="Repeat Password">
+                </div>
+                <div class="text-center">
+                  <button id="change_pwd_btn" type="submit" class="btn btn-primary btn-block enter-btn">Submit</button>
+                </div>
+                <p class="existing-user text-center pt-4 mb-0">You will be logged out after submitting</p>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </body>

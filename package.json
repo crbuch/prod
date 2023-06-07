@@ -1,18 +1,38 @@
 {
   "dependencies": {
+    "css": "^3.0.0",
     "d3": "^7.8.2",
     "firebase": "^9.17.1",
     "fs": "^0.0.1-security",
     "mini-css-extract-plugin": "^2.7.6",
-    "path": "^0.12.7"
+    "path": "^0.12.7",
+    "purge": "^1.0.0",
+    "purgecss": "^5.0.0"
   },
   "devDependencies": {
     "csv-loader": "^3.0.5",
     "glob": "^10.2.6",
     "html-webpack-plugin": "^5.5.0",
-    "purgecss-webpack-plugin": "^5.0.0",
-    "webpack": "^5.85.0",
+    "webpack": "^5.84.1",
     "webpack-cli": "^5.1.1"
   },
-  "sideEffects": false
+  "sideEffects": false,
+  "name": "prod-1",
+  "description": "",
+  "version": "1.0.0",
+  "main": "webpack.config.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dailyprod/prod.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dailyprod/prod/issues"
+  },
+  "homepage": "https://github.com/dailyprod/prod#readme"
 }

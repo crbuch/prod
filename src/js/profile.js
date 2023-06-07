@@ -1,5 +1,5 @@
 import { monitorRegion } from './region'
-import { logout, monitorAuthState } from './index'
+import { logout, monitorAuthState, changePwd } from './index'
 import { ref,getDatabase,onValue } from 'firebase/database';
 import { legacyEcon, payout } from './data';
 import { makeTrace, makeLayout, config } from './layout';
@@ -122,6 +122,7 @@ const initWellList = (wells) => {
     for (let i = 0; i < wells.length; i++) {
         let li = document.createElement("li");
         li.classList.add("nav-item", "active");
+        li.style.cursor = "pointer";
   
         let a = document.createElement("a");
         a.classList.add("nav-link");
@@ -201,6 +202,7 @@ searchInput.addEventListener('input', function() {
   }
 });
 
+
 document.getElementById("init_scale").addEventListener('click', () => {
     toggleInitScale();
 })
@@ -208,6 +210,30 @@ document.getElementById("init_scale").addEventListener('click', () => {
 document.getElementById("init_time").addEventListener('click', () => {
     toggleInitTime();
 })
+
+document.getElementById("show_pwd_form_btn").addEventListener('click', () => {
+    debugger;
+    document.getElementById('change_pwd_form').style.display = "block";
+})
+
+document.getElementById("close_pwd_form").addEventListener('click', () => {
+    document.getElementById('change_pwd_form').style.display = "none";
+})
+
+document.getElementById("change_pwd_btn").addEventListener('click', () => {
+    let pwd = document.getElementById("new_pwd").value;
+    let pwd_rpt = document.getElementById("new_pwd_rpt").value;
+    const res = changePwd(pwd,pwd_rpt);
+})
+
+window.onload = function () {
+    const currTime = localStorage.getItem('initTime');
+    let time = "30 Days";
+    if (currTime == 0) time = "Inception";
+
+    document.getElementById("init_scale").textContent = localStorage.getItem('initScale');
+    document.getElementById("init_time").textContent = time;
+}();
 
 //let pl_str = localStorage.getItem('pl');
 //let dates_str = localStorage.getItem('dates');

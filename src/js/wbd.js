@@ -59,7 +59,7 @@ async function plot() {
   const layout = layoutWbd(max + 1000, min - 1000, minTVD - 500, wellName);
 
   const plotData = [];
-  const colors = ['#1d6acf', '#eb7a10', '#d61515', 'red', '#345223'];
+  const colors = ['#1d6acf', '#eb7a10', '#d61515', '#7B3FA9', '#6AE6EC'];
 
   for (let i = 0; i < data.length; i++) {
     plotData.push({

@@ -358,12 +358,6 @@ const curveInfo = {
   document.getElementById(el).addEventListener('click',switchActives);
 });
 
-let initTime = localStorage.getItem('initTime');
-if (initTime == 31) $('#initTime').text('Init: 30 Days');
-
-let initScale = localStorage.getItem('initScale');
-if (initScale == 'logarithmic') $('#initScale').text('Init: logarithmic');
-
 const dropdownId = '#siteSelection';
 dh.dropdown(dropdownId);
 
@@ -377,25 +371,10 @@ document.getElementById("table").addEventListener('click', () => {
   table(prodData);
 });
 
-document.getElementById("initTime").addEventListener('click', () => {
-  toggleInitTime();
-  let time = localStorage.getItem('initTime');  
-  curve(time, curveInfo);
-  let activeTime = 'DaysInception';
-  if (time == 31) activeTime = 'Days30';
-  setActiveTime(activeTime)
-});
-
-document.getElementById("initScale").addEventListener('click', () => {
-  toggleInitScale();
-  setActiveView(localStorage.getItem('initScale'))
-  const activeTime = document.getElementById('timeframes').querySelector('.active').id.substring(4)
-  curve(Number(activeTime) + 1, curveInfo);
-});
-
 //store currently visible plots in sessionstorage to access in relayout event; init to only oil(page load)
 let currVisible = {"visible":["Oil [MBO]"]};
 sessionStorage.setItem("visible_traces",JSON.stringify(currVisible));
+
 //init page on load//
 window.onload = function () {
   let activeTime = 'DaysInception';

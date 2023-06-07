@@ -86,10 +86,10 @@ export const setActiveView = (view) => {
 export const toggleInitTime = () => {
   const currInit = localStorage.getItem('initTime');
   if (currInit == 0) {
-    $('#initTime').text('Init: 30 Days')
+    $('#init_time').text('30 Days')
     localStorage.setItem('initTime',31)
   }else {
-    $('#initTime').text('Init: Inception')
+    $('#init_time').text('Inception')
     localStorage.setItem('initTime',0)
   };
 };
@@ -97,10 +97,10 @@ export const toggleInitTime = () => {
 export const toggleInitScale = () => {
   const currScale = localStorage.getItem('initScale');
   if (currScale == 'linear') {
-    $('#initScale').text('Init: Logarithmic')
+    $('#init_scale').text('Logarithmic')
     localStorage.setItem('initScale','logarithmic')
   }else {
-    $('#initScale').text('Init: Linear')
+    $('#init_scale').text('Linear')
     localStorage.setItem('initScale','linear')
   };
 };

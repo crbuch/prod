@@ -10,7 +10,7 @@ import {
 } from './ui'
 
 import { initializeApp } from 'firebase/app';
-import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from 'firebase/auth';
+import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut, updatePassword } from 'firebase/auth';
 import {getDatabase, ref, set} from 'firebase/database';
 
 const firebaseConfig = {
@@ -43,6 +43,7 @@ export const monitorAuthState = async () => {
       localStorage.setItem('email', user.email);
       showApp();
     } else {
+      debugger;
       showLoginForm();
     }
   }
@@ -82,9 +83,21 @@ export const logout = async () => {
   signOut(auth).then(() => {
     localStorage.removeItem('currUid')
   }).catch((error) => {
-    console.log('error :>> ', error);
   });
 };
+
+export const changePwd = async (pwd,pwd_rpt) => {
+  if (pwd !== pwd_rpt) return "Passwords do not match";
+
+  const auth = getAuth();
+  const usr = auth.currentUser;
+  updatePassword(usr,pwd).then(() => {
+    return true;
+  }).catch((err) => {
+    return err;
+  })
+  debugger;
+}
 
 
 const currPage = window.location.pathname.split("/").pop();
