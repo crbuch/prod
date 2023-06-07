@@ -3,6 +3,7 @@ import { logout, monitorAuthState } from './index'
 import { ref,getDatabase,onValue } from 'firebase/database';
 import { legacyEcon, payout } from './data';
 import { makeTrace, makeLayout, config } from './layout';
+import { toggleInitScale, toggleInitTime } from './ui';
 
 monitorAuthState();
 monitorRegion();
@@ -200,6 +201,13 @@ searchInput.addEventListener('input', function() {
   }
 });
 
+document.getElementById("init_scale").addEventListener('click', () => {
+    toggleInitScale();
+})
+
+document.getElementById("init_time").addEventListener('click', () => {
+    toggleInitTime();
+})
 
 //let pl_str = localStorage.getItem('pl');
 //let dates_str = localStorage.getItem('dates');
