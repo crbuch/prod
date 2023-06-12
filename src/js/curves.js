@@ -114,11 +114,13 @@ const getSelectedOption = (data) => {
 
 const curve = (timeFrame, data) => {
   const selectedOption = getSelectedOption(data.prodData);
+
   let region = sessionStorage.getItem("region");
   if (region == null) {
     sessionStorage.setItem('region', 'st')
     region = 'st'
   };
+
   if (region != "et") {
     displayEconomics(data.economicsData, selectedOption);
     displayPayout(data.payoutData, selectedOption);
@@ -335,7 +337,7 @@ const switchActives = (event) => {
 
 //Main//
 const currUid = localStorage.getItem('uid');
-let region = localStorage.getItem('region');
+let region = sessionStorage.getItem('region');
 console.log('currUid :>> ', currUid);
 
 let prodData = dh.dataST;
@@ -353,6 +355,7 @@ const curveInfo = {
   payoutData: dh.payout,
   pumpData: dh.pump
 };
+console.log('curveInfo :>> ', curveInfo.prodData);
 
 ['linear','logarithmic','DaysInception','Days30','Days365','Days180'].forEach(el => {
   document.getElementById(el).addEventListener('click',switchActives);
