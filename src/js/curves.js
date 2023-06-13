@@ -144,7 +144,6 @@ const curve = (timeFrame, data) => {
   ['oilDeclineCurve', 'gasDeclineCurve', 'waterDeclineCurve', 'waterCutCurve', 'totalFluidCurve', 'combinationCurves', 'cumOilCurve'].forEach(id => {
     document.getElementById(id).style.display = 'block';
   });
-  // console.log(data.prodData)
   const site_data = data.prodData.filter(site => site[0] === selectedOption);
   let site_date = site_data.map(site => site[9]);
   let site_oil = site_data.map(site => site[2]);
@@ -157,16 +156,18 @@ const curve = (timeFrame, data) => {
   if (timeFrame > 0) [site_date, site_oil, site_gas, site_water, comments, movingAverage] =
     [site_date, site_oil, site_gas, site_water, comments, movingAverage].map(arr => arr.slice(0, timeFrame));
 
-  // Reading Monthly Data (Not in use right now)
+  // READING MONTHLY DATA (NOT IN USE)
   const mo_site_data = data.MoProdDataST.filter(site => site[0] === selectedOption);
   let site_date_mo = mo_site_data.map(site => site[6]);
   let site_oil_mo = mo_site_data.map(site => site[1]);
 
-  // Reading Cumulative Monthly Data
+  // READING MONTHLY CUMULATIVE DATA
   const mo_cum_data = data.cumMoDataST.filter(site => site[0] === selectedOption);
   let cum_date_mo = mo_cum_data.map(site => site[6]);
   let cum_oil_mo = mo_cum_data.map(site => site[1]);
 
+
+  // CREATE TRACES FOR GRAPHING
   const traceOil = makeTrace( 
     site_date,
     site_oil,
@@ -225,7 +226,7 @@ const curve = (timeFrame, data) => {
     "green"
   );
 
-  // Copied traces with 8th paramater, [visibility = true/'legendonly'], for combined production line graph
+  // COMBINED GRAPHS Copied traces with 8th paramater, [visibility = true/'legendonly'], for combined production line graph
   const traceOil2 = makeTrace(site_date, site_oil, "Oil [MBO]", null, "green", null, comments, true);
   const traceWater2 = makeTrace(site_date, site_water, "Water [MBW]", "line", "blue", null, null, 'legendonly');
   const traceGas2 = makeTrace(site_date, site_gas, "Gas [MCF]", "line", "red", null, null, 'legendonly');
