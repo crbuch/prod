@@ -4,6 +4,14 @@ export const dataST = await json("../data/allProductionData.json").then((data) =
     return data
 });
 
+export const MoDataST = await json("../data/dataMonthlyST.json").then((data) => {
+    return data
+});
+
+export const cumMoDataST = await json("../data/cumDataMonthlyST.json").then((data) => {
+    return data
+});
+
 export const dataET = await json("../data/allProductionDataET.json").then((data) => {
     return data;
 });
