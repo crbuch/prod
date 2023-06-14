@@ -12,6 +12,10 @@ export const cumMoDataST = await json("../data/cumDataMonthlyST.json").then((dat
     return data
 });
 
+export const cumDailyDataST = await json("../data/cumDataDailyST.json").then((data) => {
+    return data
+});
+
 export const dataET = await json("../data/allProductionDataET.json").then((data) => {
     return data;
 });

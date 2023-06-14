@@ -141,7 +141,7 @@ const curve = (timeFrame, data) => {
   document.getElementById("wellName").innerHTML = selectedOption;
   document.getElementById("individualTable").style.display = "none";
 
-  [/*'oilDeclineCurve',*/ 'gasDeclineCurve', 'waterDeclineCurve', 'waterCutCurve', 'totalFluidCurve', 'combinationCurves', 'cumOilCurve'].forEach(id => {
+  [/*'oilDeclineCurve',*/ 'gasDeclineCurve', 'waterDeclineCurve', 'waterCutCurve', 'totalFluidCurve', 'combinationCurves', 'cumOilCurve', 'cumVSdailyProdCurve', 'cumVSmoProdCurve'].forEach(id => {
     document.getElementById(id).style.display = 'block';
   });
   // console.log(data.prodData)
@@ -157,7 +157,7 @@ const curve = (timeFrame, data) => {
   if (timeFrame > 0) [site_date, site_oil, site_gas, site_water, comments, movingAverage] =
     [site_date, site_oil, site_gas, site_water, comments, movingAverage].map(arr => arr.slice(0, timeFrame));
 
-  // Reading Monthly Data (Not in use right now)
+  // Reading Monthly Data ()
   const mo_site_data = data.MoProdDataST.filter(site => site[0] === selectedOption);
   let site_date_mo = mo_site_data.map(site => site[6]);
   let site_oil_mo = mo_site_data.map(site => site[1]);
@@ -166,6 +166,11 @@ const curve = (timeFrame, data) => {
   const mo_cum_data = data.cumMoDataST.filter(site => site[0] === selectedOption);
   let cum_date_mo = mo_cum_data.map(site => site[6]);
   let cum_oil_mo = mo_cum_data.map(site => site[1]);
+
+  // Reading Cumulative Daily Data
+  const daily_cum_data = data.cumDailyDataST.filter(site => site[0] === selectedOption);
+  let cum_oil_daily = daily_cum_data.map(site => site[3]);
+  let daily_oil = daily_cum_data.map(site => site[2]);
 
   const traceOil = makeTrace( 
     site_date,
@@ -225,6 +230,22 @@ const curve = (timeFrame, data) => {
     "green"
   );
 
+  const traceDailyProdVSCum = makeTrace(
+    cum_oil_daily,
+    daily_oil,
+    "hi",
+    "line",
+    "orange"
+  );
+
+  const traceMoProdVSCum = makeTrace(
+    cum_oil_mo,
+    site_oil_mo,
+    "hi",
+    "line",
+    "red"
+  );
+
   // Copied traces with 8th paramater, [visibility = true/'legendonly'], for combined production line graph
   const traceOil2 = makeTrace(site_date, site_oil, "Oil [MBO]", null, "green", null, comments, true);
   const traceWater2 = makeTrace(site_date, site_water, "Water [MBW]", "line", "blue", null, null, 'legendonly');
@@ -236,7 +257,7 @@ const curve = (timeFrame, data) => {
 
   // const layoutCut = makeLayout("Water Cut Percentage");
 
-  const plotContainers = [/*"oilDeclineCurve"*/, "gasDeclineCurve", "waterDeclineCurve", 'totalFluidCurve', 'waterCutCurve', 'combinationCurves', 'cumOilCurve'];
+  const plotContainers = [/*"oilDeclineCurve"*/, "gasDeclineCurve", "waterDeclineCurve", 'totalFluidCurve', 'waterCutCurve', 'combinationCurves', 'cumOilCurve', 'cumVSdailyProdCurve', 'cumVSmoProdCurve'];
   
   const combination = [traceOil2, traceOilAvg2, traceGas2, traceWater2, traceFluid2];
 
@@ -247,11 +268,13 @@ const curve = (timeFrame, data) => {
     [traceFluid],
     [traceCut],
     combination,
-    [traceCumMoOil]
+    [traceCumMoOil],
+    [traceDailyProdVSCum],
+    [traceMoProdVSCum]
   ];
 
   plotContainers.forEach((container, i) => {
-    const layout = makeLayout(['Oil vs Time (BOPD)', 'Gas vs Time (MCFD)', 'Water vs Time (BWPD)', 'Total Fluid vs Time (BFPD)', 'Water Cut Percentage', 'Combined Production', 'Cumulative Oil vs Time'][i], scale, 
+    const layout = makeLayout(['Oil vs Time (BOPD)', 'Gas vs Time (MCFD)', 'Water vs Time (BWPD)', 'Total Fluid vs Time (BFPD)', 'Water Cut Percentage', 'Combined Production', 'Cumulative Oil vs Time', 'Cumulative Oil vs Daily Oil Production', 'Cumulative Oil vs Monthly Oil Production'][i], scale, 
     (scale === 'log') ? [1, 2, 5, 10, 20, 50, 100, 200, 500, 1000, 2000, 3000] : null);
     Plotly.newPlot(container, traceArrays[i], layout, config);
   });
@@ -332,7 +355,7 @@ const table = (coreData) => {
   dh.buildTable(well);
 
   document.getElementById('individualTable').style.display = 'inline-block';
-  [/*'oilDeclineCurve'*/, 'gasDeclineCurve', 'waterDeclineCurve', 'waterCutCurve', 'totalFluidCurve', 'combinationCurves', 'cumOilCurve'].forEach(tag => {
+  [/*'oilDeclineCurve'*/, 'gasDeclineCurve', 'waterDeclineCurve', 'waterCutCurve', 'totalFluidCurve', 'combinationCurves', 'cumOilCurve', 'cumVSdailyProdCurve', 'cumVSmoProdCurve'].forEach(tag => {
     document.getElementById(tag).style.display = 'none'
   });
 };
@@ -364,6 +387,7 @@ let prodData = dh.dataST;
 let cumlData = dh.dataCuml;
 let MoProdDataST = dh.MoDataST;
 let cumMoDataST = dh.cumMoDataST;
+let cumDailyDataST = dh.cumDailyDataST;
 
 if (region == "et") {
   prodData = dh.dataET
@@ -377,7 +401,8 @@ const curveInfo = {
   payoutData: dh.payout,
   pumpData: dh.pump,
   MoProdDataST: MoProdDataST,
-  cumMoDataST: cumMoDataST
+  cumMoDataST: cumMoDataST,
+  cumDailyDataST: cumDailyDataST
 };
 console.log('curveInfo :>> ', curveInfo.prodData);
 
