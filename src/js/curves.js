@@ -141,7 +141,7 @@ const curve = (timeFrame, data) => {
   document.getElementById("wellName").innerHTML = selectedOption;
   document.getElementById("individualTable").style.display = "none";
 
-  ['oilDeclineCurve', 'gasDeclineCurve', 'waterDeclineCurve', 'waterCutCurve', 'totalFluidCurve', 'combinationCurves', 'cumOilCurve'].forEach(id => {
+  [/*'oilDeclineCurve',*/ 'gasDeclineCurve', 'waterDeclineCurve', 'waterCutCurve', 'totalFluidCurve', 'combinationCurves', 'cumOilCurve'].forEach(id => {
     document.getElementById(id).style.display = 'block';
   });
   // console.log(data.prodData)
@@ -230,14 +230,15 @@ const curve = (timeFrame, data) => {
   const traceWater2 = makeTrace(site_date, site_water, "Water [MBW]", "line", "blue", null, null, 'legendonly');
   const traceGas2 = makeTrace(site_date, site_gas, "Gas [MCF]", "line", "red", null, null, 'legendonly');
   const traceFluid2 = makeTrace(site_date, total_fluid, "Total Fluid [MB]", "line", "black", null, null, 'legendonly');
+  const traceOilAvg2 = makeTrace(site_date, movingAverage, "7 Day Oil Avg","line", "#FF8000", "dot", null, true);
 
   const scale = (document.getElementById("logarithmic").classList.contains("active")) ? 'log' : 'linear';
 
   // const layoutCut = makeLayout("Water Cut Percentage");
 
-  const plotContainers = ["oilDeclineCurve", "gasDeclineCurve", "waterDeclineCurve", 'totalFluidCurve', 'waterCutCurve', 'combinationCurves', 'cumOilCurve'];
+  const plotContainers = [/*"oilDeclineCurve"*/, "gasDeclineCurve", "waterDeclineCurve", 'totalFluidCurve', 'waterCutCurve', 'combinationCurves', 'cumOilCurve'];
   
-  const combination = [traceGas2, traceOil2, traceWater2, traceFluid2];
+  const combination = [traceOil2, traceOilAvg2, traceGas2, traceWater2, traceFluid2];
 
   const traceArrays = [
     [traceOil, traceOilAvg],
@@ -331,7 +332,7 @@ const table = (coreData) => {
   dh.buildTable(well);
 
   document.getElementById('individualTable').style.display = 'inline-block';
-  ['oilDeclineCurve', 'gasDeclineCurve', 'waterDeclineCurve', 'waterCutCurve', 'totalFluidCurve', 'combinationCurves', 'cumOilCurve'].forEach(tag => {
+  [/*'oilDeclineCurve'*/, 'gasDeclineCurve', 'waterDeclineCurve', 'waterCutCurve', 'totalFluidCurve', 'combinationCurves', 'cumOilCurve'].forEach(tag => {
     document.getElementById(tag).style.display = 'none'
   });
 };
