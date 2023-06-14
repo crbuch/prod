@@ -232,7 +232,7 @@ const curve = (timeFrame, data) => {
 
   // const layoutCut = makeLayout("Water Cut Percentage");
   const scale = (document.getElementById("logarithmic").classList.contains("active")) ? 'log' : 'linear';
-  const plotContainers = [/*"oilDeclineCurve"*/, "gasDeclineCurve", "waterDeclineCurve", 'totalFluidCurve', 'waterCutCurve', 'combinationCurves', 'cumlOilCurve'];
+  const plotContainers = [/*"oilDeclineCurve", */"gasDeclineCurve", "waterDeclineCurve", 'totalFluidCurve', 'waterCutCurve', 'combinationCurves'];
   const combination = [traceGas, traceOil, traceWater, traceFluid];
   let traceArrays = [
     [traceOil, traceOilAvg],
@@ -247,7 +247,7 @@ const curve = (timeFrame, data) => {
     traceArrays[i].forEach(trace => {
       trace.visible = (i === 5 && trace.name !== "Oil [MBO]") ? "legendonly" : trace.visible;
     });
-    const layout = makeLayout(['Oil vs Time (BOPD)', 'Gas vs Time (MCFD)', 'Water vs Time (BWPD)', 'Total Fluid vs Time (BFPD)', 'Water Cut Percentage', 'Combined Production', 'Cumulative Oil vs Time'][i], scale, 
+    const layout = makeLayout([/*'Oil vs Time (BOPD)', */'Gas vs Time (MCFD)', 'Water vs Time (BWPD)', 'Total Fluid vs Time (BFPD)', 'Water Cut Percentage', 'Combined Production', 'Cumulative Oil vs Time'][i], scale, 
     (scale === 'log') ? [1, 2, 5, 10, 20, 50, 100, 200, 500, 1000, 2000, 3000] : null);
     Plotly.newPlot(container, traceArrays[i], layout, config);
   });
