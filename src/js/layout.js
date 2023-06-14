@@ -1,14 +1,13 @@
-export const makeTrace = (x, y, name, type, color, dash, text, visible) => ({
+export const makeTrace = (x, y, name, type="lines", color, text, visible=true) => ({
     x,
     y,
     text,
     name,
     visible,
-    type: type || "line",
     line: {
         color,
-        dash,
     },
+    mode: type
 });
 
 export const makeLayout = (title, type, tickvals) => ({

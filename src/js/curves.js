@@ -3,7 +3,7 @@ import { monitorRegion } from './region'
 import { monitorAuthState } from './index'
 import { select } from 'd3';
 import { makeTrace, makeLayout, config } from './layout';
-import { setActive, setActiveView, toggleInitTime, toggleInitScale, checkActive, setActiveTime } from './ui';
+import { setActive, setActiveView, checkActive, setActiveTime } from './ui';
 
 monitorAuthState();
 monitorRegion();
@@ -144,7 +144,6 @@ const curve = (timeFrame, data) => {
   [/*'oilDeclineCurve',*/ 'gasDeclineCurve', 'waterDeclineCurve', 'waterCutCurve', 'totalFluidCurve', 'combinationCurves', 'cumOilCurve', 'cumVSdailyProdCurve', 'cumVSmoProdCurve'].forEach(id => {
     document.getElementById(id).style.display = 'block';
   });
-  // console.log(data.prodData)
   const site_data = data.prodData.filter(site => site[0] === selectedOption);
   let site_date = site_data.map(site => site[9]);
   let site_oil = site_data.map(site => site[2]);
@@ -155,12 +154,13 @@ const curve = (timeFrame, data) => {
   let water_cut = site_water.map((water, i) => (water / (water + site_oil[i])) * 100);
   let total_fluid = site_oil.map((oil, index) => oil + site_water[index]);
   if (timeFrame > 0) [site_date, site_oil, site_gas, site_water, comments, movingAverage] =
-    [site_date, site_oil, site_gas, site_water, comments, movingAverage].map(arr => arr.slice(0, timeFrame));
+  [site_date, site_oil, site_gas, site_water, comments, movingAverage].map(arr => arr.slice(0, timeFrame));
 
-  // Reading Monthly Data ()
-  const mo_site_data = data.MoProdDataST.filter(site => site[0] === selectedOption);
+  // READING MONTHLY DATA
+  const mo_site_data = data.moProdDataST.filter(site => site[0] === selectedOption);
   let site_date_mo = mo_site_data.map(site => site[6]);
   let site_oil_mo = mo_site_data.map(site => site[1]);
+  const cumlMoOil = site_oil_mo.reduce((acc, val, idx) => (idx === 0 ? acc.concat(val) : acc.concat(val + acc[idx - 1])), []);
 
   // Reading Cumulative Monthly Data
   const mo_cum_data = data.cumMoDataST.filter(site => site[0] === selectedOption);
@@ -172,10 +172,10 @@ const curve = (timeFrame, data) => {
   let cum_oil_daily = daily_cum_data.map(site => site[3]);
   let daily_oil = daily_cum_data.map(site => site[2]);
 
-  const traceOil = makeTrace( 
+  let traceOil = makeTrace( 
     site_date,
     site_oil,
-    "Oil",
+    "Oil [MBO]",
     null,
     "green",
     null,
@@ -191,17 +191,17 @@ const curve = (timeFrame, data) => {
     "dot"
   );
 
-  const traceGas = makeTrace(
+  let traceGas = makeTrace(
     site_date,
     site_gas,
-    "Gas [Mcf]",
+    "Gas [MCF]",
     "line",
     "red");
 
-  const traceWater = makeTrace(
+  let traceWater = makeTrace(
     site_date,
     site_water,
-    "Water [Mbw]",
+    "Water [MBW]",
     "line",
     "blue",
   );
@@ -214,18 +214,18 @@ const curve = (timeFrame, data) => {
     "#25C4DC"
   );
 
-  const traceFluid = makeTrace(
+  let traceFluid = makeTrace(
     site_date,
     total_fluid,
-    "Total Fluid [Mb]",
+    "Total Fluid [MB]",
     "line",
     "black"
   );
 
-  const traceCumMoOil = makeTrace(
-    cum_date_mo,
-    cum_oil_mo,
-    "Oil [Mbo]",
+  const traceCumlOil = makeTrace(
+    site_date_mo,
+    cumlMoOil,
+    "Oil [MBO]",
     "line",
     "green"
   );
@@ -246,22 +246,11 @@ const curve = (timeFrame, data) => {
     "red"
   );
 
-  // Copied traces with 8th paramater, [visibility = true/'legendonly'], for combined production line graph
-  const traceOil2 = makeTrace(site_date, site_oil, "Oil [MBO]", null, "green", null, comments, true);
-  const traceWater2 = makeTrace(site_date, site_water, "Water [MBW]", "line", "blue", null, null, 'legendonly');
-  const traceGas2 = makeTrace(site_date, site_gas, "Gas [MCF]", "line", "red", null, null, 'legendonly');
-  const traceFluid2 = makeTrace(site_date, total_fluid, "Total Fluid [MB]", "line", "black", null, null, 'legendonly');
-  const traceOilAvg2 = makeTrace(site_date, movingAverage, "7 Day Oil Avg","line", "#FF8000", "dot", null, true);
-
-  const scale = (document.getElementById("logarithmic").classList.contains("active")) ? 'log' : 'linear';
-
   // const layoutCut = makeLayout("Water Cut Percentage");
-
-  const plotContainers = [/*"oilDeclineCurve"*/, "gasDeclineCurve", "waterDeclineCurve", 'totalFluidCurve', 'waterCutCurve', 'combinationCurves', 'cumOilCurve', 'cumVSdailyProdCurve', 'cumVSmoProdCurve'];
-  
-  const combination = [traceOil2, traceOilAvg2, traceGas2, traceWater2, traceFluid2];
-
-  const traceArrays = [
+  const scale = (document.getElementById("logarithmic").classList.contains("active")) ? 'log' : 'linear';
+  const plotContainers = ["oilDeclineCurve", "gasDeclineCurve", "waterDeclineCurve", 'totalFluidCurve', 'waterCutCurve', 'combinationCurves', 'cumlOilCurve'];
+  const combination = [traceGas, traceOil, traceWater, traceFluid];
+  let traceArrays = [
     [traceOil, traceOilAvg],
     [traceGas],
     [traceWater],
@@ -274,6 +263,9 @@ const curve = (timeFrame, data) => {
   ];
 
   plotContainers.forEach((container, i) => {
+    traceArrays[i].forEach(trace => {
+      trace.visible = (i === 5 && trace.name !== "Oil [MBO]") ? "legendonly" : trace.visible;
+    });
     const layout = makeLayout(['Oil vs Time (BOPD)', 'Gas vs Time (MCFD)', 'Water vs Time (BWPD)', 'Total Fluid vs Time (BFPD)', 'Water Cut Percentage', 'Combined Production', 'Cumulative Oil vs Time', 'Cumulative Oil vs Daily Oil Production', 'Cumulative Oil vs Monthly Oil Production'][i], scale, 
     (scale === 'log') ? [1, 2, 5, 10, 20, 50, 100, 200, 500, 1000, 2000, 3000] : null);
     Plotly.newPlot(container, traceArrays[i], layout, config);
@@ -311,10 +303,10 @@ const curve = (timeFrame, data) => {
         const sum = (data.slice(endIdx, startIdx + 1).reduce((acc, cur) => acc + cur, 0)/1000).toFixed(1);
 
         let chop = -5;
-        if (val == 'Total Fluid [Mb]') chop = -4; 
+        if (val == 'Total Fluid [MB]') chop = -4; 
         const unit = val.slice(chop);
         let name = val.slice(0, chop);
-        if (val == 'Total Fluid [Mb]') name = `${name} `; 
+        if (val == 'Total Fluid [MB]') name = `${name} `; 
 
         const p = document.createElement('p');
         p.textContent = `${name}: ${sum} ${unit}`;
@@ -404,7 +396,6 @@ const curveInfo = {
   cumMoDataST: cumMoDataST,
   cumDailyDataST: cumDailyDataST
 };
-console.log('curveInfo :>> ', curveInfo.prodData);
 
 ['linear','logarithmic','DaysInception','Days30','Days365','Days180'].forEach(el => {
   document.getElementById(el).addEventListener('click',switchActives);
@@ -435,5 +426,3 @@ window.onload = function () {
   setActiveView(localStorage.getItem('initScale'));
   curve(localStorage.getItem('initTime'), curveInfo);
 }();
-
-

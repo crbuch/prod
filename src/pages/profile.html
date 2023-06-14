@@ -9,10 +9,13 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" 
+    integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="node_modules/perfect-scrollbar/dist/css/perfect-scrollbar.min.css" />
     <link rel="icon" type="image/x-icon" href="../favicon_package/favicon-32x32.png">
-    <link rel="stylesheet" href="../src/css/style.css">
     <link rel="stylesheet" href="../src/css/profile.css" />
+    <link rel="stylesheet" href="../src/css/main.css" />
+
 </head>
 <style>
   #change_pwd_form {
@@ -37,45 +40,12 @@
   cursor: pointer;
 }
 
+
 </style>
 <body>
-    <!--NAVIGATION BAR -->
-    <nav id="navbar1" class="navbar navbar-expand-xl navbar-dark">
-      <a id='fieldTitle' class="navbar-brand" ><span>REGION</span></a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item active">
-            <a id="graphpage" class="nav-link" href="index.html">Graph</a>
-          </li>
-          <li class="nav-item">
-            <a id="pages" class="nav-link" href="table.html">Cumulative Production</a>
-          </li>
-          <li class="nav-item">
-            <a id="pages" class="nav-link" href="yesterdaysProd.html">Most Recent Production</a>
-          </li>
-          <li class="nav-item">
-            <a id="pages" class="nav-link" href="analyzeTable.html">Analyze</a>
-          </li>
-          <li class="nav-item">
-            <a id="pages" class="nav-link" href="wbd.html">WBD Generator</a>
-          </li>
-          <li class="nav-item">
-            <a id="switchRegion" class="nav-link" href="">East Texas</a>
-          </li>
-          <li class="nav-item">
-            <a id="user_profile" class="nav-link" href="profile.html">Profile</a>
-          </li>
-        </ul>
-        <button class="navbar-toggler navbar-dark navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-      </div>
-    </nav>
-  <!-- -->
+  <!--NAVIGATION BAR -->
+  <div id="header"></div>
+    <!-- -->
   <div class="container-fluid">
     <div class="row row-offcanvas row-offcanvas-right">
       <!-- sidebar-->
@@ -87,8 +57,12 @@
       <!-- -->
       <div class="content-wrapper">
         <h3 id="selected-well" class="page-heading mb-4">All Wells</h3>
-        <div class="row mb-4">
-          <div id="returnsCurve"></div>
+        <select id="wellSelect" class="active mb-3 mx-auto">
+          <option hidden value="default">All Wells</option>
+        </select>
+        <div id="plotDiv" class="row mb-4">
+          <div id="returnsCurve" class="mb-2"></div>
+          <div id="prodCurve"></div>
         </div>
         <div class="row">
           <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 mb-4">
@@ -162,7 +136,6 @@
           </div>
         </div>
       </div>
-        
     </div>
   </div>
   <div id="change_pwd_form">
@@ -185,7 +158,7 @@
                 <div class="text-center">
                   <button id="change_pwd_btn" type="submit" class="btn btn-primary btn-block enter-btn">Submit</button>
                 </div>
-                <p class="existing-user text-center pt-4 mb-0">You will be logged out after submitting</p>
+                <p id="pwd_msg" class="existing-user text-center pt-4 mb-0">You will be logged out after submitting</p>
               </form>
             </div>
           </div>
@@ -199,10 +172,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"
 integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-<script>
-  const userName = localStorage.getItem('email').split('@').shift();
-  document.getElementById('user_profile').textContent = userName;
-</script>
+
 <script>
   (function($) {
     'use strict';

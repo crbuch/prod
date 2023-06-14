@@ -2,6 +2,8 @@ import { monitorAuthState } from './index'
 import { monitorRegion } from './region'
 import { dataCuml,dataCumlET,payout,activeWells,sortData,buildTable,dropdown,filterData } from './data';
 import { select } from 'd3';
+import { moDataST } from './data';
+import { makeLayout, makeTrace } from './layout';
 
 monitorAuthState();
 monitorRegion();
@@ -42,7 +44,19 @@ const formatData = () => {
   return tableData.filter(val => activeWells().has(val[0]));
 };
 
+const displayPlot = (selected) => {
+  let data = moDataST.filter(el => el[0] == selected);
+  console.log('data :>> ', data);
+  const oil = data.map(el => el[1]);
+  const date = data.map(el => el[6]);
+  const cumlMoOil = oil.reduce((acc, val, idx) => (idx === 0 ? acc.concat(val) : acc.concat(val + acc[idx - 1])), []);
 
+  const trace = makeTrace(date,cumlMoOil,"Cuml Data","lines","green",null);
+  const layout = makeLayout("Cumlative Oil vs Time");
+  Plotly.newPlot('cumlOil',[trace],layout);
+}
+
+displayPlot("Aaron #1");
 //main
 const tableData = formatData();
 
@@ -57,6 +71,8 @@ document.getElementById('Prodfilter').onclick = function(){
 
 select(dropdownId).on("change", () => {
   buildTable(filterData(tableData,dropdownId));
+
+  displayPlot(select(dropdownId).node().value)
 });
 
 

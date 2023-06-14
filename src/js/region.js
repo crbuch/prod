@@ -17,7 +17,7 @@ const toggleRegion = () => {
 export const monitorRegion = () => {
     let currRegion = sessionStorage.getItem("region");
     const fieldTitle = document.querySelector('#fieldTitle');   
-    const regionBtn = document.querySelector("#switchRegion");
+    const regionBtn = document.querySelector("#toggleRegion");
     regionBtn.addEventListener('click', toggleRegion);
     const width = $(window).width();
     console.log('currRegion :>> ', currRegion);

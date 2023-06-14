@@ -1,0 +1,265 @@
+html,
+body {
+  --color-primary: #1c4662;
+  --color-secondary: #e07719;
+  --color-error: #cc3333;
+  --border-radius: 10px;
+  height: 100%;
+}
+
+.main-nav {
+  background-color: var(--color-primary) !important;
+}
+
+.navbar-nav .nav-link {
+  color: white;
+}
+
+.navbar ul.navbar-nav li {
+  margin-right: 20px; 
+}
+#change_pwd_btn {
+  background-color: var(--color-primary) !important;
+}
+#individualTable th:nth-child(1) {
+  width: 17%;
+}
+
+#individualTable {
+  display: none;
+}
+
+#notPumpingInfo {
+  display: none;
+}
+
+#analyzeTable th:nth-child(1) {
+  width: 15%;
+}
+
+#pumpInfo {
+  padding-top: 15px;
+}
+
+#pnlTitle {
+  text-align: right;
+}
+
+#waterTotal {
+  text-align: match-parent;
+}
+#wellselect {
+  margin-top: 1%;
+  border-radius: 15px;
+  margin-left: 1%;
+}
+#Prodfilter,#Payfilter {
+  margin-top: 1%;
+  margin-bottom: 1%;
+  padding: 1% 3%;
+  font-size: 95%;
+  background-color: whitesmoke;
+  border-color: black;
+  color: black;
+  transition-duration: 0.4s;
+}
+#clearFilter {
+  padding: 1% 3%;
+  font-size: 95%;
+  background-color: whitesmoke;
+  border-color: black;
+  color: black;
+  transition-duration: 0.4s;
+}
+#Prodfilter:hover,#Payfilter:hover {
+  background-color: gray;
+  color: white;
+}
+
+#clearFilter:hover {
+  background-color: gray;
+  color: white;
+}
+#curveOptions {
+  background-color: whitesmoke;
+  border-color: rgb(61, 61, 61);
+}
+#siteSelection {
+  margin-left: 0.5%;
+  margin-top: 4.5%;
+  border-radius: 15px;
+  background-color: whitesmoke;
+}
+
+#siteSelection,#view > a,#timeframes > a{
+  margin-top: 6px;
+}
+#view{
+  padding-left: 10%;
+}
+#timeframes{
+  padding-left: 7.5%;
+}
+
+#view > a,#timeframes > a {
+  display: inline-block;
+  margin-left: 10px;
+  border: none;
+  color: black;
+}
+
+#view > a.active,#timeframes > a.active {
+  border-bottom: 2px solid black;
+}
+
+#view > a:hover,#timeframes > a:hover {
+  cursor: pointer;
+  color: var(--color-secondary);
+  border-bottom: 2px solid black;
+}
+
+#cumlativeProd {
+  margin-top: 1%;
+}
+
+#analyzeTableTot {
+  margin-top: 1%;
+}
+
+#RecentProd {
+  margin-top: 1%;
+}
+#filler {
+  height: 1%;
+  background-color: whitesmoke;
+  border-color: rgb(61, 61, 61);
+}
+select {
+  text-align-last: center;
+}
+
+#view > button {
+  border-color: none;
+  border: none;
+  border-radius: 10px;
+}
+#filler2 {
+  height: 1%;
+  background-color: white;
+}
+li {
+  white-space: nowrap;
+}
+
+
+@media (min-width: 768px) {
+  #filler0,
+  #filler4,
+  #filler5 {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  body {
+    font-size: medium;
+  }
+  #view,
+  #timeframes,
+  #siteSelection {
+    padding-left: 0;
+    display: block;
+    margin: auto;
+    text-align: center;
+  }
+
+  #siteSelection > a {
+    text-align: center;
+  }
+  #filler0 {
+    height: 10px;
+  }
+  
+  #wellName,
+  #wellselect{
+    position: absolute;
+    z-index: 99;
+  }
+
+  #pnlTitle{
+    text-align: left;
+  }
+  
+
+  #formation {
+    position: relative;
+    text-align: right;
+  }
+  #c,
+  #SPM,
+  #ideal,
+  #DHSL,
+  #pumpEff,
+  #pumpDepth,
+  #GFLAP,
+  #Inc {
+    display: none;
+  }
+
+  #graph {
+    height: 325px;
+  }
+  #filler4 {
+    height: 24px;
+  }
+  #filler5 {
+    height: 10px;
+  }
+  #cumlativeData,#pnl,#YTD,#payout{
+    font-size: medium;
+  }
+}
+
+@media(max-width:1900px){
+  #graph {
+    height: 700px;
+    width: auto;
+  }
+}
+#selected-well {
+  display: block;
+}
+#wellSelect {
+  display: none;
+}
+
+#plotDiv {
+  display: flex;
+  justify-content: center;
+  margin-right: 0.8rem !important;
+}
+
+@media (max-width: 767px) {
+  #selected-well {
+    display: none;
+  }
+  #wellSelect {
+    display: block;
+    border-radius: 15px;
+    padding: 3px;
+    width: 70%;
+  }
+  select {
+    width: 100px;
+  }
+
+  #plotDiv {
+    display: flex;
+    justify-content: center;
+    margin-right: 0.8rem !important;
+  }
+
+  #sidebar {
+    display: none;
+  }
+}
