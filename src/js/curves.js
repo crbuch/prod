@@ -256,10 +256,7 @@ const curve = (timeFrame, data) => {
     [traceWater],
     [traceFluid],
     [traceCut],
-    combination,
-    [traceCumMoOil],
-    [traceDailyProdVSCum],
-    [traceMoProdVSCum]
+    combination
   ];
 
   plotContainers.forEach((container, i) => {
