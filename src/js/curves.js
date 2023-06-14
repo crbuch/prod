@@ -176,9 +176,8 @@ const curve = (timeFrame, data) => {
     site_date,
     movingAverage,
     "7 Day Avg",
-    "line",
-    null,
-    "dot"
+    "dot",
+    null
   );
 
   let traceGas = makeTrace(
