@@ -1,7 +1,7 @@
 import { monitorRegion } from './region'
 import { logout, monitorAuthState, changePwd } from './index'
 import { ref, getDatabase, onValue } from 'firebase/database';
-import { legacyEcon, payout, MoDataST } from './data';
+import { legacyEcon, payout, moDataST } from './data';
 import { makeTrace, makeLayout, config } from './layout';
 import { toggleInitScale, toggleInitTime } from './ui';
 import { select } from 'd3';
@@ -23,6 +23,7 @@ const fetchData = () => {
 
             localStorage.setItem(uid, JSON.stringify(data));
             if (data) parseData(data);
+
         })
     }
 }
@@ -59,18 +60,17 @@ const parseData = (d) => {
             well = well.replace('#', '').toLowerCase();
             date = wellDict["Date"];
             if (wells.includes(well)) {
-                let wellMnthReturn = (data[well]["ORRI"] + data[well]["WINRI"]) * wellDict["Recent Month P&L"];
+                const share = (data[well]["ORRI"] + data[well]["WINRI"]);
+                let wellMnthReturn = share * wellDict["Recent Month P&L"];
                 recMnthReturn += wellMnthReturn;
                 if (!(well in res_wells)) res_wells[well] = [];
-                res_wells[well].push({ "Well": well, "Date": date, "Recent Mnth Return": wellMnthReturn })
+                res_wells[well].push({ "Well": well, "Date": date, "Recent Mnth Return": wellMnthReturn, "Share": share })
             }
         }
         returns[date] = recMnthReturn;
     }
     const dates_pl = format(returns);
     plotRev(dates_pl[0], dates_pl[1]);
-
-    localStorage.setItem('pl_data_wells', JSON.stringify(res_wells));
 
     //mean payout
     const payouts_num = Object.entries(payout).map(
@@ -80,14 +80,26 @@ const parseData = (d) => {
     document.getElementById('sum-pl').textContent = `$${dates_pl[1].reduce((runnin, curr) => runnin + curr).toFixed(2)}`;
     document.getElementById('payout-title').textContent = "% Mean Payout";
     document.getElementById('payout').textContent = `${(payouts_num.reduce((runnin, curr) => runnin + curr) * 100 / payouts_num.length).toFixed(0)}%`;
+
+    //store data
+    let shares = {}
+    for (let [well, wellObj] of Object.entries(res_wells)) {
+        let share = wellObj[0].Share;
+        shares[well] = share
+    }
+    localStorage.setItem('shares', JSON.stringify(shares));
+    localStorage.setItem('pl_data_wells', JSON.stringify(res_wells));
+    console.log('res_wells :>> ', res_wells);
+
+    let userProd = localStorage.userProd;
+    if (userProd == null) parseProd();
+    displayProd("All Wells");
 }
 
 const plotRev = (x, y, title="P&L (ST only)") => {
-    const trace = makeTrace(x, y, 'P&L', null, 'black', null);
+    const trace = makeTrace(x, y, 'P&L', "lines+markers", 'black',null);
     const layout = makeLayout(title)
-    Plotly.newPlot("returnsCurve", [trace], layout, config).then(() => {
-        document.getElementById("btnLogout").style.display = "block";
-    });
+    Plotly.newPlot("returnsCurve", [trace], layout, config);
 }
 
 const format = (obj) => {
@@ -123,6 +135,7 @@ const initWellList = (wells) => {
 
         li.onclick = function () {
             displayWell(this.textContent);
+            displayProd(this.textContent);
         };
 
         ulWellList.appendChild(li);
@@ -165,6 +178,37 @@ const displayWell = (selected) => {
     document.getElementById('payout').textContent = `${(well_payout * 100).toFixed(0)}%`;
 }
 
+const parseProd = () => {
+    debugger;
+    let shares = JSON.parse(localStorage.shares);
+    let wells = Object.keys(shares);
+    let selected_data = moDataST.map(el => {
+        let well = el[0].replace("#","").toLowerCase();
+        if (wells.includes(well)){
+            let share = shares[well]
+            return [well,el[1]*share,el[2]*share,el[3]*share,el[6]];
+        }
+    }).filter(el => el !== undefined);
+    localStorage.setItem("userProd",JSON.stringify(selected_data));
+}
+
+const displayProd = (selected) => {
+    let data = JSON.parse(localStorage.userProd);//[[well,oil,gas,water,date],...]
+    console.log('data :>> ', data);
+    console.log('selected :>> ', selected);
+    if (selected !== "All Wells") data = data.filter(el => el[0] == selected.toLowerCase());
+    console.log('data :>> ', data);
+    const oil = data.map(el => el[1]);
+    const gas = data.map(el => el[2]);
+    const date = data.map(el => el[4]);
+    console.log('oil :>> ', oil);
+    console.log('date :>> ', date);
+
+    const traceOil = makeTrace(date,oil,"Oil [Bbls]","lines+markers","green",null)
+    const traceGas = makeTrace(date,gas,"Gas [Cf]","lines+markers","red",null)
+    const layout = makeLayout("Oil & Gas Production");
+    Plotly.newPlot("prodCurve", [traceOil,traceGas],layout);
+}
 //\\
 const db = getDatabase()
 const uid = localStorage.getItem('uid');

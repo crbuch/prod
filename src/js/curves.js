@@ -160,9 +160,7 @@ const curve = (timeFrame, data) => {
   const mo_site_data = data.moProdDataST.filter(site => site[0] === selectedOption);
   let site_date_mo = mo_site_data.map(site => site[6]);
   let site_oil_mo = mo_site_data.map(site => site[1]);
-
   const cumlMoOil = site_oil_mo.reduce((acc, val, idx) => (idx === 0 ? acc.concat(val) : acc.concat(val + acc[idx - 1])), []);
-  
 
   // CREATE TRACES FOR GRAPHING
   let traceOil = makeTrace( 
@@ -227,7 +225,6 @@ const curve = (timeFrame, data) => {
   const scale = (document.getElementById("logarithmic").classList.contains("active")) ? 'log' : 'linear';
   const plotContainers = ["oilDeclineCurve", "gasDeclineCurve", "waterDeclineCurve", 'totalFluidCurve', 'waterCutCurve', 'combinationCurves', 'cumlOilCurve'];
   const combination = [traceGas, traceOil, traceWater, traceFluid];
-
   let traceArrays = [
     [traceOil, traceOilAvg],
     [traceGas],
