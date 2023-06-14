@@ -1,107 +1,94 @@
 import { monitorRegion } from './region'
 import { logout, monitorAuthState, changePwd } from './index'
-import { ref,getDatabase,onValue } from 'firebase/database';
+import { ref, getDatabase, onValue } from 'firebase/database';
 import { legacyEcon, payout } from './data';
 import { makeTrace, makeLayout, config } from './layout';
 import { toggleInitScale, toggleInitTime } from './ui';
+import { select } from 'd3';
 
 monitorAuthState();
 monitorRegion();
 
 const fetchData = () => {
     let data = localStorage.getItem(uid);//cache
-
-    if (data){
+    if (data !== null && data !== "null") {
         data = JSON.parse(data);
         parseData(data);
 
-    }else {//get from fb
+    } else {//get from fb
         const deckRef = ref(db, 'users/' + uid + '/deck');
 
         onValue(deckRef, (snapshot) => {
             const data = snapshot.val();
 
             localStorage.setItem(uid, JSON.stringify(data));
-            parseData(data);
+            if (data) parseData(data);
         })
     }
-};
+}
+const populateDropDown = (wells) => {
+    let menu = select("#wellSelect");
+    
+    wells.forEach(well => {
+        menu.append("option")
+            .text(well)
+            .property("Value", well);
+    });
+}
 
-
-const parseData = (data) => {
-    let res = {};
+const parseData = (d) => {
+    const data = {}
+    Object.keys(d).forEach((key) => {
+        data[key.toLowerCase()] = d[key];
+    });
     let res_wells = {};
-    const wells = Object.keys(data);
     let returns = {};
+    const wells = Object.keys(data).map(well => well.toLowerCase());
 
-    for (let obj in legacyEcon) {
-        let temp = {};
-        let recMoReturn = 0;
+    let well_list = Object.keys(d);
+    well_list.sort((a, b) => a.localeCompare(b, undefined, { sensitivity: 'base' }));
+    well_list.unshift("All Wells");
+    initWellList(well_list);
+    populateDropDown(well_list);
+
+    for (let [_, mnthDict] of Object.entries(legacyEcon)) {
+        let recMnthReturn = 0;
         let date;
-        console.log('obj :>> ', obj);
-        for (let idx in obj){
-            let well = legacyEcon[obj][idx]['Well Name'];
-            date = legacyEcon[obj][idx]['Date'];
-            well = well.replace('#','');
-
-            if (wells.includes(well)){
-                let fin = legacyEcon[obj][idx];
-                fin.share = data[well]["ORRI"] + data[well]["WINRI"];
-                recMoReturn += fin["Recent Month P&L"]*fin.share;
-                temp[well] = fin;
-
+        for (let [_, wellDict] of Object.entries(mnthDict)) {
+            let well = wellDict["Well Name"]
+            well = well.replace('#', '').toLowerCase();
+            date = wellDict["Date"];
+            if (wells.includes(well)) {
+                let wellMnthReturn = (data[well]["ORRI"] + data[well]["WINRI"]) * wellDict["Recent Month P&L"];
+                recMnthReturn += wellMnthReturn;
                 if (!(well in res_wells)) res_wells[well] = [];
-                fin.recMoReturn = fin["Recent Month P&L"]*fin.share;
-                res_wells[well].push(fin)
-
-                //dict by well
-                //res_wells[well] = temp;
+                res_wells[well].push({ "Well": well, "Date": date, "Recent Mnth Return": wellMnthReturn })
             }
         }
-        temp.recMoReturn = recMoReturn;
-        returns[date] = recMoReturn;
-        res[date] = temp;
+        returns[date] = recMnthReturn;
     }
-    let well_list = Object.keys(res_wells);
-    well_list.sort((a, b) => a.localeCompare(b, undefined, { sensitivity: 'base' }));
-    well_list.unshift("All Wells")
-    initWellList(well_list);
-    localStorage.setItem('pl_data_wells',JSON.stringify(res_wells));
-    
-    
     const dates_pl = format(returns);
-    plotRev(dates_pl[0],dates_pl[1]);
+    plotRev(dates_pl[0], dates_pl[1]);
+
+    localStorage.setItem('pl_data_wells', JSON.stringify(res_wells));
 
     //mean payout
-    let payouts = {};
-    for (let idx in payout) {
-        const well = payout[idx]["Well Name"].replace('#',"");
-        if (well_list.includes(well)) {
-            payouts[well] = payout[idx]["% Payout"];
-        }
-    }
-    console.log('payouts :>> ', payouts);
-    const payouts_num = Object.entries(payouts).map(([_, value]) => value);
-
+    const payouts_num = Object.entries(payout).map(
+        ([_, value]) => wells.includes(value["Well Name"].replace("#", "").toLowerCase()) ? value["% Payout"] : null).filter(
+            el => el !== null);
     document.getElementById('selected-well').textContent = "All Wells";
-    document.getElementById('sum-pl').textContent = `$${dates_pl[1].reduce((runnin,curr) => runnin + curr).toFixed(2)}`;
+    document.getElementById('sum-pl').textContent = `$${dates_pl[1].reduce((runnin, curr) => runnin + curr).toFixed(2)}`;
     document.getElementById('payout-title').textContent = "% Mean Payout";
-    document.getElementById('payout').textContent = `${(payouts_num.reduce((runnin,curr) => runnin + curr)*100/payouts_num.length).toFixed(0)}%`;
+    document.getElementById('payout').textContent = `${(payouts_num.reduce((runnin, curr) => runnin + curr) * 100 / payouts_num.length).toFixed(0)}%`;
+}
 
-    localStorage.setItem('payouts',JSON.stringify(payouts));
-    //localStorage.setItem('dates',dates);
-    //localStorage.setItem('pl',pl);
-    return res;
-};
-
-const plotRev = (x,y) => {
-    const trace = makeTrace(x,y,'P&L',null,'black',null);
-    const layout = makeLayout("P&L (ST only)")
+const plotRev = (x, y, title="P&L (ST only)") => {
+    const trace = makeTrace(x, y, 'P&L', null, 'black', null);
+    const layout = makeLayout(title)
     Plotly.newPlot("returnsCurve", [trace], layout, config).then(() => {
         document.getElementById("btnLogout").style.display = "block";
     });
 }
-
 
 const format = (obj) => {
     const sortedArray = Object.entries(obj).sort((a, b) => {
@@ -123,21 +110,20 @@ const initWellList = (wells) => {
         let li = document.createElement("li");
         li.classList.add("nav-item", "active");
         li.style.cursor = "pointer";
-  
+
         let a = document.createElement("a");
         a.classList.add("nav-link");
-  
+
         let span = document.createElement("span");
         span.classList.add("menu-title");
         span.textContent = wells[i];
-  
+
         a.appendChild(span);
         li.appendChild(a);
 
-        li.onclick = function() {
-            console.log("Clicked: " + this.textContent);
+        li.onclick = function () {
             displayWell(this.textContent);
-          };
+        };
 
         ulWellList.appendChild(li);
     }
@@ -145,35 +131,38 @@ const initWellList = (wells) => {
 
 const displayWell = (selected) => {
     let data = localStorage.getItem('pl_data_wells');
-    let payouts = localStorage.getItem('payouts');
-    let well_payout = 0;
-    if (payouts){
-        payouts = JSON.parse(payouts);
-        well_payout = payouts[selected]; 
-    }
-    //if (!data) data = fetchData();//check
     data = JSON.parse(data);
     if (selected == "All Wells") {
         data = localStorage.getItem(uid)
         parseData(JSON.parse(data));
         return;
     }
-    data = data[selected];
+    let well_payout = Object.entries(payout).filter(
+        val => val[1]["Well Name"].replace("#","").toLowerCase() == selected.toLowerCase()
+    );
+    if (well_payout.length == 0) {
+        plotRev([],[],`No economic data for ${selected}`);
+        document.getElementById('selected-well').textContent = selected;
+        document.getElementById('payout').textContent = `no data`;
+        document.getElementById('sum-pl').textContent = `no data`;
+        return;
+    };
+    well_payout = well_payout[0][1]["% Payout"]
+    data = data[selected.toLowerCase()];
     let returns = {};
 
     for (let idx in data) {
         const mo = data[idx]["Date"];
-        returns[mo] = data[idx]["recMoReturn"];
+        returns[mo] = data[idx]["Recent Mnth Return"];
     }
+
     const dates_pl = format(returns);
-    plotRev(dates_pl[0],dates_pl[1]);
+    plotRev(dates_pl[0], dates_pl[1]);
 
     document.getElementById('selected-well').textContent = selected;
-    document.getElementById('sum-pl').textContent = `$${dates_pl[1].reduce((runnin,curr) => runnin + curr).toFixed(2)}`
-
-
+    document.getElementById('sum-pl').textContent = `$${dates_pl[1].reduce((runnin, curr) => runnin + curr).toFixed(2)}`
     document.getElementById('payout-title').textContent = "% Payout";
-    document.getElementById('payout').textContent = `${(well_payout*100).toFixed(0)}%`;
+    document.getElementById('payout').textContent = `${(well_payout * 100).toFixed(0)}%`;
 }
 
 //\\
@@ -184,22 +173,28 @@ console.log('uid :>> ', uid);
 document.getElementById("btnLogout").addEventListener('click', logout);
 
 fetchData();
+
+select("#wellSelect").on("change", () => {
+    let selected = select("#wellSelect").node().value;
+    displayWell(selected);
+});
+
 //search
 const searchInput = document.getElementById('searchInput');
 const wellList = document.getElementById('well-list').getElementsByTagName('li');
 
-searchInput.addEventListener('input', function() {
-  const searchTerm = searchInput.value.toLowerCase();
+searchInput.addEventListener('input', function () {
+    const searchTerm = searchInput.value.toLowerCase();
 
-  for (let i = 0; i < wellList.length; i++) {
-    const wellName = wellList[i].getElementsByTagName('span')[0].textContent.toLowerCase();
+    for (let i = 0; i < wellList.length; i++) {
+        const wellName = wellList[i].getElementsByTagName('span')[0].textContent.toLowerCase();
 
-    if (wellName.includes(searchTerm)) {
-      wellList[i].style.display = 'block';
-    } else {
-      wellList[i].style.display = 'none';
+        if (wellName.includes(searchTerm)) {
+            wellList[i].style.display = 'block';
+        } else {
+            wellList[i].style.display = 'none';
+        }
     }
-  }
 });
 
 
@@ -212,7 +207,6 @@ document.getElementById("init_time").addEventListener('click', () => {
 })
 
 document.getElementById("show_pwd_form_btn").addEventListener('click', () => {
-    debugger;
     document.getElementById('change_pwd_form').style.display = "block";
 })
 
@@ -220,10 +214,16 @@ document.getElementById("close_pwd_form").addEventListener('click', () => {
     document.getElementById('change_pwd_form').style.display = "none";
 })
 
-document.getElementById("change_pwd_btn").addEventListener('click', () => {
+document.getElementById("change_pwd_btn").addEventListener('click', (e) => {
     let pwd = document.getElementById("new_pwd").value;
     let pwd_rpt = document.getElementById("new_pwd_rpt").value;
-    const res = changePwd(pwd,pwd_rpt);
+    if (pwd !== pwd_rpt) {
+        e.preventDefault();
+        document.getElementById('pwd_msg').textContent = "Passwords do not match";
+        document.getElementById('change_pwd_form').style.display = "block";
+        return;
+    }
+    changePwd(pwd, pwd_rpt);
 })
 
 window.onload = function () {
@@ -235,6 +235,8 @@ window.onload = function () {
     document.getElementById("init_time").textContent = time;
 }();
 
+console.log('wdiv :>> ', document.getElementById("plotDiv").clientWidth);
+console.log('wgraph :>> ', document.getElementById("returnsCurve").clientWidth);
 //let pl_str = localStorage.getItem('pl');
 //let dates_str = localStorage.getItem('dates');
 //if (pl_str & dates_str){

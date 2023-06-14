@@ -43,7 +43,6 @@ export const monitorAuthState = async () => {
       localStorage.setItem('email', user.email);
       showApp();
     } else {
-      debugger;
       showLoginForm();
     }
   }
@@ -96,7 +95,6 @@ export const changePwd = async (pwd,pwd_rpt) => {
   }).catch((err) => {
     return err;
   })
-  debugger;
 }
 
 

@@ -1,0 +1,124 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Your Logo</a>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto me-auto">
+          <li class="nav-item">
+            <select id="wellSelection" class="form-select">
+              <option value="default">Select A Well</option>
+            </select>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Linear</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Logarithmic</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Table</a>
+          </li>
+        </ul>
+        <ul class="navbar-nav ms-auto me-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="#">Inception</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">365 Days</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">180 Days</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">30 Days</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <style>
+    html,
+body {
+  --color-primary: #1c4662;
+  --color-secondary: #e07719;
+  --color-error: #cc3333;
+  --border-radius: 10px;
+  height: 100%;
+}
+
+#curveOptions .row {
+  display: flex;
+  justify-content: center;
+}
+
+#curveOptions .col-md-2 {
+  align-self: flex-start;
+}
+
+#curveOptions #view,
+#curveOptions #timeframes {
+  display: flex;
+  justify-content: space-between;
+  flex-grow: 1;
+}
+
+#curveOptions #view {
+  justify-content: flex-end;
+  margin-right: 5%; /* Adjust the gap size as needed */
+}
+
+#curveOptions #timeframes {
+  justify-content: flex-start;
+  margin-left: 5%; /* Adjust the gap size as needed */
+}
+
+#curveOptions a {
+  text-decoration: none;
+  color: inherit;
+  padding: 5px 10px;
+}
+
+#view > a.active,#timeframes > a.active {
+  border-bottom: 2px solid black;
+}
+
+#view > a:hover,#timeframes > a:hover {
+  cursor: pointer;
+  color: var(--color-secondary);
+  border-bottom: 2px solid black;
+}
+select {
+  text-align-last: center;
+}
+
+.navbar {
+  background-color: #1c4662;
+}
+
+
+@media (min-width: 768px) {
+  #filler0 {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  body {
+    font-size: medium;
+  }
+  #view,
+  #timeframes,
+  #siteSelection {
+    padding-left: 0;
+    display: block;
+    margin: auto;
+    text-align: center;
+  }
+
+  #siteSelection > a {
+    text-align: center;
+  }
+  #filler0 {
+    height: 10px;
+  }
+}
+  </style>

@@ -7,43 +7,45 @@
     <title>Document</title>
 </head>
 <body>
-    <nav id="navbar1" class="navbar navbar-expand-xl navbar-dark">
-        <a id='fieldTitle' class="navbar-brand" ><span>SOUTH TEXAS FIELD</span></a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-              <a id="graphpage" class="nav-link" href="index.html">Graph</a>
-            </li>
-            <li class="nav-item">
-              <a id="pages" class="nav-link" href="table.html">Cumulative Production</a>
-            </li>
-            <li class="nav-item">
-              <a id="pages" class="nav-link" href="yesterdaysProd.html">Most Recent Production</a>
-            </li>
-            <li class="nav-item">
-              <a id="pages" class="nav-link" href="analyzeTable.html">Analyze</a>
-            </li>
-            <li class="nav-item">
-              <a id="pages" class="nav-link" href="wbd.html">WBD Generator</a>
-            </li>
-            <li class="nav-item">
-              <a id="switchRegion" class="nav-link" href="">East Texas</a>
-            </li>
-            <li class="nav-item">
-              <a id="user_profile" class="nav-link" href="profile.html">Profile</a>
-            </li>
-          </ul>
-        </div>
-      </nav>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark p-3 main-nav">
+    <div class="container-fluid">
+      <a id="fieldTitle" class="navbar-brand" href="#">South Texas Field</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    
+      <div class=" collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav mx-auto" >
+          <li class="nav-item">
+            <a class="nav-link ml-2 active" aria-current="page" href="./curves.html">Graph</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link ml-2" href="./table.html">Cumulative Production</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link ml-2" href="./yesterdaysProd.html">Most Recent Production</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link ml-2" href="./analyzeTable.html">Analyze</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link ml-2" href="./wbd.html">WBD Generator</a>
+          </li>
+          <li class="nav-item">
+            <a id="toggleRegion" class="nav-link ml-2" href="#">East Texas</a>
+          </li>
+          <li class="nav-item">
+            <a id="user_profile" class="nav-link ml-2" href="./profile.html">Profile</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
 
-      <script>
-        const userName = localStorage.getItem('email').split('@').shift();
-        console.log('userName :>> ', userName);
-        document.getElementById('user_profile').textContent = userName;
-      </script>
+    <script>
+      const userName = localStorage.getItem('email').split('@').shift();
+      console.log('userName :>> ', userName);
+      document.getElementById('user_profile').textContent = userName;
+    </script>
 </body>
 </html>

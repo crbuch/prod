@@ -155,7 +155,7 @@ const curve = (timeFrame, data) => {
   let water_cut = site_water.map((water, i) => (water / (water + site_oil[i])) * 100);
   let total_fluid = site_oil.map((oil, index) => oil + site_water[index]);
   if (timeFrame > 0) [site_date, site_oil, site_gas, site_water, comments, movingAverage] =
-    [site_date, site_oil, site_gas, site_water, comments, movingAverage].map(arr => arr.slice(0, timeFrame));
+  [site_date, site_oil, site_gas, site_water, comments, movingAverage].map(arr => arr.slice(0, timeFrame));
 
   const traceOil = makeTrace(
     site_date,
@@ -355,7 +355,6 @@ const curveInfo = {
   payoutData: dh.payout,
   pumpData: dh.pump
 };
-console.log('curveInfo :>> ', curveInfo.prodData);
 
 ['linear','logarithmic','DaysInception','Days30','Days365','Days180'].forEach(el => {
   document.getElementById(el).addEventListener('click',switchActives);
@@ -386,5 +385,3 @@ window.onload = function () {
   setActiveView(localStorage.getItem('initScale'));
   curve(localStorage.getItem('initTime'), curveInfo);
 }();
-
-
