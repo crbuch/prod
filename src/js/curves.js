@@ -3,7 +3,7 @@ import { monitorRegion } from './region'
 import { monitorAuthState } from './index'
 import { select } from 'd3';
 import { makeTrace, makeLayout, config } from './layout';
-import { setActive, setActiveView, toggleInitTime, toggleInitScale, checkActive, setActiveTime } from './ui';
+import { setActive, setActiveView, checkActive, setActiveTime } from './ui';
 
 monitorAuthState();
 monitorRegion();
@@ -141,7 +141,7 @@ const curve = (timeFrame, data) => {
   document.getElementById("wellName").innerHTML = selectedOption;
   document.getElementById("individualTable").style.display = "none";
 
-  ['oilDeclineCurve', 'gasDeclineCurve', 'waterDeclineCurve', 'waterCutCurve', 'totalFluidCurve', 'combinationCurves', 'cumOilCurve'].forEach(id => {
+  ['oilDeclineCurve', 'gasDeclineCurve', 'waterDeclineCurve', 'waterCutCurve', 'totalFluidCurve', 'combinationCurves', 'cumlOilCurve'].forEach(id => {
     document.getElementById(id).style.display = 'block';
   });
   const site_data = data.prodData.filter(site => site[0] === selectedOption);
@@ -156,22 +156,19 @@ const curve = (timeFrame, data) => {
   if (timeFrame > 0) [site_date, site_oil, site_gas, site_water, comments, movingAverage] =
   [site_date, site_oil, site_gas, site_water, comments, movingAverage].map(arr => arr.slice(0, timeFrame));
 
-  // READING MONTHLY DATA (NOT IN USE)
-  const mo_site_data = data.MoProdDataST.filter(site => site[0] === selectedOption);
+  // READING MONTHLY DATA
+  const mo_site_data = data.moProdDataST.filter(site => site[0] === selectedOption);
   let site_date_mo = mo_site_data.map(site => site[6]);
   let site_oil_mo = mo_site_data.map(site => site[1]);
 
-  // READING MONTHLY CUMULATIVE DATA
-  const mo_cum_data = data.cumMoDataST.filter(site => site[0] === selectedOption);
-  let cum_date_mo = mo_cum_data.map(site => site[6]);
-  let cum_oil_mo = mo_cum_data.map(site => site[1]);
-
+  const cumlMoOil = site_oil_mo.reduce((acc, val, idx) => (idx === 0 ? acc.concat(val) : acc.concat(val + acc[idx - 1])), []);
+  
 
   // CREATE TRACES FOR GRAPHING
-  const traceOil = makeTrace( 
+  let traceOil = makeTrace( 
     site_date,
     site_oil,
-    "Oil",
+    "Oil [MBO]",
     null,
     "green",
     null,
@@ -187,17 +184,17 @@ const curve = (timeFrame, data) => {
     "dot"
   );
 
-  const traceGas = makeTrace(
+  let traceGas = makeTrace(
     site_date,
     site_gas,
-    "Gas [Mcf]",
+    "Gas [MCF]",
     "line",
     "red");
 
-  const traceWater = makeTrace(
+  let traceWater = makeTrace(
     site_date,
     site_water,
-    "Water [Mbw]",
+    "Water [MBW]",
     "line",
     "blue",
   );
@@ -210,47 +207,41 @@ const curve = (timeFrame, data) => {
     "#25C4DC"
   );
 
-  const traceFluid = makeTrace(
+  let traceFluid = makeTrace(
     site_date,
     total_fluid,
-    "Total Fluid [Mb]",
+    "Total Fluid [MB]",
     "line",
     "black"
   );
 
-  const traceCumMoOil = makeTrace(
-    cum_date_mo,
-    cum_oil_mo,
-    "Oil [Mbo]",
+  const traceCumlOil = makeTrace(
+    site_date_mo,
+    cumlMoOil,
+    "Oil [MBO]",
     "line",
     "green"
   );
 
-  // COMBINED GRAPHS Copied traces with 8th paramater, [visibility = true/'legendonly'], for combined production line graph
-  const traceOil2 = makeTrace(site_date, site_oil, "Oil [MBO]", null, "green", null, comments, true);
-  const traceWater2 = makeTrace(site_date, site_water, "Water [MBW]", "line", "blue", null, null, 'legendonly');
-  const traceGas2 = makeTrace(site_date, site_gas, "Gas [MCF]", "line", "red", null, null, 'legendonly');
-  const traceFluid2 = makeTrace(site_date, total_fluid, "Total Fluid [MB]", "line", "black", null, null, 'legendonly');
-
-  const scale = (document.getElementById("logarithmic").classList.contains("active")) ? 'log' : 'linear';
-
   // const layoutCut = makeLayout("Water Cut Percentage");
+  const scale = (document.getElementById("logarithmic").classList.contains("active")) ? 'log' : 'linear';
+  const plotContainers = ["oilDeclineCurve", "gasDeclineCurve", "waterDeclineCurve", 'totalFluidCurve', 'waterCutCurve', 'combinationCurves', 'cumlOilCurve'];
+  const combination = [traceGas, traceOil, traceWater, traceFluid];
 
-  const plotContainers = ["oilDeclineCurve", "gasDeclineCurve", "waterDeclineCurve", 'totalFluidCurve', 'waterCutCurve', 'combinationCurves', 'cumOilCurve'];
-  
-  const combination = [traceGas2, traceOil2, traceWater2, traceFluid2];
-
-  const traceArrays = [
+  let traceArrays = [
     [traceOil, traceOilAvg],
     [traceGas],
     [traceWater],
     [traceFluid],
     [traceCut],
     combination,
-    [traceCumMoOil]
+    [traceCumlOil]
   ];
 
   plotContainers.forEach((container, i) => {
+    traceArrays[i].forEach(trace => {
+      trace.visible = (i === 5 && trace.name !== "Oil [MBO]") ? "legendonly" : trace.visible;
+    });
     const layout = makeLayout(['Oil vs Time (BOPD)', 'Gas vs Time (MCFD)', 'Water vs Time (BWPD)', 'Total Fluid vs Time (BFPD)', 'Water Cut Percentage', 'Combined Production', 'Cumulative Oil vs Time'][i], scale, 
     (scale === 'log') ? [1, 2, 5, 10, 20, 50, 100, 200, 500, 1000, 2000, 3000] : null);
     Plotly.newPlot(container, traceArrays[i], layout, config);
@@ -288,10 +279,10 @@ const curve = (timeFrame, data) => {
         const sum = (data.slice(endIdx, startIdx + 1).reduce((acc, cur) => acc + cur, 0)/1000).toFixed(1);
 
         let chop = -5;
-        if (val == 'Total Fluid [Mb]') chop = -4; 
+        if (val == 'Total Fluid [MB]') chop = -4; 
         const unit = val.slice(chop);
         let name = val.slice(0, chop);
-        if (val == 'Total Fluid [Mb]') name = `${name} `; 
+        if (val == 'Total Fluid [MB]') name = `${name} `; 
 
         const p = document.createElement('p');
         p.textContent = `${name}: ${sum} ${unit}`;
@@ -362,8 +353,7 @@ console.log('currUid :>> ', currUid);
 
 let prodData = dh.dataST;
 let cumlData = dh.dataCuml;
-let MoProdDataST = dh.MoDataST;
-let cumMoDataST = dh.cumMoDataST;
+let moProdDataST = dh.moDataST;
 
 if (region == "et") {
   prodData = dh.dataET
@@ -376,8 +366,7 @@ const curveInfo = {
   economicsData: dh.econ,
   payoutData: dh.payout,
   pumpData: dh.pump,
-  MoProdDataST: MoProdDataST,
-  cumMoDataST: cumMoDataST
+  moProdDataST: moProdDataST,
 };
 
 ['linear','logarithmic','DaysInception','Days30','Days365','Days180'].forEach(el => {

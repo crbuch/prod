@@ -1,7 +1,7 @@
 import { monitorRegion } from './region'
 import { logout, monitorAuthState, changePwd } from './index'
 import { ref, getDatabase, onValue } from 'firebase/database';
-import { legacyEcon, payout } from './data';
+import { legacyEcon, payout, MoDataST } from './data';
 import { makeTrace, makeLayout, config } from './layout';
 import { toggleInitScale, toggleInitTime } from './ui';
 import { select } from 'd3';

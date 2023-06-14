@@ -1,4 +1,4 @@
-export const makeTrace = (x, y, name, type, color, dash, text, visible) => ({
+export const makeTrace = (x, y, name, type, color, dash, text, visible=true) => ({
     x,
     y,
     text,
