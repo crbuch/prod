@@ -233,9 +233,9 @@ const curve = (timeFrame, data) => {
   // const layoutCut = makeLayout("Water Cut Percentage");
   const scale = (document.getElementById("logarithmic").classList.contains("active")) ? 'log' : 'linear';
   const plotContainers = [/*"oilDeclineCurve", */"gasDeclineCurve", "waterDeclineCurve", 'totalFluidCurve', 'waterCutCurve', 'combinationCurves'];
-  const combination = [traceGas, traceOil, traceWater, traceFluid];
+  const combination = [traceOil, traceOilAvg, traceGas, traceWater, traceFluid];
   let traceArrays = [
-    [traceOil, traceOilAvg],
+    // [traceOil, traceOilAvg],
     [traceGas],
     [traceWater],
     [traceFluid],
