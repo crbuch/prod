@@ -48,6 +48,11 @@ export const legacyEcon = await json("../data/legacyEcon.json").then((data) => {
     return data
 });
 
+export const pl23_22 = await json("../data/23_22Pl.json").then((data) => {
+    return data
+});
+
+
 export const activeWells = () => {
     let data = dataET;
     if (sessionStorage.getItem('region') !== 'et') data = dataST;

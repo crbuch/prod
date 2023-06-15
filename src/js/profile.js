@@ -1,7 +1,7 @@
 import { monitorRegion } from './region'
 import { logout, monitorAuthState, changePwd } from './index'
 import { ref, getDatabase, onValue } from 'firebase/database';
-import { legacyEcon, payout, moDataST } from './data';
+import { legacyEcon, payout, moDataST, pl23_22 } from './data';
 import { makeTrace, makeLayout, config } from './layout';
 import { toggleInitScale, toggleInitTime } from './ui';
 import { select } from 'd3';
@@ -42,8 +42,6 @@ const parseData = (d) => {
     Object.keys(d).forEach((key) => {
         data[key.toLowerCase()] = d[key];
     });
-    let res_wells = {};
-    let returns = {};
     const wells = Object.keys(data).map(well => well.toLowerCase());
 
     let well_list = Object.keys(d);
@@ -52,24 +50,45 @@ const parseData = (d) => {
     initWellList(well_list);
     populateDropDown(well_list);
 
-    for (let [_, mnthDict] of Object.entries(legacyEcon)) {
-        let recMnthReturn = 0;
-        let date;
-        for (let [_, wellDict] of Object.entries(mnthDict)) {
-            let well = wellDict["Well Name"]
+    let returns = {};
+    let well_returns = {};
+    let pl2223 = pl23_22[0]
+
+    for (let [well, mos] of Object.entries(pl2223)) {
+        for (let [mo, pl] of Object.entries(mos)) {
             well = well.replace('#', '').toLowerCase();
-            date = wellDict["Date"];
-            if (wells.includes(well)) {
-                const share = (data[well]["ORRI"] + data[well]["WINRI"]);
-                let wellMnthReturn = share * wellDict["Recent Month P&L"];
-                recMnthReturn += wellMnthReturn;
-                if (!(well in res_wells)) res_wells[well] = [];
-                res_wells[well].push({ "Well": well, "Date": date, "Recent Mnth Return": wellMnthReturn, "Share": share })
+            if (!(mo in returns)) returns[mo] = 0;
+            if (wells.includes(well)){
+                const share = data[well];
+                let wellMnthReturn = share * pl;
+
+                if (!(well in well_returns)) well_returns[well] = [];
+                well_returns[well].push({ "Well": well, "Date": mo, "Recent Mnth Return": wellMnthReturn, "Share": share })
+                returns[mo] += wellMnthReturn
             }
         }
-        returns[date] = recMnthReturn;
     }
-    const dates_pl = format(returns);
+    console.log('returns :>> ', returns);
+    console.log('well_returns :>> ', well_returns);
+    //for (let [_, mnthDict] of Object.entries(legacyEcon)) {
+    //    let recMnthReturn = 0;
+    //    let date;
+    //    for (let [_, wellDict] of Object.entries(mnthDict)) {
+    //        let well = wellDict["Well Name"]
+    //        well = well.replace('#', '').toLowerCase();
+    //        date = wellDict["Date"];
+    //        if (wells.includes(well)) {
+    //            const share = data[well];
+    //            let wellMnthReturn = share * wellDict["Recent Month P&L"];
+    //            recMnthReturn += wellMnthReturn;
+    //            if (!(well in well_returns)) well_returns[well] = [];
+    //            well_returns[well].push({ "Well": well, "Date": date, "Recent Mnth Return": wellMnthReturn, "Share": share })
+    //        }
+    //    }
+    //    returns[date] = recMnthReturn;
+    //}
+    //const dates_pl = format(returns);
+    const dates_pl = format1(returns)
     plotRev(dates_pl[0], dates_pl[1]);
 
     //mean payout
@@ -83,13 +102,12 @@ const parseData = (d) => {
 
     //store data
     let shares = {}
-    for (let [well, wellObj] of Object.entries(res_wells)) {
+    for (let [well, wellObj] of Object.entries(well_returns)) {
         let share = wellObj[0].Share;
         shares[well] = share
     }
     localStorage.setItem('shares', JSON.stringify(shares));
-    localStorage.setItem('pl_data_wells', JSON.stringify(res_wells));
-    console.log('res_wells :>> ', res_wells);
+    localStorage.setItem('pl_data_wells', JSON.stringify(well_returns));
 
     let userProd = localStorage.userProd;
     if (userProd == null) parseProd();
@@ -101,7 +119,28 @@ const plotRev = (x, y, title="P&L (ST only)") => {
     const layout = makeLayout(title)
     Plotly.newPlot("returnsCurve", [trace], layout, config);
 }
+const format1 = (obj) => {
+    // Convert keys to Date objects for comparison
+    const sortedKeys = Object.keys(obj)
+    .sort((key1, key2) => {
+    const [month1, year1] = key1.split(' ');
+    const [month2, year2] = key2.split(' ');
+    const date1 = new Date(`${month1} 01 ${year1}`);
+    const date2 = new Date(`${month2} 01 ${year2}`);
+    return date1 - date2;
+    });
 
+    // Create a new sorted dictionary
+    const sortedDict = {};
+    sortedKeys.forEach(key => {
+    sortedDict[key] = obj[key];
+    });
+
+    const dates = Object.entries(sortedDict).map(([key, _]) => key);
+    const pl = Object.entries(sortedDict).map(([_, value]) => value);
+
+    return [dates,pl]
+}
 const format = (obj) => {
     const sortedArray = Object.entries(obj).sort((a, b) => {
         const dateA = new Date(a[0]);
@@ -141,6 +180,7 @@ const initWellList = (wells) => {
         ulWellList.appendChild(li);
     }
 }
+const mapPayout = {"cr 939h":"cr 939","bruce weaver 2": "bruce weaver 2 re"};
 
 const displayWell = (selected) => {
     let data = localStorage.getItem('pl_data_wells');
@@ -150,27 +190,30 @@ const displayWell = (selected) => {
         parseData(JSON.parse(data));
         return;
     }
+    console.log('data :>> ', data);
+
+    let payoutName = selected.toLowerCase();
+    if (Object.keys(mapPayout).includes(selected.toLowerCase())) payoutName = mapPayout[selected.toLowerCase()];
+
     let well_payout = Object.entries(payout).filter(
-        val => val[1]["Well Name"].replace("#","").toLowerCase() == selected.toLowerCase()
+        val => val[1]["Well Name"].replace("#","").toLowerCase() == payoutName
     );
+
+    console.log('well_payout :>> ', well_payout);
     if (well_payout.length == 0) {
-        plotRev([],[],`No economic data for ${selected}`);
-        document.getElementById('selected-well').textContent = selected;
         document.getElementById('payout').textContent = `no data`;
-        document.getElementById('sum-pl').textContent = `no data`;
-        return;
+    }else{
+        well_payout = well_payout[0][1]["% Payout"]
     };
-    well_payout = well_payout[0][1]["% Payout"]
     data = data[selected.toLowerCase()];
+    console.log('data :>> ', data);
     let returns = {};
 
     for (let idx in data) {
         const mo = data[idx]["Date"];
         returns[mo] = data[idx]["Recent Mnth Return"];
     }
-
-    const dates_pl = format(returns);
-    console.log('dates_pl[0] :>> ', dates_pl[0]);
+    const dates_pl = format1(returns);
     plotRev(dates_pl[0], dates_pl[1]);
 
     document.getElementById('selected-well').textContent = selected;
@@ -197,7 +240,7 @@ const displayProd = (selected) => {
     let cnt = 0;
     let data = JSON.parse(localStorage.userProd);//[[well,oil,gas,water,date],...]
     if (selected !== "All Wells") data = data.filter(el => el[0] == selected.toLowerCase());
-
+    
     let date = data.map(el => el[4]).filter(el => {
         let d = new Date(el)
         if (d > edge){
@@ -212,18 +255,20 @@ const displayProd = (selected) => {
         return dateObj.toLocaleString('en-US', options);
     });
 
-
     let oil = data.map(el => el[1]).slice(0,cnt);
     let gas = data.map(el => el[2]).slice(0,cnt);
-
+    
     date.pop();
     oil.pop();
     gas.pop();
 
+    let title = "Oil & Gas Production";
+    if (date.length == 0) title = "No production data for this time period";
+
     const traceOil = makeTrace(date,oil,"Oil [Bbls]","lines+markers","green",null)
     const traceGas = makeTrace(date,gas,"Gas [Cf]","lines+markers","red",null)
     const layout = {
-        title: "Oil & Gas Production",
+        title: title,
         legend: {
             orientation: "h",
             y: 1.2,
@@ -303,8 +348,6 @@ window.onload = function () {
     document.getElementById("init_time").textContent = time;
 }();
 
-console.log('wdiv :>> ', document.getElementById("plotDiv").clientWidth);
-console.log('wgraph :>> ', document.getElementById("returnsCurve").clientWidth);
 //let pl_str = localStorage.getItem('pl');
 //let dates_str = localStorage.getItem('dates');
 //if (pl_str & dates_str){

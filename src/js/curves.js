@@ -273,6 +273,7 @@ const curve = (timeFrame, data) => {
     for (const[key,vals] of Object.entries(visible_traces)){
       for (let val of vals){
         const data = map[val];
+        console.log(`sum ${val}:>> `, (data.slice(endIdx, startIdx + 1).reduce((acc, cur) => acc + cur, 0)/1000));
         const sum = (data.slice(endIdx, startIdx + 1).reduce((acc, cur) => acc + cur, 0)/1000).toFixed(1);
 
         let chop = -5;
