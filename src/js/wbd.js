@@ -16,7 +16,7 @@ const faultData = await json("../data/datawbd/shows.json").then((data) => {
 
 async function plot() {
   const dropdownMenu = select("#wellselect").node();
-  let wellName = dropdownMenu.value; 
+  let wellName = dropdownMenu.value;
   if (wellName == 'default') wellName = 'Aaron #1';
 
   let selectedOption = wellName.replace(/[#\s]/g, "");
