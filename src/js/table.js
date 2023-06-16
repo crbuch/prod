@@ -73,7 +73,7 @@ const displayPlot = (selected) => {
     oilDaily,
     "hi",
     "line",
-    "orange",
+    "green",
     dateDa
   );
   const traceMoProdVSCum = makeTrace(
@@ -81,7 +81,7 @@ const displayPlot = (selected) => {
     oilMo,
     "hello",
     "line",
-    "red",
+    "green",
     formattedDateMo
   );
 
