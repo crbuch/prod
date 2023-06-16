@@ -168,7 +168,6 @@ const curve = (timeFrame, data) => {
     "Oil [MBO]",
     null,
     "green",
-    null,
     comments
   );
 
@@ -176,8 +175,11 @@ const curve = (timeFrame, data) => {
     site_date,
     movingAverage,
     "7 Day Avg",
-    "dot",
-    null
+    "lines",
+    null,
+    null,
+    null,
+    'dot'
   );
 
   let traceGas = makeTrace(
@@ -212,25 +214,6 @@ const curve = (timeFrame, data) => {
     "black"
   );
 
-  // const traceDailyProdVSCum = makeTrace(
-  //   cum_oil_daily,
-  //   daily_oil,
-  //   "hi",
-  //   "line",
-  //   "orange"
-  // );
-
-  // const traceMoProdVSCum = makeTrace(
-  //   cum_oil_mo,
-  //   site_oil_mo,
-  //   "hi",
-  //   "line",
-  //   "red"
-  // );
-
-  // 'Cumulative Oil vs Daily Oil Production', 'Cumulative Oil vs Monthly Oil Production'
-
-  // const layoutCut = makeLayout("Water Cut Percentage");
   const scale = (document.getElementById("logarithmic").classList.contains("active")) ? 'log' : 'linear';
   const plotContainers = [/*"oilDeclineCurve", */"gasDeclineCurve", "waterDeclineCurve", 'totalFluidCurve', 'waterCutCurve', 'combinationCurves'];
   const combination = [traceOil, traceOilAvg, traceGas, traceWater, traceFluid];
@@ -245,10 +228,10 @@ const curve = (timeFrame, data) => {
 
   plotContainers.forEach((container, i) => {
     traceArrays[i].forEach(trace => {
-      trace.visible = (i === 5 && trace.name !== "Oil [MBO]") ? "legendonly" : trace.visible;
+      trace.visible = (i === 4 && trace.name !== "Oil [MBO]") ? "legendonly" : trace.visible;
     });
     const layout = makeLayout([/*'Oil vs Time (BOPD)', */'Gas vs Time (MCFD)', 'Water vs Time (BWPD)', 'Total Fluid vs Time (BFPD)', 'Water Cut Percentage', 'Combined Production'][i], scale, 
-    (scale === 'log') ? [1, 2, 5, 10, 20, 50, 100, 200, 500, 1000, 2000, 3000] : null);
+                              (scale === 'log') ? [1, 2, 5, 10, 20, 50, 100, 200, 500, 1000, 2000, 3000] : null);
     Plotly.newPlot(container, traceArrays[i], layout, config);
   });
 
@@ -328,7 +311,7 @@ const table = (coreData) => {
   dh.buildTable(well);
 
   document.getElementById('individualTable').style.display = 'inline-block';
-  [/*'oilDeclineCurve'*/, 'gasDeclineCurve', 'waterDeclineCurve', 'waterCutCurve', 'totalFluidCurve', 'combinationCurves', 'cumOilCurve', 'cumVSdailyProdCurve', 'cumVSmoProdCurve'].forEach(tag => {
+  [/*'oilDeclineCurve,'*/ 'gasDeclineCurve', 'waterDeclineCurve', 'waterCutCurve', 'totalFluidCurve', 'combinationCurves', 'cumOilCurve', 'cumVSdailyProdCurve', 'cumVSmoProdCurve'].forEach(tag => {
     document.getElementById(tag).style.display = 'none'
   });
 };

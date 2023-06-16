@@ -1,4 +1,4 @@
-export const makeTrace = (x, y, name, type="lines", color, text, visible=true) => ({
+export const makeTrace = (x, y, name, type="lines", color, text, visible=true, dash) => ({
     x,
     y,
     text,
@@ -6,6 +6,7 @@ export const makeTrace = (x, y, name, type="lines", color, text, visible=true) =
     visible,
     line: {
         color,
+        dash
     },
     mode: type
 });

@@ -2,7 +2,7 @@ import { monitorAuthState } from './index'
 import { monitorRegion } from './region'
 import { dataCuml,dataCumlET,payout,activeWells,sortData,buildTable,dropdown,filterData } from './data';
 import { select } from 'd3';
-import { moDataST } from './data';
+import { moDataST, dataST } from './data';
 import { makeLayout, makeTrace } from './layout';
 
 monitorAuthState();
@@ -10,7 +10,6 @@ monitorRegion();
 
 let region = sessionStorage.getItem('region');
 const dropdownId = '#siteFilter';
-
 
 const formatData = () => {
   let tableData = dataCumlET;
@@ -23,7 +22,8 @@ const formatData = () => {
     payData.forEach((pay) => {
       tableData.forEach((well) => {
         if (well[0] == pay["Well Name"]) {
-          well.push(pay["% Payout"]);
+          let rounded = Math.round(pay["% Payout"]*100)
+          well.push(rounded);
         }
       });
     });
@@ -35,24 +35,74 @@ const formatData = () => {
     well[4] = well[5];
     well[5] = temp;
   });
-  tableData.forEach((well) => {
-    well[4] = 100 * well[4];
-    well[4] = Number(well[4]).toFixed(2);
-  });
+  // tableData.forEach((well) => {
+  //   well[4] = Math.round(well[4]*100);
+  // });
 
   //remove archived wells
   return tableData.filter(val => activeWells().has(val[0]));
 };
 
 const displayPlot = (selected) => {
-  let data = moDataST.filter(el => el[0] == selected);
-  const oil = data.map(el => el[1]);
-  const date = data.map(el => el[6]);
-  const cumlMoOil = oil.reduce((acc, val, idx) => (idx === 0 ? acc.concat(val) : acc.concat(val + acc[idx - 1])), []);
+  // Read Files, select wells with selected name
+  let dataMonthly = moDataST.filter(el => el[0] == selected);
+  let dataDaily = dataST.filter(el => el[0] == selected);
+  // Create arrays of desired columns
+  const oilMo = dataMonthly.map(el => el[1]);
+  const dateMo = dataMonthly.map(el => el[6]);
+  const dateDa = dataDaily.map(el => el[1]).reverse();
+  const cumlMoOil = oilMo.reduce((acc, val, idx) => (idx === 0 ? acc.concat(val) : acc.concat(val + acc[idx - 1])), []);
+  const oilDaily = dataDaily.map(el => el[2]).reverse();
+  const cumlDaOil = oilDaily.reduce((acc, val, idx) => (idx === 0 ? acc.concat(val) : acc.concat(val + acc[idx - 1])), []);
+  const formattedDateMo = dateMo.map(dateString => {
+    const date = new Date(dateString);
+    const options = { month: 'long', year: 'numeric' };
+    return date.toLocaleDateString('en-US', options);
+  });
 
-  const trace = makeTrace(date,cumlMoOil,"Cuml Data","lines","green",null);
-  const layout = makeLayout("Cumlative Oil vs Time");
-  Plotly.newPlot('cumlOil',[trace],layout);
+  // Create traces for graphs
+  const traceCumOil = makeTrace(
+    dateMo,
+    cumlMoOil,
+    "Cuml Data",
+    "lines",
+    "green"
+  );
+  const traceDailyProdVSCum = makeTrace(
+    cumlDaOil,
+    oilDaily,
+    "hi",
+    "line",
+    "orange",
+    dateDa
+  );
+  const traceMoProdVSCum = makeTrace(
+    cumlMoOil,
+    oilMo,
+    "hello",
+    "line",
+    "red",
+    formattedDateMo
+  );
+
+  // Create Different Keys
+  const plotContainers = ['cumlOilCurve', 'dailyProdVsCumCurve', 'moProdVsCumCurve'];
+  // Traces to Use
+  let traceArrays = [
+    [traceCumOil],
+    [traceDailyProdVSCum],
+    [traceMoProdVSCum]
+  ];
+
+  // Loop and make the plots, contain keys found in plotContainers^^
+  plotContainers.forEach((container, i) => {
+    // SETS SCALE TO LOG FOR THE Y-AXIS IF (i == [index in plotContainers])
+    let scale = (i == 2) ? "log" : null;
+    // CREATES LAYOUT, INCLUDES TITLE, SCALE, AND TICK VALUES
+    const layout = makeLayout(['Cumulative Oil vs Time', 'Cumulative Oil vs Daily Oil Production', 'Cumulative Oil vs Monthly Oil Production'][i], scale, 
+                              (scale === 'log') ? [1, 5, 10, 50, 100, 500, 1000, 5000, 10000, 15000] : null);
+    Plotly.newPlot(container, traceArrays[i], layout);
+  });
 }
 
 displayPlot("Aaron #1");
