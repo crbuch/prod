@@ -185,7 +185,8 @@ const curve = (timeFrame, data) => {
     site_gas,
     "Gas [MCF]",
     "line",
-    "red");
+    "red"
+  );
 
   let traceWater = makeTrace(
     site_date,
@@ -246,7 +247,7 @@ const curve = (timeFrame, data) => {
     traceArrays[i].forEach(trace => {
       trace.visible = (i === 5 && trace.name !== "Oil [MBO]") ? "legendonly" : trace.visible;
     });
-    const layout = makeLayout([/*'Oil vs Time (BOPD)', */'Gas vs Time (MCFD)', 'Water vs Time (BWPD)', 'Total Fluid vs Time (BFPD)', 'Water Cut Percentage', 'Combined Production', 'Cumulative Oil vs Time'][i], scale, 
+    const layout = makeLayout([/*'Oil vs Time (BOPD)', */'Gas vs Time (MCFD)', 'Water vs Time (BWPD)', 'Total Fluid vs Time (BFPD)', 'Water Cut Percentage', 'Combined Production'][i], scale, 
     (scale === 'log') ? [1, 2, 5, 10, 20, 50, 100, 200, 500, 1000, 2000, 3000] : null);
     Plotly.newPlot(container, traceArrays[i], layout, config);
   });

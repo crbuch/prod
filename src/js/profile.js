@@ -170,6 +170,7 @@ const displayWell = (selected) => {
     }
 
     const dates_pl = format(returns);
+    console.log('dates_pl[0] :>> ', dates_pl[0]);
     plotRev(dates_pl[0], dates_pl[1]);
 
     document.getElementById('selected-well').textContent = selected;
@@ -179,7 +180,6 @@ const displayWell = (selected) => {
 }
 
 const parseProd = () => {
-    debugger;
     let shares = JSON.parse(localStorage.shares);
     let wells = Object.keys(shares);
     let selected_data = moDataST.map(el => {
@@ -193,22 +193,45 @@ const parseProd = () => {
 }
 
 const displayProd = (selected) => {
+    const edge = new Date("2021-12-01");
+    let cnt = 0;
     let data = JSON.parse(localStorage.userProd);//[[well,oil,gas,water,date],...]
-    console.log('data :>> ', data);
-    console.log('selected :>> ', selected);
     if (selected !== "All Wells") data = data.filter(el => el[0] == selected.toLowerCase());
-    console.log('data :>> ', data);
-    const oil = data.map(el => el[1]);
-    const gas = data.map(el => el[2]);
-    const date = data.map(el => el[4]);
-    console.log('oil :>> ', oil);
-    console.log('date :>> ', date);
+
+    let date = data.map(el => el[4]).filter(el => {
+        let d = new Date(el)
+        if (d > edge){
+            return true;
+        }else{
+            cnt += 1
+            return false;
+        }
+    }).map(dateString => {
+        const dateObj = new Date(dateString);
+        const options = { year: 'numeric', month: 'long' };
+        return dateObj.toLocaleString('en-US', options);
+    });
+
+
+    let oil = data.map(el => el[1]).slice(0,cnt);
+    let gas = data.map(el => el[2]).slice(0,cnt);
+
+    date.pop();
+    oil.pop();
+    gas.pop();
 
     const traceOil = makeTrace(date,oil,"Oil [Bbls]","lines+markers","green",null)
     const traceGas = makeTrace(date,gas,"Gas [Cf]","lines+markers","red",null)
-    const layout = makeLayout("Oil & Gas Production");
+    const layout = {
+        title: "Oil & Gas Production",
+        legend: {
+            orientation: "h",
+            y: 1.2,
+        },
+    };
     Plotly.newPlot("prodCurve", [traceOil,traceGas],layout);
 }
+
 //\\
 const db = getDatabase()
 const uid = localStorage.getItem('uid');
@@ -221,6 +244,7 @@ fetchData();
 select("#wellSelect").on("change", () => {
     let selected = select("#wellSelect").node().value;
     displayWell(selected);
+    displayProd(selected);
 });
 
 //search
