@@ -179,6 +179,8 @@ const curve = (timeFrame, data) => {
     "7 Day Avg",
     "line",
     null,
+    null,
+    true,
     "dot"
   );
 

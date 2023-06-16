@@ -26,6 +26,15 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getDatabase();
 
+const usr = auth.currentUser;
+let pwd = "qazxsw"
+let tst = updatePassword(usr,pwd).then(() => {
+  return true;
+}).catch((err) => {
+  return err;
+})
+console.log('tst :>> ', tst);
+
 function writedb(name,data,uid){
   const reference = ref(db,'users/' + uid);
 
@@ -90,11 +99,15 @@ export const changePwd = async (pwd,pwd_rpt) => {
 
   const auth = getAuth();
   const usr = auth.currentUser;
-  updatePassword(usr,pwd).then(() => {
+  debugger;
+  let res = updatePassword(usr,pwd).then(() => {
     return true;
   }).catch((err) => {
     return err;
   })
+  let r = await res;
+  console.log('r :>> ', r);
+  debugger;
 }
 
 

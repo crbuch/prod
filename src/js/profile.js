@@ -10,7 +10,7 @@ monitorAuthState();
 monitorRegion();
 
 const fetchData = () => {
-    let data = localStorage.getItem(uid);//cache
+    let data = localStorage.getItem("shares");//cache
     if (data !== null && data !== "null") {
         data = JSON.parse(data);
         parseData(data);
@@ -21,7 +21,7 @@ const fetchData = () => {
         onValue(deckRef, (snapshot) => {
             const data = snapshot.val();
 
-            localStorage.setItem(uid, JSON.stringify(data));
+            localStorage.setItem("shares", JSON.stringify(data));
             if (data) parseData(data);
 
         })
@@ -43,7 +43,6 @@ const parseData = (d) => {
         data[key.toLowerCase()] = d[key];
     });
     const wells = Object.keys(data).map(well => well.toLowerCase());
-
     let well_list = Object.keys(d);
     well_list.sort((a, b) => a.localeCompare(b, undefined, { sensitivity: 'base' }));
     well_list.unshift("All Wells");
@@ -52,7 +51,7 @@ const parseData = (d) => {
 
     let returns = {};
     let well_returns = {};
-    let pl2223 = pl23_22[0]
+    let pl2223 = pl23_22
 
     for (let [well, mos] of Object.entries(pl2223)) {
         for (let [mo, pl] of Object.entries(mos)) {
@@ -68,27 +67,8 @@ const parseData = (d) => {
             }
         }
     }
-    console.log('returns :>> ', returns);
-    console.log('well_returns :>> ', well_returns);
-    //for (let [_, mnthDict] of Object.entries(legacyEcon)) {
-    //    let recMnthReturn = 0;
-    //    let date;
-    //    for (let [_, wellDict] of Object.entries(mnthDict)) {
-    //        let well = wellDict["Well Name"]
-    //        well = well.replace('#', '').toLowerCase();
-    //        date = wellDict["Date"];
-    //        if (wells.includes(well)) {
-    //            const share = data[well];
-    //            let wellMnthReturn = share * wellDict["Recent Month P&L"];
-    //            recMnthReturn += wellMnthReturn;
-    //            if (!(well in well_returns)) well_returns[well] = [];
-    //            well_returns[well].push({ "Well": well, "Date": date, "Recent Mnth Return": wellMnthReturn, "Share": share })
-    //        }
-    //    }
-    //    returns[date] = recMnthReturn;
-    //}
-    //const dates_pl = format(returns);
-    const dates_pl = format1(returns)
+    
+    const dates_pl = format(returns)
     plotRev(dates_pl[0], dates_pl[1]);
 
     //mean payout
@@ -101,25 +81,25 @@ const parseData = (d) => {
     document.getElementById('payout').textContent = `${(payouts_num.reduce((runnin, curr) => runnin + curr) * 100 / payouts_num.length).toFixed(0)}%`;
 
     //store data
-    let shares = {}
-    for (let [well, wellObj] of Object.entries(well_returns)) {
-        let share = wellObj[0].Share;
-        shares[well] = share
-    }
-    localStorage.setItem('shares', JSON.stringify(shares));
+    
     localStorage.setItem('pl_data_wells', JSON.stringify(well_returns));
 
-    let userProd = localStorage.userProd;
-    if (userProd == null) parseProd();
     displayProd("All Wells");
 }
 
 const plotRev = (x, y, title="P&L (ST only)") => {
     const trace = makeTrace(x, y, 'P&L', "lines+markers", 'black',null);
-    const layout = makeLayout(title)
+    const layout = {
+        title:title,
+        yaxis: {
+          tickformat: '$',
+          // Add other y-axis configuration properties if needed
+        }
+      };
     Plotly.newPlot("returnsCurve", [trace], layout, config);
 }
-const format1 = (obj) => {
+
+const format = (obj) => {
     // Convert keys to Date objects for comparison
     const sortedKeys = Object.keys(obj)
     .sort((key1, key2) => {
@@ -141,19 +121,6 @@ const format1 = (obj) => {
 
     return [dates,pl]
 }
-const format = (obj) => {
-    const sortedArray = Object.entries(obj).sort((a, b) => {
-        const dateA = new Date(a[0]);
-        const dateB = new Date(b[0]);
-        return dateA - dateB;
-    });
-
-    const sortedObj = Object.fromEntries(sortedArray);
-    const dates = Object.entries(sortedObj).map(([key, _]) => key);
-    const pl = Object.entries(sortedObj).map(([_, value]) => value);
-
-    return [dates, pl]
-}
 
 const initWellList = (wells) => {
     let ulWellList = document.getElementById("well-list");
@@ -167,30 +134,29 @@ const initWellList = (wells) => {
 
         let span = document.createElement("span");
         span.classList.add("menu-title");
-        span.textContent = wells[i];
+        span.textContent = capitalizeWords(wells[i]);
 
         a.appendChild(span);
         li.appendChild(a);
 
         li.onclick = function () {
-            displayWell(this.textContent);
-            displayProd(this.textContent);
+            displayWell(wells[i]);
+            displayProd(wells[i]);
         };
 
         ulWellList.appendChild(li);
     }
 }
-const mapPayout = {"cr 939h":"cr 939","bruce weaver 2": "bruce weaver 2 re"};
+
 
 const displayWell = (selected) => {
     let data = localStorage.getItem('pl_data_wells');
     data = JSON.parse(data);
     if (selected == "All Wells") {
-        data = localStorage.getItem(uid)
+        data = localStorage.getItem("shares")
         parseData(JSON.parse(data));
         return;
     }
-    console.log('data :>> ', data);
 
     let payoutName = selected.toLowerCase();
     if (Object.keys(mapPayout).includes(selected.toLowerCase())) payoutName = mapPayout[selected.toLowerCase()];
@@ -199,72 +165,116 @@ const displayWell = (selected) => {
         val => val[1]["Well Name"].replace("#","").toLowerCase() == payoutName
     );
 
-    console.log('well_payout :>> ', well_payout);
     if (well_payout.length == 0) {
         document.getElementById('payout').textContent = `no data`;
     }else{
         well_payout = well_payout[0][1]["% Payout"]
     };
     data = data[selected.toLowerCase()];
-    console.log('data :>> ', data);
     let returns = {};
 
     for (let idx in data) {
         const mo = data[idx]["Date"];
         returns[mo] = data[idx]["Recent Mnth Return"];
     }
-    const dates_pl = format1(returns);
+    const dates_pl = format(returns);
+    selected = capitalizeWords(selected);
+    if (data === undefined){
+        document.getElementById('payout').textContent = "no data";
+        document.getElementById('sum-pl').textContent = "no data";
+        document.getElementById('selected-well').textContent = selected;
+        plotRev(dates_pl[0], dates_pl[1],`No Economic Data for ${selected}`);
+        return;
+    }
     plotRev(dates_pl[0], dates_pl[1]);
-
+    
     document.getElementById('selected-well').textContent = selected;
     document.getElementById('sum-pl').textContent = `$${dates_pl[1].reduce((runnin, curr) => runnin + curr).toFixed(2)}`
     document.getElementById('payout-title').textContent = "% Payout";
     document.getElementById('payout').textContent = `${(well_payout * 100).toFixed(0)}%`;
 }
 
-const parseProd = () => {
-    let shares = JSON.parse(localStorage.shares);
+const displayProdAll = () => {
+    const edge = new Date("2022-01-01");
+    const shares = JSON.parse(localStorage.shares);
     let wells = Object.keys(shares);
-    let selected_data = moDataST.map(el => {
-        let well = el[0].replace("#","").toLowerCase();
-        if (wells.includes(well)){
-            let share = shares[well]
-            return [well,el[1]*share,el[2]*share,el[3]*share,el[6]];
+    let prodwells = [];
+    for (let i = 0; i < wells.length; i++){
+        let well = wells[i];
+        if (Object.keys(mapProd).includes(well)) well = mapProd[well];
+        prodwells.push(well);
+    }
+    let data = moDataST.filter(sub => prodwells.includes(sub[0].replace("#","").toLowerCase()));
+    
+    let oil = {};
+    let gas = {};
+    data = data.map((sub) => {
+        let date = new Date(sub[6]);
+        if (date > edge ){
+            let well = sub[0].replace("#","").toLowerCase();
+            if (Object.keys(mapShares).includes(well)) well = mapShares[well];
+
+            if (Object.keys(shares).includes(well)){
+                date = date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+                if (!Object.keys(oil).includes(date)) oil[date] = 0;
+                if (!Object.keys(gas).includes(date)) gas[date] = 0;
+
+                
+                oil[date] += sub[1]*shares[well];
+                gas[date] += sub[2]*shares[well];
+            }
+            
         }
-    }).filter(el => el !== undefined);
-    localStorage.setItem("userProd",JSON.stringify(selected_data));
+    })
+    const date_oil = format(oil);
+    const date_gas = format(gas);
+    date_oil[0].pop();
+    date_oil[1].pop();
+    date_gas[1].pop();
+    const dates = date_oil[0].map(el => {
+        return el.substring(0, 3) + " " + el.substring(6,8);
+    });
+
+    plotProd(dates,date_oil[1],date_gas[1]);
 }
 
 const displayProd = (selected) => {
-    const edge = new Date("2021-12-01");
-    let cnt = 0;
-    let data = JSON.parse(localStorage.userProd);//[[well,oil,gas,water,date],...]
-    if (selected !== "All Wells") data = data.filter(el => el[0] == selected.toLowerCase());
-    
-    let date = data.map(el => el[4]).filter(el => {
-        let d = new Date(el)
-        if (d > edge){
-            return true;
-        }else{
-            cnt += 1
-            return false;
+    const selectedMaster = selected.toLowerCase();
+    const edge = new Date("2022-01-01");
+    const shares = JSON.parse(localStorage.shares);
+    let data = moDataST;
+    if (Object.keys(mapProd).includes(selectedMaster)) selected = mapProd[selectedMaster]
+    if (selected !== "All Wells") data = data.filter(el => el[0].replace("#","").toLowerCase() == selected.toLowerCase());
+    if (selected == "All Wells"){
+        displayProdAll();
+        return;
+    }
+    data = data.map((el) => {
+        let date = new Date(el[6]);
+        if (date > edge){
+            const oil = el[1]*shares[selectedMaster];
+            const gas = el[2]*shares[selectedMaster];
+            date = date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+            return [oil,gas,date];
         }
-    }).map(dateString => {
-        const dateObj = new Date(dateString);
-        const options = { year: 'numeric', month: 'long' };
-        return dateObj.toLocaleString('en-US', options);
+    }).filter((sub) => sub !== undefined).map((sub) => {
+        return sub.filter((el) => el !== undefined);
     });
 
-    let oil = data.map(el => el[1]).slice(0,cnt);
-    let gas = data.map(el => el[2]).slice(0,cnt);
-    
-    date.pop();
+    let title = "Oil & Gas Production";
+    if (data.length == 0) title = "No Production Data for this Time Period";
+    const oil = data.map((sub) => sub[0]);
+    const gas = data.map((sub) => sub[1]);
+    const date = data.map((sub) => sub[2]);
     oil.pop();
     gas.pop();
+    date.pop();
 
-    let title = "Oil & Gas Production";
-    if (date.length == 0) title = "No production data for this time period";
+    plotProd(date,oil,gas,title);
+    
+}
 
+const plotProd = (date,oil,gas,title="Oil & Gas Production") => {
     const traceOil = makeTrace(date,oil,"Oil [Bbls]","lines+markers","green",null)
     const traceGas = makeTrace(date,gas,"Gas [Cf]","lines+markers","red",null)
     const layout = {
@@ -277,10 +287,19 @@ const displayProd = (selected) => {
     Plotly.newPlot("prodCurve", [traceOil,traceGas],layout);
 }
 
+function capitalizeWords(str) {
+    return str.replace(/^(.)|\s+(.)/g, function(match) {
+      return match.toUpperCase();
+    });
+}
 //\\
+const mapPayout = {"cr 939h":"cr 939","bruce weaver 2": "bruce weaver 2 re"};
+const mapProd = {"bruce weaver 2": "bruce weaver 2 re","burns ranch 2 1": "burns ranch 2","cr 939h":"cr 939", "pfeiffer 2re": "pfeiffer 2"};
+const mapShares = {"bruce weaver 2 re": "bruce weaver 2","burns ranch 2" : "burns ranch 2 1","cr 939" : "cr 939h", "pfeiffer 2": "pfeiffer 2re"};
+
 const db = getDatabase()
 const uid = localStorage.getItem('uid');
-console.log('uid :>> ', uid);
+//console.log('uid :>> ', uid);
 
 document.getElementById("btnLogout").addEventListener('click', logout);
 
@@ -330,6 +349,7 @@ document.getElementById("close_pwd_form").addEventListener('click', () => {
 document.getElementById("change_pwd_btn").addEventListener('click', (e) => {
     let pwd = document.getElementById("new_pwd").value;
     let pwd_rpt = document.getElementById("new_pwd_rpt").value;
+    
     if (pwd !== pwd_rpt) {
         e.preventDefault();
         document.getElementById('pwd_msg').textContent = "Passwords do not match";
