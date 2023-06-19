@@ -51,12 +51,12 @@ async function plot() {
 
   const [minE, maxE] = extent(dataEasting.flat());
   const [minN, maxN] = extent(dataNorthing.flat());
-  const minTVD = Math.min(...dataTvd)
+  const [minTVD, _] = extent(dataTvd.flat());
 
   const min = Math.min(minE, minN);
   const max = Math.max(maxE, maxN);
 
-  const layout = layoutWbd(max + 1000, min - 1000, minTVD - 500, wellName);
+  const layout = layoutWbd(max + 1000, min - 1000, minTVD - 500, minTVD + 2000, wellName);
 
   const plotData = [];
   const colors = ['#1d6acf', '#eb7a10', '#d61515', '#7B3FA9', '#6AE6EC'];
