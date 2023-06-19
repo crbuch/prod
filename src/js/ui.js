@@ -3,13 +3,24 @@ import { AuthErrorCodes } from 'firebase/auth';
 export const userName = document.querySelector('#userEmail');
 export const userPassword = document.querySelector('#userPassword');
 
+export const btnChangePwd = document.querySelector('#btnChangePwd');
+export const newPwd = document.querySelector('#new_pwd');
+export const newPwdRpt = document.querySelector('#new_pwd_rpt');
+export const backBtn = document.querySelector('#btnBack');
+
+
+
 export const btnLogin = document.querySelector('#btnLogin');
 export const btnLogout = document.querySelector('#btnLogout');
 export const form = document.getElementById('login');
+export const formUpdate = document.getElementById('update-pwd');
+
 
 export const divLoginError = document.querySelector('#divLoginError');
 export const lblLoginErrorMessage = document.querySelector('#lblLoginErrorMessage');
 
+export const divPwdError = document.querySelector('#divPwdError');
+export const pwdErr = document.querySelector('#pwdErr');
 
 export const showLoginForm = () => {
   const currPage = window.location.pathname.split("/").pop();
@@ -52,6 +63,16 @@ export const showLoginError = (error) => {
   else {
     lblLoginErrorMessage.innerHTML = `Error: ${error.message}`      
   }
+}
+
+export const showPwdErr = (error) => {
+  divPwdError.style.display = 'block'    
+  pwdErr.innerHTML = `Error: ${error.message}`      
+}
+
+export const hidePwdErr = () => {
+  divPwdError.style.display = 'none';
+  pwdErr.innerHTML = '';
 }
 
 export const setActive = (view, time) => {
@@ -113,10 +134,3 @@ export const checkActive = (element) => {
   });
   return flag;
 };
-
-
-
-try{
-  hideLoginError();
-} catch {
-}

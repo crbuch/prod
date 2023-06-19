@@ -85,7 +85,7 @@ export const layoutWbd = (max,min,minTVD,wellName) => ({
         zaxis: {
             title: "TVD",
             nticks: 5,
-            range: [minTVD, -3000],
+            range: [minTVD, -2000],
             gridcolor: "#8a8a8a",
             tickcolor: "#050505",
             backgroundcolor: "#ededed",

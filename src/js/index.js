@@ -4,9 +4,17 @@ import {
   userPassword,
   btnLogin,
   form,
+  formUpdate,
+  newPwd,
+  newPwdRpt,
+  btnChangePwd,
+  backBtn,
   showLoginError,
   showApp,
-  showLoginForm
+  showLoginForm,
+  hidePwdErr,
+  hideLoginError,
+  showPwdErr
 } from './ui'
 
 import { initializeApp } from 'firebase/app';
@@ -26,15 +34,6 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getDatabase();
 
-const usr = auth.currentUser;
-let pwd = "qazxsw"
-let tst = updatePassword(usr,pwd).then(() => {
-  return true;
-}).catch((err) => {
-  return err;
-})
-console.log('tst :>> ', tst);
-
 function writedb(name,data,uid){
   const reference = ref(db,'users/' + uid);
 
@@ -50,19 +49,20 @@ export const monitorAuthState = async () => {
     if (user != null) {
       localStorage.setItem('uid', user.uid);
       localStorage.setItem('email', user.email);
-      showApp();
+      console.log('user.uid :>> ', user.uid);
+      //showApp();
     } else {
+      console.log('user :>> ', user);
       showLoginForm();
     }
   }
   );
 };
 
-
 const login = async () => {
   let cleanUid = userName.value.replace(/\s/g,"");
   const password = userPassword.value;
-
+  
   if (cleanUid.substring(cleanUid.length - 8) != '@cml.com'){
     cleanUid = `${cleanUid}@cml.com`;
   }
@@ -94,27 +94,40 @@ export const logout = async () => {
   });
 };
 
-export const changePwd = async (pwd,pwd_rpt) => {
-  if (pwd !== pwd_rpt) return "Passwords do not match";
-
+const changePwd = async () => {
+  if (newPassword !== newPwdRpt){
+    showPwdErr('Passwords do not match');
+    return;
+  }
   const auth = getAuth();
-  const usr = auth.currentUser;
-  debugger;
-  let res = updatePassword(usr,pwd).then(() => {
-    return true;
-  }).catch((err) => {
-    return err;
-  })
-  let r = await res;
-  console.log('r :>> ', r);
-  debugger;
+  const user = auth.currentUser;
+
+  updatePassword(user, newPwdRpt.value).then(() => {
+    console.log('s :>> ');
+    sessionStorage.changePwd = false;
+  }).catch((error) => {
+    console.log('update pwd error :>> ', error);
+  });
 }
 
 
 const currPage = window.location.pathname.split("/").pop();
 
-if (currPage == 'index.html' || currPage == 'index.html?'){
+if (currPage == 'index.html'){
+  if (sessionStorage.changePwd == "true"){
+    formUpdate.style.display = 'block';
+    form.style.display = 'none';
+  }else {
+    formUpdate.style.display = 'none';
+    form.style.display = 'block';
+  }
+
   btnLogin.addEventListener('click', login);
+  btnChangePwd.addEventListener('click',changePwd);
+  backBtn.addEventListener('click', () => {
+    window.location.href = './profile.html';
+    sessionStorage.changePwd = false;
+  })
   
   form.addEventListener("keydown", function(event) {
     if (event.key === "Enter") {
@@ -122,6 +135,19 @@ if (currPage == 'index.html' || currPage == 'index.html?'){
       btnLogin.click();
     }
   });
-
+  
+  formUpdate.addEventListener("keydown", function(event) {
+    if (event.key == "Enter") {
+      event.preventDefault();
+      btnChangePwd.click();
+      
+    }
+  })
   monitorAuthState();
+
+  window.onload = function () {
+    hidePwdErr();
+    hideLoginError();
+  }();
 }
+

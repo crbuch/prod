@@ -27,7 +27,25 @@
       </div>
       <button id="btnLogin" type="button" class="form__button">Log in uid: cml pwd: cmlprod</button>
     </form>
+    <form id="update-pwd" class="login-form">
+      <p id='btnBack' style="float: right;">X</p>
+      <img id="cmlLogo" src="../favicon_package/logo-cml.jpg" alt="CML">
+      <div class="form__input-group">
+        <input id="new_pwd" type="password" class="form__input" autofocus placeholder="New Password">
+        <div class="form__input-error-message"></div>
+      </div>
+      <div class="form__input-group">
+        <input id="new_pwd_rpt" type="password" class="form__input" autofocus placeholder="Repeat Password">
+        <div class="form__input-error-message"></div>
+      </div>
+      <div id="divPwdError" class="group">
+        <div id="pwdErr" class="errorlabel">Error</div>
+      </div>
+      <button id="btnChangePwd" type="button" class="form__button">Submit</button>
+    </form>
   </div>
+ 
+  
   
 </body>
 
