@@ -60,14 +60,17 @@ export const showLoginError = (error) => {
   if (error.code == AuthErrorCodes.INVALID_PASSWORD) {
     lblLoginErrorMessage.innerHTML = `Wrong password`
   }
-  else {
-    lblLoginErrorMessage.innerHTML = `Error: ${error.message}`      
+  else if (sessionStorage.changePwd == "success") {
+    lblLoginErrorMessage.innerHTML = error;      
+  }else {
+    lblLoginErrorMessage.innerHTML = `Error: ${error}`;      
+
   }
 }
 
 export const showPwdErr = (error) => {
   divPwdError.style.display = 'block'    
-  pwdErr.innerHTML = `Error: ${error.message}`      
+  pwdErr.innerHTML = `Error: ${error}`      
 }
 
 export const hidePwdErr = () => {

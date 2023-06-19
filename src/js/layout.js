@@ -41,7 +41,7 @@ export const config = {
     responsive: true,
 };
 
-export const layoutWbd = (max,min,minTvd,wellName) => ({
+export const layoutWbd = (max,min,minTVD,maxTVD,wellName) => ({
     width: 1620,
     height: 700,
 
@@ -85,8 +85,7 @@ export const layoutWbd = (max,min,minTvd,wellName) => ({
         zaxis: {
             title: "TVD",
             nticks: 5,
-            autorange: false,
-            range: [minTvd, minTvd+2500],
+            range: [minTVD, maxTVD],
             gridcolor: "#8a8a8a",
             tickcolor: "#050505",
             backgroundcolor: "#ededed",
