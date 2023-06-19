@@ -141,7 +141,10 @@ body {
 .mx-auto {
   margin-left: auto !important; 
 }
-
+.errorlabel {
+    text-align: center;
+    margin-bottom: 1rem;
+}
 
 @media (max-width: 767px) {
     .container {

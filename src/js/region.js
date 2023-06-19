@@ -9,8 +9,10 @@ const toggleRegion = () => {
     if (currRegion == "st" || currRegion == null) {
         console.log("switching to east");
         sessionStorage.setItem("region", "et");
+        location.reload();
     } else {
         sessionStorage.setItem("region", "st");
+        location.reload();
     }
 };
 

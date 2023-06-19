@@ -10,18 +10,22 @@ monitorAuthState();
 monitorRegion();
 
 const fetchData = () => {
-    let data = localStorage.getItem("shares");//cache
-    if (data !== null && data !== "null") {
+    let data = localStorage.shares;
+    if (uid != localStorage.skey){
+        data = null;
+        localStorage.shares = null;
+    }
+    
+    if (data !== null && data !== "null" && data != undefined) {
         data = JSON.parse(data);
         parseData(data);
-
     } else {//get from fb
         const deckRef = ref(db, 'users/' + uid + '/deck');
 
         onValue(deckRef, (snapshot) => {
             const data = snapshot.val();
-
             localStorage.setItem("shares", JSON.stringify(data));
+            localStorage.setItem("skey",uid);
             if (data) parseData(data);
 
         })
@@ -195,7 +199,6 @@ const displayWell = (selected) => {
     }
     plotRev(dates_pl[0], dates_pl[1]);
     const money = formatMoney(dates_pl[1].reduce((runnin, curr) => runnin + curr).toFixed(2));
-    
     document.getElementById('selected-well').textContent = selected;
     document.getElementById('sum-pl').textContent = `$${money}`;
     document.getElementById('payout-title').textContent = "% Payout";

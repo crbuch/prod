@@ -62,7 +62,7 @@ export const monitorAuthState = async () => {
 const login = async () => {
   let cleanUid = userName.value.replace(/\s/g,"");
   const password = userPassword.value;
-  
+
   if (cleanUid.substring(cleanUid.length - 8) != '@cml.com'){
     cleanUid = `${cleanUid}@cml.com`;
   }
@@ -84,6 +84,7 @@ const initStorage = (userCreds) => {
   localStorage.setItem('uid', userCreds.uid);
   localStorage.setItem('email', userCreds.email);
   sessionStorage.setItem('region', 'st');
+  sessionStorage.changePwd = false;
 };
 
 export const logout = async () => {
@@ -95,28 +96,32 @@ export const logout = async () => {
 };
 
 const changePwd = async () => {
-  if (newPassword !== newPwdRpt){
+  if (newPwd.value !== newPwdRpt.value){
     showPwdErr('Passwords do not match');
     return;
   }
   const auth = getAuth();
   const user = auth.currentUser;
-
+  
   updatePassword(user, newPwdRpt.value).then(() => {
     console.log('s :>> ');
-    sessionStorage.changePwd = false;
+    sessionStorage.changePwd = "success";
+    window.location.href = './index.html'
   }).catch((error) => {
     console.log('update pwd error :>> ', error);
   });
 }
 
+const init = () => {
+  const state = sessionStorage.changePwd;
 
-const currPage = window.location.pathname.split("/").pop();
-
-if (currPage == 'index.html'){
-  if (sessionStorage.changePwd == "true"){
+  if (state == "true"){
     formUpdate.style.display = 'block';
     form.style.display = 'none';
+  }else if (state == "success"){
+    formUpdate.style.display = 'none';
+    form.style.display = 'block';
+    showLoginError("Please login back in with new password");
   }else {
     formUpdate.style.display = 'none';
     form.style.display = 'block';
@@ -143,11 +148,17 @@ if (currPage == 'index.html'){
       
     }
   })
+}
+
+const currPage = window.location.pathname.split("/").pop();
+
+if (currPage == 'index.html'){
   monitorAuthState();
 
   window.onload = function () {
     hidePwdErr();
     hideLoginError();
+    init();
   }();
 }
 
