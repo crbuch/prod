@@ -27,6 +27,7 @@ const fetchData = () => {
         })
     }
 }
+
 const populateDropDown = (wells) => {
     let menu = select("#wellSelect");
     
@@ -75,13 +76,14 @@ const parseData = (d) => {
     const payouts_num = Object.entries(payout).map(
         ([_, value]) => wells.includes(value["Well Name"].replace("#", "").toLowerCase()) ? value["% Payout"] : null).filter(
             el => el !== null);
+    const money = formatMoney(dates_pl[1].reduce((runnin, curr) => runnin + curr).toFixed(2));
+
     document.getElementById('selected-well').textContent = "All Wells";
-    document.getElementById('sum-pl').textContent = `$${dates_pl[1].reduce((runnin, curr) => runnin + curr).toFixed(2)}`;
+    document.getElementById('sum-pl').textContent = `$${money}`;
     document.getElementById('payout-title').textContent = "% Mean Payout";
     document.getElementById('payout').textContent = `${(payouts_num.reduce((runnin, curr) => runnin + curr) * 100 / payouts_num.length).toFixed(0)}%`;
 
     //store data
-    
     localStorage.setItem('pl_data_wells', JSON.stringify(well_returns));
 
     displayProd("All Wells");
@@ -122,6 +124,12 @@ const format = (obj) => {
     return [dates,pl]
 }
 
+const formatMoney = (amount) => {
+    var parts = amount.toString().split(".");
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return parts.join(".");
+}
+
 const initWellList = (wells) => {
     let ulWellList = document.getElementById("well-list");
     for (let i = 0; i < wells.length; i++) {
@@ -147,7 +155,6 @@ const initWellList = (wells) => {
         ulWellList.appendChild(li);
     }
 }
-
 
 const displayWell = (selected) => {
     let data = localStorage.getItem('pl_data_wells');
@@ -187,9 +194,10 @@ const displayWell = (selected) => {
         return;
     }
     plotRev(dates_pl[0], dates_pl[1]);
+    const money = formatMoney(dates_pl[1].reduce((runnin, curr) => runnin + curr).toFixed(2));
     
     document.getElementById('selected-well').textContent = selected;
-    document.getElementById('sum-pl').textContent = `$${dates_pl[1].reduce((runnin, curr) => runnin + curr).toFixed(2)}`
+    document.getElementById('sum-pl').textContent = `$${money}`;
     document.getElementById('payout-title').textContent = "% Payout";
     document.getElementById('payout').textContent = `${(well_payout * 100).toFixed(0)}%`;
 }
@@ -339,25 +347,13 @@ document.getElementById("init_time").addEventListener('click', () => {
 })
 
 document.getElementById("show_pwd_form_btn").addEventListener('click', () => {
-    document.getElementById('change_pwd_form').style.display = "block";
+    sessionStorage.changePwd = "true";
+    window.location.href = "./index.html";
 })
 
-document.getElementById("close_pwd_form").addEventListener('click', () => {
-    document.getElementById('change_pwd_form').style.display = "none";
-})
 
-document.getElementById("change_pwd_btn").addEventListener('click', (e) => {
-    let pwd = document.getElementById("new_pwd").value;
-    let pwd_rpt = document.getElementById("new_pwd_rpt").value;
-    
-    if (pwd !== pwd_rpt) {
-        e.preventDefault();
-        document.getElementById('pwd_msg').textContent = "Passwords do not match";
-        document.getElementById('change_pwd_form').style.display = "block";
-        return;
-    }
-    changePwd(pwd, pwd_rpt);
-})
+
+
 
 window.onload = function () {
     const currTime = localStorage.getItem('initTime');

@@ -133,6 +133,16 @@ body {
     display: block;
 }
 
+.mr-auto,
+.mx-auto {
+  margin-right: auto !important; }
+
+
+.mx-auto {
+  margin-left: auto !important; 
+}
+
+
 @media (max-width: 767px) {
     .container {
         margin-left: 1.5rem !important;
