@@ -30,12 +30,11 @@ async function plot() {
       [...N, parseInt(Northing)],
       [...E, parseInt(Easting)]
       ], [[], [], []]);
-
-    changesign(DataTVD);
-    return [DataTVD, DataN, DataE];
+    
+    return [DataTVD.map(el => -el), DataN, DataE];
   };
 
-  const files = wbdData[wellName]
+  const files = wbdData[wellName];
   const dataPromises = files.map(file => getData(file));
   const data = await Promise.all(dataPromises);
   console.log('files :>> ', files);
@@ -113,12 +112,6 @@ async function dropdown() {
     menu.append("option")
       .text(well)
       .property("Value", well);
-  });
-};
-
-const changesign = (x) => {
-  x.forEach((el, i) => {
-    x[i] *= -1;
   });
 };
 

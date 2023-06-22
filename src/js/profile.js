@@ -51,12 +51,11 @@ const parseData = (d) => {
     let well_list = Object.keys(d);
     well_list.sort((a, b) => a.localeCompare(b, undefined, { sensitivity: 'base' }));
     well_list.unshift("All Wells");
-    initWellList(well_list);
     populateDropDown(well_list);
 
     let returns = {};
     let well_returns = {};
-    let pl2223 = pl23_22
+    let pl2223 = pl23_22;
 
     for (let [well, mos] of Object.entries(pl2223)) {
         for (let [mo, pl] of Object.entries(mos)) {
@@ -90,9 +89,29 @@ const parseData = (d) => {
     //store data
     localStorage.setItem('pl_data_wells', JSON.stringify(well_returns));
 
+    //sort well list best to worst
+    let rankedWells = rankPl(well_returns);
+    rankedWells.unshift("All Wells");
+    initWellList(rankedWells);
+
     displayProd("All Wells");
 }
+const rankPl = (obj) => {
+    let res = {};
+    for (let [well, mos] of Object.entries(obj)) {
+        let sum = 0;
+        for (let [_, mo] of Object.entries(mos)) {
+            let pl = mo["Recent Mnth Return"];
+            sum += mo["Recent Mnth Return"];
+        } 
+        res[well] = sum;
+    }
+    const arr = Object.entries(res);
+    arr.sort((a, b) => b[1] - a[1]);
+    const sortedObj = Object.fromEntries(arr);
+    return Object.keys(sortedObj)
 
+}
 const plotRev = (x, y, title="P&L (ST only)") => {
     const trace = makeTrace(x, y, 'P&L', "lines+markers", 'black',null);
     const layout = {

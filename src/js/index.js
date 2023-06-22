@@ -49,7 +49,7 @@ export const monitorAuthState = async () => {
     if (user != null) {
       localStorage.setItem('uid', user.uid);
       localStorage.setItem('email', user.email);
-      console.log('user.uid :>> ', user.uid);
+      console.log('user :>> ', user);
       //showApp();
     } else {
       console.log('user :>> ', user);
@@ -102,7 +102,7 @@ const changePwd = async () => {
   }
   const auth = getAuth();
   const user = auth.currentUser;
-  
+
   updatePassword(user, newPwdRpt.value).then(() => {
     console.log('s :>> ');
     sessionStorage.changePwd = "success";
