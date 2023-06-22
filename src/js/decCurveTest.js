@@ -83,6 +83,6 @@ async function declineCurve(message){
     Plotly.newPlot('declineCurve', [trace1, trace2], layout);
 }
 
-declineCurve("Carolpick1")
+declineCurve("bowman1")
 
 // read arrays and create graph
