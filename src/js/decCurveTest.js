@@ -7,15 +7,13 @@ async function declineCurve(message){
 
     const curr = await d3.csv(`../data/declineCurves/${message}.csv`);
     console.log(message)
-    console.log(curr);
-   
-    console.log(curr[0].t)
 
     // Populate the arrays from curr
     var t = [];
     var q = [];
     var t_model = [];
     var q_model = [];
+    var dates = [];
     curr.forEach(function(element) {
         if (element.hasOwnProperty('t')){
             t.push(element.t);
@@ -33,19 +31,6 @@ async function declineCurve(message){
             q_model.push(element.q_model);
         }
       });
-    console.log(t)
-    console.log(q)
-    console.log(t_model)
-    console.log(q_model)
-    
-    // let traceOil = makeTrace( 
-    //     site_date,
-    //     site_oil,
-    //     "Oil [MBO]",
-    //     null,
-    //     "green",
-    //     comments
-    // );
 
     document.getElementById('declineCurve').style.display = 'block';
 
@@ -54,8 +39,9 @@ async function declineCurve(message){
         y: q,
         mode: 'lines',
         type: 'scatter',
-        color: 'green',
-        visible: true
+        name: 'Oil Produced',
+        line: {
+            color: 'null'},
     };
     var trace2 = {
         x: t_model,
@@ -63,25 +49,40 @@ async function declineCurve(message){
         mode: 'lines',
         type: 'scatter',
         color: 'green',
-        visible: true
+        name: 'Decl Curve',
     };
-    console.log(typeof(trace2))
     // autorange: true,
     var layout = {
-        title: 'My Plotly Graph', // set the title of the graph
+        title: 'Decline Curve Model', // set the title of the graph
+        height: 800,
+        legend: {
+            yanchor: 'top',
+            y: .99,
+            xanchor: 'right',
+            x: .99,
+        },
         xaxis: {
-            autorange: true // adjust the x-axis range if needed
+            title: 'Time',
+            autorange: true, // adjust the x-axis range if needed
+            gridcolor: 'darkgray',
+            tickmode: 'linear',  // Set the tick mode to 'auto'
+            dtick: 'M12',  // Set the tick interval to 12 months (representing 1 year)
+            // tickcolor: 'rgba(0, 0, 0, 1)', // Set the tick line color to black
+            // tickwidth: 2
         },
         yaxis: {
+            title: 'BOPM (log)',
             type: 'log',
             autorange: true, // adjust the y-axis range if needed
-        }
+            gridcolor: 'darkgray',
+            // tickcolor: 'rgba(0, 0, 0, 1)', // Set the tick line color to black
+            // tickwidth: 2
+        },
       };
 
     Plotly.newPlot('declineCurve', [trace1, trace2], layout);
-
 }
 
-declineCurve("Aaron1")
+declineCurve("Carolpick1")
 
 // read arrays and create graph

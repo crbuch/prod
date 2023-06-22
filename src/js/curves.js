@@ -141,7 +141,7 @@ const curve = (timeFrame, data) => {
   document.getElementById("wellName").innerHTML = selectedOption;
   document.getElementById("individualTable").style.display = "none";
 
-  [/*'oilDeclineCurve',*/ 'gasDeclineCurve', 'waterDeclineCurve', 'waterCutCurve', 'totalFluidCurve', 'combinationCurves'].forEach(id => {
+  [/*'oilDeclineCurve',*/ 'gasDeclineCurve', 'waterDeclineCurve', 'waterCutCurve', 'totalFluidCurve', 'combinationCurves', 'moOilCurve'].forEach(id => {
     document.getElementById(id).style.display = 'block';
   });
   const site_data = data.prodData.filter(site => site[0] === selectedOption);
@@ -156,8 +156,9 @@ const curve = (timeFrame, data) => {
   if (timeFrame > 0) [site_date, site_oil, site_gas, site_water, comments, movingAverage] =
   [site_date, site_oil, site_gas, site_water, comments, movingAverage].map(arr => arr.slice(0, timeFrame));
 
-  // READING MONTHLY DATA (NOT IN USE)
+  // READING MONTHLY DATA (+ Drops most recent month)
   const mo_site_data = data.MoProdDataST.filter(site => site[0] === selectedOption);
+  mo_site_data.pop();
   let site_date_mo = mo_site_data.map(site => site[6]);
   let site_oil_mo = mo_site_data.map(site => site[1]);
   const cumlMoOil = site_oil_mo.reduce((acc, val, idx) => (idx === 0 ? acc.concat(val) : acc.concat(val + acc[idx - 1])), []);
@@ -214,8 +215,16 @@ const curve = (timeFrame, data) => {
     "black"
   );
 
+  let traceMoOil = makeTrace(
+    site_date_mo,
+    site_oil_mo,
+    "Monthly Oil [MBO]",
+    "line",
+    "green"
+  );
+
   const scale = (document.getElementById("logarithmic").classList.contains("active")) ? 'log' : 'linear';
-  const plotContainers = [/*"oilDeclineCurve", */"gasDeclineCurve", "waterDeclineCurve", 'totalFluidCurve', 'waterCutCurve', 'combinationCurves'];
+  const plotContainers = [/*"oilDeclineCurve", */"gasDeclineCurve", "waterDeclineCurve", 'totalFluidCurve', 'waterCutCurve', 'combinationCurves', 'moOilCurve'];
   const combination = [traceOil, traceOilAvg, traceGas, traceWater, traceFluid];
   let traceArrays = [
     // [traceOil, traceOilAvg],
@@ -223,14 +232,15 @@ const curve = (timeFrame, data) => {
     [traceWater],
     [traceFluid],
     [traceCut],
-    combination
+    combination,
+    [traceMoOil]
   ];
 
   plotContainers.forEach((container, i) => {
     traceArrays[i].forEach(trace => {
       trace.visible = (i === 4 && trace.name !== "Oil [MBO]") ? "legendonly" : trace.visible;
     });
-    const layout = makeLayout([/*'Oil vs Time (BOPD)', */'Gas vs Time (MCFD)', 'Water vs Time (BWPD)', 'Total Fluid vs Time (BFPD)', 'Water Cut Percentage', 'Combined Production'][i], scale, 
+    const layout = makeLayout([/*'Oil vs Time (BOPD)', */'Gas vs Time (MCFD)', 'Water vs Time (BWPD)', 'Total Fluid vs Time (BFPD)', 'Water Cut Percentage', 'Combined Production', 'Monthly Oil vs Time (BOPM)'][i], scale, 
                               (scale === 'log') ? [1, 2, 5, 10, 20, 50, 100, 200, 500, 1000, 2000, 3000] : null);
     Plotly.newPlot(container, traceArrays[i], layout, config);
   });
@@ -312,7 +322,7 @@ const table = (coreData) => {
   dh.buildTable(well);
 
   document.getElementById('individualTable').style.display = 'inline-block';
-  [/*'oilDeclineCurve,'*/ 'gasDeclineCurve', 'waterDeclineCurve', 'waterCutCurve', 'totalFluidCurve', 'combinationCurves', 'cumOilCurve', 'cumVSdailyProdCurve', 'cumVSmoProdCurve'].forEach(tag => {
+  [/*'oilDeclineCurve,'*/ 'gasDeclineCurve', 'waterDeclineCurve', 'waterCutCurve', 'totalFluidCurve', 'combinationCurves', 'cumOilCurve', 'cumVSdailyProdCurve', 'cumVSmoProdCurve','moOilCurve'].forEach(tag => {
     document.getElementById(tag).style.display = 'none'
   });
 };
@@ -333,6 +343,81 @@ const switchActives = (event) => {
   console.log('activeTime :>> ', activeTime);
   curve(Number(activeTime) + 1, curveInfo);
 };
+
+// async function declineCurve(message){
+//   const well_params = await d3.csv("../data/declineCurves/1params.csv").then((data) => {
+//       return data
+//   });
+
+//   const curr = await d3.csv(`../data/declineCurves/${message}.csv`);
+//   console.log(message)
+//   console.log(curr);
+ 
+//   console.log(curr[0].t)
+
+//   // Populate the arrays from curr
+//   var t = [];
+//   var q = [];
+//   var t_model = [];
+//   var q_model = [];
+//   var dates = [];
+//   curr.forEach(function(element) {
+//       if (element.hasOwnProperty('t')){
+//           t.push(element.t);
+//       }
+      
+//       if (element.hasOwnProperty('q')){
+//           q.push(element.q);
+//       }
+
+//       if (element.hasOwnProperty('t_model')){
+//           t_model.push(element.t_model);
+//       }
+        
+//       if (element.hasOwnProperty('q_model')){
+//           q_model.push(element.q_model);
+//       }
+//     });
+//   console.log(t)
+//   console.log(q)
+//   console.log(t_model)
+//   console.log(q_model)
+
+//   document.getElementById('declineCurve').style.display = 'block';
+
+//   var trace1 = {
+//       x: t,
+//       y: q,
+//       mode: 'lines',
+//       type: 'scatter',
+//       // line: {
+//           // color: 'green'}
+//   };
+//   var trace2 = {
+//       x: t_model,
+//       y: q_model,
+//       mode: 'lines',
+//       type: 'scatter',
+//       color: 'green'
+//   };
+//   console.log(typeof(trace2))
+//   // autorange: true,
+//   var layout = {
+//       title: 'My Plotly Graph', // set the title of the graph
+//       xaxis: {
+//           autorange: true // adjust the x-axis range if needed
+//       },
+//       yaxis: {
+//           type: 'log',
+//           autorange: true, // adjust the y-axis range if needed
+//       }
+//     };
+
+//   Plotly.newPlot('declineCurve', [trace1, trace2], layout);
+// }
+
+// declineCurve("Dunlap1")
+
 
 
 //Main//
