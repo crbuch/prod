@@ -97,7 +97,7 @@ const displayPlot = (selected) => {
   // Loop and make the plots, contain keys found in plotContainers^^
   plotContainers.forEach((container, i) => {
     // SETS SCALE TO LOG FOR THE Y-AXIS IF (i == [index in plotContainers])
-    let scale = (i == 2) ? "log" : null;
+    let scale = (i == 2 || i == 1) ? "log" : null;
     // CREATES LAYOUT, INCLUDES TITLE, SCALE, AND TICK VALUES
     const layout = makeLayout(['Cumulative Oil vs Time', 'Cumulative Oil vs Daily Oil Production', 'Cumulative Oil vs Monthly Oil Production'][i], scale, 
                               (scale === 'log') ? [1, 5, 10, 50, 100, 500, 1000, 5000, 10000, 15000] : null);
