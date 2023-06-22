@@ -82,6 +82,6 @@ async function declineCurve(message){
 
 }
 
-declineCurve("LearyTrust1")
+declineCurve("Aaron1")
 
 // read arrays and create graph
