@@ -11,9 +11,17 @@ export const makeTrace = (x, y, name, type="lines", color, text, visible=true, d
     mode: type
 });
 
-export const makeLayout = (title, type, tickvals) => ({
+export const makeLayout = (title, type, tickvals, ytitle, xtitle) => ({
     title,
+    height: null,
+    legend: {
+        orientation: "h",
+            y: 1.1,
+            xanchor: "center",
+            x: .5,
+    },
     yaxis: {
+        title: ytitle,
         type: type || "linear",
         rangemode: "tozero",
         autorange: true,
@@ -22,6 +30,7 @@ export const makeLayout = (title, type, tickvals) => ({
         gridcolor: "#dbdbdb",
     },
     xaxis: {
+        title: xtitle,
         gridcolor: "#dbdbdb",
     },
 });

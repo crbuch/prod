@@ -99,11 +99,32 @@ const displayPlot = (selected) => {
     // SETS SCALE TO LOG FOR THE Y-AXIS IF (i == [index in plotContainers])
     let scale = [1, 2].includes(i) ? "log" : null;
     // CREATES LAYOUT, INCLUDES TITLE, SCALE, AND TICK VALUES
-    const layout = makeLayout(['Cumulative Oil vs Time', 'Cumulative Oil vs Daily Oil Production', 'Cumulative Oil vs Monthly Oil Production'][i], scale, 
-                              (scale === 'log') ? [1, 5, 10, 50, 100, 500, 1000, 5000, 10000, 15000] : null);
+    var layout = {
+      title: ['Cumulative Oil vs Time', 'Cumulative Oil vs Daily Oil Production', 'Cumulative Oil vs Monthly Oil Production'][i],
+      xaxis: {
+        autorange: true,
+      },
+      yaxis: {
+        autorange: true,
+        type: scale,
+        tickvals: (scale === 'log') ? [1, 10, 100, 1000, 10000, 100000] : null,
+      },
+    }
+      
     Plotly.newPlot(container, traceArrays[i], layout);
   });
 }
+
+
+  
+
+
+
+
+
+
+
+
 
 displayPlot("Aaron #1");
 //main
