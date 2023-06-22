@@ -25,28 +25,19 @@ export const pwdErr = document.querySelector('#pwdErr');
 export const showLoginForm = () => {
   const currPage = window.location.pathname.split("/").pop();
   let dev;
-  if (location.hostname === "localhost" || location.hostname === "127.0.0.1") dev = true;
     
   if (currPage != 'index.html'){
-    if (dev === true){
-      window.location.replace("http://127.0.0.1:5503/../dist/index.html");
-      return;
-    }
-    window.location.replace("https://matthewplaisance.github.io/STprod/dist/index.html");
+    window.location.href = './index.html';
+    
   }
 }
 
 export const showApp = () => {
   const currPage = window.location.pathname.split("/").pop();
   let dev;
-  if (location.hostname === "localhost" || location.hostname === "127.0.0.1") dev = true;
 
   if (currPage == 'index.html'){
-    if (dev === true){
-      window.location.replace("http://127.0.0.1:5503/../dist/curves.html");
-      return;
-    }
-    window.location.replace("https://matthewplaisance.github.io/STprod/dist/curves.html");
+    window.location.href = './curves.html';
   }
   }
 

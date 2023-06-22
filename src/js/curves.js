@@ -101,7 +101,7 @@ const displayCumlData = (data, selectedOption) => {
 const getSelectedOption = (data) => {
   let selectedOption = null;
   let menuNode = select("#siteSelection").node().value;
-
+  
   if (menuNode != "default") {
     selectedOption = [menuNode];
   } else if (sessionStorage.getItem("siteSelection") != null) {
@@ -109,7 +109,9 @@ const getSelectedOption = (data) => {
     sessionStorage.removeItem("siteSelection");
   } else selectedOption = [...data[0][0]];
 
-  return selectedOption.join('');
+  selectedOption = selectedOption.join('');
+  sessionStorage.siteSelection = selectedOption;
+  return selectedOption;
 };
 
 const curve = (timeFrame, data) => {
@@ -144,6 +146,7 @@ const curve = (timeFrame, data) => {
   [/*'oilDeclineCurve',*/ 'gasDeclineCurve', 'waterDeclineCurve', 'waterCutCurve', 'totalFluidCurve', 'combinationCurves', 'moOilCurve'].forEach(id => {
     document.getElementById(id).style.display = 'block';
   });
+
   const site_data = data.prodData.filter(site => site[0] === selectedOption);
   let site_date = site_data.map(site => site[9]);
   let site_oil = site_data.map(site => site[2]);
