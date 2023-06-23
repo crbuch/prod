@@ -169,7 +169,7 @@ const curve = (timeFrame, data) => {
   let traceOil = makeTrace( 
     site_date,
     site_oil,
-    "Oil [MBO]",
+    "Oil [BO]",
     null,
     "green",
     comments
@@ -197,7 +197,7 @@ const curve = (timeFrame, data) => {
   let traceWater = makeTrace(
     site_date,
     site_water,
-    "Water [MBW]",
+    "Water [BW]",
     "line",
     "blue",
   );
@@ -213,7 +213,7 @@ const curve = (timeFrame, data) => {
   let traceFluid = makeTrace(
     site_date,
     total_fluid,
-    "Total Fluid [MB]",
+    "Total Fluid [BBLS]",
     "line",
     "black"
   );
@@ -221,7 +221,7 @@ const curve = (timeFrame, data) => {
   let traceMoOil = makeTrace(
     site_date_mo,
     site_oil_mo,
-    "Monthly Oil [MBO]",
+    "Monthly Oil [BO]",
     "line",
     "green"
   );
@@ -241,7 +241,7 @@ const curve = (timeFrame, data) => {
 
   plotContainers.forEach((container, i) => {
     traceArrays[i].forEach(trace => {
-      trace.visible = (i === 4 && trace.name !== "Oil [MBO]") ? "legendonly" : trace.visible;
+      trace.visible = (i === 4 && trace.name !== "Oil [BO]") ? "legendonly" : trace.visible;
     });
     const layout = makeLayout([/*'Oil vs Time (BOPD)', */'Gas vs Time (MCFD)', 'Water vs Time (BWPD)', 'Total Fluid vs Time (BFPD)', 'Water Cut Percentage', 'Combined Production', 'Monthly Oil vs Time (BOPM)'][i], scale, 
                               (scale === 'log') ? [1, 2, 5, 10, 20, 50, 100, 200, 500, 1000, 2000, 3000] : null);
@@ -272,7 +272,7 @@ const curve = (timeFrame, data) => {
       return;
     }
     const visible_traces = JSON.parse(sessionStorage.getItem('visible_traces'));
-    const map = {'Gas [MCF]': site_gas, 'Oil [MBO]': site_oil, 'Water [MBW]': site_water, 'Total Fluid [MB]': total_fluid };
+    const map = {'Gas [MCF]': site_gas, 'Oil [BO]': site_oil, 'Water [BW]': site_water, 'Total Fluid [BBLS]': total_fluid };
 
     for (const[key,vals] of Object.entries(visible_traces)){
       for (let val of vals){
@@ -405,7 +405,7 @@ document.getElementById("table").addEventListener('click', () => {
 });
 
 //store currently visible plots in sessionstorage to access in relayout event; init to only oil(page load)
-let currVisible = {"visible":["Oil [MBO]"]};
+let currVisible = {"visible":["Oil [BO]"]};
 sessionStorage.setItem("visible_traces",JSON.stringify(currVisible));
 
 //init page on load//
