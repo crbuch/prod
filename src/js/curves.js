@@ -50,7 +50,7 @@ const displayPumpInfo = (data, selectedOption) => {
         document.getElementById("SPM").innerHTML = `SPM: ${wellInfo["SPM"]}`;
         document.getElementById("DHSL").innerHTML = `DH SL: ${wellInfo["DH SL"]}`;
         document.getElementById("ideal").innerHTML = `Ideal bfpd: ${wellInfo["Ideal bfpd"]}`;
-        document.getElementById("pumpEff").innerHTML = `Pump Eff: ${wellInfo["Pump Eff"] * 100}`;
+        document.getElementById("pumpEff").innerHTML = `Pump Eff: ${Math.round(wellInfo["Pump Eff"] * 100)}`;
         document.getElementById("pumpDepth").innerHTML = `Pump Depth: ${wellInfo["Pump Depth"]}`;
         document.getElementById("GFLAP").innerHTML = `GFLAP: ${wellInfo["GFLAP"]}`;
         document.getElementById("Inc").innerHTML = `Inc: ${wellInfo["Inc"]}`;
