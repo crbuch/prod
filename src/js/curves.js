@@ -345,6 +345,7 @@ const switchActives = (event) => {
   const activeTime = document.getElementById("timeframes").querySelectorAll(".active")[0].id.substring(4);//gives the number from the active view id
   console.log('activeTime :>> ', activeTime);
   curve(Number(activeTime) + 1, curveInfo);
+
   function ddd () {
     console.log("in ddd");
     try{
@@ -355,7 +356,7 @@ const switchActives = (event) => {
       console.log("e");
     };
   }
-  setTimeout(ddd,500)
+  setTimeout(ddd,100)
 };
 
 
