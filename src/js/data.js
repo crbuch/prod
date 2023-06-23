@@ -52,7 +52,6 @@ export const pl23_22 = await json("../data\\pldata.json").then((data) => {
     return data
 });
 
-
 export const activeWells = () => {
     let data = dataET;
     if (sessionStorage.getItem('region') !== 'et') data = dataST;
