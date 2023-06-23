@@ -104,6 +104,7 @@ const displayPlot = (selected) => {
       title: ['Cumulative Oil vs Time', 'Cumulative Oil vs Daily Oil Production', 'Cumulative Oil vs Monthly Oil Production'][i],
       xaxis: {
         autorange: true,
+        showline: scale == 'log' ? true : false,
         gridcolor: 'darkgray',
       },
       yaxis: {
@@ -117,17 +118,6 @@ const displayPlot = (selected) => {
     Plotly.newPlot(container, traceArrays[i], layout);
   });
 }
-
-
-  
-
-
-
-
-
-
-
-
 
 displayPlot("Aaron #1");
 //main
