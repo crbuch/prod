@@ -12,7 +12,7 @@ let allHtmlPlugs = htmlPageNames.map(page => {
 });
 
 module.exports = {
-  mode: 'production',
+  mode: 'development',
   //devtool: 'eval-source-map',
   entry: {
     main:'./src/js/index.js',

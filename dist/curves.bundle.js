@@ -1,1 +1,266 @@
-(()=>{"use strict";var e,t,n,o,a,l={141:(e,t,n)=>{n.a(e,(async(e,t)=>{try{var o=n(199),a=n(448),l=n(971),i=n(302),r=n(91),s=n(914),c=e([o]);o=(c.then?(await c)():c)[0],(0,l.z)(),(0,a.n)();const d=(e,t)=>{let n=0,o=0,a="";e.forEach((e=>{e["Well Name"].includes(t)&&(n=e["Recent Month P&L"],o=e["YTD P&L"],a=e.Date.slice(0,3))})),document.getElementById("pnl").innerHTML=`P&L : $${n.toFixed(0).toString().replace(/\B(?=(\d{3})+(?!\d))/g,",")} ${a}`,document.getElementById("YTD").innerHTML=`$${o.toFixed(0).toString().replace(/\B(?=(\d{3})+(?!\d))/g,",")} YTD`},u=(e,t)=>{var n=0;e.forEach((e=>{e["Well Name"].includes(t)&&(n=100*e["% Payout"])})),document.getElementById("payout").innerHTML="Payout : "+n.toFixed(0).toLocaleString("en-US")+"%"},m=(e,t)=>{let n=e.find((e=>e["Well Name"]===t));void 0!==n?0!==n.SPM?$(document).ready((function(){$("#pumpInfo").toggle(),document.getElementById("c").innerHTML=`C: ${n.C}`,document.getElementById("SPM").innerHTML=`SPM: ${n.SPM}`,document.getElementById("DHSL").innerHTML=`DH SL: ${n["DH SL"]}`,document.getElementById("ideal").innerHTML=`Ideal bfpd: ${n["Ideal bfpd"]}`,document.getElementById("pumpEff").innerHTML=`Pump Eff: ${Math.round(100*n["Pump Eff"])}`,document.getElementById("pumpDepth").innerHTML=`Pump Depth: ${n["Pump Depth"]}`,document.getElementById("GFLAP").innerHTML=`GFLAP: ${n.GFLAP}`,document.getElementById("Inc").innerHTML=`Inc: ${n.Inc}`})):$(document).ready((function(){$("#notPumpingInfo").toggle(),$("#notPumping").html("This well is not pumping")})):$(document).ready((function(){$("#notPumpingInfo").toggle(),$("#notPumping").html("No pump data available")}))},g=(e,t)=>{let n={cuml:0,gasCuml:0,waterCuml:0,formation:""};e.forEach((e=>{t===e[0]&&(n.cuml=e[1],n.gasCuml=e[3],n.waterCuml=e[2],n.formation=e[4])}));const o=document.getElementById("formation"),a=document.getElementById("cumlativeData");n.formation||(document.getElementById("filler4").style.display=""),o.innerHTML=n.formation,a.innerHTML=`Cumulative: ${n.cuml} MBO, ${n.gasCuml} MMCF, ${n.waterCuml} MBW`},p=e=>{let t=null,n=(0,i.Ys)("#siteSelection").node().value;return"default"!=n?t=[n]:null!=sessionStorage.getItem("siteSelection")?(t=[sessionStorage.getItem("siteSelection")],sessionStorage.removeItem("siteSelection")):t=[...e[0][0]],t=t.join(""),sessionStorage.siteSelection=t,t},y=(e,t)=>{const n=p(t.prodData);let o=sessionStorage.getItem("region");null==o&&(sessionStorage.setItem("region","st"),o="st"),"et"!=o&&(d(t.economicsData,n),u(t.payoutData,n),m(t.pumpData,n),document.getElementById("pumpInfo").style.display="none",document.getElementById("notPumpingInfo").style.display="none",["c","SPM","DHSL","ideal","pumpEff","pumpDepth","GFLAP","Inc","notPumping"].forEach((e=>{document.getElementById(e).innerHTML=""}))),g(t.dataCuml,n),document.getElementById("zoomEl").style.visibility="hidden",document.getElementById("wellName").innerHTML=n,document.getElementById("individualTable").style.display="none",["gasDeclineCurve","waterDeclineCurve","waterCutCurve","totalFluidCurve","combinationCurves","moOilCurve"].forEach((e=>{document.getElementById(e).style.display="block"}));const a=t.prodData.filter((e=>e[0]===n));let l=a.map((e=>e[9])),i=a.map((e=>e[2])),s=a.map((e=>e[3])),c=a.map((e=>e[4])),y=a.map((e=>e[7])),v=a.map((e=>e[8])),h=c.map(((e,t)=>e/(e+i[t])*100)),f=i.map(((e,t)=>e+c[t]));e>0&&([l,i,s,c,y,v]=[l,i,s,c,y,v].map((t=>t.slice(0,e))));const S=t.MoProdDataST.filter((e=>e[0]===n));S.pop();let b=S.map((e=>e[6])),E=S.map((e=>e[1]));E.reduce(((e,t,n)=>0===n?e.concat(t):e.concat(t+e[n-1])),[]);let w=(0,r.Ho)(l,i,"Oil [BO]",null,"green",y);const I=(0,r.Ho)(l,v,"7 Day Avg","lines",null,null,null,"dot");let B=(0,r.Ho)(l,s,"Gas [MCF]","line","red"),L=(0,r.Ho)(l,c,"Water [BW]","line","blue");const T=(0,r.Ho)(l,h,"line","#25C4DC");let C=(0,r.Ho)(l,f,"Total Fluid [BBLS]","line","black"),D=(0,r.Ho)(b,E,"Monthly Oil [BO]","line","green");const P=document.getElementById("logarithmic").classList.contains("active")?"log":"linear",M=[w,I,B,L,C];let x=[[B],[L],[C],[T],M,[D]];["gasDeclineCurve","waterDeclineCurve","totalFluidCurve","waterCutCurve","combinationCurves","moOilCurve"].forEach(((e,t)=>{x[t].forEach((e=>{e.visible=4===t&&"Oil [BO]"!==e.name?"legendonly":e.visible}));const n=(0,r.wx)(["Gas vs Time (MCFD)","Water vs Time (BWPD)","Total Fluid vs Time (BFPD)","Water Cut Percentage","Combined Production","Monthly Oil vs Time (BOPM)"][t],P,"log"===P?[1,2,5,10,20,50,100,200,500,1e3,2e3,3e3]:null);Plotly.newPlot(e,x[t],n,r.vc)}));const k=document.getElementById("combinationCurves");k.on("plotly_relayout",(function(e){JSON.stringify(e);const t=document.getElementById("zoomEl");t.innerHTML="";const n=document.createElement("p");n.textContent="Produced:",t.appendChild(n);let{"xaxis.range[0]":o,"xaxis.range[1]":a}=e;o||(o=l[l.length-1],a=l[0]);const r=o.substring(0,10),d=a.substring(0,10),u=l.indexOf(`${r}T00:00:00.000Z`),m=l.indexOf(`${d}T00:00:00.000Z`);if(-1===u)return;const g=JSON.parse(sessionStorage.getItem("visible_traces")),p={"Gas [MCF]":s,"Oil [BO]":i,"Water [BW]":c,"Total Fluid [BBLS]":f};for(const[e,n]of Object.entries(g))for(let e of n){const n=p[e];console.log(`sum ${e}:>> `,n.slice(m,u+1).reduce(((e,t)=>e+t),0)/1e3);const o=(n.slice(m,u+1).reduce(((e,t)=>e+t),0)/1e3).toFixed(1);let a=-5;"Total Fluid [MB]"==e&&(a=-4);const l=e.slice(a);let i=e.slice(0,a);"Total Fluid [MB]"==e&&(i=`${i} `);const r=document.createElement("p");r.textContent=`${i}: ${o} ${l}`,r.style.fontSize="15px",t.appendChild(r)}t.style.visibility="visible"})),k.on("plotly_legendclick",(function(e){const t=e.curveNumber,n=M[t].name;let o=JSON.parse(sessionStorage.visible_traces)||{visible_traces:[]};o.visible.includes(n)?o.visible=o.visible.filter((e=>e!==n)):o.visible.push(n),sessionStorage.setItem("visible_traces",JSON.stringify(o))})),document.getElementById("siteSelection").focus(),document.getElementById("filler4").style.display="none"},v=e=>{const t=e.map((e=>[...e])),n=p(t),a=t.filter((e=>e[0]==n));a.forEach((e=>{e.shift();for(let t=0;t<2;t++)e.pop()})),o.sb(a),document.getElementById("individualTable").style.display="inline-block",["gasDeclineCurve","waterDeclineCurve","waterCutCurve","totalFluidCurve","combinationCurves","cumOilCurve","cumVSdailyProdCurve","cumVSmoProdCurve","moOilCurve"].forEach((e=>{document.getElementById(e).style.display="none"}))},h=e=>{e.preventDefault();try{document.getElementById("siteSelection").blur()}catch{}const t=e.target;document.getElementById(t.id).parentNode.querySelectorAll("*").forEach((e=>{e.classList.remove("active")})),t.className+="active";const n=document.getElementById("timeframes").querySelectorAll(".active")[0].id.substring(4);console.log("activeTime :>> ",n),y(Number(n)+1,I)},f=localStorage.getItem("uid");let S=sessionStorage.getItem("region");console.log("currUid :>> ",f);let b=o.bQ,E=o.OJ,w=o.kL;"et"==S&&(b=o.jD,E=o.n1);const I={prodData:b,dataCuml:E,economicsData:o.vY,payoutData:o.o8,pumpData:o.zY,MoProdDataST:w};["linear","logarithmic","DaysInception","Days30","Days365","Days180"].forEach((e=>{document.getElementById(e).addEventListener("click",h)}));const B="#siteSelection";o.j6(B),(0,i.Ys)(B).on("change",(()=>{y(localStorage.getItem("initTime"),I)})),document.getElementById("table").addEventListener("click",(()=>{!0!==(0,s.oN)("table")&&((0,s.Iv)("table","DaysInception"),v(b))}));let L={visible:["Oil [BO]"]};sessionStorage.setItem("visible_traces",JSON.stringify(L)),window.onload=function(){let e="DaysInception";31==localStorage.getItem("initTime")&&(e="Days30"),(0,s.LB)(e),(0,s.uG)(localStorage.getItem("initScale")),y(localStorage.getItem("initTime"),I)}(),t()}catch(e){t(e)}}))},199:(e,t,n)=>{n.a(e,(async(e,o)=>{try{n.d(t,{OJ:()=>r,bQ:()=>e,j6:()=>g,jD:()=>i,kL:()=>l,n1:()=>s,o8:()=>d,sb:()=>p,vY:()=>c,zY:()=>u});var a=n(302);const e=await(0,a.AVB)("../data/allProductionData.json").then((e=>e)),l=await(0,a.AVB)("../data/dataMonthlyST.json").then((e=>e)),i=await(0,a.AVB)("../data/allProductionDataET.json").then((e=>e)),r=await(0,a.AVB)("../data/cumProd.json").then((e=>e)),s=await(0,a.AVB)("../data/cumProdET.json").then((e=>e)),c=(await(0,a.AVB)("../data/analyze.json").then((e=>e)),await(0,a.AVB)("../data/analyzeET.json").then((e=>e)),await(0,a.AVB)("../data/formations.json").then((e=>e)),await(0,a.AVB)("../data/economics.json").then((e=>e))),d=await(0,a.AVB)("../data/payouts.json").then((e=>e)),u=await(0,a.AVB)("../data/pumpInfo.json").then((e=>e)),m=(await(0,a.AVB)("../data/legacyEcon.json").then((e=>e)),await(0,a.AVB)("../data\\pldata.json").then((e=>e)),()=>{let t=i;"et"!==sessionStorage.getItem("region")&&(t=e);const n=t[0][0],o=new Set;for(let e=0;e<t.length;e++){const a=t[e][0];if(o.add(a),a===n&0!==e)break}return o}),g=e=>{let t=(0,a.Ys)(e);m().forEach((e=>{t.append("option").text(e).property("Value",e)}))},p=e=>{const t=(0,a.Ys)("tbody");t.html(""),e.forEach((e=>{let n=t.append("tr");Object.values(e).forEach((e=>{n.append("td").text(e)}))}))};o()}catch(e){o(e)}}),1)},971:(e,t,n)=>{n.d(t,{z:()=>c});var o=n(914),a=n(977),l=n(864),i=n(679);const r=(0,a.ZF)({apiKey:"AIzaSyC3yOK_QL5QbJaKvjynXXzObl4uKsoJpTU",authDomain:"cmlproduction-1e86a.firebaseapp.com",projectId:"cmlproduction-1e86a",storageBucket:"cmlproduction-1e86a.appspot.com",messagingSenderId:"924402330611",appId:"1:924402330611:web:55155c0a5c5c6a7d4b8086"}),s=(0,l.v0)(r);(0,i.N8)();const c=async()=>{(0,l.Aj)(s,(e=>{null!=e?(localStorage.setItem("uid",e.uid),localStorage.setItem("email",e.email),console.log("user :>> ",e)):(console.log("user :>> ",e),(0,o.L8)())}))},d=async()=>{let e=o.RX.value.replace(/\s/g,"");const t=o.ek.value;"@cml.com"!=e.substring(e.length-8)&&(e=`${e}@cml.com`),(0,l.e5)(s,e,t).then((e=>{u(e.user),(0,o.i1)()})).catch((e=>{console.log("error :>> ",e),(0,o.r7)(e)}))},u=e=>{null==localStorage.getItem("initTime")&&localStorage.setItem("initTime",0),null==localStorage.getItem("initScale")&&localStorage.setItem("initScale","linear"),localStorage.setItem("uid",e.uid),localStorage.setItem("email",e.email),sessionStorage.setItem("region","st"),sessionStorage.changePwd=!1},m=async()=>{if(o.Mu.value!==o.bh.value)return void(0,o.GK)("Passwords do not match");const e=(0,l.v0)().currentUser;(0,l.gQ)(e,o.bh.value).then((()=>{console.log("s :>> "),sessionStorage.changePwd="success",window.location.href="./index.html"})).catch((e=>{console.log("update pwd error :>> ",e)}))};"index.html"==window.location.pathname.split("/").pop()&&(c(),window.onload=((0,o.qb)(),(0,o.w)(),void(()=>{const e=sessionStorage.changePwd;"true"==e?(o._v.style.display="block",o.cr.style.display="none"):"success"==e?(o._v.style.display="none",o.cr.style.display="block",(0,o.r7)("Please login back in with new password")):(o._v.style.display="none",o.cr.style.display="block"),o.Df.addEventListener("click",d),o.t5.addEventListener("click",m),o.Xe.addEventListener("click",(()=>{window.location.href="./profile.html",sessionStorage.changePwd=!1})),o.cr.addEventListener("keydown",(function(e){"Enter"===e.key&&(e.preventDefault(),o.Df.click())})),o._v.addEventListener("keydown",(function(e){"Enter"==e.key&&(e.preventDefault(),o.t5.click())}))})()))},91:(e,t,n)=>{n.d(t,{Ho:()=>o,vc:()=>l,wx:()=>a});const o=(e,t,n,o="lines",a,l,i=!0,r)=>({x:e,y:t,text:l,name:n,visible:i,line:{color:a,dash:r},mode:o}),a=(e,t,n,o,a)=>({title:e,height:null,legend:{orientation:"h",y:1.1,xanchor:"center",x:.5},yaxis:{title:o,type:t||"linear",rangemode:"tozero",autorange:!0,tickformat:"f",tickvals:n,gridcolor:"#dbdbdb"},xaxis:{title:a,gridcolor:"#dbdbdb"}}),l={modeBarButtonsToRemove:["sendDataToCloud","autoScale2d","hoverClosestCartesian","hoverCompareCartesian","lasso2d","zoomIn2d","zoomOut2d","toggleSpikelines"],displaylogo:!1,responsive:!0}},448:(e,t,n)=>{n.d(t,{n:()=>a}),$(document).ready((function(){$("#header").load("../src/pages/header.html",(function(){a()}))}));const o=()=>{let e=sessionStorage.getItem("region");"st"==e||null==e?(console.log("switching to east"),sessionStorage.setItem("region","et")):sessionStorage.setItem("region","st"),sessionStorage.removeItem("siteSelection"),location.reload()},a=()=>{let e=sessionStorage.getItem("region");const t=document.querySelector("#fieldTitle"),n=document.querySelector("#toggleRegion");n.addEventListener("click",o);const a=$(window).width();console.log("currRegion :>> ",e),"st"==e||null==e?(n.innerHTML="East Texas",t.textContent="South Texas Field",a<768&&(t.textContent="CML EXP - South Texas")):(n.innerHTML="South Texas",t.textContent="East Texas Field",a<768&&(t.textContent="CML EXP - East Texas"))}},914:(e,t,n)=>{n.d(t,{Df:()=>d,GK:()=>E,Iv:()=>I,L8:()=>h,LB:()=>B,Mu:()=>r,RX:()=>a,Xe:()=>c,_v:()=>m,bh:()=>s,cr:()=>u,ek:()=>l,i1:()=>f,oN:()=>T,qb:()=>w,r7:()=>b,t5:()=>i,uG:()=>L,w:()=>S});var o=n(864);const a=document.querySelector("#userEmail"),l=document.querySelector("#userPassword"),i=document.querySelector("#btnChangePwd"),r=document.querySelector("#new_pwd"),s=document.querySelector("#new_pwd_rpt"),c=document.querySelector("#btnBack"),d=document.querySelector("#btnLogin"),u=(document.querySelector("#btnLogout"),document.getElementById("login")),m=document.getElementById("update-pwd"),g=document.querySelector("#divLoginError"),p=document.querySelector("#lblLoginErrorMessage"),y=document.querySelector("#divPwdError"),v=document.querySelector("#pwdErr"),h=()=>{"index.html"!=window.location.pathname.split("/").pop()&&(window.location.href="./index.html")},f=()=>{"index.html"==window.location.pathname.split("/").pop()&&(window.location.href="./curves.html")},S=()=>{g.style.display="none",p.innerHTML=""},b=e=>{g.style.display="block",e.code==o.kq.INVALID_PASSWORD?p.innerHTML="Wrong password":"success"==sessionStorage.changePwd?p.innerHTML=e:p.innerHTML=`Error: ${e}`},E=e=>{y.style.display="block",v.innerHTML=`Error: ${e}`},w=()=>{y.style.display="none",v.innerHTML=""},I=(e,t)=>{let n=document.querySelectorAll(".active");[].forEach.call(n,(e=>{e.classList.remove("active")})),document.getElementById(e).className+="active",document.getElementById(t).className+="active"},B=e=>{let t=document.querySelectorAll(".active");[].forEach.call(t,(e=>{e.id.includes("Days")&&e.classList.remove("active")})),document.getElementById(e).className+="active"},L=e=>{let t=document.querySelectorAll(".active");[].forEach.call(t,(e=>{e.id.includes("Days")||e.classList.remove("active")})),document.getElementById(e).className+="active"},T=e=>{let t=!1,n=document.querySelectorAll(".active");return[].forEach.call(n,(n=>{n.id==e&&(t=!0)})),t}},302:(e,t,n)=>{n.d(t,{AVB:()=>o.Z,Ys:()=>a.Ys}),n(684);var o=n(950),a=n(997);n(286),n(964)},864:(e,t,n)=>{n.d(t,{Aj:()=>o.Aj,e5:()=>o.e5,gQ:()=>o.gQ,kq:()=>o.kq,v0:()=>o.v0});var o=n(924)}},i={};function r(e){var t=i[e];if(void 0!==t)return t.exports;var n=i[e]={exports:{}};return l[e](n,n.exports,r),n.exports}r.m=l,e="function"==typeof Symbol?Symbol("webpack queues"):"__webpack_queues__",t="function"==typeof Symbol?Symbol("webpack exports"):"__webpack_exports__",n="function"==typeof Symbol?Symbol("webpack error"):"__webpack_error__",o=e=>{e&&!e.d&&(e.d=1,e.forEach((e=>e.r--)),e.forEach((e=>e.r--?e.r++:e())))},r.a=(a,l,i)=>{var r;i&&((r=[]).d=1);var s,c,d,u=new Set,m=a.exports,g=new Promise(((e,t)=>{d=t,c=e}));g[t]=m,g[e]=e=>(r&&e(r),u.forEach(e),g.catch((e=>{}))),a.exports=g,l((a=>{var l;s=(a=>a.map((a=>{if(null!==a&&"object"==typeof a){if(a[e])return a;if(a.then){var l=[];l.d=0,a.then((e=>{i[t]=e,o(l)}),(e=>{i[n]=e,o(l)}));var i={};return i[e]=e=>e(l),i}}var r={};return r[e]=e=>{},r[t]=a,r})))(a);var i=()=>s.map((e=>{if(e[n])throw e[n];return e[t]})),c=new Promise((t=>{(l=()=>t(i)).r=0;var n=e=>e!==r&&!u.has(e)&&(u.add(e),e&&!e.d&&(l.r++,e.push(l)));s.map((t=>t[e](n)))}));return l.r?c:i()}),(e=>(e?d(g[n]=e):c(m),o(r)))),r&&(r.d=0)},a=[],r.O=(e,t,n,o)=>{if(!t){var l=1/0;for(d=0;d<a.length;d++){for(var[t,n,o]=a[d],i=!0,s=0;s<t.length;s++)(!1&o||l>=o)&&Object.keys(r.O).every((e=>r.O[e](t[s])))?t.splice(s--,1):(i=!1,o<l&&(l=o));if(i){a.splice(d--,1);var c=n();void 0!==c&&(e=c)}}return e}o=o||0;for(var d=a.length;d>0&&a[d-1][2]>o;d--)a[d]=a[d-1];a[d]=[t,n,o]},r.d=(e,t)=>{for(var n in t)r.o(t,n)&&!r.o(e,n)&&Object.defineProperty(e,n,{enumerable:!0,get:t[n]})},r.g=function(){if("object"==typeof globalThis)return globalThis;try{return this||new Function("return this")()}catch(e){if("object"==typeof window)return window}}(),r.o=(e,t)=>Object.prototype.hasOwnProperty.call(e,t),(()=>{var e={716:0,179:0};r.O.j=t=>0===e[t];var t=(t,n)=>{var o,a,[l,i,s]=n,c=0;if(l.some((t=>0!==e[t]))){for(o in i)r.o(i,o)&&(r.m[o]=i[o]);if(s)var d=s(r)}for(t&&t(n);c<l.length;c++)a=l[c],r.o(e,a)&&e[a]&&e[a][0](),e[a]=0;return r.O(d)},n=self.webpackChunkprod_1=self.webpackChunkprod_1||[];n.forEach(t.bind(null,0)),n.push=t.bind(null,n.push.bind(n))})();var s=r.O(void 0,[529,264,883],(()=>r(141)));s=r.O(s)})();
+/*
+ * ATTENTION: The "eval" devtool has been used (maybe by default in mode: "development").
+ * This devtool is neither made for production nor for readable output files.
+ * It uses "eval()" calls to create a separate source file in the browser devtools.
+ * If you are trying to read the output file, select a different devtool (https://webpack.js.org/configuration/devtool/)
+ * or disable the default devtool with "devtool: false".
+ * If you are looking for production-ready output files, see mode: "production" (https://webpack.js.org/configuration/mode/).
+ */
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+/******/ 	var __webpack_modules__ = ({
+
+/***/ "./src/js/curves.js":
+/*!**************************!*\
+  !*** ./src/js/curves.js ***!
+  \**************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+eval("__webpack_require__.a(module, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {\n__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _data__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./data */ \"./src/js/data.js\");\n/* harmony import */ var _region__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./region */ \"./src/js/region.js\");\n/* harmony import */ var _index__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./index */ \"./src/js/index.js\");\n/* harmony import */ var d3__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! d3 */ \"./node_modules/d3/src/index.js\");\n/* harmony import */ var _layout__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./layout */ \"./src/js/layout.js\");\n/* harmony import */ var _ui__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./ui */ \"./src/js/ui.js\");\nvar __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([_data__WEBPACK_IMPORTED_MODULE_3__]);\n_data__WEBPACK_IMPORTED_MODULE_3__ = (__webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__)[0];\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n(0,_index__WEBPACK_IMPORTED_MODULE_1__.monitorAuthState)();\r\n(0,_region__WEBPACK_IMPORTED_MODULE_2__.monitorRegion)();\r\n\r\nconst displayEconomics = (data, selectedOption) => {\r\n  let wellRMPL = 0;\r\n  let wellYTDPL = 0;\r\n  let monthPnL = \"\";\r\n\r\n  data.forEach((ecoWell) => {\r\n    if (ecoWell[\"Well Name\"].includes(selectedOption)) {\r\n      wellRMPL = ecoWell[\"Recent Month P&L\"];\r\n      wellYTDPL = ecoWell[\"YTD P&L\"];\r\n      monthPnL = ecoWell[\"Date\"].slice(0, 3);\r\n    }\r\n  });\r\n  document.getElementById(\"pnl\").innerHTML = `P&L : $${wellRMPL.toFixed(0).toString().replace(/\\B(?=(\\d{3})+(?!\\d))/g, \",\")} ${monthPnL}`;\r\n  document.getElementById(\"YTD\").innerHTML = `$${wellYTDPL.toFixed(0).toString().replace(/\\B(?=(\\d{3})+(?!\\d))/g, \",\")} YTD`;\r\n};\r\n\r\nconst displayPayout = (data, selectedOption) => {\r\n  var payout100 = 0;\r\n  data.forEach((payoutWell) => {\r\n    if (payoutWell[\"Well Name\"].includes(selectedOption)) {\r\n      payout100 = payoutWell[\"% Payout\"] * 100;\r\n    }\r\n  });\r\n  document.getElementById(\"payout\").innerHTML =\r\n    \"Payout : \" + payout100.toFixed(0).toLocaleString(\"en-US\") + \"%\";\r\n  //document.getElementById(\"payout100\").innerHTML = payout100.toFixed(0).toLocaleString(\"en-US\")+ \"%\";\r\n\r\n};\r\n\r\nconst displayPumpInfo = (data, selectedOption) => {\r\n  let wellInfo = data.find(i => i[\"Well Name\"] === selectedOption);\r\n  if (wellInfo !== undefined) {\r\n    if (\r\n      wellInfo[\"SPM\"] !== 0\r\n    ) {\r\n      //USED jQuery LIBRARY TO TOGGLE THE DISPLAY OF #pumpInfo\r\n      $(document).ready(function () {\r\n        $(\"#pumpInfo\").toggle();\r\n        document.getElementById(\"c\").innerHTML = `C: ${wellInfo[\"C\"]}`;\r\n        document.getElementById(\"SPM\").innerHTML = `SPM: ${wellInfo[\"SPM\"]}`;\r\n        document.getElementById(\"DHSL\").innerHTML = `DH SL: ${wellInfo[\"DH SL\"]}`;\r\n        document.getElementById(\"ideal\").innerHTML = `Ideal bfpd: ${wellInfo[\"Ideal bfpd\"]}`;\r\n        document.getElementById(\"pumpEff\").innerHTML = `Pump Eff: ${Math.round(wellInfo[\"Pump Eff\"] * 100)}`;\r\n        document.getElementById(\"pumpDepth\").innerHTML = `Pump Depth: ${wellInfo[\"Pump Depth\"]}`;\r\n        document.getElementById(\"GFLAP\").innerHTML = `GFLAP: ${wellInfo[\"GFLAP\"]}`;\r\n        document.getElementById(\"Inc\").innerHTML = `Inc: ${wellInfo[\"Inc\"]}`;\r\n      });\r\n    } else {\r\n      $(document).ready(function () {\r\n        $(\"#notPumpingInfo\").toggle();\r\n        $(\"#notPumping\").html(\"This well is not pumping\");\r\n      });\r\n    }\r\n  } else {\r\n    $(document).ready(function () {\r\n      $(\"#notPumpingInfo\").toggle();\r\n      $(\"#notPumping\").html(\"No pump data available\");\r\n    });\r\n  };\r\n};\r\n\r\nconst displayCumlData = (data, selectedOption) => {\r\n  let selectedWell = {\r\n    cuml: 0,\r\n    gasCuml: 0,\r\n    waterCuml: 0,\r\n    formation: \"\"\r\n  };\r\n\r\n  data.forEach(well => {\r\n    if (selectedOption === well[0]) {\r\n      selectedWell.cuml = well[1];\r\n      selectedWell.gasCuml = well[3];\r\n      selectedWell.waterCuml = well[2];\r\n      selectedWell.formation = well[4];\r\n    }\r\n  });\r\n\r\n  const formationEl = document.getElementById(\"formation\");\r\n  const cumulativeDataEl = document.getElementById(\"cumlativeData\");\r\n\r\n  if (!selectedWell.formation) {\r\n    document.getElementById(\"filler4\").style.display = \"\";\r\n  }\r\n\r\n  formationEl.innerHTML = selectedWell.formation;\r\n  cumulativeDataEl.innerHTML = `Cumulative: ${selectedWell.cuml} MBO, ${selectedWell.gasCuml} MMCF, ${selectedWell.waterCuml} MBW`;\r\n\r\n};\r\n\r\nconst getSelectedOption = (data) => {\r\n  let selectedOption = null;\r\n  let menuNode = (0,d3__WEBPACK_IMPORTED_MODULE_0__.select)(\"#siteSelection\").node().value;\r\n  \r\n  if (menuNode != \"default\") {\r\n    selectedOption = [menuNode];\r\n  } else if (sessionStorage.getItem(\"siteSelection\") != null) {\r\n    selectedOption = [sessionStorage.getItem(\"siteSelection\")];\r\n    sessionStorage.removeItem(\"siteSelection\");\r\n  } else selectedOption = [...data[0][0]];\r\n\r\n  selectedOption = selectedOption.join('');\r\n  sessionStorage.siteSelection = selectedOption;\r\n  return selectedOption;\r\n};\r\nconst fetchNewProd = () => {\r\n  const data = _data__WEBPACK_IMPORTED_MODULE_3__.newProd;\r\n  let oil = data.map(sub => sub[\"New Prod\"],[]).reverse();\r\n  let date = data.map(sub => sub[\"Date\"],[]).reverse();\r\n\r\n  return {\"date\": date, \"new oil\": oil};\r\n}\r\nconst curve = (timeFrame, data) => {\r\n  const selectedOption = getSelectedOption(data.prodData);\r\n\r\n  let region = sessionStorage.getItem(\"region\");\r\n  if (region == null) {\r\n    sessionStorage.setItem('region', 'st')\r\n    region = 'st'\r\n  };\r\n\r\n  if (region != \"et\") {\r\n    displayEconomics(data.economicsData, selectedOption);\r\n    displayPayout(data.payoutData, selectedOption);\r\n    displayPumpInfo(data.pumpData, selectedOption);\r\n\r\n    // Hide previous pumping info\r\n    document.getElementById(\"pumpInfo\").style.display = \"none\";\r\n    document.getElementById(\"notPumpingInfo\").style.display = \"none\";\r\n\r\n    // Clear pump info text for next selection\r\n    [\"c\", \"SPM\", \"DHSL\", \"ideal\", \"pumpEff\", \"pumpDepth\", \"GFLAP\", \"Inc\", \"notPumping\"].forEach(id => {\r\n      document.getElementById(id).innerHTML = \"\";\r\n    });\r\n  };\r\n  displayCumlData(data.dataCuml, selectedOption);\r\n\r\n  document.getElementById(\"zoomEl\").style.visibility = \"hidden\"; //dont display old zoom data if switching b/t wells/timeframes\r\n  document.getElementById(\"wellName\").innerHTML = selectedOption;\r\n  document.getElementById(\"individualTable\").style.display = \"none\";\r\n\r\n  [/*'oilDeclineCurve',*/ 'gasDeclineCurve', 'waterDeclineCurve', 'waterCutCurve', 'totalFluidCurve', 'combinationCurves', 'moOilCurve'].forEach(id => {\r\n    document.getElementById(id).style.display = 'block';\r\n  });\r\n  let data365 = fetchNewProd();\r\n  let date365 = data365[\"date\"];\r\n  let oil365 = data365[\"new oil\"];\r\n\r\n  const site_data = data.prodData.filter(site => site[0] === selectedOption);\r\n  let site_date = site_data.map(site => site[9]);\r\n  let site_oil = site_data.map(site => site[2]);\r\n  let site_gas = site_data.map(site => site[3]);\r\n  let site_water = site_data.map(site => site[4]);\r\n  let comments = site_data.map(site => site[7]);\r\n  let movingAverage = site_data.map(site => site[8]);\r\n  let water_cut = site_water.map((water, i) => (water / (water + site_oil[i])) * 100);\r\n  let total_fluid = site_oil.map((oil, index) => oil + site_water[index]);\r\n  \r\n  if (timeFrame > 0) [site_date, site_oil, site_gas, site_water, comments, movingAverage,oil365,date365] =\r\n  [site_date, site_oil, site_gas, site_water, comments, movingAverage,oil365,date365].map(arr => arr.slice(0, timeFrame));\r\n  // READING MONTHLY DATA (+ Drops most recent month)\r\n  const mo_site_data = data.MoProdDataST.filter(site => site[0] === selectedOption);\r\n  mo_site_data.pop();\r\n  let site_date_mo = mo_site_data.map(site => site[6]);\r\n  let site_oil_mo = mo_site_data.map(site => site[1]);\r\n  const cumlMoOil = site_oil_mo.reduce((acc, val, idx) => (idx === 0 ? acc.concat(val) : acc.concat(val + acc[idx - 1])), []);\r\n  \r\n  let trace365 = (0,_layout__WEBPACK_IMPORTED_MODULE_4__.makeTrace)(\r\n    date365,\r\n    oil365,\r\n    \"Production from New Wells (365 Days)\",\r\n    null,\r\n    \"purple\",\r\n    null,\r\n    true\r\n  )\r\n\r\n  let traceOil = (0,_layout__WEBPACK_IMPORTED_MODULE_4__.makeTrace)( \r\n    site_date,\r\n    site_oil,\r\n    \"Oil [BO]\",\r\n    null,\r\n    \"green\",\r\n    comments\r\n  );\r\n\r\n  const traceOilAvg = (0,_layout__WEBPACK_IMPORTED_MODULE_4__.makeTrace)(\r\n    site_date,\r\n    movingAverage,\r\n    \"7 Day Avg\",\r\n    \"lines\",\r\n    null,\r\n    null,\r\n    null,\r\n    'dot'\r\n  );\r\n\r\n  let traceGas = (0,_layout__WEBPACK_IMPORTED_MODULE_4__.makeTrace)(\r\n    site_date,\r\n    site_gas,\r\n    \"Gas [MCF]\",\r\n    \"line\",\r\n    \"red\"\r\n  );\r\n\r\n  let traceWater = (0,_layout__WEBPACK_IMPORTED_MODULE_4__.makeTrace)(\r\n    site_date,\r\n    site_water,\r\n    \"Water [BW]\",\r\n    \"line\",\r\n    \"blue\",\r\n  );\r\n\r\n  const traceCut = (0,_layout__WEBPACK_IMPORTED_MODULE_4__.makeTrace)(\r\n    site_date,\r\n    water_cut,\r\n    // \"Water [Mbw]\",\r\n    \"line\",\r\n    \"#25C4DC\"\r\n  );\r\n\r\n  let traceFluid = (0,_layout__WEBPACK_IMPORTED_MODULE_4__.makeTrace)(\r\n    site_date,\r\n    total_fluid,\r\n    \"Total Fluid [BBLS]\",\r\n    \"line\",\r\n    \"black\"\r\n  );\r\n\r\n  let traceMoOil = (0,_layout__WEBPACK_IMPORTED_MODULE_4__.makeTrace)(\r\n    site_date_mo,\r\n    site_oil_mo,\r\n    \"Monthly Oil [BO]\",\r\n    \"line\",\r\n    \"green\"\r\n  );\r\n\r\n  const scale = (document.getElementById(\"logarithmic\").classList.contains(\"active\")) ? 'log' : 'linear';\r\n  const plotContainers = [/*\"oilDeclineCurve\", */\"gasDeclineCurve\", \"waterDeclineCurve\", 'totalFluidCurve', 'waterCutCurve', 'combinationCurves', 'moOilCurve'];\r\n  let combination = [traceOil, traceOilAvg, traceGas, traceWater, traceFluid, trace365];\r\n  if (selectedOption !== \"South Texas Total\") combination.pop();\r\n\r\n  let traceArrays = [\r\n    // [traceOil, traceOilAvg],\r\n    [traceGas],\r\n    [traceWater],\r\n    [traceFluid],\r\n    [traceCut],\r\n    combination,\r\n    [traceMoOil]\r\n  ];\r\n\r\n  plotContainers.forEach((container, i) => {\r\n    traceArrays[i].forEach(trace => {\r\n      trace.visible = (i === 4 && trace.name !== \"Oil [BO]\") ? \"legendonly\" : trace.visible;\r\n    });\r\n\r\n    const layout = (0,_layout__WEBPACK_IMPORTED_MODULE_4__.makeLayout)([/*'Oil vs Time (BOPD)', */'Gas vs Time (MCFD)', 'Water vs Time (BWPD)', 'Total Fluid vs Time (BFPD)', 'Water Cut Percentage', 'Combined Production', 'Monthly Oil vs Time (BOPM)'][i], scale, \r\n                              (scale === 'log') ? [1, 2, 5, 10, 20, 50, 100, 200, 500, 1000, 2000, 3000] : null);\r\n    Plotly.newPlot(container, traceArrays[i], layout, _layout__WEBPACK_IMPORTED_MODULE_4__.config);\r\n  });\r\n\r\n  const combo = document.getElementById('combinationCurves');\r\n  combo.on(\"plotly_relayout\", function (eventData) {\r\n    JSON.stringify(eventData);\r\n    const zoomEL = document.getElementById(\"zoomEl\");\r\n    zoomEL.innerHTML = '';\r\n    const p = document.createElement('p');\r\n    p.textContent = `Produced:`;\r\n    zoomEL.appendChild(p);\r\n\r\n    let { \"xaxis.range[0]\": xRangeStart, \"xaxis.range[1]\": xRangeEnd } = eventData;\r\n    if (!xRangeStart) { // if double-clicked\r\n      xRangeStart = site_date[site_date.length - 1];\r\n      xRangeEnd = site_date[0];\r\n    }\r\n    const xStart = xRangeStart.substring(0, 10);\r\n    const xEnd = xRangeEnd.substring(0, 10);\r\n\r\n    const startIdx = site_date.indexOf(`${xStart}T00:00:00.000Z`);\r\n    const endIdx = site_date.indexOf(`${xEnd}T00:00:00.000Z`);\r\n\r\n    if (startIdx === -1) { // zoomed where no data\r\n      return;\r\n    }\r\n    const visible_traces = JSON.parse(sessionStorage.getItem('visible_traces'));\r\n    const map = {'Gas [MCF]': site_gas, 'Oil [BO]': site_oil, 'Water [BW]': site_water, 'Total Fluid [BBLS]': total_fluid };\r\n\r\n    for (const[key,vals] of Object.entries(visible_traces)){\r\n      for (let val of vals){\r\n        const data = map[val];\r\n        console.log(`sum ${val}:>> `, (data.slice(endIdx, startIdx + 1).reduce((acc, cur) => acc + cur, 0)/1000));\r\n        const sum = (data.slice(endIdx, startIdx + 1).reduce((acc, cur) => acc + cur, 0)/1000).toFixed(1);\r\n\r\n        let chop = -5;\r\n        if (val == 'Total Fluid [MB]') chop = -4; \r\n        const unit = val.slice(chop);\r\n        let name = val.slice(0, chop);\r\n        if (val == 'Total Fluid [MB]') name = `${name} `; \r\n\r\n        const p = document.createElement('p');\r\n        p.textContent = `${name}: ${sum} ${unit}`;\r\n        p.style.fontSize = '15px';\r\n        zoomEL.appendChild(p);\r\n      }\r\n    }\r\n    zoomEL.style.visibility = \"visible\";\r\n  });\r\n\r\n  combo.on('plotly_legendclick', function(data) {\r\n    const traceIdx = data.curveNumber;\r\n    const name = combination[traceIdx].name;\r\n    let currVisible = JSON.parse(sessionStorage.visible_traces) || {\"visible_traces\": []};\r\n\r\n    if (currVisible.visible.includes(name)){\r\n      currVisible.visible = currVisible.visible.filter(el => el !== name)\r\n    }else{\r\n      currVisible.visible.push(name);\r\n    }\r\n\r\n    sessionStorage.setItem('visible_traces', JSON.stringify(currVisible));\r\n  })\r\n\r\n  document.getElementById(\"siteSelection\").focus();\r\n  document.getElementById(\"filler4\").style.display = \"none\";\r\n};\r\n\r\nconst table = (coreData) => {\r\n  const data = coreData.map(el => ([...el]))\r\n  const selectedOption = getSelectedOption(data);\r\n  const well = data.filter(i => i[0] == selectedOption);\r\n\r\n  well.forEach(w => {\r\n    w.shift();\r\n    for (let i = 0; i < 2; i++) w.pop();\r\n  });\r\n  _data__WEBPACK_IMPORTED_MODULE_3__.buildTable(well);\r\n\r\n  document.getElementById('individualTable').style.display = 'inline-block';\r\n  [/*'oilDeclineCurve,'*/ 'gasDeclineCurve', 'waterDeclineCurve', 'waterCutCurve', 'totalFluidCurve', 'combinationCurves', 'cumOilCurve', 'cumVSdailyProdCurve', 'cumVSmoProdCurve','moOilCurve'].forEach(tag => {\r\n    document.getElementById(tag).style.display = 'none'\r\n  });\r\n};\r\n\r\nconst switchActives = (event) => {\r\n  event.preventDefault();\r\n  \r\n  const target = event.target;\r\n  const parent = document.getElementById(target.id).parentNode;\r\n  const children = parent.querySelectorAll(\"*\");\r\n  \r\n  children.forEach(child => {\r\n    child.classList.remove(\"active\");\r\n  });\r\n  \r\n  target.className += \"active\";\r\n  const activeTime = document.getElementById(\"timeframes\").querySelectorAll(\".active\")[0].id.substring(4);//gives the number from the active view id\r\n  console.log('activeTime :>> ', activeTime);\r\n  curve(Number(activeTime) + 1, curveInfo);\r\n\r\n  function ddd () {\r\n    console.log(\"in ddd\");\r\n    try{\r\n      console.log(\"closing\");\r\n      document.getElementById(\"siteSelection\").blur();\r\n      console.log(\"closed..\");\r\n    }catch{\r\n      console.log(\"e\");\r\n    };\r\n  }\r\n  setTimeout(ddd,100);\r\n};\r\n\r\n\r\n\r\n\r\n//Main//\r\nconst currUid = localStorage.getItem('uid');\r\nlet region = sessionStorage.getItem('region');\r\nconsole.log('currUid :>> ', currUid);\r\n\r\nlet prodData = _data__WEBPACK_IMPORTED_MODULE_3__.dataST;\r\nlet cumlData = _data__WEBPACK_IMPORTED_MODULE_3__.dataCuml;\r\nlet MoProdDataST = _data__WEBPACK_IMPORTED_MODULE_3__.moDataST;\r\n\r\nif (region == \"et\") {\r\n  prodData = _data__WEBPACK_IMPORTED_MODULE_3__.dataET\r\n  cumlData = _data__WEBPACK_IMPORTED_MODULE_3__.dataCumlET\r\n};\r\n\r\nconst curveInfo = {\r\n  prodData: prodData,\r\n  dataCuml: cumlData,\r\n  economicsData: _data__WEBPACK_IMPORTED_MODULE_3__.econ,\r\n  payoutData: _data__WEBPACK_IMPORTED_MODULE_3__.payout,\r\n  pumpData: _data__WEBPACK_IMPORTED_MODULE_3__.pump,\r\n  MoProdDataST: MoProdDataST\r\n};\r\n\r\n['linear','logarithmic','DaysInception','Days30','Days365','Days180'].forEach(el => {\r\n  document.getElementById(el).addEventListener('click',switchActives);\r\n});\r\n\r\nconst dropdownId = '#siteSelection';\r\n_data__WEBPACK_IMPORTED_MODULE_3__.dropdown(dropdownId);\r\n\r\n(0,d3__WEBPACK_IMPORTED_MODULE_0__.select)(dropdownId).on(\"change\", () => {\r\n  curve(localStorage.getItem('initTime'), curveInfo);\r\n});\r\n\r\n\r\ndocument.getElementById(\"table\").addEventListener('click', () => {\r\n  if ((0,_ui__WEBPACK_IMPORTED_MODULE_5__.checkActive)('table') === true) return;\r\n  (0,_ui__WEBPACK_IMPORTED_MODULE_5__.setActive)(\"table\", 'DaysInception');\r\n  table(prodData);\r\n});\r\n\r\n//store currently visible plots in sessionstorage to access in relayout event; init to only oil(page load)\r\nlet currVisible = {\"visible\":[\"Oil [BO]\"]};\r\nsessionStorage.setItem(\"visible_traces\",JSON.stringify(currVisible));\r\n\r\n//init page on load//\r\nwindow.onload = function () {\r\n  let activeTime = 'DaysInception';\r\n  if (localStorage.getItem('initTime') == 31) activeTime = 'Days30';\r\n  (0,_ui__WEBPACK_IMPORTED_MODULE_5__.setActiveTime)(activeTime);\r\n  (0,_ui__WEBPACK_IMPORTED_MODULE_5__.setActiveView)(localStorage.getItem('initScale'));\r\n  curve(localStorage.getItem('initTime'), curveInfo);\r\n}();\n__webpack_async_result__();\n} catch(e) { __webpack_async_result__(e); } });\n\n//# sourceURL=webpack://prod-1/./src/js/curves.js?");
+
+/***/ }),
+
+/***/ "./src/js/layout.js":
+/*!**************************!*\
+  !*** ./src/js/layout.js ***!
+  \**************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   config: () => (/* binding */ config),\n/* harmony export */   layoutWbd: () => (/* binding */ layoutWbd),\n/* harmony export */   makeLayout: () => (/* binding */ makeLayout),\n/* harmony export */   makeTrace: () => (/* binding */ makeTrace)\n/* harmony export */ });\nconst makeTrace = (x, y, name, type=\"lines\", color, text, visible=true, dash) => ({\r\n    x,\r\n    y,\r\n    text,\r\n    name,\r\n    visible,\r\n    line: {\r\n        color,\r\n        dash\r\n    },\r\n    mode: type\r\n});\r\n\r\nconst makeLayout = (title, type, tickvals, ytitle, xtitle) => ({\r\n    title,\r\n    height: null,\r\n    legend: {\r\n        orientation: \"h\",\r\n            y: 1.1,\r\n            xanchor: \"center\",\r\n            x: .5,\r\n    },\r\n    yaxis: {\r\n        title: ytitle,\r\n        type: type || \"linear\",\r\n        rangemode: \"tozero\",\r\n        autorange: true,\r\n        tickformat: \"f\",\r\n        tickvals,\r\n        gridcolor: \"#dbdbdb\",\r\n    },\r\n    xaxis: {\r\n        title: xtitle,\r\n        gridcolor: \"#dbdbdb\",\r\n    },\r\n});\r\n\r\nconst config = {\r\n    modeBarButtonsToRemove: [\r\n        \"sendDataToCloud\",\r\n        \"autoScale2d\",\r\n        \"hoverClosestCartesian\",\r\n        \"hoverCompareCartesian\",\r\n        \"lasso2d\",\r\n        \"zoomIn2d\",\r\n        \"zoomOut2d\",\r\n        \"toggleSpikelines\",\r\n    ],\r\n    displaylogo: false,\r\n    responsive: true,\r\n};\r\n\r\nconst layoutWbd = (max,min,minTVD,maxTVD,wellName) => ({\r\n    width: 1620,\r\n    height: 700,\r\n\r\n    margin: {\r\n        l: 0,\r\n        r: 0,\r\n        b: 0,\r\n        t: 0,\r\n    },\r\n\r\n    title: {\r\n        text: \"Drilling for \" + wellName + \", Dimmit County, TX\",\r\n        y: 0.98,\r\n    },\r\n\r\n    legend: {\r\n        x: 0.8,\r\n        y: 0.8,\r\n    },\r\n    scene: {\r\n        aspectmode: \"cube\",\r\n        xaxis: {\r\n            title: \"Easting\",\r\n            nticks: 8,\r\n            range: [max, min],\r\n            gridcolor: \"#8a8a8a\",\r\n            tickcolor: \"#050505\",\r\n            backgroundcolor: \"#ededed\",\r\n            showbackground: true,\r\n        },\r\n        yaxis: {\r\n            title: \"Northing\",\r\n            nticks: 8,\r\n            range: [max, min],\r\n            gridcolor: \"#8a8a8a\",\r\n            tickcolor: \"#050505\",\r\n            backgroundcolor: \"#f0f1f2\",\r\n            showbackground: true,\r\n\r\n        },\r\n        zaxis: {\r\n            title: \"TVD\",\r\n            nticks: 5,\r\n            range: [minTVD, maxTVD],\r\n            gridcolor: \"#8a8a8a\",\r\n            tickcolor: \"#050505\",\r\n            backgroundcolor: \"#ededed\",\r\n            showbackground: true,\r\n        },\r\n    },\r\n    \r\n});\n\n//# sourceURL=webpack://prod-1/./src/js/layout.js?");
+
+/***/ })
+
+/******/ 	});
+/************************************************************************/
+/******/ 	// The module cache
+/******/ 	var __webpack_module_cache__ = {};
+/******/ 	
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/ 		// Check if module is in cache
+/******/ 		var cachedModule = __webpack_module_cache__[moduleId];
+/******/ 		if (cachedModule !== undefined) {
+/******/ 			return cachedModule.exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = __webpack_module_cache__[moduleId] = {
+/******/ 			// no module.id needed
+/******/ 			// no module.loaded needed
+/******/ 			exports: {}
+/******/ 		};
+/******/ 	
+/******/ 		// Execute the module function
+/******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
+/******/ 	
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/ 	
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = __webpack_modules__;
+/******/ 	
+/************************************************************************/
+/******/ 	/* webpack/runtime/async module */
+/******/ 	(() => {
+/******/ 		var webpackQueues = typeof Symbol === "function" ? Symbol("webpack queues") : "__webpack_queues__";
+/******/ 		var webpackExports = typeof Symbol === "function" ? Symbol("webpack exports") : "__webpack_exports__";
+/******/ 		var webpackError = typeof Symbol === "function" ? Symbol("webpack error") : "__webpack_error__";
+/******/ 		var resolveQueue = (queue) => {
+/******/ 			if(queue && !queue.d) {
+/******/ 				queue.d = 1;
+/******/ 				queue.forEach((fn) => (fn.r--));
+/******/ 				queue.forEach((fn) => (fn.r-- ? fn.r++ : fn()));
+/******/ 			}
+/******/ 		}
+/******/ 		var wrapDeps = (deps) => (deps.map((dep) => {
+/******/ 			if(dep !== null && typeof dep === "object") {
+/******/ 				if(dep[webpackQueues]) return dep;
+/******/ 				if(dep.then) {
+/******/ 					var queue = [];
+/******/ 					queue.d = 0;
+/******/ 					dep.then((r) => {
+/******/ 						obj[webpackExports] = r;
+/******/ 						resolveQueue(queue);
+/******/ 					}, (e) => {
+/******/ 						obj[webpackError] = e;
+/******/ 						resolveQueue(queue);
+/******/ 					});
+/******/ 					var obj = {};
+/******/ 					obj[webpackQueues] = (fn) => (fn(queue));
+/******/ 					return obj;
+/******/ 				}
+/******/ 			}
+/******/ 			var ret = {};
+/******/ 			ret[webpackQueues] = x => {};
+/******/ 			ret[webpackExports] = dep;
+/******/ 			return ret;
+/******/ 		}));
+/******/ 		__webpack_require__.a = (module, body, hasAwait) => {
+/******/ 			var queue;
+/******/ 			hasAwait && ((queue = []).d = 1);
+/******/ 			var depQueues = new Set();
+/******/ 			var exports = module.exports;
+/******/ 			var currentDeps;
+/******/ 			var outerResolve;
+/******/ 			var reject;
+/******/ 			var promise = new Promise((resolve, rej) => {
+/******/ 				reject = rej;
+/******/ 				outerResolve = resolve;
+/******/ 			});
+/******/ 			promise[webpackExports] = exports;
+/******/ 			promise[webpackQueues] = (fn) => (queue && fn(queue), depQueues.forEach(fn), promise["catch"](x => {}));
+/******/ 			module.exports = promise;
+/******/ 			body((deps) => {
+/******/ 				currentDeps = wrapDeps(deps);
+/******/ 				var fn;
+/******/ 				var getResult = () => (currentDeps.map((d) => {
+/******/ 					if(d[webpackError]) throw d[webpackError];
+/******/ 					return d[webpackExports];
+/******/ 				}))
+/******/ 				var promise = new Promise((resolve) => {
+/******/ 					fn = () => (resolve(getResult));
+/******/ 					fn.r = 0;
+/******/ 					var fnQueue = (q) => (q !== queue && !depQueues.has(q) && (depQueues.add(q), q && !q.d && (fn.r++, q.push(fn))));
+/******/ 					currentDeps.map((dep) => (dep[webpackQueues](fnQueue)));
+/******/ 				});
+/******/ 				return fn.r ? promise : getResult();
+/******/ 			}, (err) => ((err ? reject(promise[webpackError] = err) : outerResolve(exports)), resolveQueue(queue)));
+/******/ 			queue && (queue.d = 0);
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/chunk loaded */
+/******/ 	(() => {
+/******/ 		var deferred = [];
+/******/ 		__webpack_require__.O = (result, chunkIds, fn, priority) => {
+/******/ 			if(chunkIds) {
+/******/ 				priority = priority || 0;
+/******/ 				for(var i = deferred.length; i > 0 && deferred[i - 1][2] > priority; i--) deferred[i] = deferred[i - 1];
+/******/ 				deferred[i] = [chunkIds, fn, priority];
+/******/ 				return;
+/******/ 			}
+/******/ 			var notFulfilled = Infinity;
+/******/ 			for (var i = 0; i < deferred.length; i++) {
+/******/ 				var [chunkIds, fn, priority] = deferred[i];
+/******/ 				var fulfilled = true;
+/******/ 				for (var j = 0; j < chunkIds.length; j++) {
+/******/ 					if ((priority & 1 === 0 || notFulfilled >= priority) && Object.keys(__webpack_require__.O).every((key) => (__webpack_require__.O[key](chunkIds[j])))) {
+/******/ 						chunkIds.splice(j--, 1);
+/******/ 					} else {
+/******/ 						fulfilled = false;
+/******/ 						if(priority < notFulfilled) notFulfilled = priority;
+/******/ 					}
+/******/ 				}
+/******/ 				if(fulfilled) {
+/******/ 					deferred.splice(i--, 1)
+/******/ 					var r = fn();
+/******/ 					if (r !== undefined) result = r;
+/******/ 				}
+/******/ 			}
+/******/ 			return result;
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/define property getters */
+/******/ 	(() => {
+/******/ 		// define getter functions for harmony exports
+/******/ 		__webpack_require__.d = (exports, definition) => {
+/******/ 			for(var key in definition) {
+/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 				}
+/******/ 			}
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/global */
+/******/ 	(() => {
+/******/ 		__webpack_require__.g = (function() {
+/******/ 			if (typeof globalThis === 'object') return globalThis;
+/******/ 			try {
+/******/ 				return this || new Function('return this')();
+/******/ 			} catch (e) {
+/******/ 				if (typeof window === 'object') return window;
+/******/ 			}
+/******/ 		})();
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
+/******/ 	(() => {
+/******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/make namespace object */
+/******/ 	(() => {
+/******/ 		// define __esModule on exports
+/******/ 		__webpack_require__.r = (exports) => {
+/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 			}
+/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/jsonp chunk loading */
+/******/ 	(() => {
+/******/ 		// no baseURI
+/******/ 		
+/******/ 		// object to store loaded and loading chunks
+/******/ 		// undefined = chunk not loaded, null = chunk preloaded/prefetched
+/******/ 		// [resolve, reject, Promise] = chunk loading, 0 = chunk loaded
+/******/ 		var installedChunks = {
+/******/ 			"curves": 0
+/******/ 		};
+/******/ 		
+/******/ 		// no chunk on demand loading
+/******/ 		
+/******/ 		// no prefetching
+/******/ 		
+/******/ 		// no preloaded
+/******/ 		
+/******/ 		// no HMR
+/******/ 		
+/******/ 		// no HMR manifest
+/******/ 		
+/******/ 		__webpack_require__.O.j = (chunkId) => (installedChunks[chunkId] === 0);
+/******/ 		
+/******/ 		// install a JSONP callback for chunk loading
+/******/ 		var webpackJsonpCallback = (parentChunkLoadingFunction, data) => {
+/******/ 			var [chunkIds, moreModules, runtime] = data;
+/******/ 			// add "moreModules" to the modules object,
+/******/ 			// then flag all "chunkIds" as loaded and fire callback
+/******/ 			var moduleId, chunkId, i = 0;
+/******/ 			if(chunkIds.some((id) => (installedChunks[id] !== 0))) {
+/******/ 				for(moduleId in moreModules) {
+/******/ 					if(__webpack_require__.o(moreModules, moduleId)) {
+/******/ 						__webpack_require__.m[moduleId] = moreModules[moduleId];
+/******/ 					}
+/******/ 				}
+/******/ 				if(runtime) var result = runtime(__webpack_require__);
+/******/ 			}
+/******/ 			if(parentChunkLoadingFunction) parentChunkLoadingFunction(data);
+/******/ 			for(;i < chunkIds.length; i++) {
+/******/ 				chunkId = chunkIds[i];
+/******/ 				if(__webpack_require__.o(installedChunks, chunkId) && installedChunks[chunkId]) {
+/******/ 					installedChunks[chunkId][0]();
+/******/ 				}
+/******/ 				installedChunks[chunkId] = 0;
+/******/ 			}
+/******/ 			return __webpack_require__.O(result);
+/******/ 		}
+/******/ 		
+/******/ 		var chunkLoadingGlobal = self["webpackChunkprod_1"] = self["webpackChunkprod_1"] || [];
+/******/ 		chunkLoadingGlobal.forEach(webpackJsonpCallback.bind(null, 0));
+/******/ 		chunkLoadingGlobal.push = webpackJsonpCallback.bind(null, chunkLoadingGlobal.push.bind(chunkLoadingGlobal));
+/******/ 	})();
+/******/ 	
+/************************************************************************/
+/******/ 	
+/******/ 	// startup
+/******/ 	// Load entry module and return exports
+/******/ 	// This entry module depends on other loaded chunks and execution need to be delayed
+/******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, ["vendors-node_modules_firebase_app_dist_esm_index_esm_js-node_modules_firebase_auth_dist_esm_i-d0574a","vendors-node_modules_d3_src_index_js","src_js_data_js-src_js_index_js-src_js_region_js"], () => (__webpack_require__("./src/js/curves.js")))
+/******/ 	__webpack_exports__ = __webpack_require__.O(__webpack_exports__);
+/******/ 	
+/******/ })()
+;

@@ -1,1 +1,266 @@
-(()=>{"use strict";var e,t,o,n,a,r={199:(e,t,o)=>{o.a(e,(async(e,n)=>{try{o.d(t,{OJ:()=>i,R0:()=>g,bQ:()=>e,cm:()=>p,j6:()=>u,jw:()=>d,kL:()=>r,n1:()=>s,o8:()=>c,sb:()=>m});var a=o(302);const e=await(0,a.AVB)("../data/allProductionData.json").then((e=>e)),r=await(0,a.AVB)("../data/dataMonthlyST.json").then((e=>e)),l=await(0,a.AVB)("../data/allProductionDataET.json").then((e=>e)),i=await(0,a.AVB)("../data/cumProd.json").then((e=>e)),s=await(0,a.AVB)("../data/cumProdET.json").then((e=>e)),c=(await(0,a.AVB)("../data/analyze.json").then((e=>e)),await(0,a.AVB)("../data/analyzeET.json").then((e=>e)),await(0,a.AVB)("../data/formations.json").then((e=>e)),await(0,a.AVB)("../data/economics.json").then((e=>e)),await(0,a.AVB)("../data/payouts.json").then((e=>e))),d=(await(0,a.AVB)("../data/pumpInfo.json").then((e=>e)),await(0,a.AVB)("../data/legacyEcon.json").then((e=>e)),await(0,a.AVB)("../data\\pldata.json").then((e=>e)),()=>{let t=l;"et"!==sessionStorage.getItem("region")&&(t=e);const o=t[0][0],n=new Set;for(let e=0;e<t.length;e++){const a=t[e][0];if(n.add(a),a===o&0!==e)break}return n}),u=e=>{let t=(0,a.Ys)(e);d().forEach((e=>{t.append("option").text(e).property("Value",e)}))},m=e=>{const t=(0,a.Ys)("tbody");t.html(""),e.forEach((e=>{let o=t.append("tr");Object.values(e).forEach((e=>{o.append("td").text(e)}))}))},p=(e,t)=>{let o=(0,a.Ys)(t).property("value");return o?e.filter((e=>e[0]==o)):e},g=(e,t)=>{let o;event.preventDefault(),o=[...e].sort(((e,o)=>{const n=e[t];return o[t]-n})),m(o)};n()}catch(e){n(e)}}),1)},971:(e,t,o)=>{o.d(t,{z:()=>c});var n=o(914),a=o(977),r=o(864),l=o(679);const i=(0,a.ZF)({apiKey:"AIzaSyC3yOK_QL5QbJaKvjynXXzObl4uKsoJpTU",authDomain:"cmlproduction-1e86a.firebaseapp.com",projectId:"cmlproduction-1e86a",storageBucket:"cmlproduction-1e86a.appspot.com",messagingSenderId:"924402330611",appId:"1:924402330611:web:55155c0a5c5c6a7d4b8086"}),s=(0,r.v0)(i);(0,l.N8)();const c=async()=>{(0,r.Aj)(s,(e=>{null!=e?(localStorage.setItem("uid",e.uid),localStorage.setItem("email",e.email),console.log("user :>> ",e)):(console.log("user :>> ",e),(0,n.L8)())}))},d=async()=>{let e=n.RX.value.replace(/\s/g,"");const t=n.ek.value;"@cml.com"!=e.substring(e.length-8)&&(e=`${e}@cml.com`),(0,r.e5)(s,e,t).then((e=>{u(e.user),(0,n.i1)()})).catch((e=>{console.log("error :>> ",e),(0,n.r7)(e)}))},u=e=>{null==localStorage.getItem("initTime")&&localStorage.setItem("initTime",0),null==localStorage.getItem("initScale")&&localStorage.setItem("initScale","linear"),localStorage.setItem("uid",e.uid),localStorage.setItem("email",e.email),sessionStorage.setItem("region","st"),sessionStorage.changePwd=!1},m=async()=>{if(n.Mu.value!==n.bh.value)return void(0,n.GK)("Passwords do not match");const e=(0,r.v0)().currentUser;(0,r.gQ)(e,n.bh.value).then((()=>{console.log("s :>> "),sessionStorage.changePwd="success",window.location.href="./index.html"})).catch((e=>{console.log("update pwd error :>> ",e)}))};"index.html"==window.location.pathname.split("/").pop()&&(c(),window.onload=((0,n.qb)(),(0,n.w)(),void(()=>{const e=sessionStorage.changePwd;"true"==e?(n._v.style.display="block",n.cr.style.display="none"):"success"==e?(n._v.style.display="none",n.cr.style.display="block",(0,n.r7)("Please login back in with new password")):(n._v.style.display="none",n.cr.style.display="block"),n.Df.addEventListener("click",d),n.t5.addEventListener("click",m),n.Xe.addEventListener("click",(()=>{window.location.href="./profile.html",sessionStorage.changePwd=!1})),n.cr.addEventListener("keydown",(function(e){"Enter"===e.key&&(e.preventDefault(),n.Df.click())})),n._v.addEventListener("keydown",(function(e){"Enter"==e.key&&(e.preventDefault(),n.t5.click())}))})()))},91:(e,t,o)=>{o.d(t,{Ho:()=>n});const n=(e,t,o,n="lines",a,r,l=!0,i)=>({x:e,y:t,text:r,name:o,visible:l,line:{color:a,dash:i},mode:n})},448:(e,t,o)=>{o.d(t,{n:()=>a}),$(document).ready((function(){$("#header").load("../src/pages/header.html",(function(){a()}))}));const n=()=>{let e=sessionStorage.getItem("region");"st"==e||null==e?(console.log("switching to east"),sessionStorage.setItem("region","et")):sessionStorage.setItem("region","st"),sessionStorage.removeItem("siteSelection"),location.reload()},a=()=>{let e=sessionStorage.getItem("region");const t=document.querySelector("#fieldTitle"),o=document.querySelector("#toggleRegion");o.addEventListener("click",n);const a=$(window).width();console.log("currRegion :>> ",e),"st"==e||null==e?(o.innerHTML="East Texas",t.textContent="South Texas Field",a<768&&(t.textContent="CML EXP - South Texas")):(o.innerHTML="South Texas",t.textContent="East Texas Field",a<768&&(t.textContent="CML EXP - East Texas"))}},558:(e,t,o)=>{o.a(e,(async(e,t)=>{try{var n=o(971),a=o(448),r=o(199),l=o(302),i=o(91),s=e([r]);r=(s.then?(await s)():s)[0],(0,n.z)(),(0,a.n)();let c=sessionStorage.getItem("region");const d="#siteFilter",u=()=>{let e,t=r.n1;return"et"!=c&&(t=r.OJ,e=r.o8,e.forEach((e=>{t.forEach((t=>{if(t[0]==e["Well Name"]){let o=Math.round(100*e["% Payout"]);t.push(o)}}))}))),t.forEach((e=>{let t=e[4];e[4]=e[5],e[5]=t})),t.filter((e=>(0,r.jw)().has(e[0])))},m=e=>{let t=r.kL.filter((t=>t[0]==e)),o=r.bQ.filter((t=>t[0]==e));const n=t.map((e=>e[1])),a=t.map((e=>e[6])),l=o.map((e=>e[1])).reverse(),s=n.reduce(((e,t,o)=>0===o?e.concat(t):e.concat(t+e[o-1])),[]),c=o.map((e=>e[2])).reverse(),d=c.reduce(((e,t,o)=>0===o?e.concat(t):e.concat(t+e[o-1])),[]),u=a.map((e=>new Date(e).toLocaleDateString("en-US",{month:"long",year:"numeric"})));let m=[[(0,i.Ho)(a,s,"Cuml Data","lines","green")],[(0,i.Ho)(d,c,"hi","line","green",l)],[(0,i.Ho)(s,n,"hello","line","green",u)]];["cumlOilCurve","dailyProdVsCumCurve","moProdVsCumCurve"].forEach(((e,t)=>{let o=[1,2].includes(t)?"log":null;var n={title:["Cumulative Oil vs Time","Cumulative Oil vs Daily Oil Production","Cumulative Oil vs Monthly Oil Production"][t],xaxis:{autorange:!0,showline:"log"==o,gridcolor:"darkgray"},yaxis:{autorange:!0,type:o,gridcolor:"darkgray"}};Plotly.newPlot(e,m[t],n)}))};m("Aaron #1");const p=u();document.getElementById("Payfilter").onclick=function(){(0,r.R0)(p,4)},document.getElementById("Prodfilter").onclick=function(){(0,r.R0)(p,1)},(0,l.Ys)(d).on("change",(()=>{(0,r.sb)((0,r.cm)(p,d)),m((0,l.Ys)(d).node().value)})),document.getElementById("clearFilter").onclick=function(){(0,r.sb)(p)},window.onload=((0,r.sb)(p),void(0,r.j6)(d)),t()}catch(e){t(e)}}))},914:(e,t,o)=>{o.d(t,{Df:()=>d,GK:()=>S,L8:()=>w,Mu:()=>i,RX:()=>a,Xe:()=>c,_v:()=>m,bh:()=>s,cr:()=>u,ek:()=>r,i1:()=>v,qb:()=>k,r7:()=>b,t5:()=>l,w:()=>f});var n=o(864);const a=document.querySelector("#userEmail"),r=document.querySelector("#userPassword"),l=document.querySelector("#btnChangePwd"),i=document.querySelector("#new_pwd"),s=document.querySelector("#new_pwd_rpt"),c=document.querySelector("#btnBack"),d=document.querySelector("#btnLogin"),u=(document.querySelector("#btnLogout"),document.getElementById("login")),m=document.getElementById("update-pwd"),p=document.querySelector("#divLoginError"),g=document.querySelector("#lblLoginErrorMessage"),h=document.querySelector("#divPwdError"),y=document.querySelector("#pwdErr"),w=()=>{"index.html"!=window.location.pathname.split("/").pop()&&(window.location.href="./index.html")},v=()=>{"index.html"==window.location.pathname.split("/").pop()&&(window.location.href="./curves.html")},f=()=>{p.style.display="none",g.innerHTML=""},b=e=>{p.style.display="block",e.code==n.kq.INVALID_PASSWORD?g.innerHTML="Wrong password":"success"==sessionStorage.changePwd?g.innerHTML=e:g.innerHTML=`Error: ${e}`},S=e=>{h.style.display="block",y.innerHTML=`Error: ${e}`},k=()=>{h.style.display="none",y.innerHTML=""}},302:(e,t,o)=>{o.d(t,{AVB:()=>n.Z,Ys:()=>a.Ys}),o(684);var n=o(950),a=o(997);o(286),o(964)},864:(e,t,o)=>{o.d(t,{Aj:()=>n.Aj,e5:()=>n.e5,gQ:()=>n.gQ,kq:()=>n.kq,v0:()=>n.v0});var n=o(924)}},l={};function i(e){var t=l[e];if(void 0!==t)return t.exports;var o=l[e]={exports:{}};return r[e](o,o.exports,i),o.exports}i.m=r,e="function"==typeof Symbol?Symbol("webpack queues"):"__webpack_queues__",t="function"==typeof Symbol?Symbol("webpack exports"):"__webpack_exports__",o="function"==typeof Symbol?Symbol("webpack error"):"__webpack_error__",n=e=>{e&&!e.d&&(e.d=1,e.forEach((e=>e.r--)),e.forEach((e=>e.r--?e.r++:e())))},i.a=(a,r,l)=>{var i;l&&((i=[]).d=1);var s,c,d,u=new Set,m=a.exports,p=new Promise(((e,t)=>{d=t,c=e}));p[t]=m,p[e]=e=>(i&&e(i),u.forEach(e),p.catch((e=>{}))),a.exports=p,r((a=>{var r;s=(a=>a.map((a=>{if(null!==a&&"object"==typeof a){if(a[e])return a;if(a.then){var r=[];r.d=0,a.then((e=>{l[t]=e,n(r)}),(e=>{l[o]=e,n(r)}));var l={};return l[e]=e=>e(r),l}}var i={};return i[e]=e=>{},i[t]=a,i})))(a);var l=()=>s.map((e=>{if(e[o])throw e[o];return e[t]})),c=new Promise((t=>{(r=()=>t(l)).r=0;var o=e=>e!==i&&!u.has(e)&&(u.add(e),e&&!e.d&&(r.r++,e.push(r)));s.map((t=>t[e](o)))}));return r.r?c:l()}),(e=>(e?d(p[o]=e):c(m),n(i)))),i&&(i.d=0)},a=[],i.O=(e,t,o,n)=>{if(!t){var r=1/0;for(d=0;d<a.length;d++){for(var[t,o,n]=a[d],l=!0,s=0;s<t.length;s++)(!1&n||r>=n)&&Object.keys(i.O).every((e=>i.O[e](t[s])))?t.splice(s--,1):(l=!1,n<r&&(r=n));if(l){a.splice(d--,1);var c=o();void 0!==c&&(e=c)}}return e}n=n||0;for(var d=a.length;d>0&&a[d-1][2]>n;d--)a[d]=a[d-1];a[d]=[t,o,n]},i.d=(e,t)=>{for(var o in t)i.o(t,o)&&!i.o(e,o)&&Object.defineProperty(e,o,{enumerable:!0,get:t[o]})},i.g=function(){if("object"==typeof globalThis)return globalThis;try{return this||new Function("return this")()}catch(e){if("object"==typeof window)return window}}(),i.o=(e,t)=>Object.prototype.hasOwnProperty.call(e,t),(()=>{var e={986:0,179:0};i.O.j=t=>0===e[t];var t=(t,o)=>{var n,a,[r,l,s]=o,c=0;if(r.some((t=>0!==e[t]))){for(n in l)i.o(l,n)&&(i.m[n]=l[n]);if(s)var d=s(i)}for(t&&t(o);c<r.length;c++)a=r[c],i.o(e,a)&&e[a]&&e[a][0](),e[a]=0;return i.O(d)},o=self.webpackChunkprod_1=self.webpackChunkprod_1||[];o.forEach(t.bind(null,0)),o.push=t.bind(null,o.push.bind(o))})();var s=i.O(void 0,[529,264,883],(()=>i(558)));s=i.O(s)})();
+/*
+ * ATTENTION: The "eval" devtool has been used (maybe by default in mode: "development").
+ * This devtool is neither made for production nor for readable output files.
+ * It uses "eval()" calls to create a separate source file in the browser devtools.
+ * If you are trying to read the output file, select a different devtool (https://webpack.js.org/configuration/devtool/)
+ * or disable the default devtool with "devtool: false".
+ * If you are looking for production-ready output files, see mode: "production" (https://webpack.js.org/configuration/mode/).
+ */
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+/******/ 	var __webpack_modules__ = ({
+
+/***/ "./src/js/layout.js":
+/*!**************************!*\
+  !*** ./src/js/layout.js ***!
+  \**************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   config: () => (/* binding */ config),\n/* harmony export */   layoutWbd: () => (/* binding */ layoutWbd),\n/* harmony export */   makeLayout: () => (/* binding */ makeLayout),\n/* harmony export */   makeTrace: () => (/* binding */ makeTrace)\n/* harmony export */ });\nconst makeTrace = (x, y, name, type=\"lines\", color, text, visible=true, dash) => ({\r\n    x,\r\n    y,\r\n    text,\r\n    name,\r\n    visible,\r\n    line: {\r\n        color,\r\n        dash\r\n    },\r\n    mode: type\r\n});\r\n\r\nconst makeLayout = (title, type, tickvals, ytitle, xtitle) => ({\r\n    title,\r\n    height: null,\r\n    legend: {\r\n        orientation: \"h\",\r\n            y: 1.1,\r\n            xanchor: \"center\",\r\n            x: .5,\r\n    },\r\n    yaxis: {\r\n        title: ytitle,\r\n        type: type || \"linear\",\r\n        rangemode: \"tozero\",\r\n        autorange: true,\r\n        tickformat: \"f\",\r\n        tickvals,\r\n        gridcolor: \"#dbdbdb\",\r\n    },\r\n    xaxis: {\r\n        title: xtitle,\r\n        gridcolor: \"#dbdbdb\",\r\n    },\r\n});\r\n\r\nconst config = {\r\n    modeBarButtonsToRemove: [\r\n        \"sendDataToCloud\",\r\n        \"autoScale2d\",\r\n        \"hoverClosestCartesian\",\r\n        \"hoverCompareCartesian\",\r\n        \"lasso2d\",\r\n        \"zoomIn2d\",\r\n        \"zoomOut2d\",\r\n        \"toggleSpikelines\",\r\n    ],\r\n    displaylogo: false,\r\n    responsive: true,\r\n};\r\n\r\nconst layoutWbd = (max,min,minTVD,maxTVD,wellName) => ({\r\n    width: 1620,\r\n    height: 700,\r\n\r\n    margin: {\r\n        l: 0,\r\n        r: 0,\r\n        b: 0,\r\n        t: 0,\r\n    },\r\n\r\n    title: {\r\n        text: \"Drilling for \" + wellName + \", Dimmit County, TX\",\r\n        y: 0.98,\r\n    },\r\n\r\n    legend: {\r\n        x: 0.8,\r\n        y: 0.8,\r\n    },\r\n    scene: {\r\n        aspectmode: \"cube\",\r\n        xaxis: {\r\n            title: \"Easting\",\r\n            nticks: 8,\r\n            range: [max, min],\r\n            gridcolor: \"#8a8a8a\",\r\n            tickcolor: \"#050505\",\r\n            backgroundcolor: \"#ededed\",\r\n            showbackground: true,\r\n        },\r\n        yaxis: {\r\n            title: \"Northing\",\r\n            nticks: 8,\r\n            range: [max, min],\r\n            gridcolor: \"#8a8a8a\",\r\n            tickcolor: \"#050505\",\r\n            backgroundcolor: \"#f0f1f2\",\r\n            showbackground: true,\r\n\r\n        },\r\n        zaxis: {\r\n            title: \"TVD\",\r\n            nticks: 5,\r\n            range: [minTVD, maxTVD],\r\n            gridcolor: \"#8a8a8a\",\r\n            tickcolor: \"#050505\",\r\n            backgroundcolor: \"#ededed\",\r\n            showbackground: true,\r\n        },\r\n    },\r\n    \r\n});\n\n//# sourceURL=webpack://prod-1/./src/js/layout.js?");
+
+/***/ }),
+
+/***/ "./src/js/table.js":
+/*!*************************!*\
+  !*** ./src/js/table.js ***!
+  \*************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+eval("__webpack_require__.a(module, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {\n__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _index__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./index */ \"./src/js/index.js\");\n/* harmony import */ var _region__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./region */ \"./src/js/region.js\");\n/* harmony import */ var _data__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./data */ \"./src/js/data.js\");\n/* harmony import */ var d3__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! d3 */ \"./node_modules/d3/src/index.js\");\n/* harmony import */ var _layout__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./layout */ \"./src/js/layout.js\");\nvar __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([_data__WEBPACK_IMPORTED_MODULE_3__]);\n_data__WEBPACK_IMPORTED_MODULE_3__ = (__webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__)[0];\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n(0,_index__WEBPACK_IMPORTED_MODULE_1__.monitorAuthState)();\r\n(0,_region__WEBPACK_IMPORTED_MODULE_2__.monitorRegion)();\r\n\r\nlet region = sessionStorage.getItem('region');\r\nconst dropdownId = '#siteFilter';\r\n\r\nconst formatData = () => {\r\n  let tableData = _data__WEBPACK_IMPORTED_MODULE_3__.dataCumlET;\r\n  let payData;\r\n\r\n  if (region != \"et\") {\r\n    tableData = _data__WEBPACK_IMPORTED_MODULE_3__.dataCuml\r\n    payData = _data__WEBPACK_IMPORTED_MODULE_3__.payout\r\n\r\n    payData.forEach((pay) => {\r\n      tableData.forEach((well) => {\r\n        if (well[0] == pay[\"Well Name\"]) {\r\n          let rounded = Math.round(pay[\"% Payout\"]*100)\r\n          well.push(rounded);\r\n        }\r\n      });\r\n    });\r\n  };\r\n  \r\n  //switch places of prodData[3] and prodData[4]\r\n  tableData.forEach((well) => {\r\n    let temp = well[4];\r\n    well[4] = well[5];\r\n    well[5] = temp;\r\n  });\r\n  // tableData.forEach((well) => {\r\n  //   well[4] = Math.round(well[4]*100);\r\n  // });\r\n\r\n  //remove archived wells\r\n  return tableData.filter(val => (0,_data__WEBPACK_IMPORTED_MODULE_3__.activeWells)().has(val[0]));\r\n};\r\n\r\nconst displayPlot = (selected) => {\r\n  // Read Files, select wells with selected name\r\n  let dataMonthly = _data__WEBPACK_IMPORTED_MODULE_3__.moDataST.filter(el => el[0] == selected);\r\n  let dataDaily = _data__WEBPACK_IMPORTED_MODULE_3__.dataST.filter(el => el[0] == selected);\r\n  // Create arrays of desired columns\r\n  const oilMo = dataMonthly.map(el => el[1]);\r\n  const dateMo = dataMonthly.map(el => el[6]);\r\n  const dateDa = dataDaily.map(el => el[1]).reverse();\r\n  const cumlMoOil = oilMo.reduce((acc, val, idx) => (idx === 0 ? acc.concat(val) : acc.concat(val + acc[idx - 1])), []);\r\n  const oilDaily = dataDaily.map(el => el[2]).reverse();\r\n  const cumlDaOil = oilDaily.reduce((acc, val, idx) => (idx === 0 ? acc.concat(val) : acc.concat(val + acc[idx - 1])), []);\r\n  const formattedDateMo = dateMo.map(dateString => {\r\n    const date = new Date(dateString);\r\n    const options = { month: 'long', year: 'numeric' };\r\n    return date.toLocaleDateString('en-US', options);\r\n  });\r\n\r\n  // Create traces for graphs\r\n  const traceCumOil = (0,_layout__WEBPACK_IMPORTED_MODULE_4__.makeTrace)(\r\n    dateMo,\r\n    cumlMoOil,\r\n    \"Cuml Data\",\r\n    \"lines\",\r\n    \"green\"\r\n  );\r\n  const traceDailyProdVSCum = (0,_layout__WEBPACK_IMPORTED_MODULE_4__.makeTrace)(\r\n    cumlDaOil,\r\n    oilDaily,\r\n    \"hi\",\r\n    \"line\",\r\n    \"green\",\r\n    dateDa\r\n  );\r\n  const traceMoProdVSCum = (0,_layout__WEBPACK_IMPORTED_MODULE_4__.makeTrace)(\r\n    cumlMoOil,\r\n    oilMo,\r\n    \"hello\",\r\n    \"line\",\r\n    \"green\",\r\n    formattedDateMo\r\n  );\r\n\r\n  // Create Different Keys\r\n  const plotContainers = ['cumlOilCurve', 'dailyProdVsCumCurve', 'moProdVsCumCurve'];\r\n  // Traces to Use\r\n  let traceArrays = [\r\n    [traceCumOil],\r\n    [traceDailyProdVSCum],\r\n    [traceMoProdVSCum]\r\n  ];\r\n\r\n  // Loop and make the plots, contain keys found in plotContainers^^\r\n  plotContainers.forEach((container, i) => {\r\n    // SETS SCALE TO LOG FOR THE Y-AXIS IF (i == [index in plotContainers])\r\n    let scale = [1, 2].includes(i) ? \"log\" : null;\r\n    let tickvals = scale == 'log' ? [1,10,100,1000,10000,100000] : 'auto'\r\n    // CREATES LAYOUT, INCLUDES TITLE, SCALE, AND TICK VALUES\r\n    var layout = {\r\n      title: ['Cumulative Oil vs Time', 'Cumulative Oil vs Daily Oil Production', 'Cumulative Oil vs Monthly Oil Production'][i],\r\n      xaxis: {\r\n        autorange: true,\r\n        showline: scale == 'log' ? true : false,\r\n        gridcolor: 'darkgray',\r\n      },\r\n      yaxis: {\r\n        autorange: true,\r\n        type: scale,\r\n        // tickvals: tickvals,\r\n        gridcolor: 'darkgray',\r\n      },\r\n    }\r\n      \r\n    Plotly.newPlot(container, traceArrays[i], layout);\r\n  });\r\n}\r\n\r\ndisplayPlot(\"Aaron #1\");\r\n//main\r\nconst tableData = formatData();\r\n\r\n//sort by pay: pos=4 by prod: pos=1\r\ndocument.getElementById('Payfilter').onclick = function(){\r\n  (0,_data__WEBPACK_IMPORTED_MODULE_3__.sortData)(tableData,4)\r\n};\r\n\r\ndocument.getElementById('Prodfilter').onclick = function(){\r\n  (0,_data__WEBPACK_IMPORTED_MODULE_3__.sortData)(tableData,1)\r\n};\r\n\r\n(0,d3__WEBPACK_IMPORTED_MODULE_0__.select)(dropdownId).on(\"change\", () => {\r\n  (0,_data__WEBPACK_IMPORTED_MODULE_3__.buildTable)((0,_data__WEBPACK_IMPORTED_MODULE_3__.filterData)(tableData,dropdownId));\r\n  displayPlot((0,d3__WEBPACK_IMPORTED_MODULE_0__.select)(dropdownId).node().value);\r\n});\r\n\r\n\r\ndocument.getElementById('clearFilter').onclick = function () {\r\n  (0,_data__WEBPACK_IMPORTED_MODULE_3__.buildTable)(tableData);\r\n};\r\n\r\nwindow.onload = function () {\r\n  (0,_data__WEBPACK_IMPORTED_MODULE_3__.buildTable)(tableData);\r\n  (0,_data__WEBPACK_IMPORTED_MODULE_3__.dropdown)(dropdownId);  \r\n}();\n__webpack_async_result__();\n} catch(e) { __webpack_async_result__(e); } });\n\n//# sourceURL=webpack://prod-1/./src/js/table.js?");
+
+/***/ })
+
+/******/ 	});
+/************************************************************************/
+/******/ 	// The module cache
+/******/ 	var __webpack_module_cache__ = {};
+/******/ 	
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/ 		// Check if module is in cache
+/******/ 		var cachedModule = __webpack_module_cache__[moduleId];
+/******/ 		if (cachedModule !== undefined) {
+/******/ 			return cachedModule.exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = __webpack_module_cache__[moduleId] = {
+/******/ 			// no module.id needed
+/******/ 			// no module.loaded needed
+/******/ 			exports: {}
+/******/ 		};
+/******/ 	
+/******/ 		// Execute the module function
+/******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
+/******/ 	
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/ 	
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = __webpack_modules__;
+/******/ 	
+/************************************************************************/
+/******/ 	/* webpack/runtime/async module */
+/******/ 	(() => {
+/******/ 		var webpackQueues = typeof Symbol === "function" ? Symbol("webpack queues") : "__webpack_queues__";
+/******/ 		var webpackExports = typeof Symbol === "function" ? Symbol("webpack exports") : "__webpack_exports__";
+/******/ 		var webpackError = typeof Symbol === "function" ? Symbol("webpack error") : "__webpack_error__";
+/******/ 		var resolveQueue = (queue) => {
+/******/ 			if(queue && !queue.d) {
+/******/ 				queue.d = 1;
+/******/ 				queue.forEach((fn) => (fn.r--));
+/******/ 				queue.forEach((fn) => (fn.r-- ? fn.r++ : fn()));
+/******/ 			}
+/******/ 		}
+/******/ 		var wrapDeps = (deps) => (deps.map((dep) => {
+/******/ 			if(dep !== null && typeof dep === "object") {
+/******/ 				if(dep[webpackQueues]) return dep;
+/******/ 				if(dep.then) {
+/******/ 					var queue = [];
+/******/ 					queue.d = 0;
+/******/ 					dep.then((r) => {
+/******/ 						obj[webpackExports] = r;
+/******/ 						resolveQueue(queue);
+/******/ 					}, (e) => {
+/******/ 						obj[webpackError] = e;
+/******/ 						resolveQueue(queue);
+/******/ 					});
+/******/ 					var obj = {};
+/******/ 					obj[webpackQueues] = (fn) => (fn(queue));
+/******/ 					return obj;
+/******/ 				}
+/******/ 			}
+/******/ 			var ret = {};
+/******/ 			ret[webpackQueues] = x => {};
+/******/ 			ret[webpackExports] = dep;
+/******/ 			return ret;
+/******/ 		}));
+/******/ 		__webpack_require__.a = (module, body, hasAwait) => {
+/******/ 			var queue;
+/******/ 			hasAwait && ((queue = []).d = 1);
+/******/ 			var depQueues = new Set();
+/******/ 			var exports = module.exports;
+/******/ 			var currentDeps;
+/******/ 			var outerResolve;
+/******/ 			var reject;
+/******/ 			var promise = new Promise((resolve, rej) => {
+/******/ 				reject = rej;
+/******/ 				outerResolve = resolve;
+/******/ 			});
+/******/ 			promise[webpackExports] = exports;
+/******/ 			promise[webpackQueues] = (fn) => (queue && fn(queue), depQueues.forEach(fn), promise["catch"](x => {}));
+/******/ 			module.exports = promise;
+/******/ 			body((deps) => {
+/******/ 				currentDeps = wrapDeps(deps);
+/******/ 				var fn;
+/******/ 				var getResult = () => (currentDeps.map((d) => {
+/******/ 					if(d[webpackError]) throw d[webpackError];
+/******/ 					return d[webpackExports];
+/******/ 				}))
+/******/ 				var promise = new Promise((resolve) => {
+/******/ 					fn = () => (resolve(getResult));
+/******/ 					fn.r = 0;
+/******/ 					var fnQueue = (q) => (q !== queue && !depQueues.has(q) && (depQueues.add(q), q && !q.d && (fn.r++, q.push(fn))));
+/******/ 					currentDeps.map((dep) => (dep[webpackQueues](fnQueue)));
+/******/ 				});
+/******/ 				return fn.r ? promise : getResult();
+/******/ 			}, (err) => ((err ? reject(promise[webpackError] = err) : outerResolve(exports)), resolveQueue(queue)));
+/******/ 			queue && (queue.d = 0);
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/chunk loaded */
+/******/ 	(() => {
+/******/ 		var deferred = [];
+/******/ 		__webpack_require__.O = (result, chunkIds, fn, priority) => {
+/******/ 			if(chunkIds) {
+/******/ 				priority = priority || 0;
+/******/ 				for(var i = deferred.length; i > 0 && deferred[i - 1][2] > priority; i--) deferred[i] = deferred[i - 1];
+/******/ 				deferred[i] = [chunkIds, fn, priority];
+/******/ 				return;
+/******/ 			}
+/******/ 			var notFulfilled = Infinity;
+/******/ 			for (var i = 0; i < deferred.length; i++) {
+/******/ 				var [chunkIds, fn, priority] = deferred[i];
+/******/ 				var fulfilled = true;
+/******/ 				for (var j = 0; j < chunkIds.length; j++) {
+/******/ 					if ((priority & 1 === 0 || notFulfilled >= priority) && Object.keys(__webpack_require__.O).every((key) => (__webpack_require__.O[key](chunkIds[j])))) {
+/******/ 						chunkIds.splice(j--, 1);
+/******/ 					} else {
+/******/ 						fulfilled = false;
+/******/ 						if(priority < notFulfilled) notFulfilled = priority;
+/******/ 					}
+/******/ 				}
+/******/ 				if(fulfilled) {
+/******/ 					deferred.splice(i--, 1)
+/******/ 					var r = fn();
+/******/ 					if (r !== undefined) result = r;
+/******/ 				}
+/******/ 			}
+/******/ 			return result;
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/define property getters */
+/******/ 	(() => {
+/******/ 		// define getter functions for harmony exports
+/******/ 		__webpack_require__.d = (exports, definition) => {
+/******/ 			for(var key in definition) {
+/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 				}
+/******/ 			}
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/global */
+/******/ 	(() => {
+/******/ 		__webpack_require__.g = (function() {
+/******/ 			if (typeof globalThis === 'object') return globalThis;
+/******/ 			try {
+/******/ 				return this || new Function('return this')();
+/******/ 			} catch (e) {
+/******/ 				if (typeof window === 'object') return window;
+/******/ 			}
+/******/ 		})();
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
+/******/ 	(() => {
+/******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/make namespace object */
+/******/ 	(() => {
+/******/ 		// define __esModule on exports
+/******/ 		__webpack_require__.r = (exports) => {
+/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 			}
+/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/jsonp chunk loading */
+/******/ 	(() => {
+/******/ 		// no baseURI
+/******/ 		
+/******/ 		// object to store loaded and loading chunks
+/******/ 		// undefined = chunk not loaded, null = chunk preloaded/prefetched
+/******/ 		// [resolve, reject, Promise] = chunk loading, 0 = chunk loaded
+/******/ 		var installedChunks = {
+/******/ 			"table": 0
+/******/ 		};
+/******/ 		
+/******/ 		// no chunk on demand loading
+/******/ 		
+/******/ 		// no prefetching
+/******/ 		
+/******/ 		// no preloaded
+/******/ 		
+/******/ 		// no HMR
+/******/ 		
+/******/ 		// no HMR manifest
+/******/ 		
+/******/ 		__webpack_require__.O.j = (chunkId) => (installedChunks[chunkId] === 0);
+/******/ 		
+/******/ 		// install a JSONP callback for chunk loading
+/******/ 		var webpackJsonpCallback = (parentChunkLoadingFunction, data) => {
+/******/ 			var [chunkIds, moreModules, runtime] = data;
+/******/ 			// add "moreModules" to the modules object,
+/******/ 			// then flag all "chunkIds" as loaded and fire callback
+/******/ 			var moduleId, chunkId, i = 0;
+/******/ 			if(chunkIds.some((id) => (installedChunks[id] !== 0))) {
+/******/ 				for(moduleId in moreModules) {
+/******/ 					if(__webpack_require__.o(moreModules, moduleId)) {
+/******/ 						__webpack_require__.m[moduleId] = moreModules[moduleId];
+/******/ 					}
+/******/ 				}
+/******/ 				if(runtime) var result = runtime(__webpack_require__);
+/******/ 			}
+/******/ 			if(parentChunkLoadingFunction) parentChunkLoadingFunction(data);
+/******/ 			for(;i < chunkIds.length; i++) {
+/******/ 				chunkId = chunkIds[i];
+/******/ 				if(__webpack_require__.o(installedChunks, chunkId) && installedChunks[chunkId]) {
+/******/ 					installedChunks[chunkId][0]();
+/******/ 				}
+/******/ 				installedChunks[chunkId] = 0;
+/******/ 			}
+/******/ 			return __webpack_require__.O(result);
+/******/ 		}
+/******/ 		
+/******/ 		var chunkLoadingGlobal = self["webpackChunkprod_1"] = self["webpackChunkprod_1"] || [];
+/******/ 		chunkLoadingGlobal.forEach(webpackJsonpCallback.bind(null, 0));
+/******/ 		chunkLoadingGlobal.push = webpackJsonpCallback.bind(null, chunkLoadingGlobal.push.bind(chunkLoadingGlobal));
+/******/ 	})();
+/******/ 	
+/************************************************************************/
+/******/ 	
+/******/ 	// startup
+/******/ 	// Load entry module and return exports
+/******/ 	// This entry module depends on other loaded chunks and execution need to be delayed
+/******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, ["vendors-node_modules_firebase_app_dist_esm_index_esm_js-node_modules_firebase_auth_dist_esm_i-d0574a","vendors-node_modules_d3_src_index_js","src_js_data_js-src_js_index_js-src_js_region_js"], () => (__webpack_require__("./src/js/table.js")))
+/******/ 	__webpack_exports__ = __webpack_require__.O(__webpack_exports__);
+/******/ 	
+/******/ })()
+;

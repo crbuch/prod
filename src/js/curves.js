@@ -113,7 +113,13 @@ const getSelectedOption = (data) => {
   sessionStorage.siteSelection = selectedOption;
   return selectedOption;
 };
+const fetchNewProd = () => {
+  const data = dh.newProd;
+  let oil = data.map(sub => sub["New Prod"],[]).reverse();
+  let date = data.map(sub => sub["Date"],[]).reverse();
 
+  return {"date": date, "new oil": oil};
+}
 const curve = (timeFrame, data) => {
   const selectedOption = getSelectedOption(data.prodData);
 
@@ -146,6 +152,9 @@ const curve = (timeFrame, data) => {
   [/*'oilDeclineCurve',*/ 'gasDeclineCurve', 'waterDeclineCurve', 'waterCutCurve', 'totalFluidCurve', 'combinationCurves', 'moOilCurve'].forEach(id => {
     document.getElementById(id).style.display = 'block';
   });
+  let data365 = fetchNewProd();
+  let date365 = data365["date"];
+  let oil365 = data365["new oil"];
 
   const site_data = data.prodData.filter(site => site[0] === selectedOption);
   let site_date = site_data.map(site => site[9]);
@@ -156,15 +165,25 @@ const curve = (timeFrame, data) => {
   let movingAverage = site_data.map(site => site[8]);
   let water_cut = site_water.map((water, i) => (water / (water + site_oil[i])) * 100);
   let total_fluid = site_oil.map((oil, index) => oil + site_water[index]);
-  if (timeFrame > 0) [site_date, site_oil, site_gas, site_water, comments, movingAverage] =
-  [site_date, site_oil, site_gas, site_water, comments, movingAverage].map(arr => arr.slice(0, timeFrame));
-
+  
+  if (timeFrame > 0) [site_date, site_oil, site_gas, site_water, comments, movingAverage,oil365,date365] =
+  [site_date, site_oil, site_gas, site_water, comments, movingAverage,oil365,date365].map(arr => arr.slice(0, timeFrame));
   // READING MONTHLY DATA (+ Drops most recent month)
   const mo_site_data = data.MoProdDataST.filter(site => site[0] === selectedOption);
   mo_site_data.pop();
   let site_date_mo = mo_site_data.map(site => site[6]);
   let site_oil_mo = mo_site_data.map(site => site[1]);
   const cumlMoOil = site_oil_mo.reduce((acc, val, idx) => (idx === 0 ? acc.concat(val) : acc.concat(val + acc[idx - 1])), []);
+  
+  let trace365 = makeTrace(
+    date365,
+    oil365,
+    "Production from New Wells (365 Days)",
+    null,
+    "purple",
+    null,
+    true
+  )
 
   let traceOil = makeTrace( 
     site_date,
@@ -228,7 +247,9 @@ const curve = (timeFrame, data) => {
 
   const scale = (document.getElementById("logarithmic").classList.contains("active")) ? 'log' : 'linear';
   const plotContainers = [/*"oilDeclineCurve", */"gasDeclineCurve", "waterDeclineCurve", 'totalFluidCurve', 'waterCutCurve', 'combinationCurves', 'moOilCurve'];
-  const combination = [traceOil, traceOilAvg, traceGas, traceWater, traceFluid];
+  let combination = [traceOil, traceOilAvg, traceGas, traceWater, traceFluid, trace365];
+  if (selectedOption !== "South Texas Total") combination.pop();
+
   let traceArrays = [
     // [traceOil, traceOilAvg],
     [traceGas],
@@ -243,6 +264,7 @@ const curve = (timeFrame, data) => {
     traceArrays[i].forEach(trace => {
       trace.visible = (i === 4 && trace.name !== "Oil [BO]") ? "legendonly" : trace.visible;
     });
+
     const layout = makeLayout([/*'Oil vs Time (BOPD)', */'Gas vs Time (MCFD)', 'Water vs Time (BWPD)', 'Total Fluid vs Time (BFPD)', 'Water Cut Percentage', 'Combined Production', 'Monthly Oil vs Time (BOPM)'][i], scale, 
                               (scale === 'log') ? [1, 2, 5, 10, 20, 50, 100, 200, 500, 1000, 2000, 3000] : null);
     Plotly.newPlot(container, traceArrays[i], layout, config);
@@ -332,7 +354,6 @@ const table = (coreData) => {
 
 const switchActives = (event) => {
   event.preventDefault();
-  try{document.getElementById("siteSelection").blur();}catch{};
   
   const target = event.target;
   const parent = document.getElementById(target.id).parentNode;
@@ -346,6 +367,18 @@ const switchActives = (event) => {
   const activeTime = document.getElementById("timeframes").querySelectorAll(".active")[0].id.substring(4);//gives the number from the active view id
   console.log('activeTime :>> ', activeTime);
   curve(Number(activeTime) + 1, curveInfo);
+
+  function ddd () {
+    console.log("in ddd");
+    try{
+      console.log("closing");
+      document.getElementById("siteSelection").blur();
+      console.log("closed..");
+    }catch{
+      console.log("e");
+    };
+  }
+  setTimeout(ddd,100);
 };
 
 
@@ -384,6 +417,7 @@ dh.dropdown(dropdownId);
 select(dropdownId).on("change", () => {
   curve(localStorage.getItem('initTime'), curveInfo);
 });
+
 
 document.getElementById("table").addEventListener('click', () => {
   if (checkActive('table') === true) return;

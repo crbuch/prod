@@ -1,4 +1,4 @@
-import { json, select } from 'd3';
+import { csv, json, select } from 'd3';
 
 export const dataST = await json("../data/allProductionData.json").then((data) => {
     return data
@@ -49,6 +49,10 @@ export const legacyEcon = await json("../data/legacyEcon.json").then((data) => {
 });
 
 export const pl23_22 = await json("../data\\pldata.json").then((data) => {
+    return data
+});
+
+export const newProd = await csv("../data\\newProd.csv").then((data) => {
     return data
 });
 
