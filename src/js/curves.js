@@ -332,6 +332,7 @@ const table = (coreData) => {
 
 const switchActives = (event) => {
   event.preventDefault();
+  try{document.getElementById("siteSelection").blur();}catch{};
   
   const target = event.target;
   const parent = document.getElementById(target.id).parentNode;
@@ -345,18 +346,6 @@ const switchActives = (event) => {
   const activeTime = document.getElementById("timeframes").querySelectorAll(".active")[0].id.substring(4);//gives the number from the active view id
   console.log('activeTime :>> ', activeTime);
   curve(Number(activeTime) + 1, curveInfo);
-
-  function ddd () {
-    console.log("in ddd");
-    try{
-      console.log("closing");
-      document.getElementById("siteSelection").blur();
-      console.log("closed..");
-    }catch{
-      console.log("e");
-    };
-  }
-  setTimeout(ddd,100)
 };
 
 
@@ -395,9 +384,6 @@ dh.dropdown(dropdownId);
 select(dropdownId).on("change", () => {
   curve(localStorage.getItem('initTime'), curveInfo);
 });
-document.getElementById(dropdownId).addEventListener('click', () => {
-  console.log("hit dd");
-})
 
 document.getElementById("table").addEventListener('click', () => {
   if (checkActive('table') === true) return;
