@@ -71,7 +71,7 @@ async function declineCurve(message){
         yaxis: {
             title: 'BOPM (log)',
             type: 'log',
-            tickvals: '[1,10,100,1000,10000,100000]',
+            tickvals: 'auto',
             autorange: true, // adjust the y-axis range if needed
             gridcolor: 'darkgray',
         },
