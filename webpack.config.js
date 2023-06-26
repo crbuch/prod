@@ -12,6 +12,7 @@ let allHtmlPlugs = htmlPageNames.map(page => {
 });
 
 module.exports = {
+  //mode: 'development',
   mode: 'production',
   //devtool: 'eval-source-map',
   entry: {
