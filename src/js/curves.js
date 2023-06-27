@@ -287,8 +287,8 @@ const curve = (timeFrame, data) => {
     const xStart = xRangeStart.substring(0, 10);
     const xEnd = xRangeEnd.substring(0, 10);
 
-    const startIdx = site_date.indexOf(`${xStart}T00:00:00.000Z`);
-    const endIdx = site_date.indexOf(`${xEnd}T00:00:00.000Z`);
+    const startIdx = site_date.findIndex(value => value.includes(xStart));
+    const endIdx = site_date.findIndex(value => value.includes(xEnd));
 
     if (startIdx === -1) { // zoomed where no data
       return;
