@@ -101,4 +101,4 @@ async function declineCurve(well){
     variab.textContent = "D: " + D + " b: " + b;
 }
 
-declineCurve("whitemarlin1".toLowerCase())
+declineCurve("carolpick1".toLowerCase())
