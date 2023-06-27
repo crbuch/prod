@@ -1,12 +1,12 @@
 import { monitorRegion } from './region'
-import { logout, monitorAuthState, changePwd } from './index'
 import { ref, getDatabase, onValue } from 'firebase/database';
-import { legacyEcon, payout, moDataST, pl23_22 } from './data';
-import { makeTrace, makeLayout, config } from './layout';
+import { logoutFb, onAuthStateChangedFb } from './auth';
+import { payout, moDataST, pl23_22 } from './data';
+import { makeTrace, config } from './layout';
 import { toggleInitScale, toggleInitTime } from './ui';
 import { select } from 'd3';
 
-monitorAuthState();
+onAuthStateChangedFb();
 monitorRegion();
 
 const fetchData = () => {
@@ -96,6 +96,7 @@ const parseData = (d) => {
 
     displayProd("All Wells");
 }
+
 const rankPl = (obj) => {
     let res = {};
     for (let [well, mos] of Object.entries(obj)) {
@@ -112,6 +113,7 @@ const rankPl = (obj) => {
     return Object.keys(sortedObj)
 
 }
+
 const plotRev = (x, y, title="P&L (ST only)") => {
     const trace = makeTrace(x, y, 'P&L', "lines+markers", 'black',null);
     const layout = {
@@ -331,7 +333,7 @@ const db = getDatabase()
 const uid = localStorage.getItem('uid');
 //console.log('uid :>> ', uid);
 
-document.getElementById("btnLogout").addEventListener('click', logout);
+document.getElementById("btnLogout").addEventListener('click', logoutFb)
 
 fetchData();
 
@@ -372,10 +374,6 @@ document.getElementById("show_pwd_form_btn").addEventListener('click', () => {
     sessionStorage.changePwd = "true";
     window.location.href = "./index.html";
 })
-
-
-
-
 
 window.onload = function () {
     const currTime = localStorage.getItem('initTime');

@@ -1,9 +1,9 @@
-import { monitorAuthState } from './index'
+import { onAuthStateChangedFb } from './auth';
 import { monitorRegion } from './region'
 import { layoutWbd } from './layout';
 import { json, select, csv, extent } from 'd3';
 
-monitorAuthState();
+onAuthStateChangedFb();
 monitorRegion();
 
 const wbdData = await json("../data/datawbd/wells.json").then((data) => {
