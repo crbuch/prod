@@ -1,12 +1,11 @@
 // Read Csv for one well
 
-async function declineCurve(message){
+async function declineCurve(well){
     const well_params = await d3.csv("../data/declineCurves/1params.csv").then((data) => {
         return data
     });
-
-    const curr = await d3.csv(`../data/declineCurves/${message}.csv`);
-    console.log(message)
+    const curr = await d3.csv(`../data/declineCurves/${well}.csv`);
+    console.log(well)
 
     // Populate the arrays from curr
     var t = [];
@@ -18,15 +17,12 @@ async function declineCurve(message){
         if (element.hasOwnProperty('t')){
             t.push(element.t);
         }
-        
         if (element.hasOwnProperty('q')){
             q.push(element.q);
         }
-
         if (element.hasOwnProperty('t_model')){
             t_model.push(element.t_model);
         }
-          
         if (element.hasOwnProperty('q_model')){
             q_model.push(element.q_model);
         }
@@ -41,7 +37,7 @@ async function declineCurve(message){
         type: 'scatter',
         name: 'Oil Produced',
         line: {
-            color: 'null'},
+            color: 'green'},
     };
     var trace2 = {
         x: t_model,
@@ -50,6 +46,8 @@ async function declineCurve(message){
         type: 'scatter',
         color: 'green',
         name: 'Decl Curve',
+        line: {
+            color: 'purple'},
     };
     // autorange: true,
     var layout = {
@@ -67,22 +65,40 @@ async function declineCurve(message){
             gridcolor: 'darkgray',
             tickmode: 'linear',  // Set the tick mode to 'auto'
             dtick: 'M12',  // Set the tick interval to 12 months (representing 1 year)
-            // tickcolor: 'rgba(0, 0, 0, 1)', // Set the tick line color to black
-            // tickwidth: 2
         },
         yaxis: {
             title: 'BOPM (log)',
             type: 'log',
             autorange: true, // adjust the y-axis range if needed
             gridcolor: 'darkgray',
-            // tickcolor: 'rgba(0, 0, 0, 1)', // Set the tick line color to black
-            // tickwidth: 2
         },
       };
 
     Plotly.newPlot('declineCurve', [trace1, trace2], layout);
+
+    console.log(well_params)
+    var qi = parseInt(well_params[0][well]);
+    var D = well_params[1][well];
+    var b = well_params[2][well];
+    var extr_mo = parseInt(well_params[3][well]);
+    var q_sum = parseInt(well_params[4][well]);
+    var qm_sum = parseInt(well_params[5][well]);
+    var future_prod = parseInt(well_params[6][well]);
+    var eco_limit_mo = parseInt(well_params[7][well]);
+    // var Np = well_params[8][well];
+
+    var currentProd = document.getElementById("q_sum");
+    var futureProd = document.getElementById("future_prod");
+    var ecoLimit = document.getElementById("eco_limit_mo");
+
+    currentProd.textContent = "Total Oil Produced (current): " + q_sum + " BBLS";
+    futureProd.textContent = "Total Extrapolated Production for Next " + extr_mo + " Months: " + future_prod + " BBLS";
+    ecoLimit.textContent = "Economic Limit: " + eco_limit_mo + " Months";
+
+    var variab = document.getElementById("variables");
+    document.getElementById('variables').style.display = 'inline-block';
+
+    variab.textContent = "D: " + D + " b: " + b;
 }
 
-declineCurve("bowman1")
-
-// read arrays and create graph
+declineCurve("whitemarlin1".toLowerCase())
