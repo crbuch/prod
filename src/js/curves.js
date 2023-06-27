@@ -339,11 +339,12 @@ const table = (coreData) => {
   const data = coreData.map(el => ([...el]))
   const selectedOption = getSelectedOption(data);
   const well = data.filter(i => i[0] == selectedOption);
-
+  console.log('well :>> ', well);
   well.forEach(w => {
     w.shift();
     for (let i = 0; i < 2; i++) w.pop();
   });
+  console.log('well :>> ', well);
   dh.buildTable(well);
 
   document.getElementById('individualTable').style.display = 'inline-block';
@@ -365,20 +366,16 @@ const switchActives = (event) => {
   
   target.className += "active";
   const activeTime = document.getElementById("timeframes").querySelectorAll(".active")[0].id.substring(4);//gives the number from the active view id
-  console.log('activeTime :>> ', activeTime);
   curve(Number(activeTime) + 1, curveInfo);
 
   function ddd () {
-    console.log("in ddd");
     try{
-      console.log("closing");
-      document.getElementById("siteSelection").blur();
-      console.log("closed..");
+      //document.getElementById("siteSelection").blur();
     }catch{
-      console.log("e");
     };
   }
-  setTimeout(ddd,100);
+  if (window.innerWidth < 400) setTimeout(ddd,50);
+  document.getElementById('siteSelection').focus();
 };
 
 
@@ -388,7 +385,6 @@ const switchActives = (event) => {
 const currUid = localStorage.getItem('uid');
 let region = sessionStorage.getItem('region');
 console.log('currUid :>> ', currUid);
-
 let prodData = dh.dataST;
 let cumlData = dh.dataCuml;
 let MoProdDataST = dh.moDataST;
@@ -415,9 +411,11 @@ const dropdownId = '#siteSelection';
 dh.dropdown(dropdownId);
 
 select(dropdownId).on("change", () => {
-  curve(localStorage.getItem('initTime'), curveInfo);
+  let activeTime = 'DaysInception';
+  if (localStorage.initTime == 31) activeTime = 'Days30';
+  curve(localStorage.initTime, curveInfo);
+  setActiveTime(activeTime);
 });
-
 
 document.getElementById("table").addEventListener('click', () => {
   if (checkActive('table') === true) return;
