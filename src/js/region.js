@@ -1,6 +1,6 @@
 $(document).ready(function () {
     $("#header").load("../src/pages/header.html", function () {
-        monitorRegion();
+        //monitorRegion();
     });
 });
 
