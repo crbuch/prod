@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <script src="https://d3js.org/d3.v7.min.js"></script>
-    <script src="./src/js/decCurveTest.js"></script>
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 
     <style>
@@ -19,14 +18,17 @@
     </style>
 </head>
 <body>
-    <select id="#wellselect" class="active">
+    <select id="wellselect" class="active">
         <option hidden value="default">Select A Well</option>
     </select>
+
     <div id=declineCurve></div>
     <div id=q_sum class="economics"></div>
     <div id=future_prod class="economics"></div>
     <div id=eco_limit_mo class="economics"></div>
     <div id=D_var class="economics"></div>
     <div id=b_var class="economics"></div>
+    <script src="./src/js/decCurveTest.js"></script>
+
 </body>
 </html>

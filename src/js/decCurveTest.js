@@ -11,6 +11,7 @@ async function declineCurve(){
     const well_params = await d3.csv("../data/declineCurves/1params.csv").then((data) => {
         return data
     });
+
     const curr = await d3.csv(`../data/declineCurves/${well}.csv`);
     console.log(well)
 
@@ -130,20 +131,22 @@ async function dropdown() {
     const wellsdict = await d3.json("../data/everyWell.json").then((data) => {
       return data
     });
+    console.log('wellsdict :>> ', wellsdict);
     let menu = d3.select("#wellselect");
-    let wells = wellsdict;
-  
-    wells.forEach(well => {
+    console.log('menu :>> ', menu);
+
+    wellsdict.forEach(well => {
       menu.append("option")
         .text(well)
         .property("Value", well);
     });
   };
-dropdown()
+dropdown();
 
 d3.select("#wellselect").on("change", function () {
+    console.log("change");
     declineCurve();
-  });
+});
 
 //init page on load//
 // window.onload = function () {
