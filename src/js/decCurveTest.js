@@ -51,7 +51,7 @@ async function declineCurve(well){
     };
     // autorange: true,
     var layout = {
-        title: 'Decline Curve Model', // set the title of the graph
+        title: 'Decline Curve Model - ' + well, // set the title of the graph
         height: 800,
         legend: {
             yanchor: 'top',
@@ -78,8 +78,8 @@ async function declineCurve(well){
 
     console.log(well_params)
     var qi = parseInt(well_params[0][well]);
-    var D = well_params[1][well];
-    var b = well_params[2][well];
+    var D = Number(well_params[1][well]).toFixed(2);
+    var b = Number(well_params[2][well]).toFixed(2);
     var extr_mo = parseInt(well_params[3][well]);
     var q_sum = parseInt(well_params[4][well]);
     var qm_sum = parseInt(well_params[5][well]);
@@ -88,17 +88,21 @@ async function declineCurve(well){
     // var Np = well_params[8][well];
 
     var currentProd = document.getElementById("q_sum");
+    currentProd.textContent = "Current Total Oil Produced -- " + q_sum + " BBLS";
+
     var futureProd = document.getElementById("future_prod");
+    futureProd.textContent = "Next " + extr_mo + " Months Expected Production -- " + future_prod + " BBLS";
+
     var ecoLimit = document.getElementById("eco_limit_mo");
+    ecoLimit.textContent = "Economic Limit -- " + eco_limit_mo + " Months";
 
-    currentProd.textContent = "Total Oil Produced (current): " + q_sum + " BBLS";
-    futureProd.textContent = "Total Extrapolated Production for Next " + extr_mo + " Months: " + future_prod + " BBLS";
-    ecoLimit.textContent = "Economic Limit: " + eco_limit_mo + " Months";
+    var Dvar = document.getElementById("D_var");
+    Dvar.textContent = "D -- " + D;
+    
+    var bvar = document.getElementById("b_var");
+    bvar.textContent = "b -- " + b;
 
-    var variab = document.getElementById("variables");
-    document.getElementById('variables').style.display = 'inline-block';
-
-    variab.textContent = "D: " + D + " b: " + b;
+    
 }
 
-declineCurve("carolpick1".toLowerCase())
+declineCurve("dyess1".toLowerCase())
