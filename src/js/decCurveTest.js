@@ -1,6 +1,13 @@
 // Read Csv for one well
 
-async function declineCurve(well){
+async function declineCurve(){
+    const dropdownMenu = d3.select("#wellselect").node();
+    let selectedValue = dropdownMenu.value;
+    console.log(selectedValue)
+
+    // well = dropdownMenu.value.replace(/[#\s]/g, "").toLowerCase();
+    // if (well == 'default') well = 'aaron1';
+
     const well_params = await d3.csv("../data/declineCurves/1params.csv").then((data) => {
         return data
     });
@@ -72,7 +79,7 @@ async function declineCurve(well){
             autorange: true, // adjust the y-axis range if needed
             gridcolor: 'darkgray',
         },
-      };
+    };
 
     Plotly.newPlot('declineCurve', [trace1, trace2], layout);
 
@@ -101,8 +108,44 @@ async function declineCurve(well){
     
     var bvar = document.getElementById("b_var");
     bvar.textContent = "b -- " + b;
-
-    
 }
 
-declineCurve("dyess1".toLowerCase())
+
+// declineCurve("dyess1".toLowerCase())
+
+// async function plot() {
+//     const dropdownMenu = select("#wellselect").node();
+//     let wellName = dropdownMenu.value;
+//     if (wellName == 'default') wellName = 'Aaron #1';
+  
+//     let selectedOption = wellName.replace(/[#\s]/g, "");
+//     console.log('selectedOption :>> ', selectedOption);
+  
+//     async function getData(file) 
+//       console.log('file :>> ', file);
+//       const data = await csv(`../data/datawbd/${file}`);
+//   };
+
+async function dropdown() {
+    const wellsdict = await d3.json("../data/everyWell.json").then((data) => {
+      return data
+    });
+    let menu = d3.select("#wellselect");
+    let wells = wellsdict;
+  
+    wells.forEach(well => {
+      menu.append("option")
+        .text(well)
+        .property("Value", well);
+    });
+  };
+dropdown()
+
+d3.select("#wellselect").on("change", function () {
+    declineCurve();
+  });
+
+//init page on load//
+// window.onload = function () {
+//     declineCurve();
+// }();
