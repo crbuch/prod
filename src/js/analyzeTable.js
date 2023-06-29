@@ -1,9 +1,7 @@
-import { monitorAuthState } from './index'
 import { monitorRegion } from './region'
 import { analyzeData,analyzeDataET } from './data';
 import { select } from 'd3';
 
-monitorAuthState();
 monitorRegion();
 
 let data = analyzeData;

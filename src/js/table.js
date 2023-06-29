@@ -1,11 +1,11 @@
-import { monitorAuthState } from './index'
+import { onAuthStateChangedFb } from './auth';
 import { monitorRegion } from './region'
 import { dataCuml,dataCumlET,payout,activeWells,sortData,buildTable,dropdown,filterData } from './data';
 import { select } from 'd3';
 import { moDataST, dataST } from './data';
 import { makeLayout, makeTrace } from './layout';
 
-monitorAuthState();
+onAuthStateChangedFb();
 monitorRegion();
 
 let region = sessionStorage.getItem('region');

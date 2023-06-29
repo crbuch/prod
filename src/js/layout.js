@@ -48,6 +48,23 @@ export const config = {
     ],
     displaylogo: false,
     responsive: true,
+    displayModeBar: false,
+    responsiveConfig: [
+        {
+        // Mobile devices with width less than or equal to 768px
+        breakpoint: 768,
+        options: {
+            legend: { orientation: 'h', y: -0.2 }
+        }
+        },
+        {
+        // Desktop devices with width greater than 768px
+        breakpoint: 0,
+        options: {
+            legend: { orientation: 'v', y: 1 }
+        }
+        }
+    ]
 };
 
 export const layoutWbd = (max,min,minTVD,maxTVD,wellName) => ({

@@ -1,9 +1,9 @@
 import * as dh from './data'
-import { monitorAuthState } from './index'
+import { onAuthStateChangedFb } from './auth';
 import { monitorRegion } from './region'
 import { select } from 'd3';
 
-monitorAuthState();
+onAuthStateChangedFb();
 monitorRegion();
 
 const formatData = (data) => {

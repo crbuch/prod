@@ -1,12 +1,12 @@
 import { monitorRegion } from './region'
-import { logout, monitorAuthState, changePwd } from './index'
 import { ref, getDatabase, onValue } from 'firebase/database';
-import { legacyEcon, payout, moDataST, pl23_22 } from './data';
-import { makeTrace, makeLayout, config } from './layout';
+import { logoutFb, onAuthStateChangedFb } from './auth';
+import { payout, moDataST, pl23_22 } from './data';
+import { makeTrace, config } from './layout';
 import { toggleInitScale, toggleInitTime } from './ui';
 import { select } from 'd3';
 
-monitorAuthState();
+onAuthStateChangedFb();
 monitorRegion();
 
 const fetchData = () => {
@@ -56,19 +56,20 @@ const parseData = (d) => {
     let returns = {};
     let well_returns = {};
     let pl2223 = pl23_22;
-
+    console.log('pl23_22 :>> ', pl23_22);
     for (let [well, mos] of Object.entries(pl2223)) {
         for (let [mo, pl] of Object.entries(mos)) {
+            if (mo == "Well Number" || mo == "Well Name") continue;
             well = well.replace('#', '').toLowerCase();
-            if (!(mo in returns)) returns[mo] = 0;
-            if (wells.includes(well)){
-                const share = data[well];
-                let wellMnthReturn = share * pl;
+                if (!(mo in returns)) returns[mo] = 0;
+                if (wells.includes(well)){
+                    const share = data[well];
+                    let wellMnthReturn = share * pl;
 
-                if (!(well in well_returns)) well_returns[well] = [];
-                well_returns[well].push({ "Well": well, "Date": mo, "Recent Mnth Return": wellMnthReturn, "Share": share })
-                returns[mo] += wellMnthReturn
-            }
+                    if (!(well in well_returns)) well_returns[well] = [];
+                    well_returns[well].push({ "Well": well, "Date": mo, "Recent Mnth Return": wellMnthReturn, "Share": share })
+                    returns[mo] += wellMnthReturn
+                }
         }
     }
     
@@ -96,6 +97,7 @@ const parseData = (d) => {
 
     displayProd("All Wells");
 }
+
 const rankPl = (obj) => {
     let res = {};
     for (let [well, mos] of Object.entries(obj)) {
@@ -112,6 +114,7 @@ const rankPl = (obj) => {
     return Object.keys(sortedObj)
 
 }
+
 const plotRev = (x, y, title="P&L (ST only)") => {
     const trace = makeTrace(x, y, 'P&L', "lines+markers", 'black',null);
     const layout = {
@@ -171,8 +174,8 @@ const initWellList = (wells) => {
         li.appendChild(a);
 
         li.onclick = function () {
-            displayWell(wells[i]);
-            displayProd(wells[i]);
+            let info = displayWell(wells[i]);
+            displayProd(wells[i], info[0], info[1] );
         };
 
         ulWellList.appendChild(li);
@@ -195,18 +198,18 @@ const displayWell = (selected) => {
         val => val[1]["Well Name"].replace("#","").toLowerCase() == payoutName
     );
 
-    if (well_payout.length == 0) {
-        document.getElementById('payout').textContent = `no data`;
-    }else{
-        well_payout = well_payout[0][1]["% Payout"]
-    };
+    if (well_payout.length == 0) document.getElementById('payout').textContent = `no data`;
+    else well_payout = well_payout[0][1]["% Payout"];
+    
     data = data[selected.toLowerCase()];
     let returns = {};
 
     for (let idx in data) {
         const mo = data[idx]["Date"];
-        returns[mo] = data[idx]["Recent Mnth Return"];
+        const moReturn = data[idx]["Recent Mnth Return"];
+        if (moReturn !== 0) returns[mo] = moReturn;
     }
+    console.log('returns :>> ', returns);
     const dates_pl = format(returns);
     selected = capitalizeWords(selected);
     if (data === undefined){
@@ -216,16 +219,23 @@ const displayWell = (selected) => {
         plotRev(dates_pl[0], dates_pl[1],`No Economic Data for ${selected}`);
         return;
     }
+
+    console.log('dates_pl :>> ', dates_pl);
+    console.log('dates_pl[0] :>> ', dates_pl[0]);
+
     plotRev(dates_pl[0], dates_pl[1]);
     const money = formatMoney(dates_pl[1].reduce((runnin, curr) => runnin + curr).toFixed(2));
     document.getElementById('selected-well').textContent = selected;
     document.getElementById('sum-pl').textContent = `$${money}`;
     document.getElementById('payout-title').textContent = "% Payout";
     document.getElementById('payout').textContent = `${(well_payout * 100).toFixed(0)}%`;
+
+    const strt = dates_pl[0][0].split(" ");
+    return [`20${strt[1]}-${mapMo[strt[0]]}-01`, dates_pl[0]];//info to equalize dates array 
 }
 
 const displayProdAll = () => {
-    const edge = new Date("2022-01-01");
+    const edge = new Date("2016-01-01");
     const shares = JSON.parse(localStorage.shares);
     let wells = Object.keys(shares);
     let prodwells = [];
@@ -268,9 +278,11 @@ const displayProdAll = () => {
     plotProd(dates,date_oil[1],date_gas[1]);
 }
 
-const displayProd = (selected) => {
+const displayProd = (selected, strt, plDates) => {
+    console.log('strt :>> ', strt);
     const selectedMaster = selected.toLowerCase();
-    const edge = new Date("2022-01-01");
+    const edge = new Date(strt);
+    console.log('edge :>> ', edge);
     const shares = JSON.parse(localStorage.shares);
     let data = moDataST;
     if (Object.keys(mapProd).includes(selectedMaster)) selected = mapProd[selectedMaster]
@@ -281,6 +293,7 @@ const displayProd = (selected) => {
     }
     data = data.map((el) => {
         let date = new Date(el[6]);
+        console.log('date :>> ', date);
         if (date > edge){
             const oil = el[1]*shares[selectedMaster];
             const gas = el[2]*shares[selectedMaster];
@@ -293,16 +306,27 @@ const displayProd = (selected) => {
 
     let title = "Oil & Gas Production";
     if (data.length == 0) title = "No Production Data for this Time Period";
-    const oil = data.map((sub) => sub[0]);
-    const gas = data.map((sub) => sub[1]);
-    const date = data.map((sub) => sub[2]);
+    let oil = data.map((sub) => sub[0]);
+    let gas = data.map((sub) => sub[1]);
+    let date = data.map((sub) => sub[2]);
     oil.pop();
     gas.pop();
     date.pop();
 
+    if (plDates.length !== date.length) {
+        const diff = Math.abs(plDates.length - date.length);
+        for (let i = diff; i > 0; i--){
+            let el = plDates[i-1];
+            console.log('el :>> ', el);
+            date.unshift(el);
+        }
+        oil.unshift(...Array(diff).fill(0));
+        gas.unshift(...Array(diff).fill(0));
+    }
+
     plotProd(date,oil,gas,title);
-    
 }
+
 
 const plotProd = (date,oil,gas,title="Oil & Gas Production") => {
     const traceOil = makeTrace(date,oil,"Oil [Bbls]","lines+markers","green",null)
@@ -322,24 +346,17 @@ function capitalizeWords(str) {
       return match.toUpperCase();
     });
 }
+
+
 //\\
 const mapPayout = {"cr 939h":"cr 939","bruce weaver 2": "bruce weaver 2 re"};
 const mapProd = {"bruce weaver 2": "bruce weaver 2 re","burns ranch 2 1": "burns ranch 2","cr 939h":"cr 939", "pfeiffer 2re": "pfeiffer 2"};
 const mapShares = {"bruce weaver 2 re": "bruce weaver 2","burns ranch 2" : "burns ranch 2 1","cr 939" : "cr 939h", "pfeiffer 2": "pfeiffer 2re"};
-
+const mapMo = {"Jan": "01","Feb": "02","Mar": "03","Apr": "04","May": "05","Jun": "06","Jul": "07","Aug": "08","Sep": "09","Oct": "10","Nov": "11","Dec": "12"};
+  
 const db = getDatabase()
 const uid = localStorage.getItem('uid');
-//console.log('uid :>> ', uid);
-
-document.getElementById("btnLogout").addEventListener('click', logout);
-
 fetchData();
-
-select("#wellSelect").on("change", () => {
-    let selected = select("#wellSelect").node().value;
-    displayWell(selected);
-    displayProd(selected);
-});
 
 //search
 const searchInput = document.getElementById('searchInput');
@@ -359,6 +376,13 @@ searchInput.addEventListener('input', function () {
     }
 });
 
+document.getElementById("btnLogout").addEventListener('click', logoutFb);
+
+select("#wellSelect").on("change", () => {
+    let selected = select("#wellSelect").node().value;
+    displayWell(selected);
+    displayProd(selected);
+});
 
 document.getElementById("init_scale").addEventListener('click', () => {
     toggleInitScale();
@@ -373,10 +397,6 @@ document.getElementById("show_pwd_form_btn").addEventListener('click', () => {
     window.location.href = "./index.html";
 })
 
-
-
-
-
 window.onload = function () {
     const currTime = localStorage.getItem('initTime');
     let time = "30 Days";
@@ -385,14 +405,3 @@ window.onload = function () {
     document.getElementById("init_scale").textContent = localStorage.getItem('initScale');
     document.getElementById("init_time").textContent = time;
 }();
-
-//let pl_str = localStorage.getItem('pl');
-//let dates_str = localStorage.getItem('dates');
-//if (pl_str & dates_str){
-//    dates_str = dates_str.split(',');
-//    pl_str = pl_str.split(',');
-//    pl_str = pl_str.map(el => parseFloat(el));
-//    plotRev(pl_str,dates_str);
-//} else {
-//    fetchData();
-//}

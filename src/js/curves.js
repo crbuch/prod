@@ -1,11 +1,11 @@
 import * as dh from './data'
+import { onAuthStateChangedFb } from './auth';
 import { monitorRegion } from './region'
-import { monitorAuthState } from './index'
 import { select } from 'd3';
 import { makeTrace, makeLayout, config } from './layout';
 import { setActive, setActiveView, checkActive, setActiveTime } from './ui';
 
-monitorAuthState();
+onAuthStateChangedFb();
 monitorRegion();
 
 const displayEconomics = (data, selectedOption) => {
@@ -113,13 +113,15 @@ const getSelectedOption = (data) => {
   sessionStorage.siteSelection = selectedOption;
   return selectedOption;
 };
+
 const fetchNewProd = () => {
   const data = dh.newProd;
   let oil = data.map(sub => sub["New Prod"],[]).reverse();
   let date = data.map(sub => sub["Date"],[]).reverse();
 
   return {"date": date, "new oil": oil};
-}
+};
+
 const curve = (timeFrame, data) => {
   const selectedOption = getSelectedOption(data.prodData);
 
@@ -266,7 +268,7 @@ const curve = (timeFrame, data) => {
     });
 
     const layout = makeLayout([/*'Oil vs Time (BOPD)', */'Gas vs Time (MCFD)', 'Water vs Time (BWPD)', 'Total Fluid vs Time (BFPD)', 'Water Cut Percentage', 'Combined Production', 'Monthly Oil vs Time (BOPM)'][i], scale, 
-                              (scale === 'log') ? [1, 2, 5, 10, 20, 50, 100, 200, 500, 1000, 2000, 3000] : null);
+        (scale === 'log') ? [1, 2, 5, 10, 20, 50, 100, 200, 500, 1000, 2000, 3000] : null);
     Plotly.newPlot(container, traceArrays[i], layout, config);
   });
 
@@ -286,9 +288,8 @@ const curve = (timeFrame, data) => {
     }
     const xStart = xRangeStart.substring(0, 10);
     const xEnd = xRangeEnd.substring(0, 10);
-
-    const startIdx = site_date.indexOf(`${xStart}T00:00:00.000Z`);
-    const endIdx = site_date.indexOf(`${xEnd}T00:00:00.000Z`);
+    const startIdx = site_date.findIndex(value => value.includes(xStart));
+    const endIdx = site_date.findIndex(value => value.includes(xEnd));
 
     if (startIdx === -1) { // zoomed where no data
       return;
@@ -370,7 +371,8 @@ const switchActives = (event) => {
 
   function ddd () {
     try{
-      //document.getElementById("siteSelection").blur();
+      document.getElementById("siteSelection").blur();
+      console.log("blurringg");
     }catch{
     };
   }
