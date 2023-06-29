@@ -1,6 +1,25 @@
 // Read Csv for one well
 
 async function declineCurve(){
+
+    // const getSelectedOption = (data) => {
+    //     let selectedOption = null;
+    //     let menuNode = select("#siteSelection").node().value;
+        
+    //     if (menuNode != "default") {
+    //       selectedOption = [menuNode];
+    //     } else if (sessionStorage.getItem("siteSelection") != null) {
+    //       selectedOption = [sessionStorage.getItem("siteSelection")];
+    //       sessionStorage.removeItem("siteSelection");
+    //     } else selectedOption = [...data[0][0]];
+      
+    //     selectedOption = selectedOption.join('');
+    //     sessionStorage.siteSelection = selectedOption;
+    //     return selectedOption;
+    //   };
+
+    // const selectedOption = getSelectedOption(data.prodData);
+
     const dropdownMenu = d3.select("#wellselect").node();
 
     well = dropdownMenu.value.replace(/[#\s]/g, "").toLowerCase();
