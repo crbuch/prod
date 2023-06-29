@@ -115,17 +115,6 @@ const rankPl = (obj) => {
 
 }
 
-const plotRev = (x, y, title="P&L (ST only)") => {
-    const trace = makeTrace(x, y, 'P&L', "lines+markers", 'black',null);
-    const layout = {
-        title:title,
-        yaxis: {
-          tickformat: '$',
-          // Add other y-axis configuration properties if needed
-        }
-      };
-    Plotly.newPlot("returnsCurve", [trace], layout, config);
-}
 
 const format = (obj) => {
     // Convert keys to Date objects for comparison
@@ -175,7 +164,7 @@ const initWellList = (wells) => {
 
         li.onclick = function () {
             let info = displayWell(wells[i]);
-            displayProd(wells[i], info[0], info[1] );
+            displayProd(wells[i], info[0], info[1]);
         };
 
         ulWellList.appendChild(li);
@@ -279,13 +268,12 @@ const displayProdAll = () => {
 }
 
 const displayProd = (selected, strt, plDates) => {
-    console.log('strt :>> ', strt);
     const selectedMaster = selected.toLowerCase();
     const edge = new Date(strt);
-    console.log('edge :>> ', edge);
     const shares = JSON.parse(localStorage.shares);
+    if (Object.keys(mapProd).includes(selectedMaster)) selected = mapProd[selectedMaster];
+
     let data = moDataST;
-    if (Object.keys(mapProd).includes(selectedMaster)) selected = mapProd[selectedMaster]
     if (selected !== "All Wells") data = data.filter(el => el[0].replace("#","").toLowerCase() == selected.toLowerCase());
     if (selected == "All Wells"){
         displayProdAll();
@@ -293,7 +281,6 @@ const displayProd = (selected, strt, plDates) => {
     }
     data = data.map((el) => {
         let date = new Date(el[6]);
-        console.log('date :>> ', date);
         if (date > edge){
             const oil = el[1]*shares[selectedMaster];
             const gas = el[2]*shares[selectedMaster];
@@ -316,9 +303,7 @@ const displayProd = (selected, strt, plDates) => {
     if (plDates.length !== date.length) {
         const diff = Math.abs(plDates.length - date.length);
         for (let i = diff; i > 0; i--){
-            let el = plDates[i-1];
-            console.log('el :>> ', el);
-            date.unshift(el);
+            date.unshift(plDates[i-1]);
         }
         oil.unshift(...Array(diff).fill(0));
         gas.unshift(...Array(diff).fill(0));
@@ -327,8 +312,8 @@ const displayProd = (selected, strt, plDates) => {
     plotProd(date,oil,gas,title);
 }
 
-
 const plotProd = (date,oil,gas,title="Oil & Gas Production") => {
+    date = date.map(el => el.length > 6 ? el.replace("20", "") : el);
     const traceOil = makeTrace(date,oil,"Oil [Bbls]","lines+markers","green",null)
     const traceGas = makeTrace(date,gas,"Gas [Cf]","lines+markers","red",null)
     const layout = {
@@ -337,8 +322,27 @@ const plotProd = (date,oil,gas,title="Oil & Gas Production") => {
             orientation: "h",
             y: 1.2,
         },
+        xaxis: {
+            dtick: 2 
+          }
     };
     Plotly.newPlot("prodCurve", [traceOil,traceGas],layout);
+}
+
+const plotRev = (x, y, title="P&L (ST only)") => {
+    const trace = makeTrace(x, y, 'P&L', "lines+markers", 'black',null);
+    const layout = {
+        title:title,
+        yaxis: {
+          tickformat: '$',
+          
+        },
+        xaxis: {
+            dtick: 2,
+        }
+        
+      };
+    Plotly.newPlot("returnsCurve", [trace], layout, config);
 }
 
 function capitalizeWords(str) {
