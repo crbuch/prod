@@ -15,9 +15,13 @@ export const makeLayout = (title, type, tickvals, ytitle, xtitle) => ({
     title,
     height: null,
     legend: {
+        bgcolor: 'rgba(0, 0, 0, 0)',
+        font: {
+            color: '#000000'
+        },
         orientation: "h",
             y: 1.1,
-            xanchor: "center",
+            xanchor: window.innerWidth > 400 ? "center" : "left",
             x: .5,
     },
     yaxis: {
