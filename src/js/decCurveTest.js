@@ -1,7 +1,6 @@
 // Read Csv for one well
 
 async function declineCurve(){
-
     // const getSelectedOption = (data) => {
     //     let selectedOption = null;
     //     let menuNode = select("#siteSelection").node().value;
@@ -25,10 +24,10 @@ async function declineCurve(){
     well = dropdownMenu.value.replace(/[#\s]/g, "").toLowerCase();
     if (well == 'default') well = 'aaron1';
 
+    // READ FILES
     const well_params = await d3.csv("../data/declineCurves/1params.csv").then((data) => {
         return data
     });
-
     const curr = await d3.csv(`../data/declineCurves/${well}.csv`);
     console.log(well)
 
@@ -37,7 +36,6 @@ async function declineCurve(){
     var q = [];
     var t_model = [];
     var q_model = [];
-    var dates = [];
     curr.forEach(function(element) {
         if (element.hasOwnProperty('t')){
             t.push(element.t);
@@ -55,6 +53,8 @@ async function declineCurve(){
 
     document.getElementById('declineCurve').style.display = 'block';
 
+    const indicesArray = Array.from(Array(t.length).keys()).map(String); // Array of indexes
+    //Trace Data
     var trace1 = {
         x: t,
         y: q,
@@ -63,7 +63,10 @@ async function declineCurve(){
         name: 'Oil Produced',
         line: {
             color: 'green'},
+        text: indicesArray
     };
+
+    // Trace Model
     var trace2 = {
         x: t_model,
         y: q_model,
@@ -74,7 +77,21 @@ async function declineCurve(){
         line: {
             color: 'purple'},
     };
-    // autorange: true,
+
+    // Model Read Point
+    var end_index = parseInt(well_params[8][well]);
+    var trace3 = {
+        x: [t_model[end_index]],
+        y: [q_model[end_index]],
+        mode: 'lines+markers',
+        type: 'scatter',
+        color: 'red',
+        name: 'Model Read End',
+        line: {
+            color: 'red'},
+        
+    };
+
     var layout = {
         title: 'Decline Curve Model - ' + well, // set the title of the graph
         height: 800,
@@ -94,14 +111,15 @@ async function declineCurve(){
         yaxis: {
             title: 'BOPM (log)',
             type: 'log',
-            autorange: true, // adjust the y-axis range if needed
+            // autorange: true,
+            tickvals: [0,1,10,20,30,40,50,60,70,80,90,100,200,300,400,500,600,700,800,900,1000,2000,3000,4000,5000,6000,7000,8000,9000,10000,20000,30000,40000,50000],
+            ticktext: [0,1,'','','','','50','','','','',100,'','','','500','','','','',1000,'','','','5000','','','','',10000,20000,30000,40000,50000],
             gridcolor: 'darkgray',
         },
     };
+    Plotly.newPlot('declineCurve', [trace1, trace2, trace3], layout);
 
-    Plotly.newPlot('declineCurve', [trace1, trace2], layout);
-
-    console.log(well_params)
+    // READS WELL PARAMS
     var qi = parseInt(well_params[0][well]);
     var D = Number(well_params[1][well]).toFixed(2);
     var b = Number(well_params[2][well]).toFixed(2);
@@ -109,40 +127,20 @@ async function declineCurve(){
     var q_sum = parseInt(well_params[4][well]);
     var qm_sum = parseInt(well_params[5][well]);
     var future_prod = parseInt(well_params[6][well]);
-    var eco_limit_mo = parseInt(well_params[7][well]);
-    // var Np = well_params[8][well];
-
+    var eco_limit = Number(well_params[7][well]).toFixed(2);
+    // var Np = well_params[9][well];
+    
     var currentProd = document.getElementById("q_sum");
     currentProd.textContent = "Current Total Oil Produced -- " + q_sum + " BBLS";
-
     var futureProd = document.getElementById("future_prod");
     futureProd.textContent = "Next " + extr_mo + " Months Expected Production -- " + future_prod + " BBLS";
-
-    var ecoLimit = document.getElementById("eco_limit_mo");
-    ecoLimit.textContent = "Economic Limit -- " + eco_limit_mo + " Months";
-
+    var ecoLimit = document.getElementById("eco_limit");
+    ecoLimit.textContent = "Economic Limit = " + eco_limit + " Years";
     var Dvar = document.getElementById("D_var");
     Dvar.textContent = "D -- " + D;
-    
     var bvar = document.getElementById("b_var");
     bvar.textContent = "b -- " + b;
 }
-
-
-// declineCurve("dyess1".toLowerCase())
-
-// async function plot() {
-//     const dropdownMenu = select("#wellselect").node();
-//     let wellName = dropdownMenu.value;
-//     if (wellName == 'default') wellName = 'Aaron #1';
-  
-//     let selectedOption = wellName.replace(/[#\s]/g, "");
-//     console.log('selectedOption :>> ', selectedOption);
-  
-//     async function getData(file) 
-//       console.log('file :>> ', file);
-//       const data = await csv(`../data/datawbd/${file}`);
-//   };
 
 async function dropdown() {
     const wellsdict = await d3.json("../data/everyWell.json").then((data) => {
