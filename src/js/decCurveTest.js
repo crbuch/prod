@@ -67,6 +67,10 @@ async function declineCurve(){
     };
 
     // Trace Model
+    var model_eco_limit = parseInt(well_params[9][well]);
+    if(!isNaN(model_eco_limit)){
+        t_model = t_model.slice(0, model_eco_limit + 1);
+    }
     var trace2 = {
         x: t_model,
         y: q_model,
@@ -124,11 +128,10 @@ async function declineCurve(){
     var D = Number(well_params[1][well]).toFixed(2);
     var b = Number(well_params[2][well]).toFixed(2);
     var extr_mo = parseInt(well_params[3][well]);
-    var q_sum = parseInt(well_params[4][well]);
+    var q_sum = parseInt(well_params[4][well]).toLocaleString();
     var qm_sum = parseInt(well_params[5][well]);
-    var future_prod = parseInt(well_params[6][well]);
+    var future_prod = parseInt(well_params[6][well]).toLocaleString();
     var eco_limit = Number(well_params[7][well]).toFixed(2);
-    // var Np = well_params[9][well];
     
     var currentProd = document.getElementById("q_sum");
     currentProd.textContent = "Current Total Oil Produced -- " + q_sum + " BBLS";
