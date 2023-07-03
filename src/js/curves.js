@@ -70,6 +70,7 @@ const displayPumpInfo = (data, selectedOption) => {
 };
 
 const displayCumlData = (data, selectedOption) => {
+  if (selectedOption == "South Texas Total") selectedOption = "ST Total";
   let selectedWell = {
     cuml: 0,
     gasCuml: 0,
@@ -82,7 +83,7 @@ const displayCumlData = (data, selectedOption) => {
       selectedWell.cuml = well[1];
       selectedWell.gasCuml = well[3];
       selectedWell.waterCuml = well[2];
-      selectedWell.formation = well[4];
+      selectedWell.formation = well[4] || "";
     }
   });
 
@@ -360,12 +361,13 @@ const curve = (timeFrame, data) => {
 const table = (coreData) => {
   const data = coreData.map(el => ([...el]))
   const selectedOption = getSelectedOption(data);
-  const well = data.filter(i => i[0] == selectedOption);
+  let well = data.filter(i => i[0] == selectedOption);
   console.log('well :>> ', well);
   well.forEach(w => {
     w.shift();
-    for (let i = 0; i < 2; i++) w.pop();
+    for (let i = 0; i < 3; i++) w.pop();
   });
+
   console.log('well :>> ', well);
   dh.buildTable(well);
 
