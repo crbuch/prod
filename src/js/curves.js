@@ -70,6 +70,7 @@ const displayPumpInfo = (data, selectedOption) => {
 };
 
 const displayCumlData = (data, selectedOption) => {
+  if (selectedOption == "South Texas Total") selectedOption = "ST Total";
   let selectedWell = {
     cuml: 0,
     gasCuml: 0,
@@ -82,7 +83,7 @@ const displayCumlData = (data, selectedOption) => {
       selectedWell.cuml = well[1];
       selectedWell.gasCuml = well[3];
       selectedWell.waterCuml = well[2];
-      selectedWell.formation = well[4];
+      selectedWell.formation = well[4] || "";
     }
   });
 
@@ -114,12 +115,13 @@ const getSelectedOption = (data) => {
   return selectedOption;
 };
 
-const fetchNewProd = () => {
+const recYrProd = () => {
   const data = dh.newProd;
   let oil = data.map(sub => sub["New Prod"],[]).reverse();
   let date = data.map(sub => sub["Date"],[]).reverse();
+  let percent = data.map(sub => sub["percent"],[]).reverse();
 
-  return {"date": date, "new oil": oil};
+  return {"date": date, "new oil": oil, "percent": percent};
 };
 
 const curve = (timeFrame, data) => {
@@ -154,10 +156,12 @@ const curve = (timeFrame, data) => {
   [/*'oilDeclineCurve',*/ 'gasDeclineCurve', 'waterDeclineCurve', 'waterCutCurve', 'totalFluidCurve', 'combinationCurves', 'moOilCurve'].forEach(id => {
     document.getElementById(id).style.display = 'block';
   });
-  let data365 = fetchNewProd();
+  let data365 = recYrProd();
   let date365 = data365["date"];
   let oil365 = data365["new oil"];
-
+  let percent = data365['percent'];
+  
+  console.log('data :>> ', data);
   const site_data = data.prodData.filter(site => site[0] === selectedOption);
   let site_date = site_data.map(site => site[9]);
   let site_oil = site_data.map(site => site[2]);
@@ -168,8 +172,9 @@ const curve = (timeFrame, data) => {
   let water_cut = site_water.map((water, i) => (water / (water + site_oil[i])) * 100);
   let total_fluid = site_oil.map((oil, index) => oil + site_water[index]);
   
-  if (timeFrame > 0) [site_date, site_oil, site_gas, site_water, comments, movingAverage,oil365,date365] =
-  [site_date, site_oil, site_gas, site_water, comments, movingAverage,oil365,date365].map(arr => arr.slice(0, timeFrame));
+  if (timeFrame > 0) [site_date, site_oil, site_gas, site_water, comments, movingAverage, oil365, date365, percent] =
+  [site_date, site_oil, site_gas, site_water, comments, movingAverage, oil365, date365, percent].map(arr => arr.slice(0, timeFrame));
+
   // READING MONTHLY DATA (+ Drops most recent month)
   const mo_site_data = data.MoProdDataST.filter(site => site[0] === selectedOption);
   mo_site_data.pop();
@@ -177,6 +182,9 @@ const curve = (timeFrame, data) => {
   let site_oil_mo = mo_site_data.map(site => site[1]);
   const cumlMoOil = site_oil_mo.reduce((acc, val, idx) => (idx === 0 ? acc.concat(val) : acc.concat(val + acc[idx - 1])), []);
   
+
+  
+
   let trace365 = makeTrace(
     date365,
     oil365,
@@ -247,8 +255,18 @@ const curve = (timeFrame, data) => {
     "green"
   );
 
+  let tracePercent = makeTrace(
+    date365,
+    percent,
+    "Percent Past Year Production",
+    "line",
+    "green"
+  );
+
+  
+
   const scale = (document.getElementById("logarithmic").classList.contains("active")) ? 'log' : 'linear';
-  const plotContainers = [/*"oilDeclineCurve", */"gasDeclineCurve", "waterDeclineCurve", 'totalFluidCurve', 'waterCutCurve', 'combinationCurves', 'moOilCurve'];
+  const plotContainers = [/*"oilDeclineCurve", */"gasDeclineCurve", "waterDeclineCurve", 'totalFluidCurve', 'waterCutCurve', 'combinationCurves', 'moOilCurve','ratioRecProd'];
   let combination = [traceOil, traceOilAvg, traceGas, traceWater, traceFluid, trace365];
   if (selectedOption !== "South Texas Total") combination.pop();
 
@@ -259,16 +277,20 @@ const curve = (timeFrame, data) => {
     [traceFluid],
     [traceCut],
     combination,
-    [traceMoOil]
+    [traceMoOil],
+    [tracePercent]
   ];
+  if (selectedOption !== "South Texas Total") {traceArrays.pop(); plotContainers.pop();}
 
   plotContainers.forEach((container, i) => {
     traceArrays[i].forEach(trace => {
       trace.visible = (i === 4 && trace.name !== "Oil [BO]") ? "legendonly" : trace.visible;
     });
 
-    const layout = makeLayout([/*'Oil vs Time (BOPD)', */'Gas vs Time (MCFD)', 'Water vs Time (BWPD)', 'Total Fluid vs Time (BFPD)', 'Water Cut Percentage', 'Combined Production', 'Monthly Oil vs Time (BOPM)'][i], scale, 
+    const layout = makeLayout([/*'Oil vs Time (BOPD)', */'Gas vs Time (MCFD)', 'Water vs Time (BWPD)', 'Total Fluid vs Time (BFPD)', 'Water Cut Percentage', 'Combined Production', 'Monthly Oil vs Time (BOPM)', 'Percent Production from New Wells (365 Days)'][i], scale, 
         (scale === 'log') ? [1, 2, 5, 10, 20, 50, 100, 200, 500, 1000, 2000, 3000] : null);
+    console.log('traceArrays[i] :>> ', traceArrays[i]);
+    console.log('container :>> ', container);
     Plotly.newPlot(container, traceArrays[i], layout, config);
   });
 
@@ -339,12 +361,13 @@ const curve = (timeFrame, data) => {
 const table = (coreData) => {
   const data = coreData.map(el => ([...el]))
   const selectedOption = getSelectedOption(data);
-  const well = data.filter(i => i[0] == selectedOption);
+  let well = data.filter(i => i[0] == selectedOption);
   console.log('well :>> ', well);
   well.forEach(w => {
     w.shift();
-    for (let i = 0; i < 2; i++) w.pop();
+    for (let i = 0; i < 3; i++) w.pop();
   });
+
   console.log('well :>> ', well);
   dh.buildTable(well);
 

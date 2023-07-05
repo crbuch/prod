@@ -52,7 +52,7 @@ export const pl23_22 = await json("../data\\pldata1.json").then((data) => {
     return data
 });
 
-export const newProd = await csv("../data\\newProd.csv").then((data) => {
+export const newProd = await csv("../data\\recYrProd.csv").then((data) => {
     return data
 });
 
