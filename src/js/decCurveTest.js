@@ -132,6 +132,7 @@ async function declineCurve(){
     var qm_sum = parseInt(well_params[5][well]);
     var future_prod = parseInt(well_params[6][well]).toLocaleString();
     var eco_limit = Number(well_params[7][well]).toFixed(2);
+    var np_value = parseInt(well_params[10][well]).toFixed(2);
     
     var currentProd = document.getElementById("q_sum");
     currentProd.textContent = "Current Total Oil Produced -- " + q_sum + " BBLS";
@@ -143,6 +144,8 @@ async function declineCurve(){
     Dvar.textContent = "D -- " + D;
     var bvar = document.getElementById("b_var");
     bvar.textContent = "b -- " + b;
+    var npv = document.getElementById("np_value");
+    npv.textContent = "np -- " + np_value;
 }
 
 async function dropdown() {
