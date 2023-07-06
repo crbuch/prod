@@ -255,7 +255,7 @@ const curve = (timeFrame, data) => {
     percent,
     "Percent Past Year Production",
     "line",
-    "green"
+    "#224a04"
   );
 
   const scale = (document.getElementById("logarithmic").classList.contains("active")) ? 'log' : 'linear';
