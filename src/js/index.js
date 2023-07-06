@@ -17,17 +17,15 @@ import {
   showPwdErr
 } from './ui'
 
-import { loginFb, updatePasswordFb } from './auth';
+import {loginFb, updatePasswordFb } from './auth';
 
 const initStorage = (userCreds) => {
-  console.log("in store");
   if (localStorage.getItem('initTime') == null) localStorage.setItem('initTime',0);
   if (localStorage.getItem('initScale') == null) localStorage.setItem('initScale','linear');
   localStorage.setItem('uid', userCreds.uid);
-  localStorage.setItem('email', userCreds.email);
+  localStorage.setItem('displayName', userCreds.displayName);
   sessionStorage.setItem('region', 'st');
   sessionStorage.changePwd = false;
-  debugger;
 };
 
 const login = async () => {
@@ -41,7 +39,6 @@ const login = async () => {
   loginFb(cleanUid,password).then((userCredential) => {
     console.log('userCredential :>> ', userCredential);
     initStorage(userCredential.user);
-    debugger;
     showApp();
   }).catch((err) => {
     console.log('err :>> ', err);

@@ -43,9 +43,7 @@
   </nav>
 
     <script>
-      const userName = localStorage.getItem('email').split('@').shift();
-      console.log('userName :>> ', userName);
-      document.getElementById('user_profile').textContent = userName;
+      document.getElementById('user_profile').textContent = localStorage.displayName;
     </script>
 </body>
 </html>

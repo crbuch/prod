@@ -77,13 +77,12 @@ const displayCumlData = (data, selectedOption) => {
     waterCuml: 0,
     formation: ""
   };
-
   data.forEach(well => {
     if (selectedOption === well[0]) {
       selectedWell.cuml = well[1];
       selectedWell.gasCuml = well[3];
       selectedWell.waterCuml = well[2];
-      selectedWell.formation = well[4] || "";
+      selectedWell.formation = well[4] || dh.formations[selectedOption];
     }
   });
 
@@ -149,7 +148,7 @@ const curve = (timeFrame, data) => {
   };
   displayCumlData(data.dataCuml, selectedOption);
 
-  document.getElementById("zoomEl").style.visibility = "hidden"; //dont display old zoom data if switching b/t wells/timeframes
+  document.getElementById("zoomEl").style.display = "none";
   document.getElementById("wellName").innerHTML = selectedOption;
   document.getElementById("individualTable").style.display = "none";
 
@@ -170,7 +169,7 @@ const curve = (timeFrame, data) => {
   let comments = site_data.map(site => site[7]);
   let movingAverage = site_data.map(site => site[8]);
   let water_cut = site_water.map((water, i) => (water / (water + site_oil[i])) * 100);
-  let total_fluid = site_oil.map((oil, index) => oil + site_water[index]);
+  let total_fluid = site_oil.map(site => site[10]);
   
   if (timeFrame > 0) [site_date, site_oil, site_gas, site_water, comments, movingAverage, oil365, date365, percent] =
   [site_date, site_oil, site_gas, site_water, comments, movingAverage, oil365, date365, percent].map(arr => arr.slice(0, timeFrame));
@@ -318,26 +317,20 @@ const curve = (timeFrame, data) => {
     }
     const visible_traces = JSON.parse(sessionStorage.getItem('visible_traces'));
     const map = {'Gas [MCF]': site_gas, 'Oil [BO]': site_oil, 'Water [BW]': site_water, 'Total Fluid [BBLS]': total_fluid };
-
+    const nameMap = {'Gas [MCF]': 'Gas [MMCF]', 'Oil [BO]': 'Oil [MBO]', 'Water [BW]': 'Water [MBW]', 'Total Fluid [BBLS]': 'Total Fluid [MBBL]' };
     for (const[key,vals] of Object.entries(visible_traces)){
       for (let val of vals){
+        if (!Object.keys(map).includes(val)) continue;
         const data = map[val];
-        console.log(`sum ${val}:>> `, (data.slice(endIdx, startIdx + 1).reduce((acc, cur) => acc + cur, 0)/1000));
         const sum = (data.slice(endIdx, startIdx + 1).reduce((acc, cur) => acc + cur, 0)/1000).toFixed(1);
 
-        let chop = -5;
-        if (val == 'Total Fluid [MB]') chop = -4; 
-        const unit = val.slice(chop);
-        let name = val.slice(0, chop);
-        if (val == 'Total Fluid [MB]') name = `${name} `; 
-
         const p = document.createElement('p');
-        p.textContent = `${name}: ${sum} ${unit}`;
+        p.textContent = `${sum} ${nameMap[val]}`;
         p.style.fontSize = '15px';
         zoomEL.appendChild(p);
       }
     }
-    zoomEL.style.visibility = "visible";
+    zoomEL.style.display = "block";
   });
 
   combo.on('plotly_legendclick', function(data) {

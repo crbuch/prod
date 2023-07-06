@@ -1,7 +1,7 @@
 import { onAuthStateChangedFb } from './auth';
 import { monitorRegion } from './region'
-import { dataCuml,dataCumlET,payout,activeWells,sortData,buildTable,dropdown,filterData } from './data';
-import { select } from 'd3';
+import { dataCuml,dataCumlET,payout,activeWells,sortData,buildTable,dropdown,filterData,formations } from './data';
+import { formatSpecifier, select } from 'd3';
 import { moDataST, dataST } from './data';
 import { makeLayout, makeTrace } from './layout';
 
@@ -25,20 +25,24 @@ const formatData = () => {
           let rounded = Math.round(pay["% Payout"]*100)
           well.push(rounded);
         }
+        
       });
     });
+    tableData.forEach(well => {
+      well.push(formations[well[0]])
+    })
   };
   
   //switch places of prodData[3] and prodData[4]
-  tableData.forEach((well) => {
-    let temp = well[4];
-    well[4] = well[5];
-    well[5] = temp;
-  });
+  //tableData.forEach((well) => {
+  //  let temp = well[4];
+  //  well[4] = well[5];
+  //  well[5] = temp;
+  //});
   // tableData.forEach((well) => {
   //   well[4] = Math.round(well[4]*100);
   // });
-
+  console.log('tableData :>> ', tableData);
   //remove archived wells
   return tableData.filter(val => activeWells().has(val[0]));
 };
@@ -54,6 +58,7 @@ const displayPlot = (selected) => {
   const cumlMoOil = oilMo.reduce((acc, val, idx) => (idx === 0 ? acc.concat(val) : acc.concat(val + acc[idx - 1])), []);
   const oilDaily = dataDaily.map(el => el[2]).reverse();
   const cumlDaOil = oilDaily.reduce((acc, val, idx) => (idx === 0 ? acc.concat(val) : acc.concat(val + acc[idx - 1])), []);
+
   const formattedDateMo = dateMo.map(dateString => {
     const date = new Date(dateString);
     const options = { month: 'long', year: 'numeric' };
@@ -71,7 +76,7 @@ const displayPlot = (selected) => {
   const traceDailyProdVSCum = makeTrace(
     cumlDaOil,
     oilDaily,
-    "hi",
+    "daily",
     "line",
     "green",
     dateDa
@@ -79,7 +84,7 @@ const displayPlot = (selected) => {
   const traceMoProdVSCum = makeTrace(
     cumlMoOil,
     oilMo,
-    "hello",
+    "monthly",
     "line",
     "green",
     formattedDateMo
