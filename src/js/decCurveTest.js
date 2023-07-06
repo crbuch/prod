@@ -1,32 +1,51 @@
 // Read Csv for one well
 
-async function declineCurve(message){
+async function declineCurve(){
+    // const getSelectedOption = (data) => {
+    //     let selectedOption = null;
+    //     let menuNode = select("#siteSelection").node().value;
+        
+    //     if (menuNode != "default") {
+    //       selectedOption = [menuNode];
+    //     } else if (sessionStorage.getItem("siteSelection") != null) {
+    //       selectedOption = [sessionStorage.getItem("siteSelection")];
+    //       sessionStorage.removeItem("siteSelection");
+    //     } else selectedOption = [...data[0][0]];
+      
+    //     selectedOption = selectedOption.join('');
+    //     sessionStorage.siteSelection = selectedOption;
+    //     return selectedOption;
+    //   };
+
+    // const selectedOption = getSelectedOption(data.prodData);
+
+    const dropdownMenu = d3.select("#wellselect").node();
+
+    well = dropdownMenu.value.replace(/[#\s]/g, "").toLowerCase();
+    if (well == 'default') well = 'aaron1';
+
+    // READ FILES
     const well_params = await d3.csv("../data/declineCurves/1params.csv").then((data) => {
         return data
     });
-
-    const curr = await d3.csv(`../data/declineCurves/${message}.csv`);
-    console.log(message)
+    const curr = await d3.csv(`../data/declineCurves/${well}.csv`);
+    console.log(well)
 
     // Populate the arrays from curr
     var t = [];
     var q = [];
     var t_model = [];
     var q_model = [];
-    var dates = [];
     curr.forEach(function(element) {
         if (element.hasOwnProperty('t')){
             t.push(element.t);
         }
-        
         if (element.hasOwnProperty('q')){
             q.push(element.q);
         }
-
         if (element.hasOwnProperty('t_model')){
             t_model.push(element.t_model);
         }
-          
         if (element.hasOwnProperty('q_model')){
             q_model.push(element.q_model);
         }
@@ -34,6 +53,8 @@ async function declineCurve(message){
 
     document.getElementById('declineCurve').style.display = 'block';
 
+    const indicesArray = Array.from(Array(t.length).keys()).map(String); // Array of indexes
+    //Trace Data
     var trace1 = {
         x: t,
         y: q,
@@ -41,8 +62,15 @@ async function declineCurve(message){
         type: 'scatter',
         name: 'Oil Produced',
         line: {
-            color: 'null'},
+            color: 'green'},
+        text: indicesArray
     };
+
+    // Trace Model
+    var model_eco_limit = parseInt(well_params[9][well]);
+    if(!isNaN(model_eco_limit)){
+        t_model = t_model.slice(0, model_eco_limit + 1);
+    }
     var trace2 = {
         x: t_model,
         y: q_model,
@@ -50,10 +78,26 @@ async function declineCurve(message){
         type: 'scatter',
         color: 'green',
         name: 'Decl Curve',
+        line: {
+            color: 'purple'},
     };
-    // autorange: true,
+
+    // Model Read Point
+    var end_index = parseInt(well_params[8][well]);
+    var trace3 = {
+        x: [t_model[end_index]],
+        y: [q_model[end_index]],
+        mode: 'lines+markers',
+        type: 'scatter',
+        color: 'red',
+        name: 'Model Read End',
+        line: {
+            color: 'red'},
+        
+    };
+
     var layout = {
-        title: 'Decline Curve Model', // set the title of the graph
+        title: 'Decline Curve Model - ' + well, // set the title of the graph
         height: 800,
         legend: {
             yanchor: 'top',
@@ -67,22 +111,63 @@ async function declineCurve(message){
             gridcolor: 'darkgray',
             tickmode: 'linear',  // Set the tick mode to 'auto'
             dtick: 'M12',  // Set the tick interval to 12 months (representing 1 year)
-            // tickcolor: 'rgba(0, 0, 0, 1)', // Set the tick line color to black
-            // tickwidth: 2
         },
         yaxis: {
             title: 'BOPM (log)',
             type: 'log',
-            autorange: true, // adjust the y-axis range if needed
+            // autorange: true,
+            tickvals: [0,1,10,20,30,40,50,60,70,80,90,100,200,300,400,500,600,700,800,900,1000,2000,3000,4000,5000,6000,7000,8000,9000,10000,20000,30000,40000,50000],
+            ticktext: [0,1,'','','','','50','','','','',100,'','','','500','','','','',1000,'','','','5000','','','','',10000,20000,30000,40000,50000],
             gridcolor: 'darkgray',
-            // tickcolor: 'rgba(0, 0, 0, 1)', // Set the tick line color to black
-            // tickwidth: 2
         },
-      };
+    };
+    Plotly.newPlot('declineCurve', [trace1, trace2, trace3], layout);
 
-    Plotly.newPlot('declineCurve', [trace1, trace2], layout);
+    // READS WELL PARAMS
+    var qi = parseInt(well_params[0][well]);
+    var D = Number(well_params[1][well]).toFixed(2);
+    var b = Number(well_params[2][well]).toFixed(2);
+    var extr_mo = parseInt(well_params[3][well]);
+    var q_sum = parseInt(well_params[4][well]).toLocaleString();
+    var qm_sum = parseInt(well_params[5][well]);
+    var future_prod = parseInt(well_params[6][well]).toLocaleString();
+    var eco_limit = Number(well_params[7][well]).toFixed(2);
+    var np_value = parseInt(well_params[10][well]).toLocaleString();
+    
+    var currentProd = document.getElementById("q_sum");
+    currentProd.textContent = "Current Total Oil Produced -- " + q_sum + " BBLS";
+    var futureProd = document.getElementById("future_prod");
+    futureProd.textContent = "Next " + extr_mo + " Months Expected Production -- " + future_prod + " BBLS";
+    var ecoLimit = document.getElementById("eco_limit");
+    ecoLimit.textContent = "Economic Limit = " + eco_limit + " Years";
+    var Dvar = document.getElementById("D_var");
+    Dvar.textContent = "D -- " + D;
+    var bvar = document.getElementById("b_var");
+    bvar.textContent = "b -- " + b;
+    var npv = document.getElementById("np_value");
+    npv.textContent = "NP -- " + np_value + " BBLS";
 }
 
-declineCurve("bowman1")
+async function dropdown() {
+    const wellsdict = await d3.json("../data/everyWell.json").then((data) => {
+      return data
+    });
+    let menu = d3.select("#wellselect");
 
-// read arrays and create graph
+    wellsdict.forEach(well => {
+      menu.append("option")
+        .text(well)
+        .property("Value", well);
+    });
+  };
+dropdown();
+
+d3.select("#wellselect").on("change", function () {
+    console.log("change");
+    declineCurve();
+});
+
+// init page on load//
+window.onload = function () {
+    declineCurve();
+}();

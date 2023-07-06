@@ -169,20 +169,16 @@ const curve = (timeFrame, data) => {
   let comments = site_data.map(site => site[7]);
   let movingAverage = site_data.map(site => site[8]);
   let water_cut = site_water.map((water, i) => (water / (water + site_oil[i])) * 100);
-  let total_fluid = site_oil.map(site => site[10]);
-  
+  let total_fluid = site_data.map(site => site[10]);
   if (timeFrame > 0) [site_date, site_oil, site_gas, site_water, comments, movingAverage, oil365, date365, percent] =
   [site_date, site_oil, site_gas, site_water, comments, movingAverage, oil365, date365, percent].map(arr => arr.slice(0, timeFrame));
 
   // READING MONTHLY DATA (+ Drops most recent month)
-  const mo_site_data = data.MoProdDataST.filter(site => site[0] === selectedOption);
+  const mo_site_data = data.MoProdData.filter(site => site[0] === selectedOption);
   mo_site_data.pop();
   let site_date_mo = mo_site_data.map(site => site[6]);
   let site_oil_mo = mo_site_data.map(site => site[1]);
   const cumlMoOil = site_oil_mo.reduce((acc, val, idx) => (idx === 0 ? acc.concat(val) : acc.concat(val + acc[idx - 1])), []);
-  
-
-  
 
   let trace365 = makeTrace(
     date365,
@@ -261,8 +257,6 @@ const curve = (timeFrame, data) => {
     "line",
     "green"
   );
-
-  
 
   const scale = (document.getElementById("logarithmic").classList.contains("active")) ? 'log' : 'linear';
   const plotContainers = [/*"oilDeclineCurve", */"gasDeclineCurve", "waterDeclineCurve", 'totalFluidCurve', 'waterCutCurve', 'combinationCurves', 'moOilCurve','ratioRecProd'];
@@ -396,20 +390,18 @@ const switchActives = (event) => {
   document.getElementById('siteSelection').focus();
 };
 
-
-
-
 //Main//
 const currUid = localStorage.getItem('uid');
 let region = sessionStorage.getItem('region');
 console.log('currUid :>> ', currUid);
 let prodData = dh.dataST;
 let cumlData = dh.dataCuml;
-let MoProdDataST = dh.moDataST;
+let MoProdData = dh.moDataST;
 
 if (region == "et") {
   prodData = dh.dataET
   cumlData = dh.dataCumlET
+  MoProdData = dh.moDataET
 };
 
 const curveInfo = {
@@ -418,7 +410,7 @@ const curveInfo = {
   economicsData: dh.econ,
   payoutData: dh.payout,
   pumpData: dh.pump,
-  MoProdDataST: MoProdDataST
+  MoProdData: MoProdData
 };
 
 ['linear','logarithmic','DaysInception','Days30','Days365','Days180'].forEach(el => {
