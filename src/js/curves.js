@@ -169,7 +169,7 @@ const curve = (timeFrame, data) => {
   let comments = site_data.map(site => site[7]);
   let movingAverage = site_data.map(site => site[8]);
   let water_cut = site_water.map((water, i) => (water / (water + site_oil[i])) * 100);
-  let total_fluid = site_data.map(site => site[10]);
+  let total_fluid = site_data.map(site => site[10] || site[8]);
   if (timeFrame > 0) [site_date, site_oil, site_gas, site_water, comments, movingAverage, oil365, date365, percent] =
   [site_date, site_oil, site_gas, site_water, comments, movingAverage, oil365, date365, percent].map(arr => arr.slice(0, timeFrame));
 
