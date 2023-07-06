@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut, updatePassword } from 'firebase/auth';
+import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut, updatePassword,updateProfile } from 'firebase/auth';
 
 const firebaseConfig = {
     apiKey: "AIzaSyC3yOK_QL5QbJaKvjynXXzObl4uKsoJpTU",
@@ -18,6 +18,7 @@ const onAuthStateChangedFb = () => {
     auth.onAuthStateChanged((user) => {
         if (user) {
             console.log('user mon :>> ', user);
+            //if (user.displayName == null) update();
         } else {
             console.log("none");
             window.location.replace('index.html');
@@ -28,6 +29,17 @@ const onAuthStateChangedFb = () => {
             };
         }
     });
+};
+
+const up = () => {
+    console.log("in up");
+    updateProfile(auth.currentUser, {
+        displayName: ''
+      }).then(() => {
+        console.log('userCredential.user.displayName :>> ', auth.currentUser.displayName);
+      }).catch((error) => {
+        console.log('error :>> ', error);
+      });
 };
 
 const loginFb = (email, password) => {

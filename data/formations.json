@@ -1,394 +1,113 @@
-[
-    {
-        "Well Name": "Aaron #1",
-        "Formation": "GEORGETOWN"
-    },
-    {
-        "Well Name": "Aniken #1",
-        "Formation": "BUDA"
-    },
-    {
-        "Well Name": "Annpick #1",
-        "Formation": "AUSTIN CHALK"
-    },
-    {
-        "Well Name": "Barrier #1",
-        "Formation": "AC + BUDA"
-    },
-    {
-        "Well Name": "Beeler Ranch #1",
-        "Formation": "GEORGETOWN"
-    },
-    {
-        "Well Name": "Bermuda #1",
-        "Formation": "AUSTIN CHALK"
-    },
-    {
-        "Well Name": "Big Sonny #1",
-        "Formation": "AUSTIN CHALK"
-    },
-    {
-        "Well Name": "Blackmon #1",
-        "Formation": "BUDA"
-    },
-    {
-        "Well Name": "Blas Reyes #1",
-        "Formation": "BUDA"
-    },
-    {
-        "Well Name": "BMMP #1",
-        "Formation": "BUDA"
-    },
-    {
-        "Well Name": "Bond #1",
-        "Formation": "AUSTIN CHALK"
-    },
-    {
-        "Well Name": "Branton #1",
-        "Formation": "GEORGETOWN"
-    },
-    {
-        "Well Name": "Bruce Weaver #1",
-        "Formation": "BUDA"
-    },
-    {
-        "Well Name": "Bruce Weaver #2",
-        "Formation": "BUDA"
-    },
-    {
-        "Well Name": "Cannan #1",
-        "Formation": "AUSTIN CHALK"
-    },
-    {
-        "Well Name": "Carolpick #1",
-        "Formation": "BUDA"
-    },
-    {
-        "Well Name": "Carolyn #1",
-        "Formation": "GEORGETOWN"
-    },
-    {
-        "Well Name": "Cenizo #1",
-        "Formation": "BUDA"
-    },
-    {
-        "Well Name": "Chad #1",
-        "Formation": "GEORGETOWN"
-    },
-    {
-        "Well Name": "Charles B #1",
-        "Formation": "AC + BUDA"
-    },
-    {
-        "Well Name": "Circle T #1",
-        "Formation": "AUSTIN CHALK"
-    },
-    {
-        "Well Name": "CR #101",
-        "Formation": "BUDA"
-    },
-    {
-        "Well Name": "CR #201",
-        "Formation": "BUDA"
-    },
-    {
-        "Well Name": "CR #301",
-        "Formation": "BUDA"
-    },
-    {
-        "Well Name": "CR #302",
-        "Formation": "BUDA"
-    },
-    {
-        "Well Name": "CR #401",
-        "Formation": "BUDA"
-    },
-    {
-        "Well Name": "CR #501",
-        "Formation": "AC + BUDA"
-    },
-    {
-        "Well Name": "Cross S #1",
-        "Formation": "AUSTIN CHALK"
-    },
-    {
-        "Well Name": "CT #1",
-        "Formation": "BUDA"
-    },
-    {
-        "Well Name": "Dale #1",
-        "Formation": "BUDA"
-    },
-    {
-        "Well Name": "Dial #1",
-        "Formation": "AUSTIN CHALK"
-    },
-    {
-        "Well Name": "Dillard #1",
-        "Formation": "BUDA"
-    },
-    {
-        "Well Name": "Dunkle #2",
-        "Formation": "AUSTIN CHALK"
-    },
-    {
-        "Well Name": "Dunlap #1",
-        "Formation": "AUSTIN CHALK"
-    },
-    {
-        "Well Name": "Dyess #1",
-        "Formation": "AUSTIN CHALK"
-    },
-    {
-        "Well Name": "Eileen #1",
-        "Formation": "GEORGETOWN"
-    },
-    {
-        "Well Name": "Evergreen #1",
-        "Formation": "AUSTIN CHALK"
-    },
-    {
-        "Well Name": "Flower #1",
-        "Formation": "AUSTIN CHALK"
-    },
-    {
-        "Well Name": "Gail #1",
-        "Formation": "GEORGETOWN"
-    },
-    {
-        "Well Name": "Gil #1",
-        "Formation": "AUSTIN CHALK"
-    },
-    {
-        "Well Name": "Grissom #1",
-        "Formation": "AUSTIN CHALK"
-    },
-    {
-        "Well Name": "J Beeler #1",
-        "Formation": "GEORGETOWN"
-    },
-    {
-        "Well Name": "Jessica #1",
-        "Formation": "BUDA"
-    },
-    {
-        "Well Name": "JIC #1",
-        "Formation": "GEORGETOWN"
-    },
-    {
-        "Well Name": "JJ #1",
-        "Formation": "GEORGETOWN"
-    },
-    {
-        "Well Name": "Joe #1",
-        "Formation": "AUSTIN CHALK"
-    },
-    {
-        "Well Name": "Joseph #1",
-        "Formation": "GEORGETOWN"
-    },
-    {
-        "Well Name": "Jred #1",
-        "Formation": "AC + BUDA"
-    },
-    {
-        "Well Name": "Kay #1",
-        "Formation": "BUDA"
-    },
-    {
-        "Well Name": "Kiley #1",
-        "Formation": "GEORGETOWN"
-    },
-    {
-        "Well Name": "Kincaid #1",
-        "Formation": "GEORGETOWN"
-    },
-    {
-        "Well Name": "Kirby #1",
-        "Formation": "BUDA"
-    },
-    {
-        "Well Name": "Kleimann #1",
-        "Formation": "GEORGETOWN"
-    },
-    {
-        "Well Name": "Kleimann #3",
-        "Formation": "GEORGETOWN"
-    },
-    {
-        "Well Name": "La Rosita #1",
-        "Formation": "AUSTIN CHALK"
-    },
-    {
-        "Well Name": "Lackey Five #1",
-        "Formation": "BUDA"
-    },
-    {
-        "Well Name": "Lander #1",
-        "Formation": "GEORGETOWN"
-    },
-    {
-        "Well Name": "Leary Trust #1",
-        "Formation": "AUSTIN CHALK"
-    },
-    {
-        "Well Name": "Little 179",
-        "Formation": "AUSTIN CHALK"
-    },
-    {
-        "Well Name": "Lochte #1",
-        "Formation": "BUDA"
-    },
-    {
-        "Well Name": "LT #1",
-        "Formation": "BUDA"
-    },
-    {
-        "Well Name": "Marguerite #1",
-        "Formation": "AUSTIN CHALK"
-    },
-    {
-        "Well Name": "Marpick #1",
-        "Formation": "AUSTIN CHALK"
-    },
-    {
-        "Well Name": "MDB #1",
-        "Formation": "AUSTIN CHALK"
-    },
-    {
-        "Well Name": "Molak #1",
-        "Formation": "AUSTIN CHALK"
-    },
-    {
-        "Well Name": "Montemayor #1",
-        "Formation": "AUSTIN CHALK"
-    },
-    {
-        "Well Name": "Moreland #1",
-        "Formation": "AUSTIN CHALK"
-    },
-    {
-        "Well Name": "Palm #1",
-        "Formation": "GEORGETOWN"
-    },
-    {
-        "Well Name": "Parkway #1",
-        "Formation": "GEORGETOWN"
-    },
-    {
-        "Well Name": "PC #1",
-        "Formation": "BUDA"
-    },
-    {
-        "Well Name": "Pecan Grove #1",
-        "Formation": "GEORGETOWN"
-    },
-    {
-        "Well Name": "Pfeiffer #1",
-        "Formation": "AC + BUDA"
-    },
-    {
-        "Well Name": "Pfeiffer #2",
-        "Formation": "AUSTIN CHALK"
-    },
-    {
-        "Well Name": "Pickens #1",
-        "Formation": "AUSTIN CHALK"
-    },
-    {
-        "Well Name": "Pickens Weaver #1",
-        "Formation": "GEORGETOWN"
-    },
-    {
-        "Well Name": "Pickwill #1",
-        "Formation": "AUSTIN CHALK"
-    },
-    {
-        "Well Name": "Preston #1",
-        "Formation": "BUDA"
-    },
-    {
-        "Well Name": "RAB #1",
-        "Formation": "GEORGETOWN"
-    },
-    {
-        "Well Name": "Rhodes #1",
-        "Formation": "GEORGETOWN"
-    },
-    {
-        "Well Name": "Richard #1",
-        "Formation": "BUDA"
-    },
-    {
-        "Well Name": "Richardson #1",
-        "Formation": "AUSTIN CHALK"
-    },
-    {
-        "Well Name": "Ronald #1",
-        "Formation": "SAN MIGUEL"
-    },
-    {
-        "Well Name": "Russell #1",
-        "Formation": "BUDA"
-    },
-    {
-        "Well Name": "Ruth #1",
-        "Formation": "AUSTIN CHALK"
-    },
-    {
-        "Well Name": "Ruthpick #1",
-        "Formation": "BUDA"
-    },
-    {
-        "Well Name": "Solansky #1",
-        "Formation": "AUSTIN CHALK"
-    },
-    {
-        "Well Name": "Sugarland #1",
-        "Formation": "AUSTIN CHALK"
-    },
-    {
-        "Well Name": "Thalmann #1",
-        "Formation": "AUSTIN CHALK"
-    },
-    {
-        "Well Name": "Thompson #2",
-        "Formation": "AUSTIN CHALK"
-    },
-    {
-        "Well Name": "Thuss #1",
-        "Formation": "BUDA"
-    },
-    {
-        "Well Name": "Tlapek #1",
-        "Formation": "AUSTIN CHALK"
-    },
-    {
-        "Well Name": "Triple J #2",
-        "Formation": "AUSTIN CHALK"
-    },
-    {
-        "Well Name": "Trotter #1",
-        "Formation": "AUSTIN CHALK"
-    },
-    {
-        "Well Name": "Vermillion #1",
-        "Formation": "GEORGETOWN"
-    },
-    {
-        "Well Name": "Verna #1",
-        "Formation": "AUSTIN CHALK"
-    },
-    {
-        "Well Name": "VRE Minerals #1",
-        "Formation": "GEORGETOWN"
-    },
-    {
-        "Well Name": "White Marlin #1",
-        "Formation": "BUDA"
-    },
-    {
-        "Well Name": "Whittington #1",
-        "Formation": "GEORGETOWN"
-    }
-]
+{
+    "Aaron #1": "GEORGETOWN",
+    "Aniken #1": "BUDA",
+    "Annpick #1": "AUSTIN CHALK",
+    "Balfour #1": "GEORGETOWN",
+    "Barrier #1": "AC + BUDA",
+    "Beeler Ranch #1": "GEORGETOWN",
+    "Bermuda #1": "AUSTIN CHALK",
+    "Big Sonny #1": "AUSTIN CHALK",
+    "Blackmon #1": "BUDA",
+    "Blas Reyes #1": "BUDA",
+    "BMMP #1": "BUDA",
+    "Bond #1": "AUSTIN CHALK",
+    "Branton #1": "GEORGETOWN",
+    "Bruce Weaver #1": "BUDA",
+    "Bruce Weaver #2 Re": "AUSTIN CHALK",
+    "Burns Ranch #1": "GEORGETOWN",
+    "Burns Ranch #2": "BUDA",
+    "Cannan #1": "AUSTIN CHALK",
+    "Carolpick #1": "BUDA",
+    "Carolyn #1": "GEORGETOWN",
+    "Cenizo #1": "BUDA",
+    "Chad #1": "GEORGETOWN",
+    "Charles B #1": "AC + BUDA",
+    "Circle T #1": "AUSTIN CHALK",
+    "CR #101": "BUDA",
+    "CR #201": "BUDA",
+    "CR #301": "BUDA",
+    "CR #302": "BUDA",
+    "CR #401": "BUDA",
+    "CR #501": "AC + BUDA",
+    "CR #939": "GLEN ROSE",
+    "Cross S #1": "AUSTIN CHALK",
+    "CT #1": "BUDA",
+    "Dale #1": "BUDA",
+    "Dial #1": "AUSTIN CHALK",
+    "Dial #1 ST": "AUSTIN CHALK",
+    "Dillard #1": "BUDA",
+    "Drinkard #1": "AUSTIN CHALK",
+    "Dunkle #2": "AUSTIN CHALK",
+    "Dunlap #1": "AUSTIN CHALK",
+    "Dyess #1": "AUSTIN CHALK",
+    "Eileen #1": "GEORGETOWN",
+    "Evergreen #1": "AUSTIN CHALK",
+    "Fatheree #1": "AUSTIN CHALK",
+    "Flower #1": "AUSTIN CHALK",
+    "Gail #1": "GEORGETOWN",
+    "Gil #1": "AUSTIN CHALK",
+    "Grissom #1": "AUSTIN CHALK",
+    "J Beeler #1": "GEORGETOWN",
+    "Jessica #1": "BUDA",
+    "JIC #1": "GEORGETOWN",
+    "JIC Buda #1": "BUDA",
+    "JJ #1": "GEORGETOWN",
+    "Joe #1": "AUSTIN CHALK",
+    "Joseph #1": "GEORGETOWN",
+    "Jred #1": "AC + BUDA",
+    "Kay #1": "BUDA",
+    "Kiley #1": "GEORGETOWN",
+    "Kincaid #1": "GEORGETOWN",
+    "Kirby #1": "BUDA",
+    "Kleimann #1": "GEORGETOWN",
+    "Kleimann #3": "GEORGETOWN",
+    "La Rosita #1": "AUSTIN CHALK",
+    "Lackey Five #1": "BUDA",
+    "Lander #1": "GEORGETOWN",
+    "Leary Trust #1": "AUSTIN CHALK",
+    "Little 179 #1": "AUSTIN CHALK",
+    "Lochte #1": "BUDA",
+    "LT #1": "BUDA",
+    "Marguerite #1": "AUSTIN CHALK",
+    "Marpick #1": "AUSTIN CHALK",
+    "Marrs #1": "GEORGETOWN",
+    "MDB #1": "AUSTIN CHALK",
+    "Molak #1": "AUSTIN CHALK",
+    "Montemayor #1": "AUSTIN CHALK",
+    "Moreland #1": "AUSTIN CHALK",
+    "Palm #1": "GEORGETOWN",
+    "Parkway #1": "GEORGETOWN",
+    "PC #1": "BUDA",
+    "Pecan Grove #1": "GEORGETOWN",
+    "Pfeiffer #1": "AC + BUDA",
+    "Pfeiffer #2": "AUSTIN CHALK",
+    "Pickens #1": "AUSTIN CHALK",
+    "Pickens Weaver #1": "GEORGETOWN",
+    "Pickwill #1": "AUSTIN CHALK",
+    "Preston #1": "BUDA",
+    "RAB #1": "GEORGETOWN",
+    "RAB #2": "GEORGETOWN",
+    "RAB #3": "GEORGETOWN",
+    "Rhodes #1": "GEORGETOWN",
+    "Richard #1": "BUDA",
+    "Richardson #1": "AUSTIN CHALK",
+    "Ronald #1": "SAN MIGUEL",
+    "Russell #1": "BUDA",
+    "Ruth #1": "AUSTIN CHALK",
+    "Ruthpick #1": "BUDA",
+    "Sansom #1": "BUDA",
+    "Solansky #1": "AUSTIN CHALK",
+    "Sugarland #1": "AUSTIN CHALK",
+    "Thalmann #1": "AUSTIN CHALK",
+    "Thompson #1": "AUSTIN CHALK",
+    "Thompson #2": "AUSTIN CHALK",
+    "Thuss #1": "BUDA",
+    "Tlapek #1": "AUSTIN CHALK",
+    "Triple J #2": "AUSTIN CHALK",
+    "Trotter #1": "AUSTIN CHALK",
+    "Vermillion #1": "GEORGETOWN",
+    "Verna #1": "AUSTIN CHALK",
+    "VRE Minerals #1": "GEORGETOWN",
+    "White Marlin #1": "BUDA",
+    "Whittington #1": "GEORGETOWN"
+}
