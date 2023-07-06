@@ -4,16 +4,16 @@ export const dataST = await json("../data/allProductionData.json").then((data) =
     return data
 });
 
+export const dataET = await json("../data/allProductionDataET.json").then((data) => {
+    return data;
+});
+
 export const moDataST = await json("../data/dataMonthlyST.json").then((data) => {
     return data
 });
 
 export const moDataET = await json("../data/dataMonthlyET.json").then((data) => {
     return data
-});
-
-export const dataET = await json("../data/allProductionDataET.json").then((data) => {
-    return data;
 });
 
 export const dataCuml = await json("../data/cumProd.json").then((data) => {
