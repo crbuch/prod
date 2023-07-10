@@ -107,7 +107,6 @@ const displayPlot = (selected) => {
     // SETS SCALE TO LOG FOR THE Y-AXIS IF (i == [index in plotContainers])
     let scale = [1, 2].includes(i) ? "log" : null;
     let tickvals = scale == 'log' ? [1,10,100,1000,10000,100000] : 'auto'
-    // CREATES LAYOUT, INCLUDES TITLE, SCALE, AND TICK VALUES
     var layout = {
       title: ['Cumulative Oil vs Time', 'Cumulative Oil vs Daily Oil Production', 'Cumulative Oil vs Monthly Oil Production'][i],
       xaxis: {
