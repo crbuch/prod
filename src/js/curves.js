@@ -22,6 +22,9 @@ const displayEconomics = (data, selectedOption) => {
   });
   document.getElementById("pnl").innerHTML = `P&L : $${wellRMPL.toFixed(0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} ${monthPnL}`;
   document.getElementById("YTD").innerHTML = `$${wellYTDPL.toFixed(0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} YTD`;
+  document.getElementById("pnl").style.display = "block";
+  document.getElementById("YTD").style.display = "block";
+
 };
 
 const displayPayout = (data, selectedOption) => {
@@ -33,6 +36,7 @@ const displayPayout = (data, selectedOption) => {
   });
   document.getElementById("payout").innerHTML =
     "Payout : " + payout100.toFixed(0).toLocaleString("en-US") + "%";
+  document.getElementById("payout").style.display = "block";
   //document.getElementById("payout100").innerHTML = payout100.toFixed(0).toLocaleString("en-US")+ "%";
 
 };
@@ -71,6 +75,8 @@ const displayPumpInfo = (data, selectedOption) => {
 
 const displayCumlData = (data, selectedOption) => {
   if (selectedOption == "South Texas Total") selectedOption = "ST Total";
+  if (selectedOption == "East Texas Total") selectedOption = "ET Total";
+
   let selectedWell = {
     cuml: 0,
     gasCuml: 0,
@@ -82,7 +88,7 @@ const displayCumlData = (data, selectedOption) => {
       selectedWell.cuml = well[1];
       selectedWell.gasCuml = well[3];
       selectedWell.waterCuml = well[2];
-      selectedWell.formation = well[4] || dh.formations[selectedOption];
+      selectedWell.formation = dh.formations[selectedOption] || "";
     }
   });
 
@@ -132,35 +138,34 @@ const curve = (timeFrame, data) => {
     region = 'st'
   };
 
-  if (region != "et") {
+  ["c", "SPM", "DHSL", "ideal", "pumpEff", "pumpDepth", "GFLAP", "Inc", "notPumping"].forEach(id => {
+    document.getElementById(id).innerHTML = "";
+  });
+
+  document.getElementById("wellName").innerHTML = selectedOption;
+
+  ["zoomEl", "individualTable","pumpInfo","notPumpingInfo", "pnl", "YTD","payout"].forEach(id => document.getElementById(id).style.display = 'none');
+
+  if (region != "et" & selectedOption != "South Texas Total") {
     displayEconomics(data.economicsData, selectedOption);
     displayPayout(data.payoutData, selectedOption);
     displayPumpInfo(data.pumpData, selectedOption);
-
-    // Hide previous pumping info
-    document.getElementById("pumpInfo").style.display = "none";
-    document.getElementById("notPumpingInfo").style.display = "none";
-
-    // Clear pump info text for next selection
-    ["c", "SPM", "DHSL", "ideal", "pumpEff", "pumpDepth", "GFLAP", "Inc", "notPumping"].forEach(id => {
-      document.getElementById(id).innerHTML = "";
-    });
   };
   displayCumlData(data.dataCuml, selectedOption);
 
-  document.getElementById("zoomEl").style.display = "none";
-  document.getElementById("wellName").innerHTML = selectedOption;
-  document.getElementById("individualTable").style.display = "none";
-
-  [/*'oilDeclineCurve',*/ 'gasDeclineCurve', 'waterDeclineCurve', 'waterCutCurve', 'totalFluidCurve', 'combinationCurves', 'moOilCurve'].forEach(id => {
+  [/*'oilDeclineCurve',*/ 'gasDeclineCurve', 'waterDeclineCurve', 'waterCutCurve', 'totalFluidCurve', 'combinationCurves'].forEach(id => {
     document.getElementById(id).style.display = 'block';
   });
-  let data365 = recYrProd();
-  let date365 = data365["date"];
-  let oil365 = data365["new oil"];
-  let percent = data365['percent'];
+
+  let date365 = []; let oil365 = []; let percent = [];
+  if (selectedOption == "South Texas Total"){
+    let data365 = recYrProd();
+    date365 = data365["date"];
+    oil365 = data365["new oil"];
+    percent = data365['percent'];
+    document.getElementById('ratioRecProd').style.display = 'block';
+  }
   
-  console.log('data :>> ', data);
   const site_data = data.prodData.filter(site => site[0] === selectedOption);
   let site_date = site_data.map(site => site[9]);
   let site_oil = site_data.map(site => site[2]);
@@ -255,13 +260,13 @@ const curve = (timeFrame, data) => {
     percent,
     "Percent Past Year Production",
     "line",
-    "green"
+    "#224a04"
   );
 
   const scale = (document.getElementById("logarithmic").classList.contains("active")) ? 'log' : 'linear';
   const plotContainers = [/*"oilDeclineCurve", */"gasDeclineCurve", "waterDeclineCurve", 'totalFluidCurve', 'waterCutCurve', 'combinationCurves', 'moOilCurve','ratioRecProd'];
   let combination = [traceOil, traceOilAvg, traceGas, traceWater, traceFluid, trace365];
-  if (selectedOption !== "South Texas Total") combination.pop();
+  if (selectedOption !== "South Texas Total") {combination.pop(); document.getElementById('ratioRecProd').style.display = 'none';}
 
   let traceArrays = [
     // [traceOil, traceOilAvg],

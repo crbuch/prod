@@ -52,7 +52,7 @@ export const legacyEcon = await json("../data/legacyEcon.json").then((data) => {
     return data
 });
 
-export const pl23_22 = await json("../data\\pldata1.json").then((data) => {
+export const pl23_22 = await json("../data\\pldata.json").then((data) => {
     return data
 });
 
