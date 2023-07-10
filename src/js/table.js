@@ -124,7 +124,6 @@ const displayPlot = (selected) => {
   });
 }
 
-displayPlot("Aaron #1");
 //main
 const tableData = formatData();
 
