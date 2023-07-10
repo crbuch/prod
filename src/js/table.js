@@ -1,8 +1,8 @@
 import { onAuthStateChangedFb } from './auth';
 import { monitorRegion } from './region'
-import { dataCuml,dataCumlET,payout,activeWells,sortData,buildTable,dropdown,filterData,formations } from './data';
+import { dataCuml,dataCumlET,payout,activeWells,sortData,buildTable,dropdown,filterData,formations, moDataST, dataST, moDataET, dataET } from './data';
 import { formatSpecifier, select } from 'd3';
-import { moDataST, dataST } from './data';
+import {} from './data';
 import { makeLayout, makeTrace } from './layout';
 
 onAuthStateChangedFb();
@@ -48,9 +48,14 @@ const formatData = () => {
 };
 
 const displayPlot = (selected) => {
+
+  // Check to use ET or ST data
+  let moData = region == "et" ? moDataET : moDataST
+  let data = region == "et" ? dataET : dataST
+
   // Read Files, select wells with selected name
-  let dataMonthly = moDataST.filter(el => el[0] == selected);
-  let dataDaily = dataST.filter(el => el[0] == selected);
+  let dataMonthly = moData.filter(el => el[0] == selected);
+  let dataDaily = data.filter(el => el[0] == selected);
   // Create arrays of desired columns
   const oilMo = dataMonthly.map(el => el[1]);
   var dateMo = dataMonthly.map(el => el[6]);
@@ -101,7 +106,7 @@ const displayPlot = (selected) => {
   var numDigits_da = Math.floor(Math.log10(maxOilDaily))+1;
 
   var cycle = [null, numDigits_mo, numDigits_da] // # of cycles to show, null for non-log graph
-  let min = selected == 'South Texas Total' ? 2 : 0
+  let min = (selected=='South Texas Total' || selected=='East Texas Total') ? 2 : 0 // Minimum for graph, only '2' for South Texas Total
 
   // Create Different Keys
   const plotContainers = ['cumlOilCurve', 'moProdVsCumCurve', 'dailyProdVsCumCurve'];
@@ -156,7 +161,6 @@ select(dropdownId).on("change", () => {
   buildTable(filterData(tableData,dropdownId));
   displayPlot(select(dropdownId).node().value);
 });
-
 
 document.getElementById('clearFilter').onclick = function () {
   buildTable(tableData);
