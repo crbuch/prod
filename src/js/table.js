@@ -2,7 +2,6 @@ import { onAuthStateChangedFb } from './auth';
 import { monitorRegion } from './region'
 import { dataCuml,dataCumlET,payout,activeWells,sortData,buildTable,dropdown,filterData,formations, moDataST, dataST, moDataET, dataET } from './data';
 import { formatSpecifier, select } from 'd3';
-import {} from './data';
 import { makeLayout, makeTrace } from './layout';
 
 onAuthStateChangedFb();
@@ -28,21 +27,18 @@ const formatData = () => {
         
       });
     });
+
     tableData.forEach(well => {
       well.push(formations[well[0]])
-    })
-  };
+    });
+  }else {
+    tableData.forEach(well => {
+      well.push('')
+      well.push(formations[well[0]])
+    });
+  }
   
-  //switch places of prodData[3] and prodData[4]
-  //tableData.forEach((well) => {
-  //  let temp = well[4];
-  //  well[4] = well[5];
-  //  well[5] = temp;
-  //});
-  // tableData.forEach((well) => {
-  //   well[4] = Math.round(well[4]*100);
-  // });
-  console.log('tableData :>> ', tableData);
+
   //remove archived wells
   return tableData.filter(val => activeWells().has(val[0]));
 };
@@ -52,16 +48,17 @@ const displayPlot = (selected) => {
   // Check to use ET or ST data
   let moData = region == "et" ? moDataET : moDataST
   let data = region == "et" ? dataET : dataST
-
+  
   // Read Files, select wells with selected name
   let dataMonthly = moData.filter(el => el[0] == selected);
   let dataDaily = data.filter(el => el[0] == selected);
-  // Create arrays of desired columns
+
   const oilMo = dataMonthly.map(el => el[1]);
   var dateMo = dataMonthly.map(el => el[6]);
   const dateDa = dataDaily.map(el => el[1]).reverse();
-  const cumlMoOil = oilMo.reduce((acc, val, idx) => (idx === 0 ? acc.concat(val) : acc.concat(val + acc[idx - 1])), []);
   const oilDaily = dataDaily.map(el => el[2]).reverse();
+
+  const cumlMoOil = oilMo.reduce((acc, val, idx) => (idx === 0 ? acc.concat(val) : acc.concat(val + acc[idx - 1])), []);
   const cumlDaOil = oilDaily.reduce((acc, val, idx) => (idx === 0 ? acc.concat(val) : acc.concat(val + acc[idx - 1])), []);
 
   var formattedDateMo = dateMo.map(dateString => {
@@ -144,7 +141,6 @@ const displayPlot = (selected) => {
   });
 }
 
-displayPlot("Aaron #1");
 //main
 const tableData = formatData();
 
