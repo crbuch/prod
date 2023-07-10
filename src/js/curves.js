@@ -82,7 +82,7 @@ const displayCumlData = (data, selectedOption) => {
       selectedWell.cuml = well[1];
       selectedWell.gasCuml = well[3];
       selectedWell.waterCuml = well[2];
-      selectedWell.formation = well[4] || dh.formations[selectedOption];
+      selectedWell.formation = dh.formations[selectedOption];
     }
   });
 
