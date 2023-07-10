@@ -6,7 +6,13 @@ body {
   --border-radius: 10px;
   height: 100%;
 }
+#cumlativeData {
+  white-space: nowrap;
+}
+#fieldTitle {
+  margin-left: -0.8%;
 
+}
 .main-nav {
   background-color: var(--color-primary) !important;
 }
@@ -95,10 +101,10 @@ body {
   margin-top: 6px;
 }
 #view{
-  padding-left: 10%;
+  padding-left: 11.55%;
 }
 #timeframes{
-  padding-left: 7.5%;
+  padding-left: 2.9%;
 }
 
 #view > a,#timeframes > a {
