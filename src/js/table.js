@@ -2,7 +2,7 @@ import { onAuthStateChangedFb } from './auth';
 import { monitorRegion } from './region'
 import { dataCuml,dataCumlET,payout,activeWells,sortData,buildTable,dropdown,filterData,formations } from './data';
 import { formatSpecifier, select } from 'd3';
-import { moDataST, dataST } from './data';
+import { moDataST, moDataET, dataST, dataET } from './data';
 import { makeLayout, makeTrace } from './layout';
 
 onAuthStateChangedFb();
@@ -28,35 +28,38 @@ const formatData = () => {
         
       });
     });
+
     tableData.forEach(well => {
       well.push(formations[well[0]])
-    })
-  };
+    });
+  }else {
+    tableData.forEach(well => {
+      well.push('')
+      well.push(formations[well[0]])
+    });
+  }
   
-  //switch places of prodData[3] and prodData[4]
-  //tableData.forEach((well) => {
-  //  let temp = well[4];
-  //  well[4] = well[5];
-  //  well[5] = temp;
-  //});
-  // tableData.forEach((well) => {
-  //   well[4] = Math.round(well[4]*100);
-  // });
-  console.log('tableData :>> ', tableData);
+
   //remove archived wells
   return tableData.filter(val => activeWells().has(val[0]));
 };
 
 const displayPlot = (selected) => {
-  // Read Files, select wells with selected name
-  let dataMonthly = moDataST.filter(el => el[0] == selected);
-  let dataDaily = dataST.filter(el => el[0] == selected);
-  // Create arrays of desired columns
+  let data = {
+    daily: dataET,
+    mo: moDataET
+  }
+  if (region != 'et') data.mo = moDataST; data.daily = dataST;
+
+  let dataMonthly = data.mo.filter(el => el[0] == selected);
+  let dataDaily = data.daily.filter(el => el[0] == selected);
+
   const oilMo = dataMonthly.map(el => el[1]);
   const dateMo = dataMonthly.map(el => el[6]);
   const dateDa = dataDaily.map(el => el[1]).reverse();
-  const cumlMoOil = oilMo.reduce((acc, val, idx) => (idx === 0 ? acc.concat(val) : acc.concat(val + acc[idx - 1])), []);
   const oilDaily = dataDaily.map(el => el[2]).reverse();
+
+  const cumlMoOil = oilMo.reduce((acc, val, idx) => (idx === 0 ? acc.concat(val) : acc.concat(val + acc[idx - 1])), []);
   const cumlDaOil = oilDaily.reduce((acc, val, idx) => (idx === 0 ? acc.concat(val) : acc.concat(val + acc[idx - 1])), []);
 
   const formattedDateMo = dateMo.map(dateString => {

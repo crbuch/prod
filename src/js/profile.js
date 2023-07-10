@@ -115,7 +115,6 @@ const rankPl = (obj) => {
 
 }
 
-
 const format = (obj) => {
     // Convert keys to Date objects for comparison
     const sortedKeys = Object.keys(obj)
