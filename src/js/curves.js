@@ -4,6 +4,7 @@ import { monitorRegion } from './region'
 import { select } from 'd3';
 import { makeTrace, makeLayout, config } from './layout';
 import { setActive, setActiveView, checkActive, setActiveTime } from './ui';
+import { child } from 'firebase/database';
 
 onAuthStateChangedFb();
 monitorRegion();
@@ -391,6 +392,7 @@ const switchActives = (event) => {
   }
   if (window.innerWidth < 400) setTimeout(ddd,50);
   document.getElementById('siteSelection').focus();
+  if (parent.id == 'timeframes') setActiveView(localStorage.getItem('initScale'));
 };
 
 //Main//
@@ -428,6 +430,7 @@ select(dropdownId).on("change", () => {
   if (localStorage.initTime == 31) activeTime = 'Days30';
   curve(localStorage.initTime, curveInfo);
   setActiveTime(activeTime);
+  setActiveView(localStorage.getItem('initScale'));
 });
 
 document.getElementById("table").addEventListener('click', () => {
