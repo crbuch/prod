@@ -18,7 +18,7 @@ const onAuthStateChangedFb = () => {
     auth.onAuthStateChanged((user) => {
         if (user) {
             console.log('user mon :>> ', user);
-            //if (user.displayName == null) up();
+            //up();
         } else {
             console.log("none");
             window.location.replace('index.html');

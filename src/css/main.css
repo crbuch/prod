@@ -156,7 +156,7 @@ select {
 li {
   white-space: nowrap;
 }
-
+#cover {position: fixed; height: 100%; width: 100%; top:0; left: 0; background: #000; z-index:9999;}
 
 @media (min-width: 768px) {
   #filler0,

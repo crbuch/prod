@@ -1,8 +1,7 @@
 import { onAuthStateChangedFb } from './auth';
 import { monitorRegion } from './region'
-import { dataCuml,dataCumlET,payout,activeWells,sortData,buildTable,dropdown,filterData,formations } from './data';
+import { dataCuml,dataCumlET,payout,activeWells,sortData,buildTable,dropdown,filterData,formations, moDataST, dataST, moDataET, dataET } from './data';
 import { formatSpecifier, select } from 'd3';
-import { moDataST, moDataET, dataST, dataET } from './data';
 import { makeLayout, makeTrace } from './layout';
 
 onAuthStateChangedFb();
@@ -45,28 +44,30 @@ const formatData = () => {
 };
 
 const displayPlot = (selected) => {
-  let data = {
-    daily: dataET,
-    mo: moDataET
-  }
-  if (region != 'et') data.mo = moDataST; data.daily = dataST;
 
-  let dataMonthly = data.mo.filter(el => el[0] == selected);
-  let dataDaily = data.daily.filter(el => el[0] == selected);
+  // Check to use ET or ST data
+  let moData = region == "et" ? moDataET : moDataST
+  let data = region == "et" ? dataET : dataST
+  
+  // Read Files, select wells with selected name
+  let dataMonthly = moData.filter(el => el[0] == selected);
+  let dataDaily = data.filter(el => el[0] == selected);
 
   const oilMo = dataMonthly.map(el => el[1]);
-  const dateMo = dataMonthly.map(el => el[6]);
+  var dateMo = dataMonthly.map(el => el[6]);
   const dateDa = dataDaily.map(el => el[1]).reverse();
   const oilDaily = dataDaily.map(el => el[2]).reverse();
 
   const cumlMoOil = oilMo.reduce((acc, val, idx) => (idx === 0 ? acc.concat(val) : acc.concat(val + acc[idx - 1])), []);
   const cumlDaOil = oilDaily.reduce((acc, val, idx) => (idx === 0 ? acc.concat(val) : acc.concat(val + acc[idx - 1])), []);
 
-  const formattedDateMo = dateMo.map(dateString => {
+  var formattedDateMo = dateMo.map(dateString => {
     const date = new Date(dateString);
     const options = { month: 'long', year: 'numeric' };
     return date.toLocaleDateString('en-US', options);
   });
+  formattedDateMo = formattedDateMo.slice(1); // Slice because array starts from one month prior
+  dateMo.pop() // Take off most recent month
 
   // Create traces for graphs
   const traceCumOil = makeTrace(
@@ -76,14 +77,8 @@ const displayPlot = (selected) => {
     "lines",
     "green"
   );
-  const traceDailyProdVSCum = makeTrace(
-    cumlDaOil,
-    oilDaily,
-    "daily",
-    "line",
-    "green",
-    dateDa
-  );
+  cumlMoOil.pop() // Take off most recent month
+  oilMo.pop() // Take off most recent month
   const traceMoProdVSCum = makeTrace(
     cumlMoOil,
     oilMo,
@@ -92,36 +87,55 @@ const displayPlot = (selected) => {
     "green",
     formattedDateMo
   );
+  const traceDailyProdVSCum = makeTrace(
+    cumlDaOil,
+    oilDaily,
+    "daily",
+    "line",
+    "green",
+    dateDa
+  );
+
+  // Determine the amount of cycles to show for log graphs
+  var maxOilMo = Math.max(...oilMo)
+  var maxOilDaily = Math.max(...oilDaily)
+  var numDigits_mo = Math.floor(Math.log10(maxOilMo))+1;
+  var numDigits_da = Math.floor(Math.log10(maxOilDaily))+1;
+
+  var cycle = [null, numDigits_mo, numDigits_da] // # of cycles to show, null for non-log graph
+  let min = (selected=='South Texas Total' || selected=='East Texas Total') ? 2 : 0 // Minimum for graph, only '2' for South Texas Total
 
   // Create Different Keys
-  const plotContainers = ['cumlOilCurve', 'dailyProdVsCumCurve', 'moProdVsCumCurve'];
+  const plotContainers = ['cumlOilCurve', 'moProdVsCumCurve', 'dailyProdVsCumCurve'];
   // Traces to Use
   let traceArrays = [
     [traceCumOil],
-    [traceDailyProdVSCum],
-    [traceMoProdVSCum]
+    [traceMoProdVSCum],
+    [traceDailyProdVSCum]
   ];
-
   // Loop and make the plots, contain keys found in plotContainers^^
   plotContainers.forEach((container, i) => {
     // SETS SCALE TO LOG FOR THE Y-AXIS IF (i == [index in plotContainers])
     let scale = [1, 2].includes(i) ? "log" : null;
-    let tickvals = scale == 'log' ? [1,10,100,1000,10000,100000] : 'auto'
+    let tickvals = scale == 'log' ? [0,1,10,20,30,40,50,60,70,80,90,100,200,300,400,500,600,700,800,900,1000,2000,3000,4000,5000,6000,7000,8000,9000,10000,20000,30000,40000,50000,60000,70000,80000,90000,100000,200000,300000,400000,500000,600000,700000,800000,900000,1000000] : 'auto'
+    let ticktext = scale == 'log' ? [0,1,10,'','','','','','','','',100,'','','','','','','','',1000,'','','','','','','','',10000,'','','','','','','','',100000,'','','','','','','','',1000000]: 'auto'
+    
     var layout = {
-      title: ['Cumulative Oil vs Time', 'Cumulative Oil vs Daily Oil Production', 'Cumulative Oil vs Monthly Oil Production'][i],
+      title: ['Time vs Cumulative Oil',  'Cumulative Oil vs Monthly Oil Production', 'Cumulative Oil vs Daily Oil Production'][i],
       xaxis: {
         autorange: true,
         showline: scale == 'log' ? true : false,
         gridcolor: 'darkgray',
       },
       yaxis: {
-        autorange: true,
+        range: [min,cycle[i]],
+        // autorange: true,
         type: scale,
-        // tickvals: tickvals,
+        tickvals: tickvals,
+        ticktext: ticktext,
         gridcolor: 'darkgray',
       },
     }
-      
     Plotly.newPlot(container, traceArrays[i], layout);
   });
 }
@@ -142,7 +156,6 @@ select(dropdownId).on("change", () => {
   buildTable(filterData(tableData,dropdownId));
   displayPlot(select(dropdownId).node().value);
 });
-
 
 document.getElementById('clearFilter').onclick = function () {
   buildTable(tableData);
