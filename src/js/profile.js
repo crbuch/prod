@@ -11,6 +11,7 @@ monitorRegion();
 
 const fetchData = () => {
     let data = localStorage.shares;
+    console.log('data :>> ', data);
     if (uid != localStorage.skey){
         data = null;
         localStorage.shares = null;
@@ -24,6 +25,7 @@ const fetchData = () => {
 
         onValue(deckRef, (snapshot) => {
             const data = snapshot.val();
+
             localStorage.setItem("shares", JSON.stringify(data));
             localStorage.setItem("skey",uid);
             if (data) parseData(data);
@@ -91,10 +93,9 @@ const parseData = (d) => {
     localStorage.setItem('pl_data_wells', JSON.stringify(well_returns));
 
     //sort well list best to worst
-    let rankedWells = rankPl(well_returns);
-    rankedWells.unshift("All Wells");
-    initWellList(rankedWells);
-
+    const sortBy = sessionStorage.sortBy;
+    if (sortBy == undefined || sortBy == 'pl') rankPl(well_returns);
+    else alpSort(well_returns);
     displayProd("All Wells");
 }
 
@@ -111,10 +112,11 @@ const rankPl = (obj) => {
     const arr = Object.entries(res);
     arr.sort((a, b) => b[1] - a[1]);
     const sortedObj = Object.fromEntries(arr);
-    return Object.keys(sortedObj)
 
+    let rankedWells = Object.keys(sortedObj);
+    rankedWells.unshift("All Wells");
+    initWellList(rankedWells);
 }
-
 
 const format = (obj) => {
     // Convert keys to Date objects for comparison
@@ -147,6 +149,7 @@ const formatMoney = (amount) => {
 
 const initWellList = (wells) => {
     let ulWellList = document.getElementById("well-list");
+    ulWellList.innerHTML = '';
     for (let i = 0; i < wells.length; i++) {
         let li = document.createElement("li");
         li.classList.add("nav-item", "active");
@@ -351,6 +354,11 @@ function capitalizeWords(str) {
     });
 }
 
+const alpSort = (wells) => {
+    wells = Object.keys(wells).sort();
+    wells.unshift('All Wells');
+    initWellList(wells);
+}
 
 //\\
 const mapPayout = {"cr 939h":"cr 939","bruce weaver 2": "bruce weaver 2 re"};
@@ -361,6 +369,8 @@ const mapMo = {"Jan": "01","Feb": "02","Mar": "03","Apr": "04","May": "05","Jun"
 const db = getDatabase()
 const uid = localStorage.getItem('uid');
 fetchData();
+
+
 
 //search
 const searchInput = document.getElementById('searchInput');
@@ -399,6 +409,20 @@ document.getElementById("init_time").addEventListener('click', () => {
 document.getElementById("show_pwd_form_btn").addEventListener('click', () => {
     sessionStorage.changePwd = "true";
     window.location.href = "./index.html";
+})
+const sortBtn  = document.getElementById('sortBy');
+let sortBy = sessionStorage.sortBy;
+sortBtn.innerHTML = `Sorted: ${sortBy == 'pl' || sortBy == undefined ? 'P&L ' : 'Alphabetically'}`
+
+sortBtn.addEventListener('click', () => {
+    let wells = JSON.parse(localStorage.pl_data_wells);
+    let sortBy = sessionStorage.sortBy == 'alp' ? 'pl' : 'alp';
+    sortBtn.innerHTML = `Sort: ${sortBy == 'alp' ? 'Alphabetically ' : 'P&L'}`
+    sessionStorage.sortBy = sortBy;
+
+    if (sortBy == 'alp') alpSort(wells);
+    else rankPl(wells);
+
 })
 
 window.onload = function () {

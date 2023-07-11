@@ -18,7 +18,7 @@ const onAuthStateChangedFb = () => {
     auth.onAuthStateChanged((user) => {
         if (user) {
             console.log('user mon :>> ', user);
-            //if (user.displayName == null) update();
+            //up();
         } else {
             console.log("none");
             window.location.replace('index.html');
@@ -32,7 +32,6 @@ const onAuthStateChangedFb = () => {
 };
 
 const up = () => {
-    console.log("in up");
     updateProfile(auth.currentUser, {
         displayName: ''
       }).then(() => {

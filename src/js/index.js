@@ -20,12 +20,14 @@ import {
 import {loginFb, updatePasswordFb } from './auth';
 
 const initStorage = (userCreds) => {
-  if (localStorage.getItem('initTime') == null) localStorage.setItem('initTime',0);
+  let initTime = window.innerWidth < 768 ? 31 : 0;
+  localStorage.setItem('initTime',initTime);
   if (localStorage.getItem('initScale') == null) localStorage.setItem('initScale','linear');
   localStorage.setItem('uid', userCreds.uid);
   localStorage.setItem('displayName', userCreds.displayName);
   sessionStorage.setItem('region', 'st');
   sessionStorage.changePwd = false;
+  debugger;
 };
 
 const login = async () => {
@@ -40,6 +42,7 @@ const login = async () => {
     console.log('userCredential :>> ', userCredential);
     initStorage(userCredential.user);
     showApp();
+    debugger;
   }).catch((err) => {
     console.log('err :>> ', err);
     showLoginError(err);
