@@ -168,14 +168,14 @@ const curve = (timeFrame, data) => {
   }
   
   const site_data = data.prodData.filter(site => site[0] === selectedOption);
-  let site_date = site_data.map(site => site[9]);
+  let site_date = site_data.map(site => site[8]);
   let site_oil = site_data.map(site => site[2]);
   let site_gas = site_data.map(site => site[3]);
   let site_water = site_data.map(site => site[4]);
   let comments = site_data.map(site => site[7]);
   let movingAverage = site_data.map(site => site[8]);
   let water_cut = site_water.map((water, i) => (water / (water + site_oil[i])) * 100);
-  let total_fluid = site_data.map(site => site[10] || site[8]);
+  let total_fluid = site_data.map(site => site[9] || site[8]);
   if (timeFrame > 0) [site_date, site_oil, site_gas, site_water, comments, movingAverage, oil365, date365, percent] =
   [site_date, site_oil, site_gas, site_water, comments, movingAverage, oil365, date365, percent].map(arr => arr.slice(0, timeFrame));
 
