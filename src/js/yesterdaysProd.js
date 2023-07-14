@@ -41,4 +41,3 @@ window.onload = function () {
     dh.buildTable(tableData);
     dh.dropdown(dropdownId);
 }();
-

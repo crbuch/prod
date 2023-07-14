@@ -1,10 +1,10 @@
 import { monitorRegion } from './region'
-import { analyzeData,analyzeDataET } from './data';
+import { analyzeDataST,analyzeDataET } from './data';
 import { select } from 'd3';
 
 monitorRegion();
 
-let data = analyzeData;
+let data = analyzeDataST;
 let region = sessionStorage.getItem("region");
 if (region == "et") data = analyzeDataET;
 

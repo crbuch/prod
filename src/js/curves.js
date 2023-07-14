@@ -350,13 +350,15 @@ const curve = (timeFrame, data) => {
 };
 
 const table = (coreData) => {
-  const data = coreData.map(el => ([...el]))
+  console.log('coreData :>> ', coreData);
+  let data = coreData.map(row => [...row]);
+  console.log('data :>> ', data);
   const selectedOption = getSelectedOption(data);
   let well = data.filter(i => i[0] == selectedOption);
   console.log('well :>> ', well);
   well.forEach(w => {
     w.shift();
-    for (let i = 0; i < 3; i++) w.pop();
+    for (let i = 0; i < 2; i++) w.pop();
   });
 
   console.log('well :>> ', well);
@@ -402,7 +404,7 @@ console.log('currUid :>> ', currUid);
 let prodData = dh.dataST;
 let cumlData = dh.dataCuml;
 let MoProdData = dh.moDataST;
-
+console.log('prodData :>> ', prodData);
 if (region == "et") {
   prodData = dh.dataET
   cumlData = dh.dataCumlET
