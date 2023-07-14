@@ -132,7 +132,6 @@ const recYrProd = () => {
 
 const curve = (timeFrame, data) => {
   const selectedOption = getSelectedOption(data.prodData);
-
   let region = sessionStorage.getItem("region");
   if (region == null) {
     sessionStorage.setItem('region', 'st')
@@ -178,7 +177,6 @@ const curve = (timeFrame, data) => {
   let total_fluid = site_data.map(site => site[9] || site[8]);
   if (timeFrame > 0) [site_date, site_oil, site_gas, site_water, comments, movingAverage, oil365, date365, percent] =
   [site_date, site_oil, site_gas, site_water, comments, movingAverage, oil365, date365, percent].map(arr => arr.slice(0, timeFrame));
-
   // READING MONTHLY DATA (+ Drops most recent month)
   const mo_site_data = data.MoProdData.filter(site => site[0] === selectedOption);
   mo_site_data.pop();
@@ -286,8 +284,6 @@ const curve = (timeFrame, data) => {
 
     const layout = makeLayout(['Gas vs Time (MCFD)', 'Water vs Time (BWPD)', 'Total Fluid vs Time (BFPD)', 'Water Cut Percentage', 'Combined Production', 'Percent Production from New Wells (365 Days)'][i], scale, 
         (scale === 'log') ? [1, 2, 5, 10, 20, 50, 100, 200, 500, 1000, 2000, 3000] : null);
-    console.log('traceArrays[i] :>> ', traceArrays[i]);
-    console.log('container :>> ', container);
     Plotly.newPlot(container, traceArrays[i], layout, config);
   });
 
@@ -350,18 +346,14 @@ const curve = (timeFrame, data) => {
 };
 
 const table = (coreData) => {
-  console.log('coreData :>> ', coreData);
   let data = coreData.map(row => [...row]);
-  console.log('data :>> ', data);
   const selectedOption = getSelectedOption(data);
   let well = data.filter(i => i[0] == selectedOption);
-  console.log('well :>> ', well);
   well.forEach(w => {
     w.shift();
     for (let i = 0; i < 2; i++) w.pop();
   });
 
-  console.log('well :>> ', well);
   dh.buildTable(well);
 
   document.getElementById('individualTable').style.display = 'inline-block';
@@ -388,7 +380,6 @@ const switchActives = (event) => {
   function ddd () {
     try{
       document.getElementById("siteSelection").blur();
-      console.log("blurringg");
     }catch{
     };
   }
@@ -404,7 +395,7 @@ console.log('currUid :>> ', currUid);
 let prodData = dh.dataST;
 let cumlData = dh.dataCuml;
 let MoProdData = dh.moDataST;
-console.log('prodData :>> ', prodData);
+
 if (region == "et") {
   prodData = dh.dataET
   cumlData = dh.dataCumlET
