@@ -1,6 +1,7 @@
 html,
 body {
-  --color-primary: #1c4662;
+  --color-primary: rgba(2, 29, 73, 1);
+  --color-primary1: #1c4662;
   --color-secondary: #e07719;
   --color-error: #cc3333;
   --border-radius: 10px;

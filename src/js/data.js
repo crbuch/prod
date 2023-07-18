@@ -24,7 +24,7 @@ export const dataCumlET = await json("../data/cumProdET.json").then((data) => {
     return data
 });
 
-export const analyzeData = await json("../data/analyze.json").then((data) => {
+export const analyzeDataST = await json("../data/analyzeST.json").then((data) => {
     return data
 });
 
@@ -118,5 +118,3 @@ export const sortData = (data, pos) => {
     });
     buildTable(sorted);
 };
-
-

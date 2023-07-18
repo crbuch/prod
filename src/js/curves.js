@@ -4,6 +4,7 @@ import { monitorRegion } from './region'
 import { select } from 'd3';
 import { makeTrace, makeLayout, config } from './layout';
 import { setActive, setActiveView, checkActive, setActiveTime } from './ui';
+import { child } from 'firebase/database';
 
 onAuthStateChangedFb();
 monitorRegion();
@@ -131,7 +132,6 @@ const recYrProd = () => {
 
 const curve = (timeFrame, data) => {
   const selectedOption = getSelectedOption(data.prodData);
-
   let region = sessionStorage.getItem("region");
   if (region == null) {
     sessionStorage.setItem('region', 'st')
@@ -167,17 +167,16 @@ const curve = (timeFrame, data) => {
   }
   
   const site_data = data.prodData.filter(site => site[0] === selectedOption);
-  let site_date = site_data.map(site => site[9]);
+  let site_date = site_data.map(site => site[8]);
   let site_oil = site_data.map(site => site[2]);
   let site_gas = site_data.map(site => site[3]);
   let site_water = site_data.map(site => site[4]);
   let comments = site_data.map(site => site[7]);
   let movingAverage = site_data.map(site => site[8]);
   let water_cut = site_water.map((water, i) => (water / (water + site_oil[i])) * 100);
-  let total_fluid = site_data.map(site => site[10] || site[8]);
+  let total_fluid = site_data.map(site => site[9] || site[8]);
   if (timeFrame > 0) [site_date, site_oil, site_gas, site_water, comments, movingAverage, oil365, date365, percent] =
   [site_date, site_oil, site_gas, site_water, comments, movingAverage, oil365, date365, percent].map(arr => arr.slice(0, timeFrame));
-
   // READING MONTHLY DATA (+ Drops most recent month)
   const mo_site_data = data.MoProdData.filter(site => site[0] === selectedOption);
   mo_site_data.pop();
@@ -285,8 +284,6 @@ const curve = (timeFrame, data) => {
 
     const layout = makeLayout(['Gas vs Time (MCFD)', 'Water vs Time (BWPD)', 'Total Fluid vs Time (BFPD)', 'Water Cut Percentage', 'Combined Production', 'Percent Production from New Wells (365 Days)'][i], scale, 
         (scale === 'log') ? [1, 2, 5, 10, 20, 50, 100, 200, 500, 1000, 2000, 3000] : null);
-    console.log('traceArrays[i] :>> ', traceArrays[i]);
-    console.log('container :>> ', container);
     Plotly.newPlot(container, traceArrays[i], layout, config);
   });
 
@@ -349,16 +346,14 @@ const curve = (timeFrame, data) => {
 };
 
 const table = (coreData) => {
-  const data = coreData.map(el => ([...el]))
+  let data = coreData.map(row => [...row]);
   const selectedOption = getSelectedOption(data);
   let well = data.filter(i => i[0] == selectedOption);
-  console.log('well :>> ', well);
   well.forEach(w => {
     w.shift();
-    for (let i = 0; i < 3; i++) w.pop();
+    for (let i = 0; i < 2; i++) w.pop();
   });
 
-  console.log('well :>> ', well);
   dh.buildTable(well);
 
   document.getElementById('individualTable').style.display = 'inline-block';
@@ -385,12 +380,12 @@ const switchActives = (event) => {
   function ddd () {
     try{
       document.getElementById("siteSelection").blur();
-      console.log("blurringg");
     }catch{
     };
   }
   if (window.innerWidth < 400) setTimeout(ddd,50);
   document.getElementById('siteSelection').focus();
+  if (parent.id == 'timeframes') setActiveView(localStorage.getItem('initScale'));
 };
 
 //Main//
@@ -428,6 +423,7 @@ select(dropdownId).on("change", () => {
   if (localStorage.initTime == 31) activeTime = 'Days30';
   curve(localStorage.initTime, curveInfo);
   setActiveTime(activeTime);
+  setActiveView(localStorage.getItem('initScale'));
 });
 
 document.getElementById("table").addEventListener('click', () => {
