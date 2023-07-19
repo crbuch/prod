@@ -167,7 +167,7 @@ const curve = (timeFrame, data) => {
   }
   
   const site_data = data.prodData.filter(site => site[0] === selectedOption);
-  let site_date = site_data.map(site => site[8]);
+  let site_date = site_data.map(site => site[10] || site[9]);
   let site_oil = site_data.map(site => site[2]);
   let site_gas = site_data.map(site => site[3]);
   let site_water = site_data.map(site => site[4]);
@@ -351,7 +351,7 @@ const table = (coreData) => {
   let well = data.filter(i => i[0] == selectedOption);
   well.forEach(w => {
     w.shift();
-    for (let i = 0; i < 2; i++) w.pop();
+    for (let i = 0; i < 3; i++) w.pop();
   });
 
   dh.buildTable(well);
