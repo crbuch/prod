@@ -390,15 +390,22 @@ const switchActives = (event) => {
 const currUid = localStorage.getItem('uid');
 let region = sessionStorage.getItem('region');
 console.log('currUid :>> ', currUid);
-let prodData = dh.dataST;
-let cumlData = dh.dataCuml;
-let MoProdData = dh.moDataST;
+
+let prodData = dh.dataST
+let cumlData = dh.dataCuml
+let MoProdData = dh.moDataST
 
 if (region == "et") {
   prodData = dh.dataET
   cumlData = dh.dataCumlET
   MoProdData = dh.moDataET
-};
+} else if (region=="wt") {
+
+} else if (region=="gc") {
+
+} else if (region=="nm") {
+
+}
 
 const curveInfo = {
   prodData: prodData,
