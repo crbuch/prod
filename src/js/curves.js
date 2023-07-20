@@ -351,13 +351,12 @@ const table = (coreData) => {
   let well = data.filter(i => i[0] == selectedOption);
   well.forEach(w => {
     w.shift();
-    for (let i = 0; i < 3; i++) w.pop();
+    for (let i = 0; i < 2; i++) w.pop();
   });
-
+  console.log('well :>> ', well);
   dh.buildTable(well);
-
   document.getElementById('individualTable').style.display = 'inline-block';
-  ['gasDeclineCurve', 'waterDeclineCurve', 'waterCutCurve', 'totalFluidCurve', 'combinationCurves', 'cumOilCurve', 'cumVSdailyProdCurve', 'cumVSmoProdCurve'].forEach(tag => {
+  ['gasDeclineCurve', 'waterDeclineCurve', 'waterCutCurve', 'totalFluidCurve', 'combinationCurves', 'ratioRecProd'].forEach(tag => {
     document.getElementById(tag).style.display = 'none'
   });
 };
