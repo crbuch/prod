@@ -5,11 +5,43 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+      /* Styling for the .daniel class */
+      .daniel {
+        /* display: none; */
+        color: white;
+        background-color: navy;
+      }
+    </style>
 </head>
+
 <body>
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark p-3 main-nav">
     <div class="container-fluid">
-      <a id="fieldTitle" class="navbar-brand" href="#">South Texas Field</a>
+
+      <!-- temporary -->
+      <label for="fieldTitle" id="fieldTitle" class="navbar-brand"></label>
+
+      <select id="hi" class="active">
+        <option>South Texas</option>
+        <option>East Texas</option>
+        <option>West Texas</option>
+        <option>Gulf Coast</option>
+        <option>New Mexico</option>
+        <option>Company</option>
+      </select>
+      
+      <!-- <div class="fieldTitle">
+        <button class="dropbtn">South Texas Field
+          <i class="fa fa-caret-down"></i>
+        </button>
+        <div class="dropdown-content">
+          <a href="#">Link1</a>
+          <a href="#">Link2</a>
+          <a href="#">Link3</a>
+        </div>
+      </div> -->
+
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>

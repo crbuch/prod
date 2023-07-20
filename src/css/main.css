@@ -144,7 +144,6 @@ body {
 select {
   text-align-last: center;
 }
-
 #view > button {
   border-color: none;
   border: none;
@@ -270,3 +269,4 @@ li {
     display: none;
   }
 }
+  
