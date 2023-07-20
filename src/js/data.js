@@ -1,6 +1,6 @@
 import { csv, json, select } from 'd3';
 
-export const dataST = await json("../data/allProductionData.json").then((data) => {
+export const dataST = await json("../data/allProductionDataST.json").then((data) => {
     return data
 });
 
@@ -16,11 +16,11 @@ export const moDataET = await json("../data/dataMonthlyET.json").then((data) => 
     return data
 });
 
-export const dataCuml = await json("../data/cumProd.json").then((data) => {
+export const dataCuml = await json("../data/cumlProdST.json").then((data) => {
     return data
 });
 
-export const dataCumlET = await json("../data/cumProdET.json").then((data) => {
+export const dataCumlET = await json("../data/cumlProdET.json").then((data) => {
     return data
 });
 
