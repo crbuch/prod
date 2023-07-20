@@ -8,7 +8,7 @@ import { child } from 'firebase/database';
 
 onAuthStateChangedFb();
 monitorRegion();
-
+//delete this comment
 const displayEconomics = (data, selectedOption) => {
   let wellRMPL = 0;
   let wellYTDPL = 0;
