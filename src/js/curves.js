@@ -4,7 +4,6 @@ import { monitorRegion } from './region'
 import { select } from 'd3';
 import { makeTrace, makeLayout, config } from './layout';
 import { setActive, setActiveView, checkActive, setActiveTime } from './ui';
-import { child } from 'firebase/database';
 
 onAuthStateChangedFb();
 monitorRegion();
@@ -177,6 +176,7 @@ const curve = (timeFrame, data) => {
   let total_fluid = site_data.map(site => site[9] || site[8]);
   if (timeFrame > 0) [site_date, site_oil, site_gas, site_water, comments, movingAverage, oil365, date365, percent] =
   [site_date, site_oil, site_gas, site_water, comments, movingAverage, oil365, date365, percent].map(arr => arr.slice(0, timeFrame));
+  
   // READING MONTHLY DATA (+ Drops most recent month)
   const mo_site_data = data.MoProdData.filter(site => site[0] === selectedOption);
   mo_site_data.pop();
@@ -353,7 +353,6 @@ const table = (coreData) => {
     w.shift();
     for (let i = 0; i < 2; i++) w.pop();
   });
-  console.log('well :>> ', well);
   dh.buildTable(well);
   document.getElementById('individualTable').style.display = 'inline-block';
   ['gasDeclineCurve', 'waterDeclineCurve', 'waterCutCurve', 'totalFluidCurve', 'combinationCurves', 'ratioRecProd'].forEach(tag => {

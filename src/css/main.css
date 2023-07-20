@@ -18,8 +18,8 @@ body {
   background-color: var(--color-primary) !important;
 }
 
-.navbar-nav .nav-link {
-  color: white;
+.nav-link {
+  color: white !important;
 }
 
 .navbar ul.navbar-nav li {

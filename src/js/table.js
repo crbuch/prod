@@ -44,7 +44,6 @@ const formatData = () => {
 };
 
 const displayPlot = (selected) => {
-
   // Check to use ET or ST data
   let moData = region == "et" ? moDataET : moDataST
   let data = region == "et" ? dataET : dataST

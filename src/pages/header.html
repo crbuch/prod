@@ -21,32 +21,21 @@
 
       <!-- temporary -->
       <label for="fieldTitle" id="fieldTitle" class="navbar-brand"></label>
-
-      <select id="hi" class="active">
-        <option>South Texas</option>
-        <option>East Texas</option>
-        <option>West Texas</option>
-        <option>Gulf Coast</option>
-        <option>New Mexico</option>
-        <option>Company</option>
-      </select>
-      
-      <!-- <div class="fieldTitle">
-        <button class="dropbtn">South Texas Field
-          <i class="fa fa-caret-down"></i>
-        </button>
-        <div class="dropdown-content">
-          <a href="#">Link1</a>
-          <a href="#">Link2</a>
-          <a href="#">Link3</a>
-        </div>
-      </div> -->
+      <li class="nav-item dropdown">
+        <a class="navbar-brand dropdown-toggle" id='currField' href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          South Texas
+        </a>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" id="pos1" href="#">East Texas</a></li>
+          <li><a class="dropdown-item" id="pos2" href="#">West Texas</a></li>
+        </ul>
+      </li>
 
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
     
-      <div class=" collapse navbar-collapse" id="navbarNavDropdown">
+      <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ul class="navbar-nav mx-auto" >
           <li class="nav-item">
             <a class="nav-link ml-2 active" aria-current="page" href="./curves.html">Graph</a>

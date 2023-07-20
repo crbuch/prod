@@ -7,7 +7,6 @@ $(document).ready(function () {
 const toggleRegion = () => {
     let currRegion = sessionStorage.getItem("region");
     if (currRegion == "st" || currRegion == null) {
-        console.log("switching to east");
         sessionStorage.setItem("region", "et");
     } else {
         sessionStorage.setItem("region", "st");
