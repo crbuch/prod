@@ -16,7 +16,7 @@ export const monitorRegion = () => {
     document.querySelectorAll('.dropdown-item').forEach(item => {
         item.addEventListener('click', function() {
             sessionStorage.setItem('region', this.id) // set 'region' to abbreviation
-            document.getElementById('currField').innerText = this.innerText;
+            document.getElementById('currField').innerText = this.innerText; // 
             sessionStorage.setItem('regionName', this.innerText + " Field") // set 'regionName' to real 
             updateDropdownToggleText();
         });
