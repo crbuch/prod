@@ -17,7 +17,7 @@ export const monitorRegion = () => {
         item.addEventListener('click', function() {
             sessionStorage.setItem('region', this.id) // set 'region' to abbreviation
             document.getElementById('currField').innerText = this.innerText; // 
-            sessionStorage.setItem('regionName', this.innerText + " Field") // set 'regionName' to real 
+            sessionStorage.setItem('regionName', this.innerText) // set 'regionName' to real 
             updateDropdownToggleText();
         });
     });

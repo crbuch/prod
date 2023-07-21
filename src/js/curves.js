@@ -391,20 +391,26 @@ const currUid = localStorage.getItem('uid');
 let region = sessionStorage.getItem('region');
 console.log('currUid :>> ', currUid);
 
+// Check which region in, set data to region
 let prodData = dh.dataST
 let cumlData = dh.dataCuml
 let MoProdData = dh.moDataST
-
 if (region == "et") {
   prodData = dh.dataET
   cumlData = dh.dataCumlET
   MoProdData = dh.moDataET
 } else if (region=="wt") {
-
+  // prodData = dh.dataWT
+  // cumlData = dh.dataCumlWT
+  // MoProdData = dh.moDataWT
 } else if (region=="gc") {
-
+  // prodData = dh.dataGC
+  // cumlData = dh.dataCumlGC
+  // MoProdData = dh.moDataGC
 } else if (region=="nm") {
-
+  // prodData = dh.dataNM
+  // cumlData = dh.dataCumlNM
+  // MoProdData = dh.moDataNM
 }
 
 const curveInfo = {
