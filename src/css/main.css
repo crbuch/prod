@@ -12,14 +12,13 @@ body {
 }
 #fieldTitle {
   margin-left: -0.8%;
-
 }
 .main-nav {
   background-color: var(--color-primary) !important;
 }
 
-.navbar-nav .nav-link {
-  color: white;
+.nav-link {
+  color: white !important;
 }
 
 .navbar ul.navbar-nav li {
@@ -144,7 +143,6 @@ body {
 select {
   text-align-last: center;
 }
-
 #view > button {
   border-color: none;
   border: none;
@@ -270,3 +268,4 @@ li {
     display: none;
   }
 }
+  
