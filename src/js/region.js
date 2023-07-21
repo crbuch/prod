@@ -10,6 +10,11 @@ function updateDropdownToggleText() {
     location.reload();
 };
 export const monitorRegion = () => {
+    if(sessionStorage.getItem('regionName')==null){
+        sessionStorage.setItem('regionName','South Texas')
+        sessionStorage.setItem('region','st')
+    }
+
     console.log(sessionStorage.getItem("region"))
     document.getElementById('currField').innerText = sessionStorage.getItem('regionName')
     // Click event listeners

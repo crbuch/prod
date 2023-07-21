@@ -92,7 +92,7 @@ body {
   border-color: rgb(61, 61, 61);
 }
 #siteSelection {
-  margin-left: 0.5%;
+  margin-left: -3px;
   margin-top: 4.5%;
   border-radius: 15px;
   background-color: whitesmoke;
@@ -268,10 +268,31 @@ li {
   #sidebar {
     display: none;
   }
-  #currField {
-    margin-right: 0 !important;
-    text-decoration: underline dotted !important;
-    border-bottom: 1px dotted red !important;
-  }
 }
-  
+
+#currField {
+  margin-right: 0 !important;
+  margin-left: -40px !important;
+  margin-bottom: 100px !important;
+  /* border-bottom: 2px solid rgb(255, 255, 255) !important; */
+}
+.dropdown-menu{
+  margin-left: -35px;
+  --bs-dropdown-padding-y: 0;
+  --bs-dropdown-spacer: 0;
+  text-align: center;
+  --bs-dropdown-bg: #efefef;
+  --bs-dropdown-link-hover-bg: #a5a5a5;
+}
+#pnl{
+  margin-right: -25px;
+}
+#payout{
+  margin-left: 20px;
+}
+#YTD{
+  margin-right: -70px;
+}
+#navbarNavDropdown{
+  margin-left: -130px;
+}
