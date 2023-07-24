@@ -17,7 +17,7 @@ body {
   background-color: var(--color-primary) !important;
 }
 
-.nav-link {
+.navbar-nav > .nav-item > .nav-link {
   color: white !important;
 }
 

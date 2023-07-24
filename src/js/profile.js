@@ -160,6 +160,7 @@ const initWellList = (wells) => {
 
         let span = document.createElement("span");
         span.classList.add("menu-title");
+        console.log('wells[i] :>> ', wells[i]);
         span.textContent = capitalizeWords(wells[i]);
 
         a.appendChild(span);
