@@ -4,11 +4,10 @@ import { monitorRegion } from './region'
 import { select } from 'd3';
 import { makeTrace, makeLayout, config } from './layout';
 import { setActive, setActiveView, checkActive, setActiveTime } from './ui';
-import { child } from 'firebase/database';
 
 onAuthStateChangedFb();
 monitorRegion();
-//delete this comment
+
 const displayEconomics = (data, selectedOption) => {
   let wellRMPL = 0;
   let wellYTDPL = 0;
@@ -177,6 +176,7 @@ const curve = (timeFrame, data) => {
   let total_fluid = site_data.map(site => site[9] || site[8]);
   if (timeFrame > 0) [site_date, site_oil, site_gas, site_water, comments, movingAverage, oil365, date365, percent] =
   [site_date, site_oil, site_gas, site_water, comments, movingAverage, oil365, date365, percent].map(arr => arr.slice(0, timeFrame));
+  
   // READING MONTHLY DATA (+ Drops most recent month)
   const mo_site_data = data.MoProdData.filter(site => site[0] === selectedOption);
   mo_site_data.pop();
@@ -353,7 +353,6 @@ const table = (coreData) => {
     w.shift();
     for (let i = 0; i < 2; i++) w.pop();
   });
-  console.log('well :>> ', well);
   dh.buildTable(well);
   document.getElementById('individualTable').style.display = 'inline-block';
   ['gasDeclineCurve', 'waterDeclineCurve', 'waterCutCurve', 'totalFluidCurve', 'combinationCurves', 'ratioRecProd'].forEach(tag => {
@@ -391,15 +390,28 @@ const switchActives = (event) => {
 const currUid = localStorage.getItem('uid');
 let region = sessionStorage.getItem('region');
 console.log('currUid :>> ', currUid);
-let prodData = dh.dataST;
-let cumlData = dh.dataCuml;
-let MoProdData = dh.moDataST;
 
+// Check which region in, set data to region
+let prodData = dh.dataST
+let cumlData = dh.dataCuml
+let MoProdData = dh.moDataST
 if (region == "et") {
   prodData = dh.dataET
   cumlData = dh.dataCumlET
   MoProdData = dh.moDataET
-};
+} else if (region=="wt") {
+  // prodData = dh.dataWT
+  // cumlData = dh.dataCumlWT
+  // MoProdData = dh.moDataWT
+} else if (region=="gc") {
+  // prodData = dh.dataGC
+  // cumlData = dh.dataCumlGC
+  // MoProdData = dh.moDataGC
+} else if (region=="nm") {
+  // prodData = dh.dataNM
+  // cumlData = dh.dataCumlNM
+  // MoProdData = dh.moDataNM
+}
 
 const curveInfo = {
   prodData: prodData,

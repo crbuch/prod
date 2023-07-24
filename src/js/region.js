@@ -2,39 +2,28 @@ $(document).ready(function () {
     $("#header").load("../src/pages/header.html");
 });
 
-const toggleRegion = () => {
-    let currRegion = sessionStorage.getItem("region");
-    if (currRegion == "st" || currRegion == null) {
-        console.log("switching to east");
-        sessionStorage.setItem("region", "et");
-    } else {
-        sessionStorage.setItem("region", "st");
-    }
-    sessionStorage.removeItem("siteSelection");
+// When Region is clicked:
+function updateDropdownToggleText() {
+    sessionStorage.removeItem("siteSelection"); // Remove well location
     location.reload();
 };
-
 export const monitorRegion = () => {
-    let currRegion = sessionStorage.getItem("region");
-    const fieldTitle = document.querySelector('#fieldTitle');   
-    const regionBtn = document.querySelector("#toggleRegion");
-    regionBtn.addEventListener('click', toggleRegion);
-    const width = $(window).width();
-    console.log('currRegion :>> ', currRegion);
+    if(sessionStorage.getItem('regionName')==null){
+        sessionStorage.setItem('regionName','South Texas')
+        sessionStorage.setItem('region','st')
+    }
 
-    if (currRegion == "st" || currRegion == null) {
-        regionBtn.innerHTML = "East Texas";
-        fieldTitle.textContent = "South Texas Field";
-        if (width < 768) {
-            fieldTitle.textContent = "CML EXP - South Texas"
-        };
-    } else {
-        regionBtn.innerHTML = "South Texas";
-        fieldTitle.textContent = "East Texas Field";
-        if (width < 768) {
-            fieldTitle.textContent = "CML EXP - East Texas"
-        };
-    };
+    console.log(sessionStorage.getItem("region"))
+    document.getElementById('currField').innerText = sessionStorage.getItem('regionName')
+    // Click event listeners
+    document.querySelectorAll('.dropdown-item').forEach(item => {
+        item.addEventListener('click', function() {
+            sessionStorage.setItem('region', this.id) // set 'region' to abbreviation
+            document.getElementById('currField').innerText = this.innerText; // 
+            sessionStorage.setItem('regionName', this.innerText) // set 'regionName' to real 
+            updateDropdownToggleText();
+        });
+    });
 };
 
 
