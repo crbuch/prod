@@ -295,6 +295,7 @@ const curve = (timeFrame, data) => {
     p.textContent = `Produced:`;
     zoomEL.appendChild(p);
 
+
     let { "xaxis.range[0]": xRangeStart, "xaxis.range[1]": xRangeEnd } = eventData;
     if (!xRangeStart) { // if double-clicked
       xRangeStart = site_date[site_date.length - 1];
