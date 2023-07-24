@@ -1,23 +1,24 @@
 import { onAuthStateChangedFb } from './auth';
 import { monitorRegion } from './region'
-import { dataCuml,dataCumlET,payout,activeWells,sortData,buildTable,dropdown,filterData,formations,dataST,dataET,moDataST,moDataET } from './data';
+import { dataCumlST,dataCumlET,payout,activeWells,sortData,buildTable,dropdown,filterData,formations,dataST,dataET,moDataST,moDataET } from './data';
+import * as dh from './data';
 import { formatSpecifier, select } from 'd3';
 import { makeLayout, makeTrace } from './layout';
 
 onAuthStateChangedFb();
 monitorRegion();
 
+// Check which region in, set data to region
 let region = sessionStorage.getItem('region');
-const dropdownId = '#siteFilter';
+const dropdownId = '#siteFilter'; // Check which site
+
+let data = dh[`data${region}`];
+let moData = dh[`moData${region}`];
+let tableData = dh[`dataCuml${region}`];
+let payData = payout;
 
 const formatData = () => {
-  let tableData = dataCumlET;
-  let payData;
-
-  if (region != "et") {
-    tableData = dataCuml
-    payData = payout
-
+  if (region != "ET") {
     payData.forEach((pay) => {
       tableData.forEach((well) => {
         if (well[0] == pay["Well Name"]) {
@@ -43,11 +44,7 @@ const formatData = () => {
   return tableData.filter(val => activeWells().has(val[0]));
 };
 
-const displayPlot = (selected) => {
-  // Check to use ET or ST data
-  let moData = region == "et" ? moDataET : moDataST
-  let data = region == "et" ? dataET : dataST
-  
+const displayPlot = (selected) => {  
   // Read Files, select wells with selected name
   let dataMonthly = moData.filter(el => el[0] == selected);
   let dataDaily = data.filter(el => el[0] == selected);
@@ -152,7 +149,7 @@ const displayPlot = (selected) => {
 
 
 //main
-const tableData = formatData();
+tableData = formatData();
 
 //sort by pay: pos=4 by prod: pos=1
 document.getElementById('Payfilter').onclick = function(){

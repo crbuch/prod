@@ -133,8 +133,8 @@ const curve = (timeFrame, data) => {
   const selectedOption = getSelectedOption(data.prodData);
   let region = sessionStorage.getItem("region");
   if (region == null) {
-    sessionStorage.setItem('region', 'st')
-    region = 'st'
+    sessionStorage.setItem('region', 'ST')
+    region = 'ST'
   };
 
   ["c", "SPM", "DHSL", "ideal", "pumpEff", "pumpDepth", "GFLAP", "Inc", "notPumping"].forEach(id => {
@@ -145,7 +145,7 @@ const curve = (timeFrame, data) => {
 
   ["zoomEl", "individualTable","pumpInfo","notPumpingInfo", "pnl", "YTD","payout"].forEach(id => document.getElementById(id).style.display = 'none');
 
-  if (region != "et" & selectedOption != "South Texas Total") {
+  if (region != "ET" & selectedOption != "South Texas Total") {
     displayEconomics(data.economicsData, selectedOption);
     displayPayout(data.payoutData, selectedOption);
     displayPumpInfo(data.pumpData, selectedOption);
@@ -390,15 +390,10 @@ const switchActives = (event) => {
 const currUid = localStorage.getItem('uid');
 let region = sessionStorage.getItem('region');
 console.log('currUid :>> ', currUid);
-let prodData = dh.dataST;
-let cumlData = dh.dataCuml;
-let MoProdData = dh.moDataST;
-
-if (region == "et") {
-  prodData = dh.dataET
-  cumlData = dh.dataCumlET
-  MoProdData = dh.moDataET
-};
+// Check which region in, set data to region
+let prodData = dh[`data${region}`];
+let cumlData = dh[`dataCuml${region}`];
+let MoProdData = dh[`moData${region}`];
 
 const curveInfo = {
   prodData: prodData,

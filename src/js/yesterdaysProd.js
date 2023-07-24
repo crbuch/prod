@@ -19,11 +19,9 @@ const formatData = (data) => {
 //main
 const dropdownId = '#wellFilter'
 let region = sessionStorage.getItem('region');
-let data = dh.dataET;
-if (region !== 'et') data = dh.dataST;
+let data = dh[`data${region}`];
 
 const tableData = formatData(data);
-
 
 document.getElementById('Prodfilter').onclick = function () {
     dh.sortData(tableData, 1);

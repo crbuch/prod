@@ -4,8 +4,7 @@ import { layoutWbd } from './layout';
 import { json, select, csv, extent } from 'd3';
 
 onAuthStateChangedFb();
-// MONITOR REGION DOES NOT WORK ON WBD PAGE
-// monitorRegion();
+monitorRegion();
 
 const wbdData = await json("../data/datawbd/wells.json").then((data) => {
   return data

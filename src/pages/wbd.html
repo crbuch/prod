@@ -20,20 +20,61 @@
   <link rel="icon" type="image/x-icon" href="../favicon_package/favicon-32x32.png">
   <link rel="stylesheet" href="../src/css/main.css">
   <link rel="stylesheet" href="../src/css/profile.css">
-  <script>
+  <!-- <script>
     $(document).ready(function () {
       $("#header").load("../src/pages/header.html");
     });
-  </script>
-  <script src="src\js\wbd.js" defer></script>
+  </script> -->
+  <!-- <script src="src\js\wbd.js" defer></script> -->
 
 </head>
 
 <body>
   <!--NAVIGATION BAR -->
-  <div id="header"></div>
-  <!--  -->
+  <!-- <div id="header"></div> -->
+  <!--NAVIGATION BAR -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark p-3 main-nav">
+    <div class="container-fluid">
+      <li class="nav-item dropdown">
+        <a class="navbar-brand dropdown-toggle" id='currField' href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"></a>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" id="ST" href="#">South Texas</a></li>
+          <li><a class="dropdown-item" id="ET" href="#">East Texas</a></li>
+          <li><a class="dropdown-item" id="WT" href="#">West Texas</a></li>
+          <li><a class="dropdown-item" id="GC" href="#">Gulf Coast</a></li>
+          <li><a class="dropdown-item" id="NM" href="#">New Mexico</a></li>
+        </ul>
+      </li>
 
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    
+      <div class=" collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav mx-auto ">
+          <li class="nav-item">
+            <a class="nav-link mx-2 active" aria-current="page" href="./curves.html">Graph</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link mx-2" href="./table.html">Cumulative Production</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link mx-2" href="./yesterdaysProd.html">Most Recent Production</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link mx-2" href="./analyzeTable.html">Analyze</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link mx-2" href="./wbd.html">WBD Generator</a>
+          </li>
+          <li class="nav-item">
+            <a id="user_profile" class="nav-link mx-2" href="./profile.html">Profile</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  
   <div class="col-md-12">
     <select id="wellselect" class="active">
       <option hidden value="default">Select A Well</option>
