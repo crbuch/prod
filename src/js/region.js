@@ -1,7 +1,5 @@
 $(document).ready(function () {
-    $("#header").load("../src/pages/header.html", function () {
-        // monitorRegion();
-    });
+    $("#header").load("../src/pages/header.html");
 });
 
 // When Region is clicked:
