@@ -19,7 +19,20 @@
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark p-3 main-nav">
     <div class="container-fluid">
 
-      <label for="fieldTitle" id="fieldTitle" class="navbar-brand"></label>
+      <!-- old button to switch between east and west -->
+      <!-- <label for="fieldTitle" id="fieldTitle" class="navbar-brand"></label> -->
+      <!--  -->
+
+      <li class="nav-item dropdown">
+        <a class="navbar-brand dropdown-toggle" id='currField' href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"></a>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" id="st" href="#">South Texas</a></li>
+          <li><a class="dropdown-item" id="et" href="#">East Texas</a></li>
+          <li><a class="dropdown-item" id="wt" href="#">West Texas</a></li>
+          <li><a class="dropdown-item" id="gc" href="#">Gulf Coast</a></li>
+          <li><a class="dropdown-item" id="nm" href="#">New Mexico</a></li>
+        </ul>
+      </li>
 
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -42,9 +55,9 @@
           <li class="nav-item">
             <a class="nav-link ml-2" href="./wbd.html">WBD Generator</a>
           </li>
-          <li class="nav-item">
+          <!-- <li class="nav-item">
             <a id="toggleRegion" class="nav-link ml-2" href="#">East Texas</a>
-          </li>
+          </li> -->
           <li class="nav-item">
             <a id="user_profile" class="nav-link ml-2" href="./profile.html">Profile</a>
           </li>
