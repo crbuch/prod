@@ -273,7 +273,7 @@ li {
 #currField {
   margin-right: 0 !important;
   margin-left: -40px !important;
-  margin-bottom: 100px !important;
+  margin-bottom: 0px !important;
   /* border-bottom: 2px solid rgb(255, 255, 255) !important; */
 }
 .dropdown-menu{
