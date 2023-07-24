@@ -16,7 +16,7 @@ export const moDataET = await json("../data/dataMonthlyET.json").then((data) => 
     return data
 });
 
-export const dataCuml = await json("../data/cumlProdST.json").then((data) => {
+export const dataCumlST = await json("../data/cumlProdST.json").then((data) => {
     return data
 });
 
@@ -62,7 +62,7 @@ export const newProd = await csv("../data\\recYrProd.csv").then((data) => {
 
 export const activeWells = () => {
     let data = dataET;
-    if (sessionStorage.getItem('region') !== 'et') data = dataST;
+    if (sessionStorage.getItem('region') !== 'ET') data = dataST;
     const exitWell = data[0][0]
     const wells = new Set();
     

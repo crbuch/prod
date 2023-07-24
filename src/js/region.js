@@ -10,7 +10,7 @@ function updateDropdownToggleText() {
 export const monitorRegion = () => {
     if(sessionStorage.getItem('regionName')==null){
         sessionStorage.setItem('regionName','South Texas')
-        sessionStorage.setItem('region','st')
+        sessionStorage.setItem('region','ST')
     }
 
     console.log(sessionStorage.getItem("region"))

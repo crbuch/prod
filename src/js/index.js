@@ -25,7 +25,7 @@ const initStorage = (userCreds) => {
   if (localStorage.getItem('initScale') == null) localStorage.setItem('initScale','linear');
   localStorage.setItem('uid', userCreds.uid);
   localStorage.setItem('displayName', userCreds.displayName);
-  sessionStorage.setItem('region', 'st');
+  sessionStorage.setItem('region', 'ST');
   sessionStorage.changePwd = false;
   debugger;
 };
