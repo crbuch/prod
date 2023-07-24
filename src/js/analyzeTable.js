@@ -16,7 +16,9 @@ const createAnalysis = (data) => {
     tableData.forEach((well) => {
       let row = tbody.append("tr");
       // loop through each value to add a cell for each of it
-      Object.values(well).forEach((val) => {
+      Object.values(well).forEach((val,idx) => {
+        if (idx == 1){val = new Date(val).toISOString().split('T')[0];}
+        console.log(typeof(val), val,idx);
         let cell = row.append("td");
         cell.text(val);
       });
