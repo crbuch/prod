@@ -359,6 +359,13 @@ const table = (coreData) => {
   ['gasDeclineCurve', 'waterDeclineCurve', 'waterCutCurve', 'totalFluidCurve', 'combinationCurves', 'ratioRecProd'].forEach(tag => {
     document.getElementById(tag).style.display = 'none'
   });
+
+  if (window.innerWidth <= 768){
+    const headerText = ['Date', 'O', 'G', 'W', 'TP', 'CP', 'Comments'];
+    [...['dateHeader', 'oilHeader', 'gasHeader', 'waterHeader', 'TPHeader', 'CPHeader', 'commentsHeader']].forEach((tag, index) => {
+      document.getElementById(tag).textContent = headerText[index]
+    });
+  }
 };
 
 const switchActives = (event) => {

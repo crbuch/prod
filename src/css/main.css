@@ -224,7 +224,7 @@ li {
 
   #wellName,
   #wellselect {
-    position: absolute;
+    /* position: absolute; */
     z-index: 99;
   }
 
@@ -232,10 +232,11 @@ li {
     text-align: left;
   }
 
-
   #formation {
-    position: relative;
+    position: absolute;
     text-align: right;
+    margin-top: -25px;
+    right: 12px;
   }
 
   #c,
@@ -271,9 +272,60 @@ li {
   .mx-auto {
     margin-left: 130px !important;
   }
+
+  .groups,
+  .legend {
+    display: none !important;
+  }
+
+  .zoomlayer {
+    display: none !important;
+  }
+
+  .draglayer {
+    display: none !important;
+  }
+
+  .plot-container {
+    width: 450px !important;
+  }
+
+  #curves {
+    padding: 0 !important;
+    width: 485px !important;
+    margin-left: -45px !important;
+  }
+
+  #cumlativeData {
+    padding-top: .3rem;
+  }
+
+  #table-title{
+    display: none !important;
+  }
+
+  .table{
+    margin-top: 10px !important;
+  }
+
+  td, th{
+    padding-top: 0rem !important;
+  }
+
+  /* #CPHeader{
+    display: none !important;
+  } */
+
+  
 }
 
 @media (max-width: 767px) {
+
+  body{
+    max-width: 100% !important;
+    width: 100% !important;
+    overflow-x: hidden;
+  }
   #selected-well {
     display: none;
   }
@@ -295,18 +347,36 @@ li {
     display: none;
   }
 
-  #zoomOilTitle{
+  #zoomOilTitle {
     display: none !important;
   }
 
-  #payout{
+  #payout {
     margin-left: 0px !important;
     margin-bottom: 0px !important;
   }
 
-  #pumpInfo{
+  #pumpInfo {
     padding: 0px !important
   }
+
+  #waterCutCurve {
+    display: none !important;
+  }
+
+  #totalFluidCurve {
+    display: none !important;
+  }
+
+  #notPumping {
+    padding: 0 !important;
+    font-size: small !important;
+  }
+
+  h5 {
+    margin-bottom: 0 !important;
+  }
+
 
 }
 
