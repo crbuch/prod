@@ -8,6 +8,10 @@ export const dataET = await json("../data/allProductionDataET.json").then((data)
     return data;
 });
 
+export const dataWT = await json("../data/allProductionDataWT.json").then((data) => {
+    return data;
+});
+
 export const moDataST = await json("../data/dataMonthlyST.json").then((data) => {
     return data
 });
@@ -16,7 +20,7 @@ export const moDataET = await json("../data/dataMonthlyET.json").then((data) => 
     return data
 });
 
-export const dataCumlST = await json("../data/cumlProdST.json").then((data) => {
+export const dataCuml = await json("../data/cumlProdST.json").then((data) => {
     return data
 });
 
@@ -62,7 +66,7 @@ export const newProd = await csv("../data\\recYrProd.csv").then((data) => {
 
 export const activeWells = () => {
     let data = dataET;
-    if (sessionStorage.getItem('region') !== 'ET') data = dataST;
+    if (sessionStorage.getItem('region') !== 'et') data = dataST;
     const exitWell = data[0][0]
     const wells = new Set();
     
