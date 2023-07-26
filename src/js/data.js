@@ -91,6 +91,11 @@ export const dropdown = (id) => {
 };
 
 export const buildTable = (allData) => {
+    if (window.innerWidth <= 768){
+        for (let i=0; i<allData.length; i++){
+            allData[i][0] = new Date(allData[i][0]).toISOString().split('T')[0].substring(5)
+    }};
+
     const tbody = select("tbody");
     tbody.html("");
     allData.forEach((well) => {

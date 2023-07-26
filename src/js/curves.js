@@ -141,7 +141,13 @@ const curve = (timeFrame, data) => {
     document.getElementById(id).innerHTML = "";
   });
 
-  document.getElementById("wellName").innerHTML = selectedOption;
+  if(selectedOption=='Bruce Weaver #2 Re'){
+    const showName = 'Bruce Weaver #2 RE'
+    document.getElementById("wellName").innerHTML = showName;
+  }
+  else{
+    document.getElementById("wellName").innerHTML = selectedOption;
+  }
 
   ["zoomEl", "individualTable","pumpInfo","notPumpingInfo", "pnl", "YTD","payout"].forEach(id => document.getElementById(id).style.display = 'none');
 
@@ -295,6 +301,7 @@ const curve = (timeFrame, data) => {
     p.textContent = `Produced:`;
     zoomEL.appendChild(p);
 
+
     let { "xaxis.range[0]": xRangeStart, "xaxis.range[1]": xRangeEnd } = eventData;
     if (!xRangeStart) { // if double-clicked
       xRangeStart = site_date[site_date.length - 1];
@@ -358,6 +365,13 @@ const table = (coreData) => {
   ['gasDeclineCurve', 'waterDeclineCurve', 'waterCutCurve', 'totalFluidCurve', 'combinationCurves', 'ratioRecProd'].forEach(tag => {
     document.getElementById(tag).style.display = 'none'
   });
+
+  if (window.innerWidth <= 768){
+    const headerText = ['Date', 'O', 'G', 'W', 'TP', 'CP', 'Comments'];
+    [...['dateHeader', 'oilHeader', 'gasHeader', 'waterHeader', 'TPHeader', 'CPHeader', 'commentsHeader']].forEach((tag, index) => {
+      document.getElementById(tag).textContent = headerText[index]
+    });
+  }
 };
 
 const switchActives = (event) => {
