@@ -141,7 +141,13 @@ const curve = (timeFrame, data) => {
     document.getElementById(id).innerHTML = "";
   });
 
-  document.getElementById("wellName").innerHTML = selectedOption;
+  if(selectedOption=='Bruce Weaver #2 Re'){
+    const showName = 'Bruce Weaver #2 RE'
+    document.getElementById("wellName").innerHTML = showName;
+  }
+  else{
+    document.getElementById("wellName").innerHTML = selectedOption;
+  }
 
   ["zoomEl", "individualTable","pumpInfo","notPumpingInfo", "pnl", "YTD","payout"].forEach(id => document.getElementById(id).style.display = 'none');
 
