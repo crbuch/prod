@@ -7,7 +7,14 @@ import { setActive, setActiveView, checkActive, setActiveTime } from './ui';
 
 onAuthStateChangedFb();
 monitorRegion();
-//delete this comment
+if (window.matchMedia("(orientation: landscape)").matches) {
+  // Perform actions specific to landscape mode
+  console.log("Phone is in landscape mode.");
+} else {
+  // Perform actions specific to portrait mode
+  console.log("Phone is in portrait mode.");
+}
+
 const displayEconomics = (data, selectedOption) => {
   let wellRMPL = 0;
   let wellYTDPL = 0;
