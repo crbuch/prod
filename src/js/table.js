@@ -16,6 +16,7 @@ let data = dh[`data${region}`];
 let moData = dh[`moData${region}`];
 let tableData = dh[`dataCuml${region}`];
 let payData = payout;
+console.log('hi')
 
 const formatData = () => {
   if (region != "ET") {

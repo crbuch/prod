@@ -7,13 +7,6 @@ import { setActive, setActiveView, checkActive, setActiveTime } from './ui';
 
 onAuthStateChangedFb();
 monitorRegion();
-if (window.matchMedia("(orientation: landscape)").matches) {
-  // Perform actions specific to landscape mode
-  console.log("Phone is in landscape mode.");
-} else {
-  // Perform actions specific to portrait mode
-  console.log("Phone is in portrait mode.");
-}
 
 const displayEconomics = (data, selectedOption) => {
   let wellRMPL = 0;
@@ -140,8 +133,8 @@ const curve = (timeFrame, data) => {
   const selectedOption = getSelectedOption(data.prodData);
   let region = sessionStorage.getItem("region");
   if (region == null) {
-    sessionStorage.setItem('region', 'st')
-    region = 'st'
+    sessionStorage.setItem('region', 'ST')
+    region = 'ST'
   };
 
   ["c", "SPM", "DHSL", "ideal", "pumpEff", "pumpDepth", "GFLAP", "Inc", "notPumping"].forEach(id => {
@@ -158,7 +151,7 @@ const curve = (timeFrame, data) => {
 
   ["zoomEl", "individualTable","pumpInfo","notPumpingInfo", "pnl", "YTD","payout"].forEach(id => document.getElementById(id).style.display = 'none');
 
-  if (region != "et" & selectedOption != "South Texas Total") {
+  if (region != "ET" & selectedOption != "South Texas Total") {
     displayEconomics(data.economicsData, selectedOption);
     displayPayout(data.payoutData, selectedOption);
     displayPumpInfo(data.pumpData, selectedOption);
@@ -413,16 +406,16 @@ const currUid = localStorage.getItem('uid');
 let region = sessionStorage.getItem('region');
 console.log('currUid :>> ', currUid);
 let prodData = dh.dataST;
-let cumlData = dh.dataCuml;
+let cumlData = dh.dataCumlST;
 let MoProdData = dh.moDataST;
 
-if (region == "et") {
+if (region == "ET") {
   prodData = dh.dataET
   cumlData = dh.dataCumlET
   MoProdData = dh.moDataET
 };
 
-if (region == "wt") {
+if (region == "WT") {
   prodData = dh.dataWT
   cumlData = dh.dataCumlET
   MoProdData = dh.moDataET

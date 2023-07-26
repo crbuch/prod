@@ -20,7 +20,7 @@ export const moDataET = await json("../data/dataMonthlyET.json").then((data) => 
     return data
 });
 
-export const dataCuml = await json("../data/cumlProdST.json").then((data) => {
+export const dataCumlST = await json("../data/cumlProdST.json").then((data) => {
     return data
 });
 
