@@ -207,8 +207,8 @@ li {
   }
 }
 
-@media screen and (orientation: landscape) {
-  @media(max-width:950px) {
+/* @media screen and (orientation: landscape) { */
+  @media(max-width:1200px) {
     body {
       font-size: medium;
     }
@@ -266,6 +266,7 @@ li {
 
     #graph {
       height: 325px;
+      width: auto;
     }
 
     #filler4 {
@@ -300,15 +301,11 @@ li {
       display: none !important;
     }
 
-    .plot-container {
-      width: 450px !important;
-    }
+    /* #curves {
+      /* padding: 0 !important; */
+      /* width: 950px !important; */
+      /* margin-left: -45px !important; */
 
-    #curves {
-      padding: 0 !important;
-      width: 950px !important;
-      margin-left: -45px !important;
-    }
 
     #cumlativeData {
       padding-top: .3rem;
@@ -331,7 +328,6 @@ li {
     body {
       max-width: 100% !important;
       width: 100% !important;
-      /* overflow-x: hidden; */
     }
 
     #selected-well {
@@ -395,9 +391,15 @@ li {
       height: 350px !important;
     }
   }
-}
+/* } */
 
-@media (max-width: 768px) {
+/* @media (max-width: 1023px){
+  #graph{
+    width:
+  }
+} */
+
+@media (max-width: 500px) {
   body {
     font-size: medium;
   }
@@ -515,7 +517,7 @@ li {
   } */
 }
 
-@media (max-width: 767px) {
+@media (max-width: 500px) {
   body {
     max-width: 100% !important;
     width: 100% !important;
@@ -620,6 +622,6 @@ li {
   margin-left: -130px;
 }
 
-.mx-auto {
+/* .mx-auto {
   margin-right: 30rem !important;
-}
+} */
