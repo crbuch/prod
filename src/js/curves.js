@@ -152,8 +152,10 @@ const curve = (timeFrame, data) => {
   ["zoomEl", "individualTable","pumpInfo","notPumpingInfo", "pnl", "YTD","payout"].forEach(id => document.getElementById(id).style.display = 'none');
 
   if (region != "ET" & selectedOption != "South Texas Total") {
-    displayEconomics(data.economicsData, selectedOption);
-    displayPayout(data.payoutData, selectedOption);
+    if (currUid !== 'fh05lGDE7YSVyAu9eNP4bYRR9n42' & currUid !== null) {
+      displayEconomics(data.economicsData, selectedOption);
+      displayPayout(data.payoutData, selectedOption);
+    }
     displayPumpInfo(data.pumpData, selectedOption);
   };
   displayCumlData(data.dataCuml, selectedOption);
@@ -415,11 +417,11 @@ if (region == "ET") {
   MoProdData = dh.moDataET
 };
 
-if (region == "WT") {
-  prodData = dh.dataWT
-  cumlData = dh.dataCumlET
-  MoProdData = dh.moDataET
-};
+//if (region == "WT") {
+//  prodData = dh.dataWT
+//  cumlData = dh.dataCumlET
+//  MoProdData = dh.moDataET
+//};
 
 const curveInfo = {
   prodData: prodData,

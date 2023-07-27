@@ -9,9 +9,8 @@ import { select } from 'd3';
 onAuthStateChangedFb();
 monitorRegion();
 
-const fetchData = () => {
+const fetchData = (db) => {
     let data = localStorage.shares;
-    console.log('data :>> ', data);
     if (uid != localStorage.skey){
         data = null;
         localStorage.shares = null;
@@ -367,9 +366,11 @@ const mapProd = {"bruce weaver 2": "bruce weaver 2 re","burns ranch 2 1": "burns
 const mapShares = {"bruce weaver 2 re": "bruce weaver 2","burns ranch 2" : "burns ranch 2 1","cr 939" : "cr 939h", "pfeiffer 2": "pfeiffer 2re"};
 const mapMo = {"Jan": "01","Feb": "02","Mar": "03","Apr": "04","May": "05","Jun": "06","Jul": "07","Aug": "08","Sep": "09","Oct": "10","Nov": "11","Dec": "12"};
   
-const db = getDatabase()
 const uid = localStorage.getItem('uid');
-fetchData();
+if (uid !== 'fh05lGDE7YSVyAu9eNP4bYRR9n42' & uid !== null) {
+    const db = getDatabase();
+    fetchData(db);
+}
 
 
 
