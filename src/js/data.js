@@ -8,10 +8,6 @@ export const dataET = await json("../data/allProductionDataET.json").then((data)
     return data;
 });
 
-// export const dataWT = await json("../data/allProductionDataWT.json").then((data) => {
-//     return data;
-// });
-
 export const moDataST = await json("../data/dataMonthlyST.json").then((data) => {
     return data
 });
@@ -66,7 +62,7 @@ export const newProd = await csv("../data\\recYrProd.csv").then((data) => {
 
 export const activeWells = () => {
     let data = dataET;
-    if (sessionStorage.getItem('region') !== 'ET') data = dataST;
+    if (sessionStorage.getItem('region') !== 'et') data = dataST;
     const exitWell = data[0][0]
     const wells = new Set();
     
@@ -91,11 +87,6 @@ export const dropdown = (id) => {
 };
 
 export const buildTable = (allData) => {
-    if (window.innerWidth <= 768){
-        for (let i=0; i<allData.length; i++){
-            allData[i][0] = new Date(allData[i][0]).toISOString().split('T')[0].substring(5)
-    }};
-
     const tbody = select("tbody");
     tbody.html("");
     allData.forEach((well) => {
