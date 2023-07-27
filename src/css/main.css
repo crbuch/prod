@@ -118,10 +118,12 @@ body {
 
 #view {
   padding-left: 11.55%;
+  padding-right:0;
 }
 
 #timeframes {
-  padding-left: 2.9%;
+  padding-left: 1%;
+  padding-right: 1%;
 }
 
 #view>a,
@@ -192,7 +194,6 @@ li {
 }
 
 @media (min-width: 768px) {
-
   #filler0,
   #filler4,
   #filler5 {
@@ -282,10 +283,6 @@ li {
     #YTD,
     #payout {
       font-size: medium;
-    }
-
-    .mx-auto {
-      margin-left: 130px !important;
     }
 
     .groups,
@@ -398,6 +395,11 @@ li {
     width:
   }
 } */
+@media (max-width: 767px){
+  #siteSelection{
+    margin: auto !important;
+  }
+}
 
 @media (max-width: 500px) {
   body {
@@ -466,10 +468,6 @@ li {
   #YTD,
   #payout {
     font-size: medium;
-  }
-
-  .mx-auto {
-    margin-left: 130px !important;
   }
 
   .groups,
@@ -618,6 +616,6 @@ li {
   margin-right: -70px;
 }
 
-#navbarNavDropdown {
-  margin-left: -130px;
+#siteFilter, #wellFilter{
+  width: 100%;
 }
