@@ -151,7 +151,7 @@ const curve = (timeFrame, data) => {
 
   ["zoomEl", "individualTable","pumpInfo","notPumpingInfo", "pnl", "YTD","payout"].forEach(id => document.getElementById(id).style.display = 'none');
 
-  if (region != "ET" & selectedOption != "South Texas Total") {
+  if (region == "ST" & selectedOption != "South Texas Total") {
     if (currUid !== 'fh05lGDE7YSVyAu9eNP4bYRR9n42' & currUid !== null) {
       displayEconomics(data.economicsData, selectedOption);
       displayPayout(data.payoutData, selectedOption);
