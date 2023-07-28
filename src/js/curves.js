@@ -151,7 +151,7 @@ const curve = (timeFrame, data) => {
 
   ["zoomEl", "individualTable","pumpInfo","notPumpingInfo", "pnl", "YTD","payout"].forEach(id => document.getElementById(id).style.display = 'none');
 
-  if (region != "ET" & selectedOption != "South Texas Total") {
+  if (region == "ST" & selectedOption != "South Texas Total") {
     if (currUid !== 'fh05lGDE7YSVyAu9eNP4bYRR9n42' & currUid !== null) {
       displayEconomics(data.economicsData, selectedOption);
       displayPayout(data.payoutData, selectedOption);
@@ -182,12 +182,13 @@ const curve = (timeFrame, data) => {
   let site_gas = site_data.map(site => site[3]);
   let site_water = site_data.map(site => site[4]);
   let comments = site_data.map(site => site[7]);
-  let movingAverage = site_data.map(site => site[8]);
+  let movingAverage = site_data.map(site => site[site.length-1]);
   let water_cut = site_water.map((water, i) => (water / (water + site_oil[i])) * 100);
   let total_fluid = site_data.map(site => site[9] || site[8]);
   if (timeFrame > 0) [site_date, site_oil, site_gas, site_water, comments, movingAverage, oil365, date365, percent] =
   [site_date, site_oil, site_gas, site_water, comments, movingAverage, oil365, date365, percent].map(arr => arr.slice(0, timeFrame));
-
+  console.log('site_data :>> ', site_data);
+  console.log('data.prodData :>> ', data.prodData);
   let trace365 = makeTrace(
     date365,
     oil365,
@@ -348,7 +349,7 @@ const table = (coreData) => {
   let well = data.filter(i => i[0] == selectedOption);
   well.forEach(w => {
     w.shift();
-    for (let i = 0; i < 2; i++) w.pop();
+    for (let i = 0; i < 3; i++) w.pop();
   });
   console.log('well :>> ', well);
   dh.buildTable(well);
