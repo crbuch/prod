@@ -107,6 +107,9 @@ export const dropdown = (id) => {
 };
 
 export const buildTable = (allData) => {
+    console.log(allData)
+    // Don't display last two columns if != ST or ET
+    // if()
     const tbody = select("tbody");
     tbody.html("");
     allData.forEach((well) => {
