@@ -401,8 +401,6 @@ console.log('currUid :>> ', currUid);
 let prodData = dh[`data${region}`];
 let cumlData = dh[`dataCuml${region}`];
 
-
-
 const curveInfo = {
   prodData: prodData,
   dataCuml: cumlData,
