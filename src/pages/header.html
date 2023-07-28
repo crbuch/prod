@@ -45,11 +45,8 @@
             <a class="nav-link mx-2" href="./analyzeTable.html">Analyze</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link mx-2" href="./wbd.html">WBD Generator</a>
+            <a class="nav-link mx-2" id="wbd_link" href="./wbd.html">WBD Generator</a>
           </li>
-          <!-- <li class="nav-item">
-            <a id="toggleRegion" class="nav-link ml-2" href="#">East Texas</a>
-          </li> -->
           <li class="nav-item">
             <a id="user_profile" class="nav-link mx-2" href="./profile.html">Profile</a>
           </li>
@@ -60,6 +57,8 @@
 
     <script>
       document.getElementById('user_profile').textContent = localStorage.displayName;
+      if (sessionStorage.region !== 'ST') document.getElementById('wbd_link').style.display = 'none';
+      else document.getElementById('wbd_link').style.display = 'block';
     </script>
 </body>
 </html>

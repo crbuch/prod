@@ -1,13 +1,13 @@
 import { monitorRegion } from './region'
-import { analyzeDataST,analyzeDataET } from './data';
-import * as dh from './data';
 import { select } from 'd3';
+import {analyzeDataST } from './data';
 
 monitorRegion();
 
 let region = sessionStorage.getItem("region");
 
-let data = dh[`analyzeData${region}`];
+let data = null;
+if (region == 'ST') data = analyzeDataST;
 
 const createAnalysis = (data) => {
   const tbody = select("tbody")
