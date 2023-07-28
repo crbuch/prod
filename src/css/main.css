@@ -199,6 +199,9 @@ li {
   #filler5 {
     display: none;
   }
+  #recentProdTable {
+    width:60%
+  }
 }
 
 @media(max-width:1900px) {
