@@ -48,6 +48,7 @@ export const dataCumlGC = await json("../data/GC/cumlProdGC.json").then((data) =
     return data
 });
 
+
 export const dataWT = await json("../data/WT/prodWT.json").then((data) => {
     return data;
 });
@@ -81,8 +82,6 @@ export const activeWells = () => {
     if (region == 'WT') data = dataWT;
     if (region == 'NM') data = dataNM;
 
-
-
     const exitWell = data[0][0]
     const wells = new Set();
     
@@ -107,9 +106,9 @@ export const dropdown = (id) => {
 };
 
 export const buildTable = (allData) => {
+    console.log('allData')
     console.log(allData)
-    // Don't display last two columns if != ST or ET
-    // if()
+
     const tbody = select("tbody");
     tbody.html("");
     allData.forEach((well) => {
