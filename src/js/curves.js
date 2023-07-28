@@ -349,7 +349,7 @@ const table = (coreData) => {
   let well = data.filter(i => i[0] == selectedOption);
   well.forEach(w => {
     w.shift();
-    for (let i = 0; i < 2; i++) w.pop();
+    for (let i = 0; i < 3; i++) w.pop();
   });
   console.log('well :>> ', well);
   dh.buildTable(well);
