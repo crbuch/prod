@@ -149,7 +149,7 @@ async function declineCurve(){
 }
 
 async function dropdown() {
-    const wellsdict = await d3.json("../data/everyWell.json").then((data) => {
+    const wellsdict = await d3.json("../data/misc/everyWell.json").then((data) => {
       return data
     });
     let menu = d3.select("#wellselect");

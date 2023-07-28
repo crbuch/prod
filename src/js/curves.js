@@ -184,12 +184,6 @@ const curve = (timeFrame, data) => {
   let total_fluid = site_data.map(site => site[9] || site[8]);
   if (timeFrame > 0) [site_date, site_oil, site_gas, site_water, comments, movingAverage, oil365, date365, percent] =
   [site_date, site_oil, site_gas, site_water, comments, movingAverage, oil365, date365, percent].map(arr => arr.slice(0, timeFrame));
-  // READING MONTHLY DATA (+ Drops most recent month)
-  const mo_site_data = data.MoProdData.filter(site => site[0] === selectedOption);
-  mo_site_data.pop();
-  let site_date_mo = mo_site_data.map(site => site[6]);
-  let site_oil_mo = mo_site_data.map(site => site[1]);
-  const cumlMoOil = site_oil_mo.reduce((acc, val, idx) => (idx === 0 ? acc.concat(val) : acc.concat(val + acc[idx - 1])), []);
 
   let trace365 = makeTrace(
     date365,
@@ -252,14 +246,6 @@ const curve = (timeFrame, data) => {
     "line",
     "black"
   );
-
-  // let traceMoOil = makeTrace(
-  //   site_date_mo,
-  //   site_oil_mo,
-  //   "Monthly Oil [BO]",
-  //   "line",
-  //   "green"
-  // );
 
   let tracePercent = makeTrace(
     date365,
@@ -407,21 +393,11 @@ const switchActives = (event) => {
 const currUid = localStorage.getItem('uid');
 let region = sessionStorage.getItem('region');
 console.log('currUid :>> ', currUid);
-let prodData = dh.dataST;
-let cumlData = dh.dataCumlST;
-let MoProdData = dh.moDataST;
 
-if (region == "ET") {
-  prodData = dh.dataET
-  cumlData = dh.dataCumlET
-  MoProdData = dh.moDataET
-};
+let prodData = dh[`data${region}`];
+let cumlData = dh[`dataCuml${region}`];
 
-//if (region == "WT") {
-//  prodData = dh.dataWT
-//  cumlData = dh.dataCumlET
-//  MoProdData = dh.moDataET
-//};
+
 
 const curveInfo = {
   prodData: prodData,
@@ -429,7 +405,6 @@ const curveInfo = {
   economicsData: dh.econ,
   payoutData: dh.payout,
   pumpData: dh.pump,
-  MoProdData: MoProdData
 };
 
 ['linear','logarithmic','DaysInception','Days30','Days365','Days180'].forEach(el => {

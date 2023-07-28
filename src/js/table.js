@@ -1,9 +1,8 @@
 import { onAuthStateChangedFb } from './auth';
 import { monitorRegion } from './region'
-import { dataCumlST,dataCumlET,payout,activeWells,sortData,buildTable,dropdown,filterData,formations,dataST,dataET,moDataST,moDataET } from './data';
 import * as dh from './data';
-import { formatSpecifier, select } from 'd3';
-import { makeLayout, makeTrace } from './layout';
+import { select } from 'd3';
+import { makeTrace } from './layout';
 
 onAuthStateChangedFb();
 monitorRegion();
@@ -15,7 +14,7 @@ const dropdownId = '#siteFilter'; // Check which site
 let data = dh[`data${region}`];
 let moData = dh[`moData${region}`];
 let tableData = dh[`dataCuml${region}`];
-let payData = payout;
+let payData = dh.payout;
 
 const formatData = () => {
   if (region != "ET") {
@@ -29,19 +28,19 @@ const formatData = () => {
     });
 
     tableData.forEach(well => {
-      well.push(formations[well[0]])
+      well.push(dh.formations[well[0]])
     });
   }
 
   else {
     tableData.forEach(well => {
       well.push('')
-      well.push(formations[well[0]])
+      well.push(dh.formations[well[0]])
     });
   }
   
   //remove archived wells
-  return tableData.filter(val => activeWells().has(val[0]));
+  return tableData.filter(val => dh.activeWells().has(val[0]));
 };
 
 const displayPlot = (selected) => {  
@@ -153,23 +152,23 @@ tableData = formatData();
 
 //sort by pay: pos=4 by prod: pos=1
 document.getElementById('Payfilter').onclick = function(){
-  sortData(tableData,4)
+  dh.sortData(tableData,4)
 };
 
 document.getElementById('Prodfilter').onclick = function(){
-  sortData(tableData,1)
+  dh.sortData(tableData,1)
 };
 
 select(dropdownId).on("change", () => {
-  buildTable(filterData(tableData,dropdownId));
+  dh.buildTable(dh.filterData(tableData,dropdownId));
   displayPlot(select(dropdownId).node().value);
 });
 
 document.getElementById('clearFilter').onclick = function () {
-  buildTable(tableData);
+  dh.buildTable(tableData);
 };
 
 window.onload = function () {
-  buildTable(tableData);
-  dropdown(dropdownId);  
+  dh.buildTable(tableData);
+  dh.dropdown(dropdownId);  
 }();
