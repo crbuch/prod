@@ -187,7 +187,8 @@ const curve = (timeFrame, data) => {
   let total_fluid = site_data.map(site => site[9] || site[8]);
   if (timeFrame > 0) [site_date, site_oil, site_gas, site_water, comments, movingAverage, oil365, date365, percent] =
   [site_date, site_oil, site_gas, site_water, comments, movingAverage, oil365, date365, percent].map(arr => arr.slice(0, timeFrame));
-
+  console.log('site_data :>> ', site_data);
+  console.log('data.prodData :>> ', data.prodData);
   let trace365 = makeTrace(
     date365,
     oil365,
