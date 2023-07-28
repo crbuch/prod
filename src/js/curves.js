@@ -165,7 +165,10 @@ const curve = (timeFrame, data) => {
   });
 
   let date365 = []; let oil365 = []; let percent = [];
-  if (selectedOption == "South Texas Total"){
+  let mask = selectedOption == "South Texas Total" & currUid !== "fh05lGDE7YSVyAu9eNP4bYRR9n42" 
+  console.log('mask :>> ', mask);
+  if (mask){
+    console.log('gett');
     let data365 = recYrProd();
     date365 = data365["date"];
     oil365 = data365["new oil"];
