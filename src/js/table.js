@@ -16,20 +16,22 @@ let moData = dh[`moData${region}`];
 let tableData = dh[`dataCuml${region}`];
 let payData = dh.payout;
 
+// console.log("tableData")
+// console.log(tableData)
+
 const formatData = () => {
-  if (region != "ET") {
+  if (region == "ST") {
     payData.forEach((pay) => {
       tableData.forEach((well) => {
         if (well[0] == pay["Well Name"]) {
           let rounded = Math.round(pay["% Payout"]*100)
-          well.push(rounded);
+          well.push(rounded)
         }
-      });
-    });
-
+      })
+    })
     tableData.forEach(well => {
       well.push(dh.formations[well[0]])
-    });
+    })
   }
 
   else {
@@ -149,6 +151,19 @@ const displayPlot = (selected) => {
 
 //main
 tableData = formatData();
+
+console.log("formatData")
+console.log(tableData)
+
+// Don't display payout or formation if != ST and != ET
+if(sessionStorage.region != 'ST' && sessionStorage.region != 'ET'){
+  tableData = tableData.map((array) => array.slice(0, array.length-2)); // changes tableData
+  console.log(tableData)
+  // Remove headers in html
+  let tableHeader = document.querySelector('.thead-dark tr')
+  tableHeader.removeChild(tableHeader.children[4])
+  tableHeader.removeChild(tableHeader.children[4])
+};
 
 //sort by pay: pos=4 by prod: pos=1
 document.getElementById('Payfilter').onclick = function(){
