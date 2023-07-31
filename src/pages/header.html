@@ -44,7 +44,7 @@
           <li class="nav-item">
             <a class="nav-link mx-2" href="./analyzeTable.html">Analyze</a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item" id="wbd-container">
             <a class="nav-link mx-2" id="wbd_link" href="./wbd.html">WBD Generator</a>
           </li>
           <li class="nav-item">
@@ -57,7 +57,7 @@
 
     <script>
       document.getElementById('user_profile').textContent = localStorage.displayName;
-      if (sessionStorage.region !== 'ST') document.getElementById('wbd_link').style.display = 'none';
+      if (sessionStorage.region !== 'ST') document.getElementById('wbd-container').style.display = 'none';
       else document.getElementById('wbd_link').style.display = 'block';
     </script>
 </body>
