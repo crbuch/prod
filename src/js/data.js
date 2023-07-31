@@ -87,7 +87,7 @@ export const activeWells = () => {
     
     for (let i = 0; i < data.length; i++) {
         const well = data[i][0];
-        wells.add(well);
+        if (well !== 'Cornett #1 Swd') wells.add(well);
         if (well === exitWell & i !== 0) break;
     };
 

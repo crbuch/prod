@@ -24,8 +24,6 @@ export const pwdErr = document.querySelector('#pwdErr');
 
 export const showLoginForm = () => {
   const currPage = window.location.pathname.split("/").pop();
-  let dev;
-    
   if (currPage != 'index.html'){
     window.location.href = './index.html';
     
@@ -34,8 +32,6 @@ export const showLoginForm = () => {
 
 export const showApp = () => {
   const currPage = window.location.pathname.split("/").pop();
-  let dev;
-
   if (currPage == 'index.html'){
     window.location.href = './curves.html';
   }

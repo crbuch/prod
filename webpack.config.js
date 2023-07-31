@@ -12,9 +12,10 @@ let allHtmlPlugs = htmlPageNames.map(page => {
 });
 
 module.exports = {
-  // mode: 'development',
-  // devtool: 'eval-source-map',
+  //mode: 'development',
+  //devtool: 'eval-source-map',
   mode: 'production',
+  
   entry: {
     main:'./src/js/index.js',
     curves: './src/js/curves.js',

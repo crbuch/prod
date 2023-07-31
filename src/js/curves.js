@@ -14,7 +14,11 @@ const displayEconomics = (data, selectedOption) => {
   let monthPnL = "";
 
   data.forEach((ecoWell) => {
-    if (ecoWell["Well Name"].includes(selectedOption)) {
+    let w = ecoWell["Well Name"].toLowerCase();
+    let s = selectedOption.toLowerCase()
+    console.log('w :>> ', w);
+    console.log('s :>> ', s);
+    if (w.includes(s)) {
       wellRMPL = ecoWell["Recent Month P&L"];
       wellYTDPL = ecoWell["YTD P&L"];
       monthPnL = ecoWell["Date"].slice(0, 3);
@@ -392,6 +396,7 @@ const switchActives = (event) => {
   document.getElementById('siteSelection').focus();
   if (parent.id == 'timeframes') setActiveView(localStorage.getItem('initScale'));
 };
+
 
 //Main//
 const currUid = localStorage.getItem('uid');
