@@ -135,6 +135,7 @@ const recYrProd = () => {
 
 const curve = (timeFrame, data) => {
   const selectedOption = getSelectedOption(data.prodData);
+  document.getElementById('wellName').textContent = selectedOption
   let region = sessionStorage.getItem("region");
   if (region == null) {
     sessionStorage.setItem('region', 'ST')
