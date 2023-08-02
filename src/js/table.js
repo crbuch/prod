@@ -1,54 +1,44 @@
 import { onAuthStateChangedFb } from './auth';
 import { monitorRegion } from './region'
-import * as dh from './data';
+import * as dh from './dataHandlers';
 import { select } from 'd3';
 import { makeTrace } from './layout';
+import { lazyLoad } from './load/loader';
 
-onAuthStateChangedFb();
-monitorRegion();
 
-// Check which region in, set data to region
-let region = sessionStorage.getItem('region');
-const dropdownId = '#siteFilter'; // Check which site
-
-let data = dh[`data${region}`];
-let moData = dh[`moData${region}`];
-let tableData = dh[`dataCuml${region}`];
-let payData = dh.payout;
-
-// console.log("tableData")
-// console.log(tableData)
-
-const formatData = () => {
-  if (region == "ST") {
-    payData.forEach((pay) => {
-      tableData.forEach((well) => {
+const formatData = (data) => {
+  if (data.payout != null) {
+    data.payout.forEach((pay) => {
+      data.cuml.forEach((well) => {
         if (well[0] == pay["Well Name"]) {
           let rounded = Math.round(pay["% Payout"]*100)
           well.push(rounded)
         }
       })
     })
-    tableData.forEach(well => {
-      well.push(dh.formations[well[0]])
+    data.cuml.forEach(well => {
+      well.push(data.formation[well[0]])
     })
   }
-
-  else {
-    tableData.forEach(well => {
+  else if (data.formation != null){
+    data.cuml.forEach(well => {
       well.push('')
-      well.push(dh.formations[well[0]])
+      well.push(data.formation[well[0]])
     });
+  }else {
+    const tableHeader = document.querySelector('.thead-dark tr')
+    tableHeader.removeChild(tableHeader.children[4])
+    tableHeader.removeChild(tableHeader.children[4])
   }
-  
-  //remove archived wells
-  return tableData.filter(val => dh.activeWells().has(val[0]));
+  const activeWells = dh.activeWells(data.prod);
+  data.cuml = data.cuml.filter(val => activeWells.has(val[0]));
+  return data
 };
 
-const displayPlot = (selected) => {  
+const displayPlot = (selected,data) => {  
   // Read Files, select wells with selected name
-  let dataMonthly = moData.filter(el => el[0] == selected);
-  let dataDaily = data.filter(el => el[0] == selected);
+  let dataMonthly = data.mnth.filter(el => el[0] == selected);
+  let dataDaily = data.prod.filter(el => el[0] == selected);
 
   const oilMo = dataMonthly.map(el => el[1]);
   var dateMo = dataMonthly.map(el => el[6]);
@@ -146,44 +136,40 @@ const displayPlot = (selected) => {
     }
     Plotly.newPlot(container, traceArrays[i], layout); // Create plot
   });
-}
-
-
-//main
-tableData = formatData();
-
-console.log("formatData")
-console.log(tableData)
-
-// Don't display payout or formation if != ST and != ET
-if(sessionStorage.region != 'ST' && sessionStorage.region != 'ET'){
-  tableData = tableData.map((array) => array.slice(0, array.length-2)); // changes tableData
-  console.log(tableData)
-  // Remove headers in html
-  let tableHeader = document.querySelector('.thead-dark tr')
-  tableHeader.removeChild(tableHeader.children[4])
-  tableHeader.removeChild(tableHeader.children[4])
 };
 
-//sort by pay: pos=4 by prod: pos=1
+onAuthStateChangedFb();
+const dropdownId = '#siteFilter';
+let dataObj;
+$(document).ready(function () {
+  $("#header").load("../src/pages/header.html", () => {
+    console.log('loaded header');
+    monitorRegion();
+  });
+});
+
 document.getElementById('Payfilter').onclick = function(){
-  dh.sortData(tableData,4)
+  dh.sortData(dataObj.cuml,4)
 };
 
 document.getElementById('Prodfilter').onclick = function(){
-  dh.sortData(tableData,1)
+  dh.sortData(dataObj.cuml,1)
 };
 
 select(dropdownId).on("change", () => {
-  dh.buildTable(dh.filterData(tableData,dropdownId));
-  displayPlot(select(dropdownId).node().value);
+  dh.buildTable(dh.filterData(dataObj.cuml,dropdownId));
+  displayPlot(select(dropdownId).node().value,dataObj);
 });
 
 document.getElementById('clearFilter').onclick = function () {
-  dh.buildTable(tableData);
+  dh.buildTable(dataObj.cuml);
 };
 
 window.onload = function () {
-  dh.buildTable(tableData);
-  dh.dropdown(dropdownId);  
+  lazyLoad().then(data => {
+    data = formatData(data)
+    dataObj = data
+    dh.buildTable(data.cuml);
+    dh.dropdown(dropdownId,data.prod);
+  })  
 }();

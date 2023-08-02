@@ -27,7 +27,6 @@ const initStorage = (userCreds) => {
   localStorage.setItem('displayName', userCreds.displayName);
   sessionStorage.setItem('region', 'ST');
   sessionStorage.changePwd = false;
-  debugger;
 };
 
 const login = async () => {

@@ -1,13 +1,21 @@
 import { monitorRegion } from './region'
 import { ref, getDatabase, onValue } from 'firebase/database';
 import { logoutFb, onAuthStateChangedFb } from './auth';
-import { payout, moDataST, pl23_22 } from './data';
 import { makeTrace, config } from './layout';
 import { toggleInitScale, toggleInitTime } from './ui';
-import { select } from 'd3';
+import { select, json } from 'd3';
+
+const mnthData = await json ("../data\\ST\\dataMonthlyST.json").then(d => d);
+const payout = await json("../data/econ/payouts.json").then(d => d);
+const plData = await json("../data\\econ/pldata.json").then(d => d);
 
 onAuthStateChangedFb();
-monitorRegion();
+$(document).ready(function () {
+    $("#header").load("../src/pages/header.html", () => {
+      console.log('loaded header');
+      monitorRegion();
+    });
+  });
 
 const fetchData = (db) => {
     let data = localStorage.shares;
@@ -56,9 +64,7 @@ const parseData = (d) => {
 
     let returns = {};
     let well_returns = {};
-    let pl2223 = pl23_22;
-    console.log('pl23_22 :>> ', pl23_22);
-    for (let [well, mos] of Object.entries(pl2223)) {
+    for (let [well, mos] of Object.entries(plData)) {
         for (let [mo, pl] of Object.entries(mos)) {
             if (mo == "Well Number" || mo == "Well Name") continue;
             well = well.replace('#', '').toLowerCase();
@@ -236,7 +242,7 @@ const displayProdAll = () => {
         if (Object.keys(mapProd).includes(well)) well = mapProd[well];
         prodwells.push(well);
     }
-    let data = moDataST.filter(sub => prodwells.includes(sub[0].replace("#","").toLowerCase()));
+    let data = mnthData.filter(sub => prodwells.includes(sub[0].replace("#","").toLowerCase()));
     
     let oil = {};
     let gas = {};
@@ -276,7 +282,7 @@ const displayProd = (selected, strt, plDates) => {
     const shares = JSON.parse(localStorage.shares);
     if (Object.keys(mapProd).includes(selectedMaster)) selected = mapProd[selectedMaster];
 
-    let data = moDataST;
+    let data = mnthData;
     if (selected !== "All Wells") data = data.filter(el => el[0].replace("#","").toLowerCase() == selected.toLowerCase());
     if (selected == "All Wells"){
         displayProdAll();
@@ -371,9 +377,6 @@ if (uid !== 'fh05lGDE7YSVyAu9eNP4bYRR9n42' & uid !== null) {
     const db = getDatabase();
     fetchData(db);
 }
-
-
-
 //search
 const searchInput = document.getElementById('searchInput');
 const wellList = document.getElementById('well-list').getElementsByTagName('li');
@@ -412,6 +415,7 @@ document.getElementById("show_pwd_form_btn").addEventListener('click', () => {
     sessionStorage.changePwd = "true";
     window.location.href = "./index.html";
 })
+
 const sortBtn  = document.getElementById('sortBy');
 let sortBy = sessionStorage.sortBy;
 sortBtn.innerHTML = `Sorted: ${sortBy == 'pl' || sortBy == undefined ? 'P&L ' : 'Alphabetically'}`

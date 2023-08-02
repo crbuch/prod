@@ -1,15 +1,8 @@
 import { monitorRegion } from './region'
-import { select } from 'd3';
-import {analyzeDataST } from './data';
+import { select,json } from 'd3';
 
-monitorRegion();
 
-let region = sessionStorage.getItem("region");
-
-let data = null;
-if (region == 'ST') data = analyzeDataST;
-
-const createAnalysis = (data) => {
+function createAnalysis(data) {
   const tbody = select("tbody")
 
   function buildTable(tableData) {
@@ -38,5 +31,18 @@ const createAnalysis = (data) => {
   });
   buildTable(data)
 };
+
+$(document).ready(function () {
+  $("#header").load("../src/pages/header.html", () => {
+    console.log('loaded header');
+    monitorRegion();
+  });
+});
+
+let region = sessionStorage.region;
+let data = null;
+if (region == 'ST') data = await json("../data/ST/analyzeST.json").then((data) => {
+  return data
+});
 
 createAnalysis(data);

@@ -1,12 +1,12 @@
-import * as dh from './data'
+//import * as dh from './data'
+import * as dh from './dataHandlers'
 import { onAuthStateChangedFb } from './auth';
 import { monitorRegion } from './region'
 import { select } from 'd3';
 import { makeTrace, makeLayout, config } from './layout';
 import { setActive, setActiveView, checkActive, setActiveTime } from './ui';
+import { lazyLoad } from './load/loader';
 
-onAuthStateChangedFb();
-monitorRegion();
 
 const displayEconomics = (data, selectedOption) => {
   let wellRMPL = 0;
@@ -16,8 +16,6 @@ const displayEconomics = (data, selectedOption) => {
   data.forEach((ecoWell) => {
     let w = ecoWell["Well Name"].toLowerCase();
     let s = selectedOption.toLowerCase()
-    console.log('w :>> ', w);
-    console.log('s :>> ', s);
     if (w.includes(s)) {
       wellRMPL = ecoWell["Recent Month P&L"];
       wellYTDPL = ecoWell["YTD P&L"];
@@ -77,7 +75,7 @@ const displayPumpInfo = (data, selectedOption) => {
   };
 };
 
-const displayCumlData = (data, selectedOption) => {
+const displayCumlData = (data, formations,selectedOption) => {
   if (selectedOption == "South Texas Total") selectedOption = "ST Total";
   if (selectedOption == "East Texas Total") selectedOption = "ET Total";
 
@@ -92,7 +90,7 @@ const displayCumlData = (data, selectedOption) => {
       selectedWell.cuml = well[1];
       selectedWell.gasCuml = well[3];
       selectedWell.waterCuml = well[2];
-      selectedWell.formation = dh.formations[selectedOption] || "";
+      selectedWell.formation = data[selectedOption] || "";
     }
   });
 
@@ -124,8 +122,7 @@ const getSelectedOption = (data) => {
   return selectedOption;
 };
 
-const recYrProd = () => {
-  const data = dh.newProd;
+const recYrProd = (data) => {
   let oil = data.map(sub => sub["New Prod"],[]).reverse();
   let date = data.map(sub => sub["Date"],[]).reverse();
   let percent = data.map(sub => sub["percent"],[]).reverse();
@@ -134,7 +131,7 @@ const recYrProd = () => {
 };
 
 const curve = (timeFrame, data) => {
-  const selectedOption = getSelectedOption(data.prodData);
+  const selectedOption = getSelectedOption(data.prod);
   document.getElementById('wellName').textContent = selectedOption
   let region = sessionStorage.getItem("region");
   if (region == null) {
@@ -150,12 +147,12 @@ const curve = (timeFrame, data) => {
 
   if (region == "ST" & selectedOption != "South Texas Total") {
     if (currUid !== 'fh05lGDE7YSVyAu9eNP4bYRR9n42' & currUid !== null) {
-      displayEconomics(data.economicsData, selectedOption);
-      displayPayout(data.payoutData, selectedOption);
+      displayEconomics(data.econ, selectedOption);
+      displayPayout(data.payout, selectedOption);
     }
-    displayPumpInfo(data.pumpData, selectedOption);
+    displayPumpInfo(data.pumpInfo, selectedOption);
   };
-  displayCumlData(data.dataCuml, selectedOption);
+  displayCumlData(data.cuml,data.formation, selectedOption);
 
   ['gasDeclineCurve', 'waterDeclineCurve', 'waterCutCurve', 'totalFluidCurve', 'combinationCurves'].forEach(id => {
     document.getElementById(id).style.display = 'block';
@@ -163,17 +160,15 @@ const curve = (timeFrame, data) => {
 
   let date365 = []; let oil365 = []; let percent = [];
   let mask = selectedOption == "South Texas Total" & currUid !== "fh05lGDE7YSVyAu9eNP4bYRR9n42" 
-  console.log('mask :>> ', mask);
   if (mask){
-    console.log('gett');
-    let data365 = recYrProd();
+    let data365 = recYrProd(data.recYrProd);
     date365 = data365["date"];
     oil365 = data365["new oil"];
     percent = data365['percent'];
     document.getElementById('ratioRecProd').style.display = 'block';
   }
   
-  const site_data = data.prodData.filter(site => site[0] === selectedOption);
+  const site_data = data.prod.filter(site => site[0] === selectedOption);
   let site_date = site_data.map(site => site[8]);
   let site_oil = site_data.map(site => site[2]);
   let site_gas = site_data.map(site => site[3]);
@@ -184,8 +179,6 @@ const curve = (timeFrame, data) => {
   let total_fluid = site_data.map(site => site[9] || site[8]);
   if (timeFrame > 0) [site_date, site_oil, site_gas, site_water, comments, movingAverage, oil365, date365, percent] =
   [site_date, site_oil, site_gas, site_water, comments, movingAverage, oil365, date365, percent].map(arr => arr.slice(0, timeFrame));
-  console.log('site_data :>> ', site_data);
-  console.log('data.prodData :>> ', data.prodData);
   let trace365 = makeTrace(
     date365,
     oil365,
@@ -348,7 +341,6 @@ const table = (coreData) => {
     w.shift();
     for (let i = 0; i < 3; i++) w.pop();
   });
-  console.log('well :>> ', well);
   dh.buildTable(well);
   document.getElementById('individualTable').style.display = 'inline-block';
   ['gasDeclineCurve', 'waterDeclineCurve', 'waterCutCurve', 'totalFluidCurve', 'combinationCurves', 'ratioRecProd'].forEach(tag => {
@@ -365,11 +357,11 @@ const table = (coreData) => {
 
 const switchActives = (event) => {
   event.preventDefault();
-  
   const target = event.target;
   const parent = document.getElementById(target.id).parentNode;
   const children = parent.querySelectorAll("*");
-  
+  if (checkActive('table') === true & parent.id == 'timeframes') return;
+
   children.forEach(child => {
     child.classList.remove("active");
   });
@@ -387,34 +379,23 @@ const switchActives = (event) => {
   
   if (window.innerWidth < 400) setTimeout(ddd,50);
   document.getElementById('siteSelection').focus();
-  if (parent.id == 'timeframes') setActiveView(localStorage.getItem('initScale'));
 };
 
-
-//Main//
+onAuthStateChangedFb();
 const currUid = localStorage.getItem('uid');
-let region = sessionStorage.getItem('region');
-console.log('currUid :>> ', currUid);
+let curveInfo;
 
-let prodData = dh[`data${region}`];
-let cumlData = dh[`dataCuml${region}`];
-
-const curveInfo = {
-  prodData: prodData,
-  dataCuml: cumlData,
-  economicsData: dh.econ,
-  payoutData: dh.payout,
-  pumpData: dh.pump,
-};
+$(document).ready(function () {
+  $("#header").load("../src/pages/header.html", () => {
+    monitorRegion();
+  });
+});
 
 ['linear','logarithmic','DaysInception','Days30','Days365','Days180'].forEach(el => {
   document.getElementById(el).addEventListener('click',switchActives);
 });
 
-const dropdownId = '#siteSelection';
-dh.dropdown(dropdownId);
-
-select(dropdownId).on("change", () => {
+select('#siteSelection').on("change", () => {
   let activeTime = 'DaysInception';
   if (localStorage.initTime == 31) activeTime = 'Days30';
   curve(localStorage.initTime, curveInfo);
@@ -425,7 +406,7 @@ select(dropdownId).on("change", () => {
 document.getElementById("table").addEventListener('click', () => {
   if (checkActive('table') === true) return;
   setActive("table", 'DaysInception');
-  table(prodData);
+  table(curveInfo.prod);
 });
 
 //store currently visible plots in sessionstorage to access in relayout event; init to only oil(page load)
@@ -438,5 +419,10 @@ window.onload = function () {
   if (localStorage.getItem('initTime') == 31) activeTime = 'Days30';
   setActiveTime(activeTime);
   setActiveView(localStorage.getItem('initScale'));
-  curve(localStorage.getItem('initTime'), curveInfo);
+  
+  lazyLoad().then(data => {
+    curveInfo = data;
+    dh.dropdown('#siteSelection',data.prod);
+    curve(localStorage.getItem('initTime'), data);
+  })
 }();

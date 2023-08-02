@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkprod_1=self.webpackChunkprod_1||[]).push([[630],{630:(a,t,d)=>{d.a(a,(async(a,s)=>{try{d.r(t),d.d(t,{dataCumlGC:()=>c,dataGC:()=>a});var C=d(976);const a=await(0,C.AVB)("../data/GC/prodGC.json").then((a=>a)),c=await(0,C.AVB)("../data/GC/cumlProdGC.json").then((a=>a));s()}catch(a){s(a)}}),1)}}]);
