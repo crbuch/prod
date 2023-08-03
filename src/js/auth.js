@@ -46,6 +46,7 @@ const loginFb = (email, password) => {
 };
 
 const logoutFb = () => {
+    sessionStorage.removeItem('siteSelection')
     return signOut(auth);
 };
 
