@@ -122,15 +122,7 @@ const getSelectedOption = (data) => {
   return selectedOption;
 };
 
-const recYrProd = (data) => {
-  let oil = data.map(sub => sub["New Prod"],[]).reverse();
-  let date = data.map(sub => sub["Date"],[]).reverse();
-  let percent = data.map(sub => sub["percent"],[]).reverse();
-
-  return {"date": date, "new oil": oil, "percent": percent};
-};
-
-const curve = (timeFrame, data) => {
+async function curve(timeFrame, data){
   const selectedOption = getSelectedOption(data.prod);
   document.getElementById('wellName').textContent = selectedOption
   let region = sessionStorage.getItem("region");
@@ -161,14 +153,18 @@ const curve = (timeFrame, data) => {
   let date365 = []; let oil365 = []; let percent = [];
   let mask = selectedOption == "South Texas Total" & currUid !== "fh05lGDE7YSVyAu9eNP4bYRR9n42" 
   if (mask){
-    let data365 = recYrProd(data.recYrProd);
-    date365 = data365["date"];
-    oil365 = data365["new oil"];
-    percent = data365['percent'];
-    document.getElementById('ratioRecProd').style.display = 'block';
+    await import('./load\\recprod.js').then(module => {
+      const data = module.recYrProd
+      console.log('data :>> ', data);
+      date365 = data.map(sub => sub["Date"],[]).reverse();
+      oil365 = data.map(sub => sub["New Prod"],[]).reverse();
+      percent = data.map(sub => sub["percent"],[]).reverse();
+      document.getElementById('ratioRecProd').style.display = 'block';
+    })
   }
   
   const site_data = data.prod.filter(site => site[0] === selectedOption);
+  console.log('site_data :>> ', site_data);
   let site_date = site_data.map(site => site[8]);
   let site_oil = site_data.map(site => site[2]);
   let site_gas = site_data.map(site => site[3]);
@@ -228,7 +224,6 @@ const curve = (timeFrame, data) => {
   const traceCut = makeTrace(
     site_date,
     water_cut,
-    // "Water [Mbw]",
     "line",
     "#25C4DC"
   );

@@ -7,7 +7,6 @@ export function lazyLoad() {
       econ: null,
       payout: null,
       pumpInfo: null,
-      recYrProd: null,
       formation: null
     };
     let res;
@@ -20,7 +19,6 @@ export function lazyLoad() {
         data.econ = module.econ
         data.payout = module.payout
         data.pumpInfo = module.pump
-        data.recYrProd = module.recYrProd
         data.formation = module.formations
         return data
       })
