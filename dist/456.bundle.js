@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkprod_1=self.webpackChunkprod_1||[]).push([[456],{456:(r,a,c)=>{c.a(r,(async(r,e)=>{try{c.r(a),c.d(a,{recYrProd:()=>r});var s=c(302);const r=await(0,s.gyn)("../data\\ST/recYrProd.csv").then((r=>r));e()}catch(r){e(r)}}),1)}}]);

@@ -34,18 +34,21 @@ export function lazyLoad() {
       res = import('./nm').then(module => {
         data.prod = module.dataNM
         data.cuml = module.dataCumlNM
+        data.formation  = module.formations
         return data
       })
     }else if (region == 'GC'){
       res = import('./gc').then(module => {
         data.prod = module.dataGC
         data.cuml = module.dataCumlGC
+        data.formation  = module.formations
         return data
       })
     } else if (region == 'WT'){
       res = import('./wt').then(module => {
         data.prod = module.dataWT
         data.cuml = module.dataCumlWT
+        data.formation  = module.formations
         return data
       })
     }

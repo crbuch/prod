@@ -18,9 +18,11 @@ export const activeWells = (data) => {
 export const dropdown = (id,data) => {
     let menu = select(id);
     activeWells(data).forEach(well => {
-        menu.append("option")
+        if (well !== 'Mcwf #1') {
+            menu.append("option")
             .text(well)
             .property("Value", well);
+        }
     });
 };
 

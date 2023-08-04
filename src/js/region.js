@@ -1,14 +1,9 @@
-$(document).ready(function () {
-    $("#header").load("../src/pages/header.html");
-});
-
-
 export const monitorRegion = () => {
-    if(sessionStorage.getItem('regionName')==null){
+    if(sessionStorage.regionName == null || sessionStorage.regionName == undefined){
         sessionStorage.setItem('regionName','South Texas')
         sessionStorage.setItem('region','ST')
     }
-
+    console.log('document.getElementById("currField") :>> ', document.getElementById('currField'));
     document.getElementById('currField').innerText = sessionStorage.getItem('regionName')
     // Click event listeners
     document.querySelectorAll('.dropdown-item').forEach(item => {
@@ -18,7 +13,6 @@ export const monitorRegion = () => {
             sessionStorage.setItem('regionName', this.innerText) // set 'regionName' to real 
             sessionStorage.removeItem("siteSelection");
             location.reload();
-
         });
     });
 };

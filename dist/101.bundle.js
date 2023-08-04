@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkprod_1=self.webpackChunkprod_1||[]).push([[101],{101:(a,t,d)=>{d.a(a,(async(a,s)=>{try{d.r(t),d.d(t,{dataCumlNM:()=>n,dataNM:()=>a});var c=d(302);const a=await(0,c.AVB)("../data/NM/prodNM.json").then((a=>a)),n=await(0,c.AVB)("../data/NM/cumlProdNM.json").then((a=>a));s()}catch(a){s(a)}}),1)}}]);

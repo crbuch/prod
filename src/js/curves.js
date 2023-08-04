@@ -78,7 +78,7 @@ const displayPumpInfo = (data, selectedOption) => {
 const displayCumlData = (data, formations,selectedOption) => {
   if (selectedOption == "South Texas Total") selectedOption = "ST Total";
   if (selectedOption == "East Texas Total") selectedOption = "ET Total";
-
+  console.log('formations :>> ', formations);
   let selectedWell = {
     cuml: 0,
     gasCuml: 0,
@@ -90,7 +90,7 @@ const displayCumlData = (data, formations,selectedOption) => {
       selectedWell.cuml = well[1];
       selectedWell.gasCuml = well[3];
       selectedWell.waterCuml = well[2];
-      selectedWell.formation = data[selectedOption] || "";
+      selectedWell.formation = formations[selectedOption] || "";
     }
   });
 
