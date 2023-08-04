@@ -111,8 +111,9 @@ const getSelectedOption = (data) => {
   
   if (menuNode != "default") {
     selectedOption = [menuNode];
-  } else if (sessionStorage.getItem("siteSelection") != null) {
-    selectedOption = [sessionStorage.getItem("siteSelection")];
+  } else if (sessionStorage.siteSelection != null) {
+    selectedOption = [sessionStorage.siteSelection];
+    select("#siteSelection").node().value = selectedOption;
     sessionStorage.removeItem("siteSelection");
   } else selectedOption = [...data[0][0]];
 
@@ -169,7 +170,7 @@ async function curve(timeFrame, data){
   let comments = site_data.map(site => site[7]);
   let movingAverage = site_data.map(site => site[site.length-1]);
   let water_cut = site_water.map((water, i) => (water / (water + site_oil[i])) * 100);
-  let total_fluid = site_data.map(site => site[9] || site[8]);
+  let total_fluid = site_data.map(site => site[9]);
   if (timeFrame > 0) [site_date, site_oil, site_gas, site_water, comments, movingAverage, oil365, date365, percent] =
   [site_date, site_oil, site_gas, site_water, comments, movingAverage, oil365, date365, percent].map(arr => arr.slice(0, timeFrame));
   let trace365 = makeTrace(
@@ -292,10 +293,12 @@ async function curve(timeFrame, data){
     const visible_traces = JSON.parse(sessionStorage.getItem('visible_traces'));
     const map = {'Gas [MCF]': site_gas, 'Oil [BO]': site_oil, 'Water [BW]': site_water, 'Total Fluid [BBLS]': total_fluid };
     const nameMap = {'Gas [MCF]': 'Gas [MMCF]', 'Oil [BO]': 'Oil [MBO]', 'Water [BW]': 'Water [MBW]', 'Total Fluid [BBLS]': 'Total Fluid [MBBL]' };
+    console.log('total_fluid :>> ', total_fluid);
     for (const[key,vals] of Object.entries(visible_traces)){
       for (let val of vals){
         if (!Object.keys(map).includes(val)) continue;
         const data = map[val];
+        console.log('data :>> ', data);
         const sum = (data.slice(endIdx, startIdx + 1).reduce((acc, cur) => acc + cur, 0)/1000).toFixed(1);
 
         const p = document.createElement('p');
@@ -390,9 +393,10 @@ $(document).ready(function () {
 select('#siteSelection').on("change", () => {
   let activeTime = 'DaysInception';
   if (localStorage.initTime == 31) activeTime = 'Days30';
-  curve(localStorage.initTime, curveInfo);
   setActiveTime(activeTime);
   setActiveView(localStorage.getItem('initScale'));
+  sessionStorage.visible_traces = JSON.stringify({"visible":["Oil [BO]"]});
+  curve(localStorage.initTime, curveInfo);
 });
 
 document.getElementById("table").addEventListener('click', () => {
@@ -401,17 +405,13 @@ document.getElementById("table").addEventListener('click', () => {
   table(curveInfo.prod);
 });
 
-//store currently visible plots in sessionstorage to access in relayout event; init to only oil(page load)
-let currVisible = {"visible":["Oil [BO]"]};
-sessionStorage.setItem("visible_traces",JSON.stringify(currVisible));
-
 //init page on load//
 window.onload = function () {
   let activeTime = 'DaysInception';
   if (localStorage.getItem('initTime') == 31) activeTime = 'Days30';
   setActiveTime(activeTime);
   setActiveView(localStorage.getItem('initScale'));
-  
+  sessionStorage.visible_traces = JSON.stringify({"visible":["Oil [BO]"]});
   lazyLoad().then(data => {
     curveInfo = data;
     dh.dropdown('#siteSelection',data.prod);
