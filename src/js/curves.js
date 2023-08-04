@@ -78,7 +78,6 @@ const displayPumpInfo = (data, selectedOption) => {
 const displayCumlData = (data, formations,selectedOption) => {
   if (selectedOption == "South Texas Total") selectedOption = "ST Total";
   if (selectedOption == "East Texas Total") selectedOption = "ET Total";
-  console.log('formations :>> ', formations);
   let selectedWell = {
     cuml: 0,
     gasCuml: 0,
@@ -155,7 +154,6 @@ async function curve(timeFrame, data){
   if (mask){
     await import('./load\\recprod.js').then(module => {
       const data = module.recYrProd
-      console.log('data :>> ', data);
       date365 = data.map(sub => sub["Date"],[]).reverse();
       oil365 = data.map(sub => sub["New Prod"],[]).reverse();
       percent = data.map(sub => sub["percent"],[]).reverse();
@@ -164,7 +162,6 @@ async function curve(timeFrame, data){
   }
   
   const site_data = data.prod.filter(site => site[0] === selectedOption);
-  console.log('site_data :>> ', site_data);
   let site_date = site_data.map(site => site[8]);
   let site_oil = site_data.map(site => site[2]);
   let site_gas = site_data.map(site => site[3]);
