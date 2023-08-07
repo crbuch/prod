@@ -64,7 +64,7 @@ const displayPumpInfo = (data, selectedOption) => {
     } else {
       $(document).ready(function () {
         $("#notPumpingInfo").toggle();
-        $("#notPumping").html("This well is not pumping");
+        $("#notPumping").html("This well is not Rod Pumping");
       });
     }
   } else {
