@@ -64,7 +64,7 @@ const displayPumpInfo = (data, selectedOption) => {
     } else {
       $(document).ready(function () {
         $("#notPumpingInfo").toggle();
-        $("#notPumping").html("This well is not pumping");
+        $("#notPumping").html("This well is not on rod pump");
       });
     }
   } else {
@@ -308,6 +308,7 @@ async function curve(timeFrame, data){
       }
     }
     zoomEL.style.display = "block";
+    document.getElementById('siteSelection').focus();
   });
 
   combo.on('plotly_legendclick', function(data) {
@@ -379,6 +380,7 @@ const switchActives = (event) => {
 onAuthStateChangedFb();
 const currUid = localStorage.getItem('uid');
 let curveInfo;
+document.getElementById('siteSelection').focus();
 
 $(document).ready(function () {
   $("#header").load("../src/pages/header.html", () => {
