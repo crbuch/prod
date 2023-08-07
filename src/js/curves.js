@@ -22,23 +22,20 @@ const displayEconomics = (data, selectedOption) => {
       monthPnL = ecoWell["Date"].slice(0, 3);
     }
   });
-  document.getElementById("pnl").innerHTML = `P&L : $${wellRMPL.toFixed(0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} ${monthPnL}`;
-  document.getElementById("YTD").innerHTML = `$${wellYTDPL.toFixed(0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} YTD`;
-  document.getElementById("pnl").style.display = "block";
-  document.getElementById("YTD").style.display = "block";
+
+  pnlEl.innerHTML = `P&L : $${wellRMPL.toFixed(0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} ${monthPnL}`;
+  ytdEl.innerHTML = `$${wellYTDPL.toFixed(0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} YTD`;
+  pnlEl.style.display = "block";
+  ytdEl.style.display = "block";
 
 };
 
 const displayPayout = (data, selectedOption) => {
-  var payout100 = 0;
-  data.forEach((payoutWell) => {
-    if (payoutWell["Well Name"].includes(selectedOption)) {
-      payout100 = payoutWell["% Payout"] * 100;
-    }
-  });
-  document.getElementById("payout").innerHTML =
+  let site_data = data.filter(el => el["Well Name"] == selectedOption)[0]
+  let payout100 = site_data ? site_data["% Payout"] * 100 : 0
+  payoutEl.innerHTML =
     "Payout : " + payout100.toFixed(0).toLocaleString("en-US") + "%";
-  document.getElementById("payout").style.display = "block";
+  payoutEl.style.display = "block";
   //document.getElementById("payout100").innerHTML = payout100.toFixed(0).toLocaleString("en-US")+ "%";
 
 };
@@ -86,12 +83,13 @@ const displayCumlData = (data, formations,selectedOption) => {
   const formation = formations[selectedOption] || "";
   
 
+
   if (!formation) {
     document.getElementById("filler4").style.display = "";
   }
 
   formationEl.innerHTML = formation;
-  cumulativeDataEl.innerHTML = `Cumulative: ${cuml} MBO, ${gasCuml} MMCF, ${waterCuml} MBW`;
+  cumlativeDataEl.innerHTML = `Cumulative: ${cuml} MBO, ${gasCuml} MMCF, ${waterCuml} MBW`;
 
 };
 
@@ -126,7 +124,6 @@ async function curve(timeFrame, data){
   });
 
   ["zoomEl", "individualTable","pumpInfo","notPumpingInfo", "pnl", "YTD","payout"].forEach(id => document.getElementById(id).style.display = 'none');
-
   if (region == "ST" & selectedOption != "South Texas Total") {
     if (currUid !== 'fh05lGDE7YSVyAu9eNP4bYRR9n42' & currUid !== null) {
       displayEconomics(data.econ, selectedOption);
@@ -135,7 +132,6 @@ async function curve(timeFrame, data){
     displayPumpInfo(data.pumpInfo, selectedOption);
   };
   displayCumlData(data.cuml,data.formation, selectedOption);
-
   ['gasDeclineCurve', 'waterDeclineCurve', 'waterCutCurve', 'totalFluidCurve', 'combinationCurves'].forEach(id => {
     document.getElementById(id).style.display = 'block';
   });
@@ -151,7 +147,6 @@ async function curve(timeFrame, data){
       document.getElementById('ratioRecProd').style.display = 'block';
     })
   }
-  
   const site_data = data.prod.filter(site => site[0] === selectedOption);
   let site_date = site_data.map(site => site[8]);
   let site_oil = site_data.map(site => site[2]);
@@ -163,6 +158,7 @@ async function curve(timeFrame, data){
   let total_fluid = site_data.map(site => site[9]);
   if (timeFrame > 0) [site_date, site_oil, site_gas, site_water, comments, movingAverage, oil365, date365, percent] =
   [site_date, site_oil, site_gas, site_water, comments, movingAverage, oil365, date365, percent].map(arr => arr.slice(0, timeFrame));
+
   let trace365 = makeTrace(
     date365,
     oil365,
@@ -246,7 +242,6 @@ async function curve(timeFrame, data){
     [tracePercent]
   ];
   if (selectedOption !== "South Texas Total") {traceArrays.pop(); plotContainers.pop();}
-
   plotContainers.forEach((container, i) => {
     traceArrays[i].forEach(trace => {
       trace.visible = (i === 4 && trace.name !== "Oil [BO]") ? "legendonly" : trace.visible;
@@ -254,7 +249,8 @@ async function curve(timeFrame, data){
 
     const layout = makeLayout(['Gas vs Time (MCFD)', 'Water vs Time (BWPD)', 'Total Fluid vs Time (BFPD)', 'Water Cut Percentage', 'Combined Production', 'Percent Production from New Wells (365 Days)'][i], scale, 
         (scale === 'log') ? [1, 2, 5, 10, 20, 50, 100, 200, 500, 1000, 2000, 3000] : null);
-    Plotly.newPlot(container, traceArrays[i], layout, config);
+   Plotly.newPlot(container, traceArrays[i], layout, config);
+
   });
 
   const combo = document.getElementById('combinationCurves');
@@ -283,12 +279,10 @@ async function curve(timeFrame, data){
     const visible_traces = JSON.parse(sessionStorage.getItem('visible_traces'));
     const map = {'Gas [MCF]': site_gas, 'Oil [BO]': site_oil, 'Water [BW]': site_water, 'Total Fluid [BBLS]': total_fluid };
     const nameMap = {'Gas [MCF]': 'Gas [MMCF]', 'Oil [BO]': 'Oil [MBO]', 'Water [BW]': 'Water [MBW]', 'Total Fluid [BBLS]': 'Total Fluid [MBBL]' };
-    console.log('total_fluid :>> ', total_fluid);
     for (const[key,vals] of Object.entries(visible_traces)){
       for (let val of vals){
         if (!Object.keys(map).includes(val)) continue;
         const data = map[val];
-        console.log('data :>> ', data);
         const sum = (data.slice(endIdx, startIdx + 1).reduce((acc, cur) => acc + cur, 0)/1000).toFixed(1);
 
         const p = document.createElement('p');
@@ -371,8 +365,12 @@ onAuthStateChangedFb();
 const currUid = localStorage.getItem('uid');
 let curveInfo;
 const dd = document.getElementById('siteSelection');
-const formationEl = document.getElementById("formation");
-const cumulativeDataEl = document.getElementById("cumlativeData");
+const pnlEl = document.getElementById("pnl");
+const ytdEl = document.getElementById("YTD");
+const payoutEl = document.getElementById("payout");
+const formationEl = document.getElementById('formation');
+const cumlativeDataEl = document.getElementById('cumlativeData');
+
 
 $(document).ready(function () {
   $("#header").load("../src/pages/header.html", () => {
@@ -409,9 +407,7 @@ window.onload = function () {
   lazyLoad().then(data => {
     curveInfo = data;
     dh.dropdown('#siteSelection',data.prod);
-    console.time('curve')
     curve(localStorage.getItem('initTime'), data);
-    console.timeEnd('curve')
   })
   dd.focus();
 }();
