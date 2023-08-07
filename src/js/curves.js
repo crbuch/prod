@@ -78,30 +78,20 @@ const displayPumpInfo = (data, selectedOption) => {
 const displayCumlData = (data, formations,selectedOption) => {
   if (selectedOption == "South Texas Total") selectedOption = "ST Total";
   if (selectedOption == "East Texas Total") selectedOption = "ET Total";
-  let selectedWell = {
-    cuml: 0,
-    gasCuml: 0,
-    waterCuml: 0,
-    formation: ""
-  };
-  data.forEach(well => {
-    if (selectedOption === well[0]) {
-      selectedWell.cuml = well[1];
-      selectedWell.gasCuml = well[3];
-      selectedWell.waterCuml = well[2];
-      selectedWell.formation = formations[selectedOption] || "";
-    }
-  });
+  
+  const site_data = data.filter(sub => sub[0] === selectedOption)[0];
+  const cuml = site_data[1];
+  const waterCuml = site_data[2];
+  const gasCuml = site_data[3];
+  const formation = formations[selectedOption] || "";
+  
 
-  const formationEl = document.getElementById("formation");
-  const cumulativeDataEl = document.getElementById("cumlativeData");
-
-  if (!selectedWell.formation) {
+  if (!formation) {
     document.getElementById("filler4").style.display = "";
   }
 
-  formationEl.innerHTML = selectedWell.formation;
-  cumulativeDataEl.innerHTML = `Cumulative: ${selectedWell.cuml} MBO, ${selectedWell.gasCuml} MMCF, ${selectedWell.waterCuml} MBW`;
+  formationEl.innerHTML = formation;
+  cumulativeDataEl.innerHTML = `Cumulative: ${cuml} MBO, ${gasCuml} MMCF, ${waterCuml} MBW`;
 
 };
 
@@ -308,7 +298,7 @@ async function curve(timeFrame, data){
       }
     }
     zoomEL.style.display = "block";
-    document.getElementById('siteSelection').focus();
+    dd.focus();
   });
 
   combo.on('plotly_legendclick', function(data) {
@@ -325,7 +315,7 @@ async function curve(timeFrame, data){
     sessionStorage.setItem('visible_traces', JSON.stringify(currVisible));
   })
 
-  document.getElementById("siteSelection").focus();
+  dd.focus();
   document.getElementById("filler4").style.display = "none";
 };
 
@@ -368,19 +358,21 @@ const switchActives = (event) => {
 
   function ddd () {
     try{
-      document.getElementById("siteSelection").blur();
+      dd.blur();
     }catch{
     };
   }
   
   if (window.innerWidth < 400) setTimeout(ddd,50);
-  document.getElementById('siteSelection').focus();
+  dd.focus();
 };
 
 onAuthStateChangedFb();
 const currUid = localStorage.getItem('uid');
 let curveInfo;
-document.getElementById('siteSelection').focus();
+const dd = document.getElementById('siteSelection');
+const formationEl = document.getElementById("formation");
+const cumulativeDataEl = document.getElementById("cumlativeData");
 
 $(document).ready(function () {
   $("#header").load("../src/pages/header.html", () => {
@@ -392,7 +384,7 @@ $(document).ready(function () {
   document.getElementById(el).addEventListener('click',switchActives);
 });
 
-select('#siteSelection').on("change", () => {
+$(dd).on("change", () => {
   let activeTime = 'DaysInception';
   if (localStorage.initTime == 31) activeTime = 'Days30';
   setActiveTime(activeTime);
@@ -417,6 +409,13 @@ window.onload = function () {
   lazyLoad().then(data => {
     curveInfo = data;
     dh.dropdown('#siteSelection',data.prod);
+    console.time('curve')
     curve(localStorage.getItem('initTime'), data);
+    console.timeEnd('curve')
   })
+  dd.focus();
 }();
+
+$(document).on('click', function (e) {
+  dd.focus();
+});
