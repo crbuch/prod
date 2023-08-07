@@ -22,23 +22,20 @@ const displayEconomics = (data, selectedOption) => {
       monthPnL = ecoWell["Date"].slice(0, 3);
     }
   });
-  document.getElementById("pnl").innerHTML = `P&L : $${wellRMPL.toFixed(0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} ${monthPnL}`;
-  document.getElementById("YTD").innerHTML = `$${wellYTDPL.toFixed(0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} YTD`;
-  document.getElementById("pnl").style.display = "block";
-  document.getElementById("YTD").style.display = "block";
+
+  pnlEl.innerHTML = `P&L : $${wellRMPL.toFixed(0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} ${monthPnL}`;
+  ytdEl.innerHTML = `$${wellYTDPL.toFixed(0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} YTD`;
+  pnlEl.style.display = "block";
+  ytdEl.style.display = "block";
 
 };
 
 const displayPayout = (data, selectedOption) => {
-  var payout100 = 0;
-  data.forEach((payoutWell) => {
-    if (payoutWell["Well Name"].includes(selectedOption)) {
-      payout100 = payoutWell["% Payout"] * 100;
-    }
-  });
-  document.getElementById("payout").innerHTML =
+  let site_data = data.filter(el => el["Well Name"] == selectedOption)[0]
+  let payout100 = site_data ? site_data["% Payout"] * 100 : 0
+  payoutEl.innerHTML =
     "Payout : " + payout100.toFixed(0).toLocaleString("en-US") + "%";
-  document.getElementById("payout").style.display = "block";
+  payoutEl.style.display = "block";
   //document.getElementById("payout100").innerHTML = payout100.toFixed(0).toLocaleString("en-US")+ "%";
 
 };
@@ -64,7 +61,7 @@ const displayPumpInfo = (data, selectedOption) => {
     } else {
       $(document).ready(function () {
         $("#notPumpingInfo").toggle();
-        $("#notPumping").html("This well is not Rod Pumping");
+        $("#notPumping").html("This well is not on rod pump");
       });
     }
   } else {
@@ -78,30 +75,21 @@ const displayPumpInfo = (data, selectedOption) => {
 const displayCumlData = (data, formations,selectedOption) => {
   if (selectedOption == "South Texas Total") selectedOption = "ST Total";
   if (selectedOption == "East Texas Total") selectedOption = "ET Total";
-  let selectedWell = {
-    cuml: 0,
-    gasCuml: 0,
-    waterCuml: 0,
-    formation: ""
-  };
-  data.forEach(well => {
-    if (selectedOption === well[0]) {
-      selectedWell.cuml = well[1];
-      selectedWell.gasCuml = well[3];
-      selectedWell.waterCuml = well[2];
-      selectedWell.formation = formations[selectedOption] || "";
-    }
-  });
+  
+  const site_data = data.filter(sub => sub[0] === selectedOption)[0];
+  const cuml = site_data[1];
+  const waterCuml = site_data[2];
+  const gasCuml = site_data[3];
+  const formation = formations[selectedOption] || "";
+  
 
-  const formationEl = document.getElementById("formation");
-  const cumulativeDataEl = document.getElementById("cumlativeData");
 
-  if (!selectedWell.formation) {
+  if (!formation) {
     document.getElementById("filler4").style.display = "";
   }
 
-  formationEl.innerHTML = selectedWell.formation;
-  cumulativeDataEl.innerHTML = `Cumulative: ${selectedWell.cuml} MBO, ${selectedWell.gasCuml} MMCF, ${selectedWell.waterCuml} MBW`;
+  formationEl.innerHTML = formation;
+  cumlativeDataEl.innerHTML = `Cumulative: ${cuml} MBO, ${gasCuml} MMCF, ${waterCuml} MBW`;
 
 };
 
@@ -111,8 +99,9 @@ const getSelectedOption = (data) => {
   
   if (menuNode != "default") {
     selectedOption = [menuNode];
-  } else if (sessionStorage.getItem("siteSelection") != null) {
-    selectedOption = [sessionStorage.getItem("siteSelection")];
+  } else if (sessionStorage.siteSelection != null) {
+    selectedOption = [sessionStorage.siteSelection];
+    select("#siteSelection").node().value = selectedOption;
     sessionStorage.removeItem("siteSelection");
   } else selectedOption = [...data[0][0]];
 
@@ -135,7 +124,6 @@ async function curve(timeFrame, data){
   });
 
   ["zoomEl", "individualTable","pumpInfo","notPumpingInfo", "pnl", "YTD","payout"].forEach(id => document.getElementById(id).style.display = 'none');
-
   if (region == "ST" & selectedOption != "South Texas Total") {
     if (currUid !== 'fh05lGDE7YSVyAu9eNP4bYRR9n42' & currUid !== null) {
       displayEconomics(data.econ, selectedOption);
@@ -144,7 +132,6 @@ async function curve(timeFrame, data){
     displayPumpInfo(data.pumpInfo, selectedOption);
   };
   displayCumlData(data.cuml,data.formation, selectedOption);
-
   ['gasDeclineCurve', 'waterDeclineCurve', 'waterCutCurve', 'totalFluidCurve', 'combinationCurves'].forEach(id => {
     document.getElementById(id).style.display = 'block';
   });
@@ -160,7 +147,6 @@ async function curve(timeFrame, data){
       document.getElementById('ratioRecProd').style.display = 'block';
     })
   }
-  
   const site_data = data.prod.filter(site => site[0] === selectedOption);
   let site_date = site_data.map(site => site[8]);
   let site_oil = site_data.map(site => site[2]);
@@ -169,9 +155,10 @@ async function curve(timeFrame, data){
   let comments = site_data.map(site => site[7]);
   let movingAverage = site_data.map(site => site[site.length-1]);
   let water_cut = site_water.map((water, i) => (water / (water + site_oil[i])) * 100);
-  let total_fluid = site_data.map(site => site[9] || site[8]);
+  let total_fluid = site_data.map(site => site[9]);
   if (timeFrame > 0) [site_date, site_oil, site_gas, site_water, comments, movingAverage, oil365, date365, percent] =
   [site_date, site_oil, site_gas, site_water, comments, movingAverage, oil365, date365, percent].map(arr => arr.slice(0, timeFrame));
+
   let trace365 = makeTrace(
     date365,
     oil365,
@@ -255,7 +242,6 @@ async function curve(timeFrame, data){
     [tracePercent]
   ];
   if (selectedOption !== "South Texas Total") {traceArrays.pop(); plotContainers.pop();}
-
   plotContainers.forEach((container, i) => {
     traceArrays[i].forEach(trace => {
       trace.visible = (i === 4 && trace.name !== "Oil [BO]") ? "legendonly" : trace.visible;
@@ -263,7 +249,8 @@ async function curve(timeFrame, data){
 
     const layout = makeLayout(['Gas vs Time (MCFD)', 'Water vs Time (BWPD)', 'Total Fluid vs Time (BFPD)', 'Water Cut Percentage', 'Combined Production', 'Percent Production from New Wells (365 Days)'][i], scale, 
         (scale === 'log') ? [1, 2, 5, 10, 20, 50, 100, 200, 500, 1000, 2000, 3000] : null);
-    Plotly.newPlot(container, traceArrays[i], layout, config);
+   Plotly.newPlot(container, traceArrays[i], layout, config);
+
   });
 
   const combo = document.getElementById('combinationCurves');
@@ -305,6 +292,7 @@ async function curve(timeFrame, data){
       }
     }
     zoomEL.style.display = "block";
+    dd.focus();
   });
 
   combo.on('plotly_legendclick', function(data) {
@@ -321,7 +309,7 @@ async function curve(timeFrame, data){
     sessionStorage.setItem('visible_traces', JSON.stringify(currVisible));
   })
 
-  document.getElementById("siteSelection").focus();
+  dd.focus();
   document.getElementById("filler4").style.display = "none";
 };
 
@@ -364,18 +352,25 @@ const switchActives = (event) => {
 
   function ddd () {
     try{
-      document.getElementById("siteSelection").blur();
+      dd.blur();
     }catch{
     };
   }
   
   if (window.innerWidth < 400) setTimeout(ddd,50);
-  document.getElementById('siteSelection').focus();
+  dd.focus();
 };
 
 onAuthStateChangedFb();
 const currUid = localStorage.getItem('uid');
 let curveInfo;
+const dd = document.getElementById('siteSelection');
+const pnlEl = document.getElementById("pnl");
+const ytdEl = document.getElementById("YTD");
+const payoutEl = document.getElementById("payout");
+const formationEl = document.getElementById('formation');
+const cumlativeDataEl = document.getElementById('cumlativeData');
+
 
 $(document).ready(function () {
   $("#header").load("../src/pages/header.html", () => {
@@ -387,12 +382,13 @@ $(document).ready(function () {
   document.getElementById(el).addEventListener('click',switchActives);
 });
 
-select('#siteSelection').on("change", () => {
+$(dd).on("change", () => {
   let activeTime = 'DaysInception';
   if (localStorage.initTime == 31) activeTime = 'Days30';
-  curve(localStorage.initTime, curveInfo);
   setActiveTime(activeTime);
   setActiveView(localStorage.getItem('initScale'));
+  sessionStorage.visible_traces = JSON.stringify({"visible":["Oil [BO]"]});
+  curve(localStorage.initTime, curveInfo);
 });
 
 document.getElementById("table").addEventListener('click', () => {
@@ -401,20 +397,21 @@ document.getElementById("table").addEventListener('click', () => {
   table(curveInfo.prod);
 });
 
-//store currently visible plots in sessionstorage to access in relayout event; init to only oil(page load)
-let currVisible = {"visible":["Oil [BO]"]};
-sessionStorage.setItem("visible_traces",JSON.stringify(currVisible));
-
 //init page on load//
 window.onload = function () {
   let activeTime = 'DaysInception';
   if (localStorage.getItem('initTime') == 31) activeTime = 'Days30';
   setActiveTime(activeTime);
   setActiveView(localStorage.getItem('initScale'));
-  
+  sessionStorage.visible_traces = JSON.stringify({"visible":["Oil [BO]"]});
   lazyLoad().then(data => {
     curveInfo = data;
     dh.dropdown('#siteSelection',data.prod);
     curve(localStorage.getItem('initTime'), data);
   })
+  dd.focus();
 }();
+
+$(document).on('click', function (e) {
+  dd.focus();
+});
