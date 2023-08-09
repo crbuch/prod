@@ -361,6 +361,18 @@ const switchActives = (event) => {
   dd.focus();
 };
 
+function test(payoutData){
+  let opts = dd.options;
+  let wells = []
+  for (let i = 1; i < opts.length; i ++){
+    wells.push(opts[i].Value)
+    let site_data = payoutData.filter(el => el["Well Name"] == opts[i].Value)[0]
+    //console.log('site_data :>> ', site_data);
+    if (site_data == undefined) console.log('well :>> ', opts[i].Value);
+  }
+  
+}
+
 onAuthStateChangedFb();
 const currUid = localStorage.getItem('uid');
 let curveInfo;
@@ -408,8 +420,11 @@ window.onload = function () {
     curveInfo = data;
     dh.dropdown('#siteSelection',data.prod);
     curve(localStorage.getItem('initTime'), data);
+    dd.focus();
+    test(data.payout)
   })
   dd.focus();
+
 }();
 
 $(document).on('click', function (e) {
