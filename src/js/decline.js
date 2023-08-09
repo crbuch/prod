@@ -1,5 +1,3 @@
-// Read Csv for one well
-
 async function declineCurve(){
     const dropdownMenu = d3.select("#wellselect").node();
 
