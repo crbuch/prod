@@ -292,7 +292,7 @@ async function curve(timeFrame, data){
       }
     }
     zoomEL.style.display = "block";
-    dd.focus();
+    if (window.innerWidth > 400) dd.focus();
   });
 
   combo.on('plotly_legendclick', function(data) {
@@ -309,7 +309,7 @@ async function curve(timeFrame, data){
     sessionStorage.setItem('visible_traces', JSON.stringify(currVisible));
   })
 
-  dd.focus();
+  if (window.innerWidth > 400) dd.focus();
   document.getElementById("filler4").style.display = "none";
 };
 
@@ -420,13 +420,13 @@ window.onload = function () {
     curveInfo = data;
     dh.dropdown('#siteSelection',data.prod);
     curve(localStorage.getItem('initTime'), data);
-    dd.focus();
+    if (window.innerWidth > 400) dd.focus();
     test(data.payout)
   })
-  dd.focus();
+  if (window.innerWidth > 400) dd.focus();
 
 }();
 
 $(document).on('click', function (e) {
-  dd.focus();
+  if (window.innerWidth > 400) dd.focus();
 });
