@@ -1,35 +1,35 @@
 [
     {
         "Well Name": "Vermillion #1",
-        "% Payout": 0.3220204593
+        "% Payout": 0.320791879
     },
     {
         "Well Name": "Gail #1",
-        "% Payout": 1.0616001769
+        "% Payout": 1.0615098928
     },
     {
         "Well Name": "Rhodes #1",
-        "% Payout": 0.3070591961
+        "% Payout": 0.3076044098
     },
     {
         "Well Name": "Parkway #1",
-        "% Payout": 2.4821303437
+        "% Payout": 2.4827071825
     },
     {
         "Well Name": "Chad #1",
-        "% Payout": 0.9541648567
+        "% Payout": 0.9544222652
     },
     {
         "Well Name": "Pecan Grove #1",
-        "% Payout": 0.3001010046
+        "% Payout": 0.3004351755
     },
     {
         "Well Name": "Carolyn #1",
-        "% Payout": 0.8436253273
+        "% Payout": 0.8393973044
     },
     {
         "Well Name": "Lander #1",
-        "% Payout": 1.0333915277
+        "% Payout": 1.0326929808
     },
     {
         "Well Name": "Mustang Ranch #1",
@@ -37,11 +37,11 @@
     },
     {
         "Well Name": "Beeler Ranch #1",
-        "% Payout": 1.6328809257
+        "% Payout": 1.6358228369
     },
     {
         "Well Name": "Kleimann #1",
-        "% Payout": 3.0240665201
+        "% Payout": 3.0258392872
     },
     {
         "Well Name": "Heitz #1",
@@ -49,23 +49,23 @@
     },
     {
         "Well Name": "Joseph #1",
-        "% Payout": 0.1390641601
+        "% Payout": 0.1392449665
     },
     {
         "Well Name": "Kiley #1",
-        "% Payout": 1.8531257304
+        "% Payout": 1.8512019199
     },
     {
         "Well Name": "Whittington #1",
-        "% Payout": 0.2612010525
+        "% Payout": 0.2617090091
     },
     {
         "Well Name": "Palm #1",
-        "% Payout": 1.7270700316
+        "% Payout": 1.7305407127
     },
     {
         "Well Name": "Pickens Weaver #1",
-        "% Payout": 1.1744714188
+        "% Payout": 1.1734210577
     },
     {
         "Well Name": "Buck #1",
@@ -77,7 +77,7 @@
     },
     {
         "Well Name": "Branton #1",
-        "% Payout": 0.0643145552
+        "% Payout": 0.0644283396
     },
     {
         "Well Name": "Janie #1",
@@ -89,7 +89,7 @@
     },
     {
         "Well Name": "J Beeler #1",
-        "% Payout": 1.8668287279
+        "% Payout": 1.8712995753
     },
     {
         "Well Name": "Anna Louisa #1",
@@ -97,19 +97,19 @@
     },
     {
         "Well Name": "Aaron #1",
-        "% Payout": 1.0102140481
+        "% Payout": 1.0014924737
     },
     {
         "Well Name": "JJ #1",
-        "% Payout": 1.9940364589
+        "% Payout": 2.0020425147
     },
     {
         "Well Name": "Kleimann #3",
-        "% Payout": 0.3205315659
+        "% Payout": 0.3213752545
     },
     {
         "Well Name": "Eileen #1",
-        "% Payout": 0.4515282631
+        "% Payout": 0.4500074068
     },
     {
         "Well Name": "Kincaid #1",
@@ -117,31 +117,31 @@
     },
     {
         "Well Name": "VRE Minerals #1",
-        "% Payout": 0.1641813381
+        "% Payout": 0.1626048752
     },
     {
         "Well Name": "RAB #1",
-        "% Payout": 0.9400390062
+        "% Payout": 0.9332258733
     },
     {
         "Well Name": "JIC #1",
-        "% Payout": 1.6402450357
+        "% Payout": 1.6314052308
     },
     {
         "Well Name": "Balfour #1",
-        "% Payout": 0.9609893559
+        "% Payout": 0.9425039439
     },
     {
         "Well Name": "Marrs #1",
-        "% Payout": 1.3596943298
+        "% Payout": 1.359745661
     },
     {
         "Well Name": "RAB #2",
-        "% Payout": 1.1618341296
+        "% Payout": 1.123200003
     },
     {
         "Well Name": "RAB #3",
-        "% Payout": 0.9294291207
+        "% Payout": 0.9182056649
     },
     {
         "Well Name": "Burns Ranch GT #1",
@@ -149,7 +149,11 @@
     },
     {
         "Well Name": "Lamb #1",
-        "% Payout": 0.0146456866
+        "% Payout": 0.0
+    },
+    {
+        "Well Name": "CMWW #2",
+        "% Payout": 0.0
     },
     {
         "Well Name": "RAB #4",
@@ -157,7 +161,11 @@
     },
     {
         "Well Name": "Pfeiffer #1",
-        "% Payout": 0.5355505996
+        "% Payout": 0.5305631691
+    },
+    {
+        "Well Name": "Pfeiffer #2",
+        "% Payout": 0.35
     },
     {
         "Well Name": "Clayton #1",
@@ -165,63 +173,63 @@
     },
     {
         "Well Name": "Jred #1",
-        "% Payout": 0.2804512418
+        "% Payout": 0.2773124728
     },
     {
         "Well Name": "Jessica #1",
-        "% Payout": 2.946067608
+        "% Payout": 2.9558181613
     },
     {
         "Well Name": "Carolpick #1",
-        "% Payout": 3.1384807944
+        "% Payout": 3.1384067903
     },
     {
         "Well Name": "Aniken #1",
-        "% Payout": 0.25661293
+        "% Payout": 0.2538913063
     },
     {
         "Well Name": "Dillard #1",
-        "% Payout": 0.298080282
+        "% Payout": 0.2976322002
     },
     {
         "Well Name": "Blas Reyes #1",
-        "% Payout": 0.41767101
+        "% Payout": 0.4163647335
     },
     {
         "Well Name": "Dale #1",
-        "% Payout": 0.8663459097
+        "% Payout": 0.8673280816
     },
     {
         "Well Name": "Cenizo #1",
-        "% Payout": 1.2941621947
+        "% Payout": 1.2941569152
     },
     {
         "Well Name": "Russell #1",
-        "% Payout": 0.3361981026
+        "% Payout": 0.3354545452
     },
     {
         "Well Name": "Ruthpick #1",
-        "% Payout": 1.3928221832
+        "% Payout": 1.3912270683
     },
     {
         "Well Name": "Richard #1",
-        "% Payout": 2.3459476581
+        "% Payout": 2.3434075413
     },
     {
         "Well Name": "PC #1",
-        "% Payout": 0.7941271895
+        "% Payout": 0.7906965143
     },
     {
         "Well Name": "Blackmon #1",
-        "% Payout": 1.5639070132
+        "% Payout": 1.5569828014
     },
     {
         "Well Name": "Barrier #1",
-        "% Payout": 1.0809953594
+        "% Payout": 1.0801608611
     },
     {
         "Well Name": "Preston #1",
-        "% Payout": 0.4566087427
+        "% Payout": 0.4561497133
     },
     {
         "Well Name": "Kirby #1",
@@ -229,11 +237,11 @@
     },
     {
         "Well Name": "Charles B #1",
-        "% Payout": 0.6753723519
+        "% Payout": 0.6739295124
     },
     {
         "Well Name": "LT #1",
-        "% Payout": 0.2304189878
+        "% Payout": 0.2270569214
     },
     {
         "Well Name": "Gonzales #1",
@@ -241,39 +249,39 @@
     },
     {
         "Well Name": "White Marlin #1",
-        "% Payout": 0.0219296582
+        "% Payout": 0.0219447084
     },
     {
         "Well Name": "Kay #1",
-        "% Payout": 1.2071827026
+        "% Payout": 1.2059767263
     },
     {
         "Well Name": "CT #1",
-        "% Payout": 1.6974332771
+        "% Payout": 1.6820752955
     },
     {
         "Well Name": "Lackey Five #1",
-        "% Payout": 1.4261776951
+        "% Payout": 1.4198951513
     },
     {
         "Well Name": "Thuss #1",
-        "% Payout": 0.2946054897
+        "% Payout": 0.2947998523
     },
     {
         "Well Name": "CR #201",
-        "% Payout": 0.5275791789
+        "% Payout": 0.5237006859
     },
     {
         "Well Name": "CR #301",
-        "% Payout": 0.6831251745
+        "% Payout": 0.6788873557
     },
     {
         "Well Name": "CR #501",
-        "% Payout": 0.1785175765
+        "% Payout": 0.1763929721
     },
     {
         "Well Name": "CR #302",
-        "% Payout": 0.3739367999
+        "% Payout": 0.3667664847
     },
     {
         "Well Name": "FMMP #1",
@@ -281,7 +289,7 @@
     },
     {
         "Well Name": "BMMP #1",
-        "% Payout": 0.2450453253
+        "% Payout": 0.245049287
     },
     {
         "Well Name": "BMMP #2",
@@ -289,15 +297,15 @@
     },
     {
         "Well Name": "Lochte #1",
-        "% Payout": 0.7306965301
+        "% Payout": 0.7208007643
     },
     {
         "Well Name": "CR #101",
-        "% Payout": 0.6248383254
+        "% Payout": 0.6185241998
     },
     {
         "Well Name": "CR #401",
-        "% Payout": 0.0472913245
+        "% Payout": 0.0442217663
     },
     {
         "Well Name": "BMMP #3",
@@ -305,35 +313,31 @@
     },
     {
         "Well Name": "Burns Ranch #2",
-        "% Payout": 0.5734023575
+        "% Payout": 0.533211493
     },
     {
         "Well Name": "Sansom #1",
-        "% Payout": 0.2590152594
+        "% Payout": 0.2440843191
     },
     {
         "Well Name": "JIC Buda #1",
-        "% Payout": 0.1347244753
+        "% Payout": 0.1193663884
     },
     {
         "Well Name": "Bruce Weaver #1",
-        "% Payout": 2.5512954437
-    },
-    {
-        "Well Name": "CMWW #1",
-        "% Payout": 0.0
+        "% Payout": 2.5388016555
     },
     {
         "Well Name": "Allen #1",
-        "% Payout": 0.6468691469
+        "% Payout": 0.6470131434
     },
     {
         "Well Name": "Annpick #1",
-        "% Payout": 1.2418927986
+        "% Payout": 1.2416538483
     },
     {
         "Well Name": "Bermuda #1",
-        "% Payout": 0.9210817313
+        "% Payout": 0.9225025645
     },
     {
         "Well Name": "Betty #1",
@@ -341,11 +345,11 @@
     },
     {
         "Well Name": "Big Sonny #1",
-        "% Payout": 0.31481884
+        "% Payout": 0.3130673135
     },
     {
         "Well Name": "Bond #1",
-        "% Payout": 0.7293142207
+        "% Payout": 0.729907248
     },
     {
         "Well Name": "Box #1",
@@ -353,19 +357,19 @@
     },
     {
         "Well Name": "Cannan #1",
-        "% Payout": 5.8958724279
+        "% Payout": 5.9158760011
     },
     {
         "Well Name": "Circle T #1",
-        "% Payout": 1.5353298262
+        "% Payout": 1.5285760056
     },
     {
         "Well Name": "Cornett #1",
-        "% Payout": 0.1566149363
+        "% Payout": 0.1530731373
     },
     {
         "Well Name": "Cross S #1",
-        "% Payout": 0.7259543009
+        "% Payout": 0.726613087
     },
     {
         "Well Name": "Dial #1",
@@ -373,35 +377,35 @@
     },
     {
         "Well Name": "Dunkle #2",
-        "% Payout": 2.7886708327
+        "% Payout": 2.7926020651
     },
     {
         "Well Name": "Dunlap #1",
-        "% Payout": 1.8361182205
+        "% Payout": 1.8358507503
     },
     {
         "Well Name": "Dyess #1",
-        "% Payout": 2.7303457945
+        "% Payout": 2.7305067982
     },
     {
         "Well Name": "Evergreen #1",
-        "% Payout": 1.5853515584
+        "% Payout": 1.5854099459
     },
     {
         "Well Name": "Flower #1",
-        "% Payout": 3.2253295217
+        "% Payout": 3.228713133
     },
     {
         "Well Name": "Flying G #1",
-        "% Payout": 0.6940442946
+        "% Payout": 0.6941168165
     },
     {
         "Well Name": "Gil #1",
-        "% Payout": 2.2815991932
+        "% Payout": 2.2819503858
     },
     {
         "Well Name": "Grissom #1",
-        "% Payout": 0.4460331985
+        "% Payout": 0.444288129
     },
     {
         "Well Name": "Haby #1",
@@ -413,11 +417,11 @@
     },
     {
         "Well Name": "Joe #1",
-        "% Payout": 4.2486081657
+        "% Payout": 4.253533794
     },
     {
         "Well Name": "La Rosita #1",
-        "% Payout": 0.4304184052
+        "% Payout": 0.4425369438
     },
     {
         "Well Name": "Lansford #1",
@@ -425,7 +429,7 @@
     },
     {
         "Well Name": "Leary Trust #1",
-        "% Payout": 1.8461319705
+        "% Payout": 1.8468054204
     },
     {
         "Well Name": "Lisa #1",
@@ -433,11 +437,11 @@
     },
     {
         "Well Name": "Marguerite #1",
-        "% Payout": 1.2182626236
+        "% Payout": 1.2197911105
     },
     {
         "Well Name": "Marpick #1",
-        "% Payout": 1.0623408242
+        "% Payout": 1.0638458265
     },
     {
         "Well Name": "McLean #1",
@@ -445,19 +449,19 @@
     },
     {
         "Well Name": "Molak #1",
-        "% Payout": 1.413641173
+        "% Payout": 1.4117942653
     },
     {
         "Well Name": "Montemayor #1",
-        "% Payout": 0.3731337504
+        "% Payout": 0.3733030475
     },
     {
         "Well Name": "Moreland #1",
-        "% Payout": 0.7896336184
+        "% Payout": 0.7892058666
     },
     {
         "Well Name": "Pickens #1",
-        "% Payout": 2.5551681227
+        "% Payout": 2.5569349364
     },
     {
         "Well Name": "Pickens #2H",
@@ -465,11 +469,11 @@
     },
     {
         "Well Name": "Pickwill #1",
-        "% Payout": 3.3963497899
+        "% Payout": 3.3989173138
     },
     {
         "Well Name": "Richardson #1",
-        "% Payout": 2.462832921
+        "% Payout": 2.4582441522
     },
     {
         "Well Name": "Rio Nueces #1",
@@ -477,19 +481,19 @@
     },
     {
         "Well Name": "Ruth #1",
-        "% Payout": 3.0890925033
+        "% Payout": 3.0904814086
     },
     {
         "Well Name": "Solansky #1",
-        "% Payout": 0.9874595957
+        "% Payout": 0.9855519631
     },
     {
         "Well Name": "Sugarland #1",
-        "% Payout": 1.1933462239
+        "% Payout": 1.194393267
     },
     {
         "Well Name": "Thalmann #1",
-        "% Payout": 1.6869449349
+        "% Payout": 1.6882308606
     },
     {
         "Well Name": "Thompson #1",
@@ -497,23 +501,23 @@
     },
     {
         "Well Name": "Thompson #2",
-        "% Payout": 1.9821371433
+        "% Payout": 1.9822371649
     },
     {
         "Well Name": "Tlapek #1",
-        "% Payout": 0.7657306064
+        "% Payout": 0.7678717298
     },
     {
         "Well Name": "Triple J #2",
-        "% Payout": 0.6874794279
+        "% Payout": 0.6886701165
     },
     {
         "Well Name": "Trotter #1",
-        "% Payout": 1.3026995942
+        "% Payout": 1.2973046652
     },
     {
         "Well Name": "Verna #1",
-        "% Payout": 1.94608315
+        "% Payout": 1.9432271871
     },
     {
         "Well Name": "Woodward #1",
@@ -521,27 +525,31 @@
     },
     {
         "Well Name": "MDB #1",
-        "% Payout": 0.9877838507
+        "% Payout": 0.9837434305
     },
     {
         "Well Name": "Little 179 #1",
-        "% Payout": 1.7383812552
+        "% Payout": 1.7151187882
     },
     {
         "Well Name": "Drinkard #1",
-        "% Payout": 1.4092211588
+        "% Payout": 1.3894453857
     },
     {
         "Well Name": "Fatheree #1",
-        "% Payout": 0.6611007075
+        "% Payout": 0.6578699121
     },
     {
         "Well Name": "Dial #1 ST",
-        "% Payout": 0.0491504143
+        "% Payout": 0.0464677527
     },
     {
         "Well Name": "Bruce Weaver #2 RE",
-        "% Payout": 0.3361942889
+        "% Payout": 0.3078679565
+    },
+    {
+        "Well Name": "CMWW #1",
+        "% Payout": 0.0
     },
     {
         "Well Name": "Mitchell #1",
@@ -552,19 +560,11 @@
         "% Payout": 0.0
     },
     {
-        "Well Name": "CMWW #2",
-        "% Payout": 0.0
-    },
-    {
-        "Well Name": "Pfeiffer #2",
-        "% Payout": 0.3465423288
-    },
-    {
         "Well Name": "CR #939",
-        "% Payout": 0.1060481351
+        "% Payout": 0.0981606508
     },
     {
         "Well Name": "Ronald #1",
-        "% Payout": 0.6619053347
+        "% Payout": 0.6589996703
     }
 ]

@@ -75,7 +75,10 @@ const displayPumpInfo = (data, selectedOption) => {
 const displayCumlData = (data, formations,selectedOption) => {
   if (selectedOption == "South Texas Total") selectedOption = "ST Total";
   if (selectedOption == "East Texas Total") selectedOption = "ET Total";
-  
+  if (selectedOption == "West Texas Total") selectedOption = "WT Total";
+  if (selectedOption == "Gulf Coast Total") selectedOption = "GC Total";
+  if (selectedOption == "New Mexico Total") selectedOption = "NM Total";
+
   const site_data = data.filter(sub => sub[0] === selectedOption)[0];
   const cuml = site_data[1];
   const waterCuml = site_data[2];
