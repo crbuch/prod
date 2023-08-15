@@ -40,8 +40,9 @@ const displayPayout = (data, selectedOption) => {
 
 };
 
-const displayPumpInfo = (data, selectedOption) => {
+const displayPumpInfo = (data, total_fluid, selectedOption) => {
   let wellInfo = data.find(i => i["Well Name"] === selectedOption);
+  
   if (wellInfo !== undefined) {
     if (
       wellInfo["SPM"] !== 0
@@ -49,11 +50,13 @@ const displayPumpInfo = (data, selectedOption) => {
       //USED jQuery LIBRARY TO TOGGLE THE DISPLAY OF #pumpInfo
       $(document).ready(function () {
         $("#pumpInfo").toggle();
+        let recFluid = total_fluid[0]
+        if (total_fluid[0] == 0 & total_fluid[2] == 0)recFluid = total_fluid[1];
         document.getElementById("c").innerHTML = `C: ${wellInfo["C"]}`;
         document.getElementById("SPM").innerHTML = `SPM: ${wellInfo["SPM"]}`;
         document.getElementById("DHSL").innerHTML = `DH SL: ${wellInfo["DH SL"]}`;
         document.getElementById("ideal").innerHTML = `Ideal bfpd: ${wellInfo["Ideal bfpd"]}`;
-        document.getElementById("pumpEff").innerHTML = `Pump Eff: ${Math.round(wellInfo["Pump Eff"] * 100)}`;
+        document.getElementById("pumpEff").innerHTML = `Pump Eff: ${Math.round((recFluid/wellInfo["Ideal bfpd"])*100)}`;
         document.getElementById("pumpDepth").innerHTML = `Pump Depth: ${wellInfo["Pump Depth"]}`;
         document.getElementById("GFLAP").innerHTML = `GFLAP: ${wellInfo["GFLAP"]}`;
         document.getElementById("Inc").innerHTML = `Inc: ${wellInfo["Inc"]}`;
@@ -115,6 +118,9 @@ const getSelectedOption = (data) => {
 
 async function curve(timeFrame, data){
   const selectedOption = getSelectedOption(data.prod);
+  const site_data = data.prod.filter(site => site[0] === selectedOption);
+  let total_fluid = site_data.map(site => site[9]);
+
   document.getElementById('wellName').textContent = selectedOption
   let region = sessionStorage.getItem("region");
   if (region == null) {
@@ -132,7 +138,7 @@ async function curve(timeFrame, data){
       displayEconomics(data.econ, selectedOption);
       displayPayout(data.payout, selectedOption);
     }
-    displayPumpInfo(data.pumpInfo, selectedOption);
+    displayPumpInfo(data.pumpInfo, [...total_fluid], selectedOption);
   };
   displayCumlData(data.cuml,data.formation, selectedOption);
   ['gasDeclineCurve', 'waterDeclineCurve', 'waterCutCurve', 'totalFluidCurve', 'combinationCurves'].forEach(id => {
@@ -150,7 +156,6 @@ async function curve(timeFrame, data){
       document.getElementById('ratioRecProd').style.display = 'block';
     })
   }
-  const site_data = data.prod.filter(site => site[0] === selectedOption);
   let site_date = site_data.map(site => site[8]);
   let site_oil = site_data.map(site => site[2]);
   let site_gas = site_data.map(site => site[3]);
@@ -158,7 +163,6 @@ async function curve(timeFrame, data){
   let comments = site_data.map(site => site[7]);
   let movingAverage = site_data.map(site => site[site.length-1]);
   let water_cut = site_water.map((water, i) => (water / (water + site_oil[i])) * 100);
-  let total_fluid = site_data.map(site => site[9]);
   if (timeFrame > 0) [site_date, site_oil, site_gas, site_water, comments, movingAverage, oil365, date365, percent] =
   [site_date, site_oil, site_gas, site_water, comments, movingAverage, oil365, date365, percent].map(arr => arr.slice(0, timeFrame));
 
@@ -230,10 +234,9 @@ async function curve(timeFrame, data){
     "line",
     "#224a04"
   );
-
   const scale = (document.getElementById("logarithmic").classList.contains("active")) ? 'log' : 'linear';
   const plotContainers = ["gasDeclineCurve", "waterDeclineCurve", 'totalFluidCurve', 'waterCutCurve', 'combinationCurves', 'ratioRecProd'];
-  let combination = [traceOil, traceOilAvg, traceGas, traceWater, traceFluid, trace365];
+  let combination = [traceOil, traceOilAvg, {... traceGas}, {... traceWater}, {... traceFluid}, trace365];
   if (selectedOption !== "South Texas Total") {combination.pop(); document.getElementById('ratioRecProd').style.display = 'none';}
 
   let traceArrays = [
@@ -275,10 +278,11 @@ async function curve(timeFrame, data){
     const xEnd = xRangeEnd.substring(0, 10);
     const startIdx = site_date.findIndex(value => value.includes(xStart));
     const endIdx = site_date.findIndex(value => value.includes(xEnd));
-
+   
     if (startIdx === -1) { // zoomed where no data
       return;
     }
+    
     const visible_traces = JSON.parse(sessionStorage.getItem('visible_traces'));
     const map = {'Gas [MCF]': site_gas, 'Oil [BO]': site_oil, 'Water [BW]': site_water, 'Total Fluid [BBLS]': total_fluid };
     const nameMap = {'Gas [MCF]': 'Gas [MMCF]', 'Oil [BO]': 'Oil [MBO]', 'Water [BW]': 'Water [MBW]', 'Total Fluid [BBLS]': 'Total Fluid [MBBL]' };
@@ -370,7 +374,6 @@ function test(payoutData){
   for (let i = 1; i < opts.length; i ++){
     wells.push(opts[i].Value)
     let site_data = payoutData.filter(el => el["Well Name"] == opts[i].Value)[0]
-    //console.log('site_data :>> ', site_data);
     if (site_data == undefined) console.log('well :>> ', opts[i].Value);
   }
   
