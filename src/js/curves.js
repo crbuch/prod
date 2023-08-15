@@ -50,7 +50,7 @@ const displayPumpInfo = (data, total_fluid, selectedOption) => {
       //USED jQuery LIBRARY TO TOGGLE THE DISPLAY OF #pumpInfo
       $(document).ready(function () {
         $("#pumpInfo").toggle();
-        let recFluid = total_fluid[0]
+        let recFluid = total_fluid[0];
         if (total_fluid[0] == 0 & total_fluid[2] == 0)recFluid = total_fluid[1];
         document.getElementById("c").innerHTML = `C: ${wellInfo["C"]}`;
         document.getElementById("SPM").innerHTML = `SPM: ${wellInfo["SPM"]}`;
