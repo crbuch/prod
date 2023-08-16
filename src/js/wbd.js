@@ -113,6 +113,7 @@ async function dropdown() {
       .text(well)
       .property("Value", well);
   });
+  document.getElementById('wellselect').focus();
 };
 
 dropdown();

@@ -393,6 +393,7 @@ const cumlativeDataEl = document.getElementById('cumlativeData');
 $(document).ready(function () {
   $("#header").load("../src/pages/header.html", () => {
     monitorRegion();
+    document.getElementById('wbd_link').style.display = 'block';
   });
 });
 
