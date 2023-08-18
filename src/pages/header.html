@@ -57,8 +57,9 @@
 
     <script>
       document.getElementById('user_profile').textContent = localStorage.displayName;
-      if (sessionStorage.region !== 'ST') document.getElementById('wbd-container').style.display = 'none';
-      else document.getElementById('wbd_link').style.display = 'block';
+      let r = sessionStorage.region;
+      if (r == 'ST' || r == undefined ) document.getElementById('wbd-container').style.display = 'block';
+      else document.getElementById('wbd_link').style.display = 'none';
     </script>
 </body>
 </html>
