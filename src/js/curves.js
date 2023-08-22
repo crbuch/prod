@@ -4,7 +4,7 @@ import { onAuthStateChangedFb } from './auth';
 import { monitorRegion } from './region'
 import { select } from 'd3';
 import { makeTrace, makeLayout, config } from './layout';
-import { setActive, setActiveView, checkActive, setActiveTime } from './ui';
+import { setActive, setActiveView, checkActive, setActiveTime, showPwdErr } from './ui';
 import { lazyLoad } from './load/loader';
 
 
@@ -248,10 +248,14 @@ async function curve(timeFrame, data){
     [tracePercent]
   ];
   if (selectedOption !== "South Texas Total") {traceArrays.pop(); plotContainers.pop();}
+  let showTraces = JSON.parse(sessionStorage.visible_traces).visible
   plotContainers.forEach((container, i) => {
-    traceArrays[i].forEach(trace => {
-      trace.visible = (i === 4 && trace.name !== "Oil [BO]") ? "legendonly" : trace.visible;
-    });
+    if (i == 4){
+      traceArrays[i].forEach(trace => {
+        trace.visible = (showTraces.includes(trace.name)) ? true : "legendonly";
+      });
+    }
+    
 
     const layout = makeLayout(['Gas vs Time (MCFD)', 'Water vs Time (BWPD)', 'Total Fluid vs Time (BFPD)', 'Water Cut Percentage', 'Combined Production', 'Percent Production from New Wells (365 Days)'][i], scale, 
         (scale === 'log') ? [1, 2, 5, 10, 20, 50, 100, 200, 500, 1000, 2000, 3000] : null);
@@ -290,7 +294,8 @@ async function curve(timeFrame, data){
       for (let val of vals){
         if (!Object.keys(map).includes(val)) continue;
         const data = map[val];
-        const sum = (data.slice(endIdx, startIdx + 1).reduce((acc, cur) => acc + cur, 0)/1000).toFixed(1);
+        let sum = (data.slice(endIdx, startIdx + 1).reduce((acc, cur) => acc + cur, 0)/1000);
+        sum = sum.toFixed(1) == 0.0 ? sum.toFixed(2) : sum.toFixed(1)
 
         const p = document.createElement('p');
         p.textContent = `${sum} ${nameMap[val]}`;
@@ -406,7 +411,7 @@ $(dd).on("change", () => {
   if (localStorage.initTime == 31) activeTime = 'Days30';
   setActiveTime(activeTime);
   setActiveView(localStorage.getItem('initScale'));
-  sessionStorage.visible_traces = JSON.stringify({"visible":["Oil [BO]"]});
+  //sessionStorage.visible_traces = JSON.stringify({"visible":["Oil [BO]"]});
   curve(localStorage.initTime, curveInfo);
 });
 

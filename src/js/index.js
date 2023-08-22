@@ -17,7 +17,7 @@ import {
   showPwdErr
 } from './ui'
 
-import {loginFb, updatePasswordFb } from './auth';
+import {loginFb, updatePasswordFb,onAuthStateChangedFb } from './auth';
 
 const initStorage = (userCreds) => {
   let initTime = window.innerWidth < 768 ? 31 : 0;
@@ -62,6 +62,8 @@ const changePwd = async () => {
 };
 
 const init = () => {
+  const user = localStorage.uid;
+  console.log('user :>> ', user);
   const state = sessionStorage.changePwd;
 
   if (state == "true"){
@@ -100,6 +102,7 @@ const init = () => {
 };
 
 window.onload = function () {
+  onAuthStateChangedFb();
   hidePwdErr();
   hideLoginError();
   init();

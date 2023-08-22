@@ -18,7 +18,10 @@ const onAuthStateChangedFb = () => {
     auth.onAuthStateChanged((user) => {
         if (user) {
             console.log('user mon :>> ', user);
-            //up();
+            const currPage = window.location.pathname.split("/").pop();
+            if (currPage == 'index.html'){
+                window.location.href = './curves.html';
+            }
         } else {
             console.log("none");
             window.location.replace('index.html');
