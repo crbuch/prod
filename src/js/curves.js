@@ -12,11 +12,15 @@ const displayEconomics = (data, selectedOption) => {
   let wellRMPL = 0;
   let wellYTDPL = 0;
   let monthPnL = "";
-
+  console.log('selectedOption.toLowerCase() :>> ', selectedOption.toLowerCase());
   data.forEach((ecoWell) => {
     let w = ecoWell["Well Name"].toLowerCase();
-    let s = selectedOption.toLowerCase()
+    let s = selectedOption.toLowerCase();
+    if (w == s){
+      console.log("???");
+    }
     if (w.includes(s)) {
+      console.log("?");
       wellRMPL = ecoWell["Recent Month P&L"];
       wellYTDPL = ecoWell["YTD P&L"];
       monthPnL = ecoWell["Date"].slice(0, 3);
