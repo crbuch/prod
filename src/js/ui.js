@@ -35,7 +35,7 @@ export const showApp = () => {
   if (currPage == 'index.html'){
     window.location.href = './curves.html';
   }
-  }
+}
 
 export const hideLoginError = () => {
   divLoginError.style.display = 'none'
