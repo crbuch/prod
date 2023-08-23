@@ -102,7 +102,7 @@ const init = () => {
 };
 
 window.onload = function () {
-  onAuthStateChangedFb();
+  //onAuthStateChangedFb();
   hidePwdErr();
   hideLoginError();
   init();

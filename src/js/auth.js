@@ -18,8 +18,11 @@ const onAuthStateChangedFb = () => {
     auth.onAuthStateChanged((user) => {
         if (user) {
             console.log('user mon :>> ', user);
+            console.log('?? :>> ')
             const currPage = window.location.pathname.split("/").pop();
+            console.log('currPage :>> ', currPage);
             if (currPage == 'index.html'){
+                console.log('switiching');
                 window.location.href = './curves.html';
             }
         } else {
