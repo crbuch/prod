@@ -18,14 +18,21 @@ const onAuthStateChangedFb = () => {
     auth.onAuthStateChanged((user) => {
         if (user) {
             console.log('user mon :>> ', user);
+            const currPage = window.location.pathname.split("/").pop();
+            if (currPage == 'index.html'){
+                window.location.href = './profile.html';
+            }
         } else {
-            console.log("none");
-            window.location.replace('index.html');
-            const currentState = window.history.state;
-            window.history.replaceState(currentState, '', window.location.href);
-            window.onpopstate = function () {
-            window.history.replaceState(currentState, '', window.location.href);
-            };
+            const currPage = window.location.pathname.split("/").pop();
+            console.log('currPage :>> ', currPage);
+            if (currPage != 'index.html'){
+                window.location.replace('index.html');
+                const currentState = window.history.state;
+                window.history.replaceState(currentState, '', window.location.href);
+                window.onpopstate = function () {
+                window.history.replaceState(currentState, '', window.location.href);
+                };
+            }
         }
     });
 };

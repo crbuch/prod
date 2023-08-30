@@ -12,15 +12,10 @@ const displayEconomics = (data, selectedOption) => {
   let wellRMPL = 0;
   let wellYTDPL = 0;
   let monthPnL = "";
-  console.log('selectedOption.toLowerCase() :>> ', selectedOption.toLowerCase());
   data.forEach((ecoWell) => {
     let w = ecoWell["Well Name"].toLowerCase();
     let s = selectedOption.toLowerCase();
-    if (w == s){
-      console.log("???");
-    }
     if (w.includes(s)) {
-      console.log("?");
       wellRMPL = ecoWell["Recent Month P&L"];
       wellYTDPL = ecoWell["YTD P&L"];
       monthPnL = ecoWell["Date"].slice(0, 3);
@@ -253,6 +248,7 @@ async function curve(timeFrame, data){
   ];
   if (selectedOption !== "South Texas Total") {traceArrays.pop(); plotContainers.pop();}
   let showTraces = JSON.parse(sessionStorage.visible_traces).visible
+  console.time('c')
   plotContainers.forEach((container, i) => {
     if (i == 4){
       traceArrays[i].forEach(trace => {
@@ -266,6 +262,7 @@ async function curve(timeFrame, data){
    Plotly.newPlot(container, traceArrays[i], layout, config);
 
   });
+  console.timeEnd('c')
 
   const combo = document.getElementById('combinationCurves');
   combo.on("plotly_relayout", function (eventData) {
