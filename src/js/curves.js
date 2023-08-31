@@ -116,6 +116,7 @@ const getSelectedOption = (data) => {
 };
 
 async function curve(timeFrame, data){
+  console.time('parsedata')
   const selectedOption = getSelectedOption(data.prod);
   const site_data = data.prod.filter(site => site[0] === selectedOption);
   let total_fluid = site_data.map(site => site[9]);
@@ -164,7 +165,7 @@ async function curve(timeFrame, data){
   let water_cut = site_water.map((water, i) => (water / (water + site_oil[i])) * 100);
   if (timeFrame > 0) [site_date, site_oil, site_gas, site_water, comments, movingAverage, oil365, date365, percent] =
   [site_date, site_oil, site_gas, site_water, comments, movingAverage, oil365, date365, percent].map(arr => arr.slice(0, timeFrame));
-
+  console.timeEnd('parsedata')
   let trace365 = makeTrace(
     date365,
     oil365,
@@ -248,7 +249,7 @@ async function curve(timeFrame, data){
   ];
   if (selectedOption !== "South Texas Total") {traceArrays.pop(); plotContainers.pop();}
   let showTraces = JSON.parse(sessionStorage.visible_traces).visible
-  console.time('c')
+  console.time('displayGraphs')
   plotContainers.forEach((container, i) => {
     if (i == 4){
       traceArrays[i].forEach(trace => {
@@ -262,7 +263,7 @@ async function curve(timeFrame, data){
    Plotly.newPlot(container, traceArrays[i], layout, config);
 
   });
-  console.timeEnd('c')
+  console.timeEnd('displayGraphs')
 
   const combo = document.getElementById('combinationCurves');
   combo.on("plotly_relayout", function (eventData) {
