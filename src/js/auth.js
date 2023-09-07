@@ -20,7 +20,7 @@ const onAuthStateChangedFb = () => {
             console.log('user mon :>> ', user);
             const currPage = window.location.pathname.split("/").pop();
             if (currPage == 'index.html'){
-                window.location.href = './profile.html';
+                window.location.href = './curves.html';
             }
         } else {
             const currPage = window.location.pathname.split("/").pop();
