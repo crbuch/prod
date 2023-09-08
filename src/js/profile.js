@@ -7,12 +7,11 @@ import { select, json } from 'd3';
 
 const mnthData = await json ("../data\\ST\\dataMonthlyST.json").then(d => d);
 const payout = await json("../data/econ/payouts.json").then(d => d);
-const plData = await json("../data\\econ/pldata.json").then(d => d);
+const plData = await json("../data\\econ/pldata1.json").then(d => d);
 
 onAuthStateChangedFb();
 $(document).ready(function () {
     $("#header").load("../src/pages/header.html", () => {
-      console.log('loaded header');
       monitorRegion();
     });
   });
@@ -23,7 +22,7 @@ const fetchData = (db) => {
         data = null;
         localStorage.shares = null;
     }
-    
+    data = null
     if (data !== null && data !== "null" && data != undefined) {
         data = JSON.parse(data);
         parseData(data);
@@ -56,6 +55,7 @@ const parseData = (d) => {
     Object.keys(d).forEach((key) => {
         data[key.toLowerCase()] = d[key];
     });
+    console.log('data :>> ', data);
     const wells = Object.keys(data).map(well => well.toLowerCase());
     let well_list = Object.keys(d);
     well_list.sort((a, b) => a.localeCompare(b, undefined, { sensitivity: 'base' }));
@@ -71,7 +71,7 @@ const parseData = (d) => {
                 if (!(mo in returns)) returns[mo] = 0;
                 if (wells.includes(well)){
                     const share = data[well];
-                    let wellMnthReturn = share * pl;
+                    let wellMnthReturn = Math.round(share * pl);
 
                     if (!(well in well_returns)) well_returns[well] = [];
                     well_returns[well].push({ "Well": well, "Date": mo, "Recent Mnth Return": wellMnthReturn, "Share": share })
@@ -79,8 +79,8 @@ const parseData = (d) => {
                 }
         }
     }
-    
     const dates_pl = format(returns)
+
     plotRev(dates_pl[0], dates_pl[1]);
 
     //mean payout
@@ -165,7 +165,6 @@ const initWellList = (wells) => {
 
         let span = document.createElement("span");
         span.classList.add("menu-title");
-        console.log('wells[i] :>> ', wells[i]);
         span.textContent = capitalizeWords(wells[i]);
 
         a.appendChild(span);
@@ -207,7 +206,6 @@ const displayWell = (selected) => {
         const moReturn = data[idx]["Recent Mnth Return"];
         if (moReturn !== 0) returns[mo] = moReturn;
     }
-    console.log('returns :>> ', returns);
     const dates_pl = format(returns);
     selected = capitalizeWords(selected);
     if (data === undefined){
@@ -218,8 +216,6 @@ const displayWell = (selected) => {
         return;
     }
 
-    console.log('dates_pl :>> ', dates_pl);
-    console.log('dates_pl[0] :>> ', dates_pl[0]);
 
     plotRev(dates_pl[0], dates_pl[1]);
     const money = formatMoney(dates_pl[1].reduce((runnin, curr) => runnin + curr).toFixed(2));
@@ -258,8 +254,8 @@ const displayProdAll = () => {
                 if (!Object.keys(gas).includes(date)) gas[date] = 0;
 
                 
-                oil[date] += sub[1]*shares[well];
-                gas[date] += sub[2]*shares[well];
+                oil[date] += Math.round(sub[1]*shares[well]);
+                gas[date] += Math.round(sub[2]*shares[well]);
             }
             
         }

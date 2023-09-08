@@ -8647,6 +8647,10 @@
         "Apr 23": 34370.99018,
         "Well Name": "PICKENS #1"
     },
+    "PICKENS WEAVER #1": {
+        "Well Number": "null",
+        "Well Name": "PICKENS WEAVER #1"
+    },
     "PICKWILL #1": {
         "Well Number": "9450.008",
         "Jan 16": 15688.515,
@@ -32659,7 +32663,7 @@
         "Apr 23": 2646.705,
         "Well Name": "THUSS #1"
     },
-    "CR 201": {
+    "CR #201": {
         "Well Number": "9430.002",
         "Jan 16": 0.0,
         "Feb 16": 0.0,
@@ -32749,9 +32753,9 @@
         "Feb 23": 18153.4586101345,
         "Mar 23": 15177.4925313281,
         "Apr 23": 13371.7245887465,
-        "Well Name": "CR 201"
+        "Well Name": "CR #201"
     },
-    "CR 301": {
+    "CR #301": {
         "Well Number": "9430.003",
         "Jan 16": 0.0,
         "Feb 16": 0.0,
@@ -32841,9 +32845,9 @@
         "Feb 23": 62105.7884679973,
         "Mar 23": 35754.2783047101,
         "Apr 23": 44319.3018812349,
-        "Well Name": "CR 301"
+        "Well Name": "CR #301"
     },
-    "CR 501": {
+    "CR #501": {
         "Well Number": "9430.005",
         "Jan 16": 0.0,
         "Feb 16": 0.0,
@@ -32933,9 +32937,9 @@
         "Feb 23": 4014.6288641324,
         "Mar 23": 23563.0058879013,
         "Apr 23": -2997.41,
-        "Well Name": "CR 501"
+        "Well Name": "CR #501"
     },
-    "CR 302": {
+    "CR #302": {
         "Well Number": "9430.006",
         "Jan 16": 0.0,
         "Feb 16": 0.0,
@@ -33025,9 +33029,9 @@
         "Feb 23": 15403.1987784215,
         "Mar 23": 21988.900769652,
         "Apr 23": 24238.8869618666,
-        "Well Name": "CR 302"
+        "Well Name": "CR #302"
     },
-    "FMMP": {
+    "FMMP #1": {
         "Well Number": "9430.008",
         "Jan 16": 0.0,
         "Feb 16": 0.0,
@@ -33117,9 +33121,9 @@
         "Feb 23": 0.0,
         "Mar 23": 0.0,
         "Apr 23": 0.0,
-        "Well Name": "FMMP"
+        "Well Name": "FMMP #1"
     },
-    "BMMP": {
+    "BMMP #1": {
         "Well Number": "9430.009",
         "Jan 16": 0.0,
         "Feb 16": 0.0,
@@ -33855,7 +33859,7 @@
         "Apr 23": 68242.1687058102,
         "Well Name": "JIC #1"
     },
-    "Little 179": {
+    "Little 179 #1": {
         "Well Number": "6560.001",
         "Jan 16": 0.0,
         "Feb 16": 0.0,
@@ -33945,7 +33949,7 @@
         "Feb 23": 72783.365,
         "Mar 23": 143729.895,
         "Apr 23": 139931.6925,
-        "Well Name": "Little 179"
+        "Well Name": "Little 179 #1"
     },
     "Balfour #1": {
         "Well Number": "8925.004",
@@ -34775,7 +34779,7 @@
         "Apr 23": 0.0,
         "Well Name": "CR 1148H"
     },
-    "Burns Ranch 2 #1": {
+    "Burns Ranch #2": {
         "Well Number": "9125.008",
         "Jan 16": 0.0,
         "Feb 16": 0.0,
@@ -34865,7 +34869,7 @@
         "Feb 23": 187760.9528262018,
         "Mar 23": 172833.7212757122,
         "Apr 23": 244086.0125636962,
-        "Well Name": "Burns Ranch 2 #1"
+        "Well Name": "Burns Ranch #2"
     },
     "Burns Ranch GT #1": {
         "Well Number": "9125.007",
@@ -35419,7 +35423,7 @@
         "Apr 23": 17540.785422016,
         "Well Name": "BRUCE WEAVER #1"
     },
-    "BRUCE WEAVER #2": {
+    "BRUCE WEAVER #2 RE": {
         "Well Number": "8725.527",
         "Jan 16": 0.0,
         "Feb 16": 0.0,
@@ -35509,7 +35513,7 @@
         "Feb 23": -575.0,
         "Mar 23": -6515.0,
         "Apr 23": -11577.32704,
-        "Well Name": "BRUCE WEAVER #2"
+        "Well Name": "BRUCE WEAVER #2 RE"
     },
     "LUBBOCK #1": {
         "Well Number": "8925.007",
