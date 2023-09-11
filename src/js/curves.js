@@ -8,6 +8,15 @@ import { setActive, setActiveView, checkActive, setActiveTime, showPwdErr } from
 import { lazyLoad } from './load/loader';
 
 
+
+$(document).ready(function () {
+  $('#siteSelection').select2({
+    width: '80%'
+  });
+});
+
+
+
 const displayEconomics = (data, selectedOption) => {
   let wellRMPL = 0;
   let wellYTDPL = 0;
@@ -41,7 +50,7 @@ const displayPayout = (data, selectedOption) => {
 
 const displayPumpInfo = (data, total_fluid, selectedOption) => {
   let wellInfo = data.find(i => i["Well Name"] === selectedOption);
-  
+
   if (wellInfo !== undefined) {
     if (
       wellInfo["SPM"] !== 0
@@ -50,12 +59,12 @@ const displayPumpInfo = (data, total_fluid, selectedOption) => {
       $(document).ready(function () {
         $("#pumpInfo").toggle();
         let recFluid = total_fluid[0];
-        if (total_fluid[0] == 0 & total_fluid[2] == 0)recFluid = total_fluid[1];
+        if (total_fluid[0] == 0 & total_fluid[2] == 0) recFluid = total_fluid[1];
         document.getElementById("c").innerHTML = `C: ${wellInfo["C"]}`;
         document.getElementById("SPM").innerHTML = `SPM: ${wellInfo["SPM"]}`;
         document.getElementById("DHSL").innerHTML = `DH SL: ${wellInfo["DH SL"]}`;
         document.getElementById("ideal").innerHTML = `Ideal bfpd: ${wellInfo["Ideal bfpd"]}`;
-        document.getElementById("pumpEff").innerHTML = `Pump Eff: ${Math.round((recFluid/wellInfo["Ideal bfpd"])*100)}`;
+        document.getElementById("pumpEff").innerHTML = `Pump Eff: ${Math.round((recFluid / wellInfo["Ideal bfpd"]) * 100)}`;
         document.getElementById("pumpDepth").innerHTML = `Pump Depth: ${wellInfo["Pump Depth"]}`;
         document.getElementById("GFLAP").innerHTML = `GFLAP: ${wellInfo["GFLAP"]}`;
         document.getElementById("Inc").innerHTML = `Inc: ${wellInfo["Inc"]}`;
@@ -74,7 +83,7 @@ const displayPumpInfo = (data, total_fluid, selectedOption) => {
   };
 };
 
-const displayCumlData = (data, formations,selectedOption) => {
+const displayCumlData = (data, formations, selectedOption) => {
   if (selectedOption == "South Texas Total") selectedOption = "ST Total";
   if (selectedOption == "East Texas Total") selectedOption = "ET Total";
   if (selectedOption == "West Texas Total") selectedOption = "WT Total";
@@ -86,7 +95,7 @@ const displayCumlData = (data, formations,selectedOption) => {
   const waterCuml = site_data[2];
   const gasCuml = site_data[3];
   const formation = formations[selectedOption] || "";
-  
+
 
 
   if (!formation) {
@@ -101,7 +110,7 @@ const displayCumlData = (data, formations,selectedOption) => {
 const getSelectedOption = (data) => {
   let selectedOption = null;
   let menuNode = select("#siteSelection").node().value;
-  
+
   if (menuNode != "default") {
     selectedOption = [menuNode];
   } else if (sessionStorage.siteSelection != null) {
@@ -115,7 +124,7 @@ const getSelectedOption = (data) => {
   return selectedOption;
 };
 
-async function curve(timeFrame, data){
+async function curve(timeFrame, data) {
   console.time('parsedata')
   const selectedOption = getSelectedOption(data.prod);
   const site_data = data.prod.filter(site => site[0] === selectedOption);
@@ -132,7 +141,7 @@ async function curve(timeFrame, data){
     document.getElementById(id).innerHTML = "";
   });
 
-  ["zoomEl", "individualTable","pumpInfo","notPumpingInfo", "pnl", "YTD","payout"].forEach(id => document.getElementById(id).style.display = 'none');
+  ["zoomEl", "individualTable", "pumpInfo", "notPumpingInfo", "pnl", "YTD", "payout"].forEach(id => document.getElementById(id).style.display = 'none');
   if (region == "ST" & selectedOption != "South Texas Total") {
     if (currUid !== 'fh05lGDE7YSVyAu9eNP4bYRR9n42' & currUid !== null) {
       displayEconomics(data.econ, selectedOption);
@@ -140,19 +149,19 @@ async function curve(timeFrame, data){
     }
     displayPumpInfo(data.pumpInfo, [...total_fluid], selectedOption);
   };
-  displayCumlData(data.cuml,data.formation, selectedOption);
+  displayCumlData(data.cuml, data.formation, selectedOption);
   ['gasDeclineCurve', 'waterDeclineCurve', 'waterCutCurve', 'totalFluidCurve', 'combinationCurves'].forEach(id => {
     document.getElementById(id).style.display = 'block';
   });
 
   let date365 = []; let oil365 = []; let percent = [];
-  let mask = selectedOption == "South Texas Total" & currUid !== "fh05lGDE7YSVyAu9eNP4bYRR9n42" 
-  if (mask){
+  let mask = selectedOption == "South Texas Total" & currUid !== "fh05lGDE7YSVyAu9eNP4bYRR9n42"
+  if (mask) {
     await import('./load\\recprod.js').then(module => {
       const data = module.recYrProd
-      date365 = data.map(sub => sub["Date"],[]).reverse();
-      oil365 = data.map(sub => sub["New Prod"],[]).reverse();
-      percent = data.map(sub => sub["percent"],[]).reverse();
+      date365 = data.map(sub => sub["Date"], []).reverse();
+      oil365 = data.map(sub => sub["New Prod"], []).reverse();
+      percent = data.map(sub => sub["percent"], []).reverse();
       document.getElementById('ratioRecProd').style.display = 'block';
     })
   }
@@ -161,10 +170,10 @@ async function curve(timeFrame, data){
   let site_gas = site_data.map(site => site[3]);
   let site_water = site_data.map(site => site[4]);
   let comments = site_data.map(site => site[7]);
-  let movingAverage = site_data.map(site => site[site.length-1]);
+  let movingAverage = site_data.map(site => site[site.length - 1]);
   let water_cut = site_water.map((water, i) => (water / (water + site_oil[i])) * 100);
   if (timeFrame > 0) [site_date, site_oil, site_gas, site_water, comments, movingAverage, oil365, date365, percent] =
-  [site_date, site_oil, site_gas, site_water, comments, movingAverage, oil365, date365, percent].map(arr => arr.slice(0, timeFrame));
+    [site_date, site_oil, site_gas, site_water, comments, movingAverage, oil365, date365, percent].map(arr => arr.slice(0, timeFrame));
   console.timeEnd('parsedata')
   let trace365 = makeTrace(
     date365,
@@ -176,7 +185,7 @@ async function curve(timeFrame, data){
     true
   )
 
-  let traceOil = makeTrace( 
+  let traceOil = makeTrace(
     site_date,
     site_oil,
     "Oil [BO]",
@@ -236,8 +245,8 @@ async function curve(timeFrame, data){
   );
   const scale = (document.getElementById("logarithmic").classList.contains("active")) ? 'log' : 'linear';
   const plotContainers = ["gasDeclineCurve", "waterDeclineCurve", 'totalFluidCurve', 'waterCutCurve', 'combinationCurves', 'ratioRecProd'];
-  let combination = [traceOil, traceOilAvg, {... traceGas}, {... traceWater}, {... traceFluid}, trace365];
-  if (selectedOption !== "South Texas Total") {combination.pop(); document.getElementById('ratioRecProd').style.display = 'none';}
+  let combination = [traceOil, traceOilAvg, { ...traceGas }, { ...traceWater }, { ...traceFluid }, trace365];
+  if (selectedOption !== "South Texas Total") { combination.pop(); document.getElementById('ratioRecProd').style.display = 'none'; }
 
   let traceArrays = [
     [traceGas],
@@ -247,20 +256,20 @@ async function curve(timeFrame, data){
     combination,
     [tracePercent]
   ];
-  if (selectedOption !== "South Texas Total") {traceArrays.pop(); plotContainers.pop();}
+  if (selectedOption !== "South Texas Total") { traceArrays.pop(); plotContainers.pop(); }
   let showTraces = JSON.parse(sessionStorage.visible_traces).visible
   console.time('displayGraphs')
   plotContainers.forEach((container, i) => {
-    if (i == 4){
+    if (i == 4) {
       traceArrays[i].forEach(trace => {
         trace.visible = (showTraces.includes(trace.name)) ? true : "legendonly";
       });
     }
-    
 
-    const layout = makeLayout(['Gas vs Time (MCFD)', 'Water vs Time (BWPD)', 'Total Fluid vs Time (BFPD)', 'Water Cut Percentage', 'Combined Production', 'Percent Production from New Wells (365 Days)'][i], scale, 
-        (scale === 'log') ? [1, 2, 5, 10, 20, 50, 100, 200, 500, 1000, 2000, 3000] : null);
-   Plotly.newPlot(container, traceArrays[i], layout, config);
+
+    const layout = makeLayout(['Gas vs Time (MCFD)', 'Water vs Time (BWPD)', 'Total Fluid vs Time (BFPD)', 'Water Cut Percentage', 'Combined Production', 'Percent Production from New Wells (365 Days)'][i], scale,
+      (scale === 'log') ? [1, 2, 5, 10, 20, 50, 100, 200, 500, 1000, 2000, 3000] : null);
+    Plotly.newPlot(container, traceArrays[i], layout, config);
 
   });
   console.timeEnd('displayGraphs')
@@ -284,19 +293,19 @@ async function curve(timeFrame, data){
     const xEnd = xRangeEnd.substring(0, 10);
     const startIdx = site_date.findIndex(value => value.includes(xStart));
     const endIdx = site_date.findIndex(value => value.includes(xEnd));
-   
+
     if (startIdx === -1) { // zoomed where no data
       return;
     }
-    
+
     const visible_traces = JSON.parse(sessionStorage.getItem('visible_traces'));
-    const map = {'Gas [MCF]': site_gas, 'Oil [BO]': site_oil, 'Water [BW]': site_water, 'Total Fluid [BBLS]': total_fluid };
-    const nameMap = {'Gas [MCF]': 'Gas [MMCF]', 'Oil [BO]': 'Oil [MBO]', 'Water [BW]': 'Water [MBW]', 'Total Fluid [BBLS]': 'Total Fluid [MBBL]' };
-    for (const[key,vals] of Object.entries(visible_traces)){
-      for (let val of vals){
+    const map = { 'Gas [MCF]': site_gas, 'Oil [BO]': site_oil, 'Water [BW]': site_water, 'Total Fluid [BBLS]': total_fluid };
+    const nameMap = { 'Gas [MCF]': 'Gas [MMCF]', 'Oil [BO]': 'Oil [MBO]', 'Water [BW]': 'Water [MBW]', 'Total Fluid [BBLS]': 'Total Fluid [MBBL]' };
+    for (const [key, vals] of Object.entries(visible_traces)) {
+      for (let val of vals) {
         if (!Object.keys(map).includes(val)) continue;
         const data = map[val];
-        let sum = (data.slice(endIdx, startIdx + 1).reduce((acc, cur) => acc + cur, 0)/1000);
+        let sum = (data.slice(endIdx, startIdx + 1).reduce((acc, cur) => acc + cur, 0) / 1000);
         sum = sum.toFixed(1) == 0.0 ? sum.toFixed(2) : sum.toFixed(1)
 
         const p = document.createElement('p');
@@ -309,14 +318,14 @@ async function curve(timeFrame, data){
     if (window.innerWidth > 400) dd.focus();
   });
 
-  combo.on('plotly_legendclick', function(data) {
+  combo.on('plotly_legendclick', function (data) {
     const traceIdx = data.curveNumber;
     const name = combination[traceIdx].name;
-    let currVisible = JSON.parse(sessionStorage.visible_traces) || {"visible_traces": []};
+    let currVisible = JSON.parse(sessionStorage.visible_traces) || { "visible_traces": [] };
 
-    if (currVisible.visible.includes(name)){
+    if (currVisible.visible.includes(name)) {
       currVisible.visible = currVisible.visible.filter(el => el !== name)
-    }else{
+    } else {
       currVisible.visible.push(name);
     }
 
@@ -341,7 +350,7 @@ const table = (coreData) => {
     document.getElementById(tag).style.display = 'none'
   });
 
-  if (window.innerWidth <= 768){
+  if (window.innerWidth <= 768) {
     const headerText = ['Date', 'O', 'G', 'W', 'TP', 'CP', 'Comments'];
     [...['dateHeader', 'oilHeader', 'gasHeader', 'waterHeader', 'TPHeader', 'CPHeader', 'commentsHeader']].forEach((tag, index) => {
       document.getElementById(tag).textContent = headerText[index]
@@ -359,31 +368,31 @@ const switchActives = (event) => {
   children.forEach(child => {
     child.classList.remove("active");
   });
-  
+
   target.className += "active";
   const activeTime = document.getElementById("timeframes").querySelectorAll(".active")[0].id.substring(4);//gives the number from the active view id
   curve(Number(activeTime) + 1, curveInfo);
 
-  function ddd () {
-    try{
+  function ddd() {
+    try {
       dd.blur();
-    }catch{
+    } catch {
     };
   }
-  
-  if (window.innerWidth < 400) setTimeout(ddd,50);
+
+  if (window.innerWidth < 400) setTimeout(ddd, 50);
   dd.focus();
 };
 
-function test(payoutData){
+function test(payoutData) {
   let opts = dd.options;
   let wells = []
-  for (let i = 1; i < opts.length; i ++){
+  for (let i = 1; i < opts.length; i++) {
     wells.push(opts[i].Value)
     let site_data = payoutData.filter(el => el["Well Name"] == opts[i].Value)[0]
     if (site_data == undefined) console.log('well :>> ', opts[i].Value);
   }
-  
+
 }
 
 onAuthStateChangedFb();
@@ -404,8 +413,8 @@ $(document).ready(function () {
   });
 });
 
-['linear','logarithmic','DaysInception','Days30','Days365','Days180'].forEach(el => {
-  document.getElementById(el).addEventListener('click',switchActives);
+['linear', 'logarithmic', 'DaysInception', 'Days30', 'Days365', 'Days180'].forEach(el => {
+  document.getElementById(el).addEventListener('click', switchActives);
 });
 
 $(dd).on("change", () => {
@@ -429,10 +438,10 @@ window.onload = function () {
   if (localStorage.getItem('initTime') == 31) activeTime = 'Days30';
   setActiveTime(activeTime);
   setActiveView(localStorage.getItem('initScale'));
-  sessionStorage.visible_traces = JSON.stringify({"visible":["Oil [BO]"]});
+  sessionStorage.visible_traces = JSON.stringify({ "visible": ["Oil [BO]"] });
   lazyLoad().then(data => {
     curveInfo = data;
-    dh.dropdown('#siteSelection',data.prod);
+    dh.dropdown('#siteSelection', data.prod);
     curve(localStorage.getItem('initTime'), data);
     if (window.innerWidth > 400) dd.focus();
     test(data.payout)
@@ -442,5 +451,7 @@ window.onload = function () {
 }();
 
 $(document).on('click', function (e) {
-  if (window.innerWidth > 400) dd.focus();
+  //interference with select2 
+
+  //if (window.innerWidth > 400) dd.focus();
 });

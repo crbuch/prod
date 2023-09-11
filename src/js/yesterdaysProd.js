@@ -22,6 +22,7 @@ $(document).ready(function () {
     console.log('loaded header');
     monitorRegion();
   });
+  $(dropdownId).select2();
 });
 
 document.getElementById('Prodfilter').onclick = function () {
@@ -32,9 +33,12 @@ document.getElementById('clearFilter').onclick = function () {
     dh.buildTable(pageData);
 };
 
-select(dropdownId).on("change", () => {
+
+
+document.getElementById("wellFilter").onchange = ()=>{
     dh.buildTable(dh.filterData(pageData, dropdownId));
-});
+
+}
 
 window.onload = function () {
     lazyLoad().then(data => {

@@ -14,6 +14,15 @@ const faultData = await json("../data/datawbd/shows.json").then((data) => {
   return data
 });
 
+
+$(document).ready(function () {
+  $('#wellselect').select2({
+    width: '10%'
+  });
+});
+
+
+
 async function plot() {
   const dropdownMenu = select("#wellselect").node();
   let wellName = dropdownMenu.value;
@@ -118,9 +127,10 @@ async function dropdown() {
 
 dropdown();
 
-select("#wellselect").on("change", function () {
+
+document.getElementById("wellselect").onchange = function(){
   plot();
-});
+}
 
 //init page on load//
 window.onload = function () {

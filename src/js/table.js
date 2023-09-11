@@ -146,6 +146,10 @@ $(document).ready(function () {
     console.log('loaded header');
     monitorRegion();
   });
+
+  $(dropdownId).select2({
+    width: '100%'
+  });
 });
 
 document.getElementById('Payfilter').onclick = function(){
@@ -156,10 +160,18 @@ document.getElementById('Prodfilter').onclick = function(){
   dh.sortData(dataObj.cuml,1)
 };
 
+document.getElementById("siteFilter").onchange = ()=>{
+  dh.buildTable(dh.filterData(dataObj.cuml,dropdownId));
+  displayPlot(select(dropdownId).node().value,dataObj);
+}
+
+
+/*
 select(dropdownId).on("change", () => {
   dh.buildTable(dh.filterData(dataObj.cuml,dropdownId));
   displayPlot(select(dropdownId).node().value,dataObj);
 });
+*/
 
 document.getElementById('clearFilter').onclick = function () {
   dh.buildTable(dataObj.cuml);
